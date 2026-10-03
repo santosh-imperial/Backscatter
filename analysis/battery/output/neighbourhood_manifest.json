@@ -1,0 +1,264 @@
+{
+  "experiment": "E25",
+  "status": "secondary_exploratory_unvalidated",
+  "seed": 20261003,
+  "bootstrap_resamples": 4000,
+  "statistical_unit": "site; specimen independence unconfirmed",
+  "material_state": "fresh graphite-Si/SiOx confirmed by user",
+  "battery_metric_version": "1.0.0",
+  "feature_version_at_import": "1.1.0",
+  "input_cache_sha256": {
+    "analysis_cache/site_features.csv": "733c2d2ab1d4b6784cd8e864b4a72a8a58ffdd87a68e4bfd719f9a639f013214",
+    "analysis_cache/acquisition_sites.csv": "4d8869b9a5e1e8385c76bca85ea747a7c44954f5db3b8ce34f22df062a2ccbed"
+  },
+  "raw_bse_sha256": {
+    "Dataset/Batch_1/img_4ih2ggld_BSE.tif": "a7fa8987f58071205743249f0b089912c3cdab5289d48aa4dc21e5b73aa21b09",
+    "Dataset/Batch_1/img_5n1q8atc_BSE.tif": "4b040a76c364ca75938060810d908518c31c8be58e634adab5db72ba9677dc9e",
+    "Dataset/Batch_1/img_f1vzngrs_BSE.tif": "ae83f993b63bd5463501676b2666f79ef980d4571cffbb9b77c8e555c7313e8e",
+    "Dataset/Batch_1/img_ffwubibz_BSE.tif": "73e0d186d84ec7518bdacfd542374dac379388644db09c53c39eed5d66942280",
+    "Dataset/Batch_1/img_fzrt2k6r_BSE.tif": "9fa0f4c9a5cb019fde2f081618788453afb96f86532d4b0ca0a83783edf1ec3a",
+    "Dataset/Batch_1/img_iv6g2oq0_BSE.tif": "1d3a4a5dc4a518646c7f47e672f51e55e47b96a9e2196391de2e821b0d99f65f",
+    "Dataset/Batch_1/img_uhdslk0o_BSE.tif": "dee7514f2b2453610fefe7158ea59f2e715fa2f39e3b9cf357625d238f2b113f",
+    "Dataset/Batch_2/img_3806gxp0_BSE.tif": "806d025a34c813c44a6626c882c5358456304dd58d978aa474b42e55f7bfce20",
+    "Dataset/Batch_2/img_avn74qx1_BSE.tif": "e1113d827cf083c93edd1e67765777398408899461f99e31130710833c2b35de",
+    "Dataset/Batch_2/img_b3esycq1_BSE.tif": "01e83352c90c1a77bf2e8d216651d2b1cb747257b22b4cbc2e8c7c4ccaa485d5",
+    "Dataset/Batch_2/img_epqdaau9_BSE.tif": "7e7bcdf0bdaf9d1eb3d148d514c21deb06ae4c634b979a3323c2147998ee00d2",
+    "Dataset/Batch_2/img_i9jiqjwl_BSE.tif": "9636159933edf7b2f5bdf709c6472a3124e44ec710b80296283d9a8e65c96f60",
+    "Dataset/Batch_2/img_r17byphk_BSE.tif": "2071683d1b7591ef34e03aa2707081b923c51451ee7165323af93f253a904172",
+    "Dataset/Batch_2/img_rxax5ozo_BSE.tif": "e1cffb1b6a62f7aa6a10a48cc52a8ef18833929a858c5c6692e5c5bd7558f2c9",
+    "Dataset/Batch_3/img_0grcilhi_BSE.tif": "17b8f934fbb4f6904fcf12c7624c58f017f62b5633c856ad159bf6bd2cd9b95a",
+    "Dataset/Batch_3/img_71vgq3fw_BSE.tif": "6e39035f9fec96c1b3728c7e4a482f9e3aa07802eb0afbb15c01deb01f1b7113",
+    "Dataset/Batch_3/img_9luzk4jm_BSE.tif": "4017bd17628b2d29634e767a623cebd9ec6e5996cee2d3aaa9e7265fc58482a7",
+    "Dataset/Batch_3/img_cfe5vt7s_BSE.tif": "14f1a08a2d3eaf2b5687b0055b630e7a49eea96c093c260302938aa3e1640193",
+    "Dataset/Batch_3/img_hawkfj64_BSE.tif": "7cc8fc9616c960e182c4b1de208909e8eed67c6a1b7454b2c7e0d34e4a569f34",
+    "Dataset/Batch_3/img_hzumfsms_BSE.tif": "c06fe783ed9d03d847262839e62c99e76549b0c6a18b3d10045cab3b0e0873ef",
+    "Dataset/Batch_3/img_kbdh4tri_BSE.tif": "9fa862772440db2644c55dceda66a4aa38830275f2e984775bf28b50d4f95573",
+    "Dataset/Batch_3/img_mgxahqnk_BSE.tif": "e13bcd2ac2f815bfed7903c60e4c8b42bd42287496daf7290c3ae04f5a4bd528",
+    "Dataset/Batch_3/img_pl8uabbv_BSE.tif": "9d2977711be2306806e1e2e496278a18832f8a9d09bc9fb1fbe15a4f0ad1ef34",
+    "Dataset/Batch_3/img_ptg8lmto_BSE.tif": "fd390172b2dd51530e2dbc6825ffa7c41ad7c423ddb97a741c82f89d176a943d",
+    "Dataset/Batch_3/img_tuy3zymq_BSE.tif": "8bae4640c792d627325f1616056a80afc19fb834d4cad62f12897d2399c0529b",
+    "Dataset/Batch_3/img_ufdvpb81_BSE.tif": "cef47de25c068b0f7ba255da3c28ccd9d100ad22069186bc5542c54aee8d2362",
+    "Dataset/Batch_3/img_utfgcjfa_BSE.tif": "4e62e17fbfa089f410ac8e4026c0878ae7f27c54d231a350dd958b40c96002dd",
+    "Dataset/Batch_3/img_vc2whyaq_BSE.tif": "75e04a6c86abfdedd4d06ad83d017bc60def52b56f1bc520a4f59a65932c07ce",
+    "Dataset/Batch_3/img_x77cy643_BSE.tif": "b05c4ac6ddc0eae01a98ff89c7171971625d062e95bccb1ba0f1a1971722a388",
+    "Dataset/Batch_3/img_x7u69zsw_BSE.tif": "bfe4d2d302ccb04929f4ea92be03b76b93fb38421c13268007a6fff33166d954",
+    "Dataset/Batch_3/img_xgj4xftb_BSE.tif": "f19ecf7f3a5eafdc60ebda36d54660c3aa7c595a17b9994f363fdfa293ae6c61"
+  },
+  "input_hashes_unchanged": true,
+  "source_sha256_at_start": {
+    "analysis/battery/run_neighbourhoods.py": "9cc43314cd5c6297ce02f258d4d5ab5b510e0a24a99673f351e4ffdc1207e4a3",
+    "polaron_qc/battery_metrics.py": "2eff1398105cff3a322bfc047aacd778484710df67670d9e31469bcdad25d7bb",
+    "polaron_qc/features.py": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b"
+  },
+  "source_sha256_at_end": {
+    "analysis/battery/run_neighbourhoods.py": "9cc43314cd5c6297ce02f258d4d5ab5b510e0a24a99673f351e4ffdc1207e4a3",
+    "polaron_qc/battery_metrics.py": "2eff1398105cff3a322bfc047aacd778484710df67670d9e31469bcdad25d7bb",
+    "polaron_qc/features.py": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b"
+  },
+  "source_masks_match_cached_fractions": true,
+  "threshold_offsets_paired": [
+    -5,
+    0,
+    5
+  ],
+  "ring_radius_px": 16,
+  "window_sizes_px": [
+    512,
+    1024
+  ],
+  "min_bright_area_px": 50,
+  "primary_kpis_unchanged": true,
+  "pore_mode_resolved_counts": {
+    "False": 31
+  },
+  "variable_kpis": [
+    "bright_void_distance_d50_px",
+    "bright_ring_void_frac_16px",
+    "local_bright_std_512px",
+    "local_bright_pore_spearman_512px",
+    "local_bright_std_1024px",
+    "local_bright_pore_spearman_1024px"
+  ],
+  "constant_kpis": [
+    "bright_void_boundary_frac"
+  ],
+  "definitions": {
+    "bright_void_boundary_frac": {
+      "units": "fraction",
+      "battery_check_ids": [
+        "B01"
+      ],
+      "definition": "Pore-facing 4-neighbour raster faces / all exposed faces of retained, non-edge-clipped 8-connected bright components (area >=50 px). Faces are pooled by boundary length; diagonal adjacency is not a face.",
+      "interpretation": "Observed void adjacency at bright-mask boundaries; residual-solid adjacency is its complement, not electrical contact.",
+      "required_flags": {
+        "bright_low_contrast": false,
+        "grey_pore": false
+      }
+    },
+    "bright_void_distance_d50_px": {
+      "units": "px",
+      "battery_check_ids": [
+        "B01"
+      ],
+      "definition": "Median over retained, non-edge-clipped bright components of the minimum Euclidean centre-to-centre distance from any component pixel to any pore-mask pixel. Adjacent face centres are 1 px apart.",
+      "interpretation": "2-D bright-to-visible-void proximity; not a 3-D pore throat, expansion clearance or wetting distance.",
+      "required_flags": {
+        "bright_low_contrast": false,
+        "grey_pore": false
+      }
+    },
+    "bright_ring_void_frac_16px": {
+      "units": "fraction",
+      "battery_check_ids": [
+        "B01"
+      ],
+      "definition": "Median component-wise pore fraction in Euclidean pixel-centre distance bands outside retained bright-mask components (distance >0 and <=16 px). This includes threshold holes within the silhouette, not only the physical outer neighbourhood. Only complete bands are used; overlapping bands are allowed. Other bright and residual-solid pixels are separately counted.",
+      "interpretation": "Visible local void neighbourhood of a segmented component, including threshold holes; not validated outer clearance or free volume for Si/SiOx expansion.",
+      "required_flags": {
+        "bright_low_contrast": false,
+        "grey_pore": false
+      }
+    },
+    "local_bright_std_512px": {
+      "units": "fraction",
+      "battery_check_ids": [
+        "B04"
+      ],
+      "definition": "Population standard deviation of original bright-mask area fractions in complete 512x512 px non-overlapping windows anchored at trimmed-image top-left; >=2 windows required. Partial edge windows excluded.",
+      "interpretation": "Spatial bright-mask heterogeneity at a fixed observed scale; also depends on mean loading, particle sizes and sampling.",
+      "required_flags": {
+        "bright_low_contrast": false
+      }
+    },
+    "local_bright_pore_spearman_512px": {
+      "units": "correlation",
+      "battery_check_ids": [
+        "B01",
+        "B04"
+      ],
+      "definition": "Spearman correlation of bright- and pore-mask fractions across the same complete 512x512 px windows; >=3 windows and both variables nonconstant required.",
+      "interpretation": "Within-section spatial co-location; compositional closure, segmentation and common depth structure can induce association. Windows are not independent material samples.",
+      "required_flags": {
+        "bright_low_contrast": false,
+        "grey_pore": false
+      }
+    },
+    "local_bright_std_1024px": {
+      "units": "fraction",
+      "battery_check_ids": [
+        "B04"
+      ],
+      "definition": "Population standard deviation of original bright-mask area fractions in complete 1024x1024 px non-overlapping windows anchored at trimmed-image top-left; >=2 windows required. Partial edge windows excluded.",
+      "interpretation": "Spatial bright-mask heterogeneity at a fixed observed scale; also depends on mean loading, particle sizes and sampling.",
+      "required_flags": {
+        "bright_low_contrast": false
+      }
+    },
+    "local_bright_pore_spearman_1024px": {
+      "units": "correlation",
+      "battery_check_ids": [
+        "B01",
+        "B04"
+      ],
+      "definition": "Spearman correlation of bright- and pore-mask fractions across the same complete 1024x1024 px windows; >=3 windows and both variables nonconstant required.",
+      "interpretation": "Within-section spatial co-location; compositional closure, segmentation and common depth structure can induce association. Windows are not independent material samples.",
+      "required_flags": {
+        "bright_low_contrast": false,
+        "grey_pore": false
+      }
+    }
+  },
+  "diagnostics": [
+    "neighbourhood_bright_pixels",
+    "neighbourhood_pore_pixels",
+    "neighbourhood_bright_components_all",
+    "neighbourhood_bright_components_small",
+    "neighbourhood_bright_components_retained",
+    "neighbourhood_bright_components_clipped",
+    "neighbourhood_bright_components_used",
+    "neighbourhood_bright_boundary_faces",
+    "neighbourhood_bright_void_faces",
+    "neighbourhood_bright_residual_solid_faces",
+    "neighbourhood_bright_other_bright_faces",
+    "neighbourhood_ring_components_used",
+    "neighbourhood_ring_components_clipped",
+    "neighbourhood_windows_512px",
+    "neighbourhood_window_coverage_512px",
+    "neighbourhood_windows_bright_present_512px",
+    "neighbourhood_windows_pore_present_512px",
+    "neighbourhood_windows_1024px",
+    "neighbourhood_window_coverage_1024px",
+    "neighbourhood_windows_bright_present_1024px",
+    "neighbourhood_windows_pore_present_1024px"
+  ],
+  "overlays": [
+    {
+      "batch": "Batch_1",
+      "site": "4ih2ggld",
+      "file": "analysis/battery/output/neighbourhood_overlay_Batch_1_4ih2ggld.png",
+      "raw_y0": 970,
+      "raw_y1": 1482,
+      "x0": 3136,
+      "x1": 3648,
+      "trimmed_y0": 970,
+      "trimmed_y1": 1482,
+      "flags": "bright_low_contrast=True; grey_pore=False; pore_mode_resolved=False"
+    },
+    {
+      "batch": "Batch_2",
+      "site": "3806gxp0",
+      "file": "analysis/battery/output/neighbourhood_overlay_Batch_2_3806gxp0.png",
+      "raw_y0": 682,
+      "raw_y1": 1194,
+      "x0": 2869,
+      "x1": 3381,
+      "trimmed_y0": 682,
+      "trimmed_y1": 1194,
+      "flags": "bright_low_contrast=False; grey_pore=False; pore_mode_resolved=False"
+    },
+    {
+      "batch": "Batch_3",
+      "site": "71vgq3fw",
+      "file": "analysis/battery/output/neighbourhood_overlay_Batch_3_71vgq3fw.png",
+      "raw_y0": 860,
+      "raw_y1": 1372,
+      "x0": 3182,
+      "x1": 3694,
+      "trimmed_y0": 860,
+      "trimmed_y1": 1372,
+      "flags": "bright_low_contrast=False; grey_pore=True; pore_mode_resolved=False"
+    },
+    {
+      "batch": "Batch_3",
+      "site": "hzumfsms",
+      "file": "analysis/battery/output/neighbourhood_overlay_Batch_3_hzumfsms.png",
+      "raw_y0": 724,
+      "raw_y1": 1236,
+      "x0": 2854,
+      "x1": 3366,
+      "trimmed_y0": 724,
+      "trimmed_y1": 1236,
+      "flags": "bright_low_contrast=False; grey_pore=False; pore_mode_resolved=False"
+    }
+  ],
+  "elapsed_seconds": 250.1235869168304,
+  "post_run_description_and_visual_qa": {
+    "time_utc": "2026-10-03T15:06:35.880571+00:00",
+    "changes": [
+      "Ring description explicitly includes threshold holes; geometry unchanged",
+      "Overview retains image aspect; frame-clipped components marked by red dashed boxes",
+      "Added post-inspection existing-geometry redundancy screen"
+    ],
+    "original_source_hashes_preserved": true,
+    "original_source_snapshots": [
+      "analysis/battery/output/neighbourhood_measured_battery_metrics.py",
+      "analysis/battery/output/neighbourhood_measured_run_neighbourhoods.py",
+      "analysis/battery/output/neighbourhood_measured_features.py"
+    ],
+    "all_kpis_equal_on_four_rerendered_sites": true,
+    "current_presentation_source_sha256": {
+      "polaron_qc/battery_metrics.py": "fb4432fd205414488081fb336aec296a69a45e9408d63e8196b1aa1645335b15",
+      "analysis/battery/run_neighbourhoods.py": "fca875b49fd5ba563752e84cee4a759ed3bebc4cb48b8516a78ee9dd5b7aa536"
+    }
+  }
+}

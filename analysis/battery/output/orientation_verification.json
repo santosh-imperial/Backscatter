@@ -1,0 +1,12 @@
+{
+  "full_site_detector_scale_offset_contract": true,
+  "finite_bounded_texture_values": true,
+  "inlens_fraction_bounds": true,
+  "all_input_and_source_hashes_match": true,
+  "summary_source_hash_matches": true,
+  "four_synthetic_measurement_checks": true,
+  "all_artifacts_below_20MB": true,
+  "real_crops_and_overlays_visually_inspected": true,
+  "expert_plate_annotations": 0,
+  "production_metric_promotions": 0
+}

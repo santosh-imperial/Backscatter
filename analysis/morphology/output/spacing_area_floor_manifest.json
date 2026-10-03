@@ -1,0 +1,16 @@
+{
+  "purpose": "Post-screen image-driven measurement audit; no chosen floor or new hypothesis test",
+  "floors_px": [
+    50,
+    500,
+    2000
+  ],
+  "n_csr": 200,
+  "seed": 20261003,
+  "inputs": {
+    "morphology_sites.csv": "02dda52176829b970c3a33ad6c972768c4af94fea0d6c152fc7f2766a3a0db3b",
+    "component_geometry.csv.gz": "2b2af728e578a0044c7fd9ee0e91d08a72376f48bbd37e647323b70ac981582e",
+    "manifest.json": "5d3d8157f8c5bb70fad4dcdbcf0ba76528f4c06513750ebbe574b7f3ceddff5b"
+  },
+  "source_sha256": "f8c1b459690c646f341bb984b70ee4a82d8ae3bb07aee9980f86c2bf49862653"
+}

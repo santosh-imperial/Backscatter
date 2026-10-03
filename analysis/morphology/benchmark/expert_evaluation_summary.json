@@ -1,0 +1,8 @@
+{
+  "annotation_file_sha256": "d53fc85ccf794ac068745413fd3a34fb472d4b8be00cdd1dbeda5c77515d8ed4",
+  "manifest_id": "c2e7fec3b1de10eafa179fa4bf1f1016c6e88a0d1d5abc2f8356f1e1f4f84e94",
+  "reviewed_measurable_rois": 0,
+  "development_sites_scored": [],
+  "held_out_sites_scored": [],
+  "annotation_protocol": "Partial masks: pixel metrics only. Full masks: component D50 and local-width errors. Methods compared at identical pixels/sites; crops never treated as independent material samples."
+}

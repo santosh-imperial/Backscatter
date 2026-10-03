@@ -1,0 +1,13 @@
+{
+  "experiment": "E24",
+  "n_sites": 31,
+  "n_threshold_variants": 93,
+  "n_roi_sites": 11,
+  "n_development_roi_sites": 6,
+  "n_held_out_roi_sites": 5,
+  "n_expert_reviewed_rois": 0,
+  "expert_accuracy_available": false,
+  "n_nominal_sites_with_crack_width": 31,
+  "interpretation": "Synthetic geometry and output-contract checks passed. Segmentation/width accuracy and manufacturing meaning await expert annotations. Exclusion of full-image-edge components can remove the largest visible voids. Hysteresis does not restore missing phase contrast.",
+  "next_step": "Annotate development and held-out-site ROIs separately; evaluate manual errors, preserve explicit unmeasurable/uncertain cases; no primary promotion."
+}

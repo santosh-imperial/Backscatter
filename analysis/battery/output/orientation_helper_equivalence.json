@@ -1,0 +1,14 @@
+{
+  "snapshot_commit": "79bb912",
+  "helpers_used_ast_identical_to_current": {
+    "load_image": true,
+    "_read_gray": true,
+    "bright_bands": true,
+    "smooth_bse": true,
+    "_image_path": true,
+    "_index_files": true
+  },
+  "snapshot_sha256": "225e1db888a7d33a0ab12d378db80260f9d42daf5b1ae9bbdceb8de176f8da82",
+  "current_sha256": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b",
+  "production_difference": "FEATURE_VERSION and additive secondary.extract invocation only; unused by audit"
+}

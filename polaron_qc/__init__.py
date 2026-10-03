@@ -23,6 +23,7 @@ PRIMARY_KPIS = ["crack_frac", "pore_max_d", "pore_frac", "bright_frac", "bright_
 #   "flag"       acquisition / preparation diagnostic — never a material KPI
 #   "confounded" candidate material KPI shown to track acquisition — evidence only
 #   "diagnostic" segmentation / threshold bookkeeping
+#   "exploratory" measured secondary geometry; expert validation pending, excluded from verdicts/ML
 KPI_TRUST = {
     **{k: "high" for k in ["pore_frac", "pore_d50", "pore_elong", "pore_max_d", "pore_d90", "pore_count_per_Mpx",
                            "crack_frac", "crack_count_per_Mpx",
@@ -42,3 +43,10 @@ MATERIAL_KPIS = ["pore_frac", "pore_d50", "pore_elong", "pore_max_d", "crack_fra
                  "corr_len_px", "fft_slope", "etd_crack_density_particles"]
 assert all(KPI_TRUST[k] in ("high", "medium") for k in MATERIAL_KPIS)
 assert all(k in MATERIAL_KPIS for k in PRIMARY_KPIS)
+
+# These are extracted and reported in a separate battery-geometry block. Adding
+# a measurement here cannot extend the frozen decision/classifier lists.
+from .secondary import KPI_NAMES as BATTERY_SECONDARY_KPIS
+KPI_TRUST.update({k: "exploratory" for k in BATTERY_SECONDARY_KPIS})
+KPI_TRUST["bright_void_boundary_frac"] = "diagnostic"
+assert set(BATTERY_SECONDARY_KPIS).isdisjoint(PRIMARY_KPIS + MATERIAL_KPIS)

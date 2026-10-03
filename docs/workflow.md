@@ -268,3 +268,12 @@ flowchart TD
 - Flags (F5) feed the acquisition views and the quality-abstention column, never a material verdict directly.
 - The physics layer informs weights and wording; it never produces a number that drives a verdict on its own.
 - Reviews flow into the decision log, and the log into the configuration — never the other way round after the freeze.
+
+
+## E25 secondary geometry contract
+
+`features.extract_site` now adds `secondary.extract` after the original BSE features, reusing nominal masks and computing paired -5/+5 threshold variants. Feature version1.1.0 invalidates older families. `battery_secondary_version`, nine extracted quantities (eight variable secondary scalars plus constant boundary diagnostic), component/window/clipped-area coverage and finite-variant counts are stored per site.
+
+`report.build_result` derives acquisition flags first, runs the frozen decision pipeline, then calls `secondary.summarize` separately. Eight rows enter `battery_secondary`; no new row enters `cmp`, primary multiplicity, energy test, classifier or decision. Bright-dependent measurements require a known false low-contrast flag; pore-dependent ones require a known false grey-pore flag. The universally unresolved pore-mode method flag is counted, not used to infer mask accuracy. Missing flags or measurements are unusable. The secondary-only quality view requires an observed extraction bright-quality boolean and finite BSE black level; legacy false defaults cannot imply observations. Original decision tables remain unchanged. Raw-unit differences and bootstrap intervals avoid zero-MAD division; intervals require at least two usable sites per side. Threshold range and sampling uncertainty are separate.
+
+The HTML 'Battery geometry candidates' section prints usable n, raw medians/differences, site intervals, paired threshold range and incomplete variants. Full-site coverage is inspectable in the atlas/source tables. Width-depth, graphite image tensors and normalised Inlens gradients remain standalone diagnostics. `analysis/battery/verify_pipeline.py` documents an explicit warm replay: recomputed secondary masks plus unchanged historical primary columns, not a cold all-channel re-extraction. Independent human annotations and specimen IDs still gate measurement/material interpretation.

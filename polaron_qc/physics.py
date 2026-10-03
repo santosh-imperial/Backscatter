@@ -14,8 +14,8 @@ Blocks (see docs/qc_plan.md §2.6b; the "what we do NOT claim" column is binding
   stereology / saltykov_unfold      secondary; Delesse volume fractions, Schwartz–Saltykov unfolding
   section_tortuosity_index          2-D geodesic section index; not a 3-D bound
   void_geometry                     crack-like voids as 2-D geometric observations; not continuity
-  additive_size_reading             matched-quantile size comparison; r² scaling as direction only
-  additive_mechanics_reading        direction of expansion load; intact-share proxy
+  additive_size_reading             matched-quantile observed size comparison; no battery-rate forecast
+  additive_mechanics_reading        loading/size/ridge descriptors; no inferred binder load or intact share
   CONSEQUENCE_WEIGHTS / _RATIONALE  ordinal weight per KPI (3 high / 2 medium / 1 low)
   sanity_checks / threshold_sensitivity
   qualitative_statement             one-sentence driver reading per KPI from a lookup table
@@ -53,8 +53,8 @@ SIMILAR_TOL = 0.10               # ±10 % relative change counts as "similar" in
 GLOBAL_CAVEATS = [
     "2-D sections; no 3-D information",
     "lengths in px; 25 nm/px is a nominal, unverified export tag",
-    "bright-phase chemistry unconfirmed (assumed Si or SiOx for recipe comparison only)",
-    "no cycling or electrochemical data; all readings are direction only",
+    "fresh graphite–Si/SiOx material confirmed by Santosh; exact chemistry, recipe and pixelwise phase labels unspecified",
+    "uncycled specimens; no electrochemical outcomes, cycling-damage, SEI or plating inference",
 ]
 
 # ----------------------------------------------------------------------------------------------
@@ -106,19 +106,19 @@ def _w(kpi: str, weight: int, why: str) -> None:
 _w("crack_frac", 3, "area of delamination-like voids; the one clear material anomaly in the data")
 _w("crack_count_per_Mpx", 3, "number of crack-like voids per area; localizes delamination-like defects")
 _w("pore_max_d", 3, "largest void in the section; a single severe void drives the localized path")
-_w("bright_frac", 3, "additive loading (expansion load, capacity share) — primary KPI")
-_w("bright_d50", 3, "additive size (lithiation time ∝ r², expansion per particle) — primary KPI")
+_w("bright_frac", 3, "observed bright-phase area amount; conditional formulation/packing question — primary KPI")
+_w("bright_d50", 3, "observed additive section size; local kinetic/mechanical hypothesis requires validation — primary KPI")
 _w("bright_count_per_Mpx", 3, "additive number density; agglomeration vs dispersion")
 _w("pore_frac", 3, "macro-pore fraction (electrolyte access, calendering density) — primary KPI")
 for _k in range(10):
     _w(f"profile_pore_{_k}", 3, "through-thickness macro-pore gradient (binder migration, calendering); orientation to collector unknown")
     _w(f"profile_bright_{_k}", 3, "through-thickness additive gradient (settling, migration); orientation to collector unknown")
 # --- medium (2): pore shape / size, texture scale, intra-particle cracking (null on this data)
-_w("pore_d50", 2, "macro-pore size: smaller pores → less favourable macro-pore transport (direction only)")
+_w("pore_d50", 2, "equivalent void-section size; transport depends on unresolved network and wetting")
 _w("pore_d90", 2, "upper macro-pore size; descriptive")
-_w("pore_elong", 2, "pore shape: crack-like vs equiaxed porosity; also an anisotropy index")
+_w("pore_elong", 2, "2-D void aspect ratio; distinct from directional alignment and transport anisotropy")
 _w("pore_count_per_Mpx", 2, "macro-pore number density; descriptive")
-_w("bright_circ", 2, "additive shape: fractured vs intact (also sensitive to segmentation)")
+_w("bright_circ", 2, "observed additive outline compactness; segmentation-sensitive, not a fracture label")
 _w("bright_solidity", 2, "additive shape; descriptive")
 _w("bright_d10", 2, "fine tail of the additive size distribution; sensitive to the 50-px area cutoff")
 _w("bright_d90", 2, "coarse tail of the additive size distribution; agglomerates")
@@ -182,19 +182,19 @@ CONSEQUENCE_TEXT: Dict[str, Dict[str, str]] = {
                             "lower": "fewer long voids per area in the section"},
     "pore_max_d": {"higher": "a larger largest void; localized-defect path to be checked",
                    "lower": "a smaller largest void"},
-    "pore_frac": {"higher": "more open macro-porosity: more favourable macro-pore transport, lower coating density",
-                  "lower": "less open macro-porosity: less favourable macro-pore transport, denser coating"},
-    "pore_d50": {"higher": "larger macro-pores: more favourable macro-pore transport",
-                 "lower": "smaller macro-pores: less favourable macro-pore transport"},
+    "pore_frac": {"higher": "more segmented 2-D void area; packing/wetting implications need independent validation",
+                  "lower": "less segmented 2-D void area; packing/wetting implications need independent validation"},
+    "pore_d50": {"higher": "coarser void sections; connectivity, wetting and ionic conductivity are not established",
+                 "lower": "finer void sections; connectivity, wetting and ionic conductivity are not established"},
     "pore_d90": {"higher": "a coarser macro-pore upper tail", "lower": "a finer macro-pore upper tail"},
-    "pore_elong": {"higher": "more elongated (crack-like, anisotropic) pores",
+    "pore_elong": {"higher": "more elongated void sections; this is not transport anisotropy",
                    "lower": "more equiaxed pores"},
     "pore_count_per_Mpx": {"higher": "more, presumably smaller, macro-pores per area",
                            "lower": "fewer macro-pores per area"},
-    "bright_frac": {"higher": "more additive loading: more expansion load on the binder (under the Si/SiOx assumption)",
-                    "lower": "less additive loading: less expansion load on the binder (under the Si/SiOx assumption)"},
-    "bright_d50": {"higher": "coarser additive: longer lithiation time (∝ r² under unchanged diffusivity), larger expansion per particle",
-                   "lower": "finer additive: shorter lithiation time (∝ r² under unchanged diffusivity), smaller expansion per particle"},
+    "bright_frac": {"higher": "more observed additive area; recipe, utilization and mechanical implications need validation",
+                    "lower": "less observed additive area; recipe, utilization and mechanical implications need validation"},
+    "bright_d50": {"higher": "coarser additive sections; contact, chemistry and electrolyte access also affect later reaction/mechanics",
+                   "lower": "finer additive sections; contact, chemistry and electrolyte access also affect later reaction/mechanics"},
     "bright_d90": {"higher": "a coarser additive upper tail: agglomerates or coarse supplier fraction",
                    "lower": "a finer additive upper tail"},
     "bright_d10": {"higher": "a coarser additive fine tail", "lower": "a finer additive fine tail (or more fines resolved)"},
@@ -206,7 +206,7 @@ CONSEQUENCE_TEXT: Dict[str, Dict[str, str]] = {
     "corr_len_px": {"higher": "coarser texture scale", "lower": "finer texture scale"},
     "fft_slope": {"higher": "flatter spectrum: sharper edges or more fine texture (partly acquisition-sensitive)",
                   "lower": "steeper spectrum: smoother texture (partly acquisition-sensitive)"},
-    "etd_crack_density_particles": {"higher": "more dark ridges inside additive particles: consistent with more intra-particle cracking",
+    "etd_crack_density_particles": {"higher": "more detected dark-ridge pixels inside additive masks; fracture interpretation needs expert review",
                                     "lower": "fewer dark ridges inside additive particles"},
 }
 for _k in range(10):
@@ -256,7 +256,7 @@ def _norm_direction(direction, shift_mad, ref_value, batch_value):
 STEREOLOGY_COLUMN_NOTES = {
     "vol_frac_pore": "Delesse: volume fraction = area fraction; assumes random sections",
     "vol_frac_bright": "Delesse: volume fraction = area fraction; assumes random sections",
-    "vol_frac_graphite": "Delesse: volume fraction = area fraction; assumes random sections; plate alignment violates this for graphite",
+    "vol_frac_graphite": "Conditional area-to-volume estimate: representative spatial sampling and valid phase labels required; plate alignment alone does not invalidate phase-area estimation",
     "nominal_mass_frac_additive_if_Si": "mass fraction of additive within the solid (graphite + additive), if the bright phase is Si (2.33 g/cm³); binder / carbon black unresolved and counted with graphite; nominal, for recipe comparison only",
     "nominal_mass_frac_additive_if_SiOx": "as above with SiOx ≈ 2.2 g/cm³; nominal, for recipe comparison only",
 }
@@ -600,12 +600,10 @@ def _dir_word(ratio: float, tol: float = SIMILAR_TOL, up: str = "coarser", down:
 
 def additive_size_reading(ref_quantiles: Dict[str, float], batch_quantiles: Dict[str, float], basis: str = "observed_2d",
                           tol: float = SIMILAR_TOL) -> dict:
-    """Matched-quantile comparison of additive size (batch D10/D50/D90 vs the reference's own D10/D50/D90).
+    """Matched section-size comparison; no inferred lithiation-time factor.
 
-    ``basis`` is ``"observed_2d"`` (primary; area-weighted 2-D quantiles) or ``"unfolded"`` (secondary; Saltykov).
-    Returns dict with ``ratios`` per quantile, a per-quantile ``direction`` ("coarser"/"finer"/"similar" beyond ±tol),
-    ``r2_ratio_d90`` (D90 ratio squared, the direction-only lithiation-time factor), ``statement``, ``caveats``,
-    ``claims_not_made``.
+    Observed quantiles do not determine a diffusion radius, equal section bias,
+    diffusivity or contact/access. Unfolded quantiles remain assumption-limited.
     """
     if basis not in ("observed_2d", "unfolded"):
         raise ValueError("basis must be 'observed_2d' or 'unfolded'")
@@ -616,63 +614,51 @@ def additive_size_reading(ref_quantiles: Dict[str, float], batch_quantiles: Dict
         ratios[q] = b / r if (np.isfinite(r) and r > 0 and np.isfinite(b)) else float("nan")
         direction[q] = _dir_word(ratios[q], tol)
     parts = [f"{q.upper()} {direction[q]} (×{ratios[q]:.2f})" if np.isfinite(ratios[q]) else f"{q.upper()} not measurable" for q in qs]
-    r90 = ratios.get("d90", float("nan"))
-    stmt = f"Additive size vs reference, matched quantiles ({'observed 2-D, primary' if basis == 'observed_2d' else 'Saltykov-unfolded, secondary'}): " + "; ".join(parts) + "."
-    if np.isfinite(r90):
-        stmt += (f" Under unchanged diffusivity, lithiation time scales with r², so the D90 ratio of {r90:.2f} implies ∝ {r90**2:.2f} — direction only.")
-    return dict(basis=basis, ratios=ratios, direction=direction, r2_ratio_d90=r90 ** 2 if np.isfinite(r90) else float("nan"),
-                statement=stmt,
-                caveats=["matched quantiles; diffusivity assumed unchanged; no absolute times"] + GLOBAL_CAVEATS
-                        + (["unfolded basis assumes spherical particles; secondary"] if basis == "unfolded" else ["2-D area-weighted quantiles underestimate 3-D sizes but do so equally for both batches"])
-                        + ["bright-phase KPIs are unreliable on low-contrast sites; check the usable site count"],
-                claims_not_made=["absolute diffusion or lithiation times", "that diffusivity, binder or electrolyte are unchanged",
-                                 "any rate-capability figure"])
+    stmt = f"Additive size vs reference, matched quantiles ({'observed 2-D' if basis == 'observed_2d' else 'Saltykov-unfolded, secondary'}): " + "; ".join(parts) + "."
+    stmt += " These size descriptors do not determine later lithiation time or total expansion load."
+    return dict(basis=basis, ratios=ratios, direction=direction, statement=stmt,
+                caveats=GLOBAL_CAVEATS
+                        + (["unfolded basis assumes spherical particles; secondary"] if basis == "unfolded" else ["2-D section-size sampling, shape and orientation bias may differ between batches"])
+                        + ["contact, chemistry, porosity and electrolyte access remain unresolved",
+                           "bright-phase KPIs are unreliable on low-contrast sites; check the usable site count"],
+                claims_not_made=["absolute or relative diffusion/lithiation times", "equal section-sampling bias between batches",
+                                 "any rate-capability or total expansion forecast"])
 
 
 def additive_mechanics_reading(ref_row, batch_row, tol: float = SIMILAR_TOL) -> dict:
-    """Direction of expansion load on the binder from additive loading (bright_frac) and size (bright_d50), under the Si/SiOx assumption.
+    """Describe loading/section-size/ridge changes without inferring binder load.
 
-    Rule: loading up or size up → "more"; both down (or one down, other similar) → "less"; both similar → "similar";
-    opposite moves → "mixed". If either row carries ``bright_low_contrast=True`` the direction is "unreliable".
-    Intact share: ``1 − etd_crack_density_particles`` when the column is present (pixel-area proxy, not a per-particle
-    count); NaN otherwise. Returns dict with ``direction``, ``loading_ratio``, ``size_ratio``, ``intact_share_proxy_ref``,
-    ``intact_share_proxy_batch``, ``statement``, ``caveats``, ``claims_not_made``.
+    Ridge coverage counts qualifying interior pixels, not intact particles.
+    Neither particle size alone nor 2-D phase amount establishes total expansion.
     """
     def g(row, k):
         try:
-            v = row[k]
-        except (KeyError, IndexError, TypeError):
-            return float("nan")
-        try:
-            return float(v)
-        except (TypeError, ValueError):
+            return float(row[k])
+        except (KeyError, IndexError, TypeError, ValueError):
             return float("nan")
 
-    lr = g(batch_row, "bright_frac") / g(ref_row, "bright_frac")
-    sr = g(batch_row, "bright_d50") / g(ref_row, "bright_d50")
+    def ratio(k):
+        r, b = g(ref_row, k), g(batch_row, k)
+        return b / r if np.isfinite(r) and r > 0 and np.isfinite(b) else float("nan")
+
+    lr, sr = ratio("bright_frac"), ratio("bright_d50")
     low = bool(_truthy(ref_row, "bright_low_contrast") or _truthy(batch_row, "bright_low_contrast"))
-    dl = _dir_word(lr, tol, "more", "less"); ds = _dir_word(sr, tol, "more", "less")
+    dl = _dir_word(lr, tol, "more", "less"); ds = _dir_word(sr, tol, "coarser", "finer")
+    direction = "unreliable (low-contrast bright phase on at least one side)" if low else "not inferred"
+    rr, rb = g(ref_row, "etd_crack_density_particles"), g(batch_row, "etd_crack_density_particles")
+    stmt = (f"Observed additive area ×{lr:.2f} ({dl}); section D50 ×{sr:.2f} ({ds}). "
+            "Binder stress and total expansion are not inferred from these descriptors.")
     if low:
-        direction = "unreliable (low-contrast bright phase on at least one side)"
-    elif "not measurable" in (dl, ds):
-        direction = "not measurable"
-    elif dl == "more" or ds == "more":
-        direction = "mixed" if "less" in (dl, ds) else "more"
-    elif dl == "less" or ds == "less":
-        direction = "less"
-    else:
-        direction = "similar"
-    i_ref = 1.0 - g(ref_row, "etd_crack_density_particles"); i_bat = 1.0 - g(batch_row, "etd_crack_density_particles")
-    stmt = (f"Expansion load on the binder: {direction} than the reference (additive loading ×{lr:.2f} → {dl}; "
-            f"additive D50 ×{sr:.2f} → {ds}), under the Si/SiOx assumption, direction only.")
-    if np.isfinite(i_bat):
-        stmt += f" Intact-share proxy (1 − intra-particle ridge density): reference {i_ref:.3f}, batch {i_bat:.3f}."
+        stmt += " Bright-phase comparison is unreliable because of low contrast."
+    if np.isfinite(rr) and np.isfinite(rb):
+        stmt += f" Detected interior ridge-pixel coverage: reference {rr:.4f}, batch {rb:.4f}; this is not an intact-particle share."
     return dict(direction=direction, loading_direction=dl, size_direction=ds, loading_ratio=lr, size_ratio=sr,
-                intact_share_proxy_ref=i_ref, intact_share_proxy_batch=i_bat, low_contrast_involved=low, statement=stmt,
-                caveats=GLOBAL_CAVEATS + ["expansion load stated only under the assumption that the bright phase is Si or SiOx",
-                                          "loading from an area fraction (Delesse) and size from a 2-D area-weighted D50",
-                                          "intact share is a pixel-area proxy from ETD dark ridges, not a per-particle fracture count"],
-                claims_not_made=["stress, strain or adhesion values", "binder failure or capacity fade", "that the bright phase is Si or SiOx"])
+                ridge_coverage_ref=rr, ridge_coverage_batch=rb, low_contrast_involved=low, statement=stmt,
+                caveats=GLOBAL_CAVEATS + ["area amount and section size are distinct observations",
+                                          "confinement, phase utilization, interfaces and binder properties are unresolved",
+                                          "ridge coverage is not a validated fracture or electrical-contact measurement"],
+                claims_not_made=["stress, strain, adhesion or total expansion values", "binder failure or capacity fade",
+                                 "intact-particle fraction", "cycling-induced fracture in fresh specimens"])
 
 
 def _truthy(row, key) -> bool:

@@ -1,0 +1,17 @@
+kpi,n,acquisition_loo_r2,covariates,ridge_alpha
+pore_elong,22,0.27031391469699817,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+pore_width_d90_d50,22,-0.22411632026968986,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+pore_horizontal_alignment,22,-0.15004553281699784,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+pore_alignment_strength,22,-0.1649029794111707,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_circ,22,-0.9726908147209792,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_solidity,22,-0.23444974862163837,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_width_d90_d10,22,-1.104250595851977,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_aspect_aw,22,-0.00975064057757491,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_horizontal_alignment,22,-0.6922704534682651,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_alignment_strength,22,-0.31612433687778374,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_nn_csr_ratio,22,-1.6537483212424866,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+bright_nn_mean_px,22,-1.5097014766716659,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+profile_pore_abs_slope,22,-0.4270479351122751,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+profile_bright_abs_slope,22,-0.48296458409690324,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+corr_len_px,22,-1.3199093535415636,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0
+fft_slope,22,-0.11551273203819301,H;bright_sep;bse_p1;etd_boundary_sharpness,1.0

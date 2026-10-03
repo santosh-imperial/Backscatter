@@ -1,0 +1,5 @@
+batch,site,kpi,value,selection,x0,y0,crop_width,crop_height,coordinates,cracked_known
+Batch_3,xgj4xftb,bright_nn_csr_ratio,0.5886438041927294,low,898,624,1600,800,trimmed BSE,False
+Batch_2,3806gxp0,bright_nn_csr_ratio,0.8859029310193699,high,3552,0,1600,800,trimmed BSE,False
+Batch_2,3806gxp0,pore_horizontal_alignment,0.3572621134969767,low,2600,225,1600,800,trimmed BSE,False
+Batch_3,hzumfsms,pore_horizontal_alignment,0.6215332120200134,high,2644,73,1600,800,trimmed BSE,True

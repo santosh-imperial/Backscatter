@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "manifest_id": "c2e7fec3b1de10eafa179fa4bf1f1016c6e88a0d1d5abc2f8356f1e1f4f84e94",
+  "rois": [
+    {
+      "id": "Batch_1_4ih2ggld",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_1_5n1q8atc",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_1_f1vzngrs",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_2_3806gxp0",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_2_epqdaau9",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_2_rxax5ozo",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_3_71vgq3fw",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_3_hzumfsms",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_3_kbdh4tri",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_3_ufdvpb81",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "Batch_3_xgj4xftb",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "background": "unlabelled",
+      "polygons": []
+    }
+  ]
+}

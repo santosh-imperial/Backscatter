@@ -103,3 +103,6 @@ and history there, then regenerate `docs/morphology_metrics.md` and
 `analysis/morphology/output/metric_atlas.html`. Implementation, expert validation
 and QC role are separate. Benchmark predictions cannot stand in for human labels;
 unreviewed or uncertain regions never count as ground-truth accuracy evidence.
+
+
+E25 adds eight **experimental secondary** battery geometry KPIs in `polaron_qc/secondary.py` and a separate report section. They are absent from PRIMARY_KPIS/MATERIAL_KPIS and all verdict inputs; never promote automatically. Exact bright/void raster adjacency is constant zero on usable known sites and stays diagnostic. All current pore-mode flags are unresolved, so quality filtering uses the separate data-derived grey-pore flag and reports the method diagnostic. Eight scalar comparisons use site n and missing-value abstention; image-window/component coverage is not additional evidence. Paired threshold sensitivity does not validate phase boundaries or battery mechanisms. `analysis/battery/output/report.html` and A18 collect the new audits; keep source snapshots and explicit warm-cache reuse provenance. Physics readings do not infer transport benefit, lithiation time, total expansion or intact-particle share from these descriptors.

@@ -1,0 +1,75 @@
+id,label,family,implementation_status,evidence_status,review_status,qc_role
+pore_frac,Void area fraction,Void geometry,computed,expert_review_pending,unreviewed,primary
+pore_count_per_Mpx,Void component density,Void geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_d50,Void D50,Void geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_d90,Void D90,Void geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_max_d,Void maximum equivalent diameter,Void geometry,computed,expert_review_pending,unreviewed,primary
+bright_frac,Bright-phase area fraction,Bright-particle geometry,computed,expert_review_pending,unreviewed,primary
+bright_count_per_Mpx,Bright-phase component density,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_d10,Bright-phase D10,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_d50,Bright-phase D50,Bright-particle geometry,computed,expert_review_pending,unreviewed,primary
+bright_d90,Bright-phase D90,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_max_d,Bright-phase maximum equivalent diameter,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+graphite_frac,Remaining solid area fraction,Phase fractions,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_elong,Void aspect ratio,Void geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+crack_frac,Crack-like void area fraction,Void geometry,computed,expert_review_pending,unreviewed,primary
+crack_count_per_Mpx,Crack-like void density,Void geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_circ,Bright-particle circularity,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_solidity,Bright-particle solidity,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_aspect_aw,Bright-particle aspect ratio,Bright-particle geometry,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_width_d90_d50,Void size-distribution width,Size-distribution shape,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_horizontal_alignment,Void horizontal alignment,Orientation,computed,expert_review_pending,unreviewed,secondary_exploratory
+pore_alignment_strength,Void axial alignment strength,Orientation,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_width_d90_d10,Bright-particle size-distribution width,Size-distribution shape,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_horizontal_alignment,Bright-particle horizontal alignment,Orientation,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_alignment_strength,Bright-particle axial alignment strength,Orientation,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_nn_mean_px,Bright-centroid nearest-neighbour distance,Arrangement,computed,expert_review_pending,unreviewed,secondary_exploratory
+bright_nn_csr_ratio,Centroid spacing / uniform-point comparator,Arrangement,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_pore,Void depth profile,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_pore_slope,Void signed depth gradient,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_pore_abs_slope,Void depth-gradient magnitude,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_bright,Bright-phase depth profile,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_bright_slope,Bright-phase signed depth gradient,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+profile_bright_abs_slope,Bright-phase depth-gradient magnitude,Image-depth structure,computed,expert_review_pending,unreviewed,secondary_exploratory
+corr_len_px,BSE correlation length,Texture,computed,acquisition_sensitive,unreviewed,secondary_exploratory
+fft_slope,BSE spectrum slope,Texture,computed,acquisition_sensitive,unreviewed,secondary_exploratory
+etd_crack_density_particles,ETD dark-ridge fraction in bright interiors,Cross-channel / preparation,computed,expert_review_pending,unreviewed,secondary_exploratory
+etd_crack_density_graphite,ETD dark-ridge fraction in residual solid,Cross-channel / preparation,computed,diagnostic_only,unreviewed,acquisition_diagnostic
+etd_curtain_frac,ETD curtaining fraction,Cross-channel / preparation,computed,diagnostic_only,unreviewed,acquisition_diagnostic
+etd_curtain_anisotropy,ETD ridge anisotropy,Cross-channel / preparation,computed,diagnostic_only,unreviewed,acquisition_diagnostic
+etd_boundary_sharpness,ETD boundary sharpness,Cross-channel / preparation,computed,diagnostic_only,unreviewed,acquisition_diagnostic
+inlens_particle_texture,Inlens particle texture,Cross-channel / preparation,computed,confounded,unreviewed,excluded_from_verdict
+inlens_particle_texture_p90,Inlens particle texture P90,Cross-channel / preparation,computed,confounded,unreviewed,excluded_from_verdict
+inlens_speckled_particle_frac,Inlens speckled-particle fraction,Cross-channel / preparation,computed,confounded,unreviewed,excluded_from_verdict
+longest_void_px,Longest void major axis,Section geometry,computed,expert_review_pending,unreviewed,descriptive_only
+longest_void_over_thickness,Longest void / image height,Section geometry,computed,expert_review_pending,unreviewed,descriptive_only
+columns_interrupted_frac,Columns intersecting long voids,Section geometry,computed,expert_review_pending,unreviewed,descriptive_only
+delamination_index,Long-void horizontal-extent index,Section geometry,computed,expert_review_pending,unreviewed,descriptive_only
+crack_orientation_deg_median,Crack-like void median tilt,Section geometry,computed,expert_review_pending,unreviewed,descriptive_only
+tortuosity_fraction_connected,2-D top-to-bottom pore-path fraction,Section geometry,computed,constant_on_current_data,unreviewed,descriptive_only
+tortuosity_index,2-D pore path-length index,Section geometry,computed,undefined_on_current_data,unreviewed,descriptive_only
+tortuosity_penalised_index,Solid-penalised path index,Section geometry,computed,not_a_transport_measurement,unreviewed,descriptive_only
+void_local_width_d50_px,Void local width median,Local void width,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+void_local_width_d90_px,Void local width P90,Local void width,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+crack_local_width_d50_px,Crack-like void local width median,Local void width,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+bright_to_void_distance,Bright-to-void boundary proximity,Deferred candidates,deferred,unvalidated,unreviewed,excluded_from_verdict
+etd_plate_orientation,ETD plate orientation,Deferred candidates,deferred,unvalidated,unreviewed,excluded_from_verdict
+binder_network_frac,Binder-network area fraction,Deferred candidates,deferred,unvalidated,unreviewed,excluded_from_verdict
+etd_ridge_dom_angle,ETD dominant ridge direction,Cross-channel / preparation,computed,diagnostic_only,unreviewed,excluded_from_verdict
+anisotropy_index,Void shape anisotropy proxy,Void geometry,computed,expert_review_pending,unreviewed,descriptive_only
+stereology_volume_fractions,Conditional stereological volume fractions,Conditional stereology,computed,assumption_limited,unreviewed,excluded_from_verdict
+nominal_additive_mass_fractions,Conditional additive mass fractions,Conditional stereology,computed,assumption_limited,unreviewed,excluded_from_verdict
+saltykov_unfolded_size_distribution,Conditional unfolded 3-D size distribution,Conditional stereology,implemented,assumption_limited,unreviewed,excluded_from_verdict
+bright_void_distance_d50_px,Bright-to-void minimum distance median,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+bright_ring_void_frac_16px,Void fraction in 16 px bright-mask bands,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+local_bright_std_512px,Local bright dispersion: 512 px windows,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+local_bright_pore_spearman_512px,Local bright/void association: 512 px windows,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+local_bright_std_1024px,Local bright dispersion: 1024 px windows,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+local_bright_pore_spearman_1024px,Local bright/void association: 1024 px windows,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+long_void_internal_area_frac,Internal long-void area fraction,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+long_void_y_centroid_norm,Internal long-void image-row centroid,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_experimental
+bright_void_boundary_frac,Exact bright-to-void raster boundary adjacency,Battery geometry / E25,computed,constant_on_current_data,unreviewed,diagnostic
+battery_neighbourhood_coverage,Bright neighbourhood and window coverage,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,diagnostic
+long_void_coverage,Internal / clipped long-void coverage,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,diagnostic
+battery_geometry_threshold_envelopes,Paired threshold sensitivity envelopes,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,diagnostic
+void_width_depth_slopes,Observed local width / image-depth slopes,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory

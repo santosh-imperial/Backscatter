@@ -74,8 +74,10 @@ def um(px): return f"{px * NM / 1000:.1f} µm"
 
 CARDS = []  # dicts: id, title, confidence, used_for, figures=[(b64, caption)], think, why, wrong_if, ask
 REVIEW = {  # persistent review log, appended by hand when feedback arrives (date, who, what)
-    "A2": ["2026-10-03 · Santosh: the black regions are not 'vacuum' in any meaningful sense — they are the open porosity that electrolyte fills in the cell. Wording changed. The binder arrow pointed at plain graphite; replaced by full-resolution insets of the binder / conductive-carbon network in BSE and ETD."],
-    "A3": ["2026-10-03 · Santosh: confirmed."],
+    "A3": ["2026-10-03 · Santosh: confirmed.", "2026-10-03 · Santosh: fresh graphite–Si/SiOx electrode confirmed. This confirms the material family, not the chemical identity of every thresholded fragment; exact Si versus SiOx and pixelwise chemical validation are unspecified."],
+    "A2": ["2026-10-03 · Santosh: the black regions are not 'vacuum' in any meaningful sense — they are the open porosity that electrolyte fills in the cell. Wording changed. The binder arrow pointed at plain graphite; replaced by full-resolution insets of the binder / conductive-carbon network in BSE and ETD.", "2026-10-03 · Santosh: fresh graphite–Si/SiOx electrode confirmed. Material identity is now known; binder/network identification and each mask label are still unvalidated."],
+    "A10": ["2026-10-03 · battery application review: low detected ridge-pixel coverage cannot establish intact particles or electronic connectivity. Wording corrected; fresh-state metadata rules out interpreting visible features as prior cycling damage."],
+    "A17": ["2026-10-03 · Santosh, direct reply: 'Fresh graphite–Si/SiOx electrode confirmed'. Fresh/uncycled state and material family confirmed; exact chemistry and formulation not supplied."],
     "A13": ["2026-10-03 · Santosh: confirmed that the files labelled 'SE' are the same secondary-electron detector as 'ETD'. (Pixel alignment of the three channels is our own measurement, not externally confirmed.)"],
     "A15": ["2026-10-03 · Santosh (from the problem providers): the three folders are three supplier batches of the same nominal product. Batch 3 is one batch with more samples, the closest available to a baseline but not a perfect one. There is no clear baseline; the goal is to differentiate. Card rewritten accordingly.",
             "2026-10-03 · challenge provider, verbatim via Santosh: 'batch 3 is the reference dataset (it should have more images). Note that reference doesn't necessarily mean no defects, and it's not just the presence of defects that define the batches — there's a lot of complex morphology features to examine!' → confirms the reference; the three cracked reference sites are consistent with 'reference does not mean no defects'; differentiation should lean on morphology (pore and particle shape, orientation, arrangement, size-distribution shape, through-thickness structure), not only defect KPIs."],
@@ -109,7 +111,7 @@ add("A1", "Each image is an ion-polished cross-section through the full thicknes
 b, s = "Batch_1", "5n1q8atc"; r = row(s); bse = load(b, s); h, w = bse.shape
 c, (y0, x0) = crop(bse, h // 2, w // 2, 800, 1600); sm, pore, bright = masks(c, r)
 fig, ax = new_fig(1, 1, 12, 6); show(ax[0], c, f"{b} / {s} / BSE — 1600 × 800 px crop (≈ {um(1600)} × {um(800)} nominal)")
-pc = largest_component_centroid(bright, 2000, 0.85); mark(ax[0], (pc[0], pc[1]), "bright, smooth-faced particle = higher-Z additive (Si / SiOx?)", "#ffd166", (120, 90))
+pc = largest_component_centroid(bright, 2000, 0.85); mark(ax[0], (pc[0], pc[1]), "bright particle = additive candidate in confirmed graphite–Si/SiOx", "#ffd166", (120, 90))
 po = largest_component_centroid(pore, 2000); mark(ax[0], (po[0], po[1]), "black = open porosity (empty in the section; electrolyte-filled in the cell)", "#06d6a0", (120, 60))
 graph = ndi.binary_erosion((sm >= r.th_lo) & (sm <= r.th_hi), iterations=25); gc = largest_component_centroid(graph, 5000)
 mark(ax[0], (gc[0], gc[1]), "mid-grey plate with striations = graphite flake", "#8ecae6", (-10, 120))
@@ -127,11 +129,11 @@ f1b = fig_to_b64(fig, 800)
 add("A2", "Four constituents are visible in BSE: mid-grey graphite plates (matrix), a sparse brighter particulate additive, black open porosity (the electrolyte pathways of the finished cell), and a granular binder / conductive-carbon network between the plates.", "medium",
     [(f1, "Labels were placed automatically on the largest bright particle, the largest pore and a large graphite plate; the two red boxes mark binder / carbon-black regions chosen by hand and shown enlarged below."),
      (f1b, "The binder network at full resolution (180 × 180 px ≈ 4.5 µm nominal). In BSE it is a mid-dark granular fill; in ETD its open, foam-like structure is unmistakable. We do not segment it as its own phase today: depending on local density it falls into the pore or the graphite class.")],
-    "BSE brightness scales with mean atomic number. Carbon (graphite, binder) is dark-grey; open porosity gives no signal and is black in the sectioned sample (in service it is where electrolyte sits); the bright particles must be a heavier element — our working guess is silicon or silicon oxide in a Si–graphite anode. We have no compositional data.",
+    "Santosh confirms fresh graphite–Si/SiOx electrode. BSE contrast supports a bright additive class against graphite/residual carbon-rich solid, but no pixelwise chemical labels, exact Si versus SiOx identity or binder recipe have been supplied. Black section regions are interpreted as visible voids; connected electrolyte pathways in the cell are a separate 3-D question.",
     "Three well-separated modes in the BSE histogram (black, grey, bright); plate-like morphology with basal striations typical of flake graphite; bright particles are blocky, 2–6 µm nominal, consistent with Si/SiOx additive.",
     "The whole KPI catalogue: phase fractions, particle sizes, pore sizes and crack-like voids are defined by these three BSE classes.",
     "The bright particles are not a separate chemistry (e.g. channelling / orientation contrast in graphite, or a conductive coating), or the material is a cathode, or the spongy regions are polishing damage rather than binder.",
-    "What is the electrode chemistry? What is the bright phase? Is there EDS on any of these samples?")
+    "Is the additive Si, SiOx, or a mixture, and is there EDS or another chemical map? What is the binder/conductive-carbon recipe?")
 
 # ----------------------------------------------------------------------------- A3 bright phase is a distinct composition
 b, s = "Batch_3", "9luzk4jm"; r = row(s); bse, etd, il = [load(b, s, d) for d in ("BSE", "ETD", "Inlens")]
@@ -148,7 +150,7 @@ f2 = fig_to_b64(fig, 800)
 add("A3", "The bright particles are a distinct composition (higher mean atomic number), not an orientation or charging effect.", "medium-high",
     [(f1, "The same particle in the three detectors. It is bright in BSE, flat and featureless in ETD (so no topographic cause), and does not stand out in Inlens the way charging artefacts do."),
      (f2, "The BSE histogram has a separate bright mode on 29 of 31 sites, which is what a second phase produces; orientation contrast in graphite gives a continuum, not a mode.")],
-    "Compositional contrast is the only explanation that fits all three channels at once.",
+    "A separate additive composition is confirmed by Santosh and is consistent with cross-channel contrast. Some thresholded bright rims/fragments remain acquisition-dependent and are not thereby chemically confirmed.",
     "Bimodal BSE histogram; particle brightness uniform inside each particle regardless of orientation; no relief in ETD; many particles have the blocky, fractured habit of milled Si/SiOx powder.",
     "Bright-phase area fraction, number density, size distribution and circularity are reported as 'additive' KPIs.",
     "The bright class were graphite in a particular crystallographic orientation (channelling contrast), or a surface coating.",
@@ -267,13 +269,13 @@ fig, ax = new_fig(3, 1, 13, 4.3)
 for a, (img, t) in zip(ax, [(bse, "BSE"), (etd, "ETD: polished face, no internal cracks"), (il, "Inlens: smooth interior")]):
     c2, _ = crop(img, cy, cx, 500, 700); show(a, c2, f"{b}/{s} {t}")
 f1 = fig_to_b64(fig)
-add("A10", "The additive particles are intact: we find no internal cracking inside them in any batch (ETD ridge density inside particle interiors 0.02–0.5 %).", "medium-high",
-    [(f1, "A typical large particle in all three channels. Fractured Si particles would show branching dark lines in ETD inside the yellow-outlined interiors in the notebook figures.")],
-    "Intra-particle cracking of silicon is a classic failure mode after cycling or over-calendering; its absence here is itself a result.",
+add("A10", "Detected ETD ridge coverage inside bright-particle interiors is low (0.02–0.5 %); this does not establish that every additive particle is intact or electrically connected.", "measurement review pending",
+    [(f1, "A typical large particle in all three channels. No obvious internal branching lines appear in this example, but unresolved, filled or orientation-filtered cracks can escape detection.")],
+    "These are fresh, uncycled electrodes. Visible fracture-like features could originate in powder processing, manufacturing or specimen preparation; cycling damage is not an explanation for their current state. The ridge detector measures pixels, not the fraction of intact particles.",
     "Measured across all 31 sites after curtaining removal; visual inspection of the largest particles per site.",
     "The KPI is kept in the pipeline because it is the measurement most likely to catch a fractured-additive batch in the unseen data.",
     "Cracks were narrower than ~2 px (below the ridge filter scale) or filled and invisible in ETD.",
-    "Is particle fracture a failure mode you expect in the incoming batches? Is 2 px (≈ 50 nm nominal) a sensible minimum crack width?")
+    "Is particle fracture a manufacturing failure mode expected in incoming batches? Which visible lines are genuine fractures, and what is the validated detection limit?")
 
 # ----------------------------------------------------------------------------- A12 Inlens speckle
 fig, ax = new_fig(2, 1, 13, 4.6)
@@ -342,6 +344,54 @@ add("A15", "Batch_1/2/3 are three supplier batches of the same nominal product. 
     "The calibration null is built from Batch 3 with robust statistics (median / MAD, leave-one-site-out) and with its sub-populations shown explicitly; every pairwise batch comparison is reported, not only incoming-vs-reference.",
     "Batch 3's heterogeneity were larger than the between-batch differences we are asked to detect — then the honest output is 'the reference does not constrain this KPI' rather than a verdict.",
     "Is the within-Batch-3 variation (grey-pore sites, cracked sites) representative of what an acceptable batch may contain? Are there any known differences between the three supplier batches we should be able to recover?")
+
+# ----------------------------------------------------------------------------- A16 exploratory morphology geometry
+morph_evidence = os.path.join(ROOT, "analysis", "morphology", "output", "geometry_examples.png")
+morph_figures = []
+if os.path.exists(morph_evidence):
+    with Image.open(morph_evidence) as im:
+        im = im.convert("RGB")
+        if im.width > 1500:
+            im = im.resize((1500, int(im.height * 1500 / im.width)), Image.LANCZOS)
+        buf = io.BytesIO(); im.save(buf, "JPEG", quality=85, optimize=True)
+        morph_figures = [("data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode(),
+                          "E18 inspection extremes in trimmed BSE coordinates: centroids / nearest neighbours in gold and major axes in cyan. Small bright rim fragments are retained by the original 50-pixel component floor; they can dominate spacing measurements. These examples were selected after the exploratory screen.")]
+add("A16", "Mask-derived shape, orientation, centroid spacing and local void width describe observed 2-D components, but are not yet validated measures of additive agglomeration or manufacturing harm.", "low-medium; exploratory",
+    morph_figures,
+    "Area-weighted shape and axial orientation summaries can add morphology evidence to the five primary KPIs. Orientation is relative to image horizontal, only for non-clipped components with aspect ratio at least 1.5. Centroid spacing includes small bright fragments; its comparison changes when the minimum component area changes.",
+    "E18: geometry conventions pass synthetic-shape checks; nominal masks reproduce cached measurements; threshold and area-floor sensitivities are reported. The expanded panels do not robustly separate the known batches at these site counts. This does not establish equivalence. E24 adds a deterministic medial-axis width proxy and a hysteresis candidate, with separate expert annotations still pending. Width excludes edge-connected components and is not a 3-D pore throat; hysteresis agreement with an earlier mask is not accuracy.",
+    "Exploratory morphology report only. No primary KPI, decision threshold or release verdict changes; thousands of components remain summaries of one site.",
+    "Bright rims or threshold fragments were mistaken for additive particles; disconnected void geometry were interpreted as actual cracks; imaging/section orientation changed; or centroids from finite particles were interpreted as a validated random-point clustering test.",
+    "Which component sizes correspond to actual additive particles? Are the detected orientation, spacing and local-width patterns physically meaningful? Review the E24 annotation pack, including uncertain or unmeasurable phase boundaries, before treating candidate segmentation as improved.")
+
+# ----------------------------------------------------------------------------- A17 confirmed material/state metadata
+material_example = next(c for c in CARDS if c["id"] == "A3")["figures"][0][0]
+add("A17", "The sections are fresh, uncycled graphite–Si/SiOx electrode material.", "confirmed by Santosh",
+    [(material_example, "Illustration of the confirmed material family. Fresh/uncycled state and chemistry are supplied metadata, not properties established from this image.")],
+    "Santosh directly confirmed 'Fresh graphite–Si/SiOx electrode confirmed' on 2026-10-03. Exact Si versus SiOx chemistry, recipe fractions and binder identity are unspecified.",
+    "Human-provided material/state metadata; see the persistent review log. No cycling history is inferred from SEM appearance.",
+    "Focus battery checks on manufacturing geometry and possible susceptibility during formation/later cycling: additive neighbourhoods, void accommodation, graphite arrangement and reviewed interfaces. Do not label existing voids or ridges cycling-induced, SEI or lithium plating.",
+    "The provided metadata were later corrected, or some sites had a different processing/cycling history. Material-family confirmation also would not rescue low-contrast segmentation or validate chemical identity at every pixel.",
+    "What are the exact additive chemistry, recipe, binder system, coating/calendering history and physical specimen IDs?")
+
+# ----------------------------------------------------------------------------- A18 battery geometry and coverage
+battery_figures = []
+for filename, caption in [
+    ("neighbourhood_overlay_Batch_2_3806gxp0.png", "E25 real BSE example: segmented bright pixels, visible voids and 16 px mask bands. Rings include threshold holes within the silhouette; complete windows remain within-site samples. Source/trim coordinates and excluded objects are displayed."),
+    ("void_full_site_overlays.png", "E25 long-void examples: internal and image-edge-clipped cavities are separated. Row location is an image coordinate; collector direction is unconfirmed. Width estimates exclude clipped cavities.")]:
+    image_path = os.path.join(ROOT, "analysis", "battery", "output", filename)
+    with Image.open(image_path) as im:
+        im = im.convert("RGB")
+        if im.width > 1500: im = im.resize((1500, int(im.height * 1500 / im.width)), Image.LANCZOS)
+        buf = io.BytesIO(); im.save(buf, "JPEG", quality=85, optimize=True)
+        battery_figures.append(("data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode(), caption))
+add("A18", "Neighbourhood, local homogeneity and internal long-void geometry are observable mask descriptors; their battery implications remain hypotheses.", "experimental; expert review pending",
+    battery_figures,
+    "Eight new secondary KPIs quantify distance/ring void fraction, bright dispersion and bright/void association at two fixed window scales, and internal long-void burden/location. Mask bands, components and windows are not chemical labels, electrical contact, physical expansion clearance or additional independent material samples.",
+    "All known sites were measured with existing masks and paired threshold perturbations. Synthetic convention tests and nominal-cache regressions pass; independent phase/instance annotations are still absent. Exact raster bright/void adjacency is zero on current usable sites and remains diagnostic. The pore-mode flag is unresolved everywhere; the grey-pore subgroup is a separate data-derived acquisition flag.",
+    "Extraction/report secondary section only; excluded from primary tests, classifier inputs and verdicts. Coverage, quality exclusions, missing values, paired threshold ranges and site-bootstrap intervals are disclosed separately. Physics wording now avoids lithiation-time, total-expansion, intact-share and monotonic transport predictions.",
+    "Threshold fragments or residual-solid transition bands were mistaken for physical neighbourhoods; clipped-cavity exclusions hid visible area; window variation reflected loading/section placement; image direction was mistaken for collector direction; or correlated sites were treated as independent specimens.",
+    "Independently review phase boundaries, ambiguous fragments, graphite plate instances and the collector candidate. Can these observed geometries be reproduced across sections from identified specimens? Application claims need matched recipe/process and contact, adhesion, wetting or electrochemical evidence.")
 
 # ----------------------------------------------------------------------------- HTML
 def esc(t): return html.escape(t)

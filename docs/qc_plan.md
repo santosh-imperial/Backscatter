@@ -73,7 +73,7 @@ Regression adjustment cannot establish that a share of the shift *was caused by*
 The report states how much the shift attenuates under 2 and 3, as a sensitivity analysis, with the three-channel agreement score alongside. No causal percentage is claimed.
 
 ### 2.6b Physics layer (conditional, qualitative)
-The layer turns geometric KPIs into statements a materials engineer can act on, and supplies sanity checks. After review it makes **qualitative, relative** statements only; no performance percentages. D36 and `docs/battery_microstructure_review.md` distinguish observed geometry from application hypotheses. Fresh graphite–Si/SiOx material is confirmed; conditional mechanism claims still require validation. The wording below is the revised target; the review memo lists production wording still to correct.
+The layer turns geometric KPIs into statements a materials engineer can act on, and supplies sanity checks. After review it makes **qualitative, relative** statements only; no performance percentages. D36 and `docs/battery_microstructure_review.md` distinguish observed geometry from application hypotheses. Fresh graphite–Si/SiOx material is confirmed; conditional mechanism claims still require validation. The production wording corrections were applied in D37/E25, with regenerated known-batch reports; the literature review distinguishes observed geometry from unvalidated battery mechanisms.
 
 | Block | From KPIs | What we state | What we do **not** claim |
 |---|---|---|---|

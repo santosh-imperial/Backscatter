@@ -52,4 +52,11 @@ What the verdicts mean: *consistent with the working reference (within detectabl
 
 ## Status
 
-Pipeline complete and rehearsed on a renamed copy of a known batch (E23). Both known batches: consistent within detectable limits. Open: morphology descriptors (E18, in `analysis/morphology/`), Inlens local-contrast normalisation (E20).
+Pipeline works on known batches; the drop procedure was rehearsed on a renamed known batch (E23). Both known batches remain consistent within detectable limits. Next: independent measurement review, specimen/process/tolerance metadata and a fresh delivery rehearsal after the latest additions.
+
+
+## Battery geometry audit and secondary KPIs
+
+Open [the illustrated battery audit](analysis/battery/output/report.html) and [the live metric atlas](analysis/morphology/output/metric_atlas.html). The normal one-command QC path now extracts eight experimental geometry measurements and prints a separate secondary section with site sampling intervals, paired threshold sensitivity and quality counts. They do not change primary tests, classifier inputs or verdicts. Graphite plate orientation and Inlens material texture remain unvalidated; collector gaps require a reviewed collector edge.
+
+Reproduce individual known-site audits with `/opt/anaconda3/bin/python3 -m analysis.battery.run_neighbourhoods`, `-m analysis.battery.run_void_context`, and `-m analysis.battery.run_orientation_audit`; then `-m analysis.battery.build_report`. Each audit saves measured-source/input provenance. `-m analysis.battery.verify_pipeline` is an explicitly labelled warm replay using recomputed secondary geometry and verified unchanged original feature columns.

@@ -1,0 +1,56 @@
+{
+  "experiment": "E25",
+  "cache_mode": "verified_primary_cache_reuse_plus_recomputed_secondary_masks",
+  "results": [
+    {
+      "batch": "Batch_1",
+      "verdict": "consistent with working reference (within detectable limits)",
+      "decision_stability": 1.0,
+      "primary_kpis": [
+        "crack_frac",
+        "pore_max_d",
+        "pore_frac",
+        "bright_frac",
+        "bright_d50"
+      ],
+      "secondary_geometry_kpis": [
+        "bright_void_distance_d50_px",
+        "bright_ring_void_frac_16px",
+        "local_bright_std_512px",
+        "local_bright_pore_spearman_512px",
+        "local_bright_std_1024px",
+        "local_bright_pore_spearman_1024px",
+        "long_void_internal_area_frac",
+        "long_void_y_centroid_norm"
+      ],
+      "threshold_hash": "b4f4da2e357c",
+      "report": "reports/qc_Batch_1.html",
+      "runtime_s": 63.2
+    },
+    {
+      "batch": "Batch_2",
+      "verdict": "consistent with working reference (within detectable limits)",
+      "decision_stability": 1.0,
+      "primary_kpis": [
+        "crack_frac",
+        "pore_max_d",
+        "pore_frac",
+        "bright_frac",
+        "bright_d50"
+      ],
+      "secondary_geometry_kpis": [
+        "bright_void_distance_d50_px",
+        "bright_ring_void_frac_16px",
+        "local_bright_std_512px",
+        "local_bright_pore_spearman_512px",
+        "local_bright_std_1024px",
+        "local_bright_pore_spearman_1024px",
+        "long_void_internal_area_frac",
+        "long_void_y_centroid_norm"
+      ],
+      "threshold_hash": "b4f4da2e357c",
+      "report": "reports/qc_Batch_2.html",
+      "runtime_s": 75.5
+    }
+  ]
+}

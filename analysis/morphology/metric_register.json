@@ -1,0 +1,3812 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-03",
+  "owner": "Santosh / QC team",
+  "purpose": "Live morphology inventory: implementation, evidence, QC role and expert review are independent fields.",
+  "sources": [
+    "analysis_cache/site_features.csv",
+    "analysis_cache/etd_inlens_features.csv",
+    "analysis_cache/physics_sites.csv",
+    "analysis/morphology/output/morphology_sites.csv",
+    "analysis/battery/output/neighbourhood_sites.csv",
+    "analysis/battery/output/void_sites.csv",
+    "analysis/battery/output/void_threshold_envelopes.csv"
+  ],
+  "metrics": [
+    {
+      "id": "pore_frac",
+      "label": "Void area fraction",
+      "family": "Void geometry",
+      "keys": [
+        "pore_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "All opened phase-mask pixels / trimmed image area; no component size floor.",
+      "interpretation": "Observed 2-D segmented phase area.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "primary",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Grey-pore fallback thresholds make pore measurements less reliable."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_count_per_Mpx",
+      "label": "Void component density",
+      "family": "Void geometry",
+      "keys": [
+        "pore_count_per_Mpx"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "components / Mpx",
+      "definition": "8-connected components with area >= 30 px² / trimmed image area in Mpx.",
+      "interpretation": "Count of segmented components, not proven physical particles.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Grey-pore fallback thresholds make pore measurements less reliable.",
+        "Merging, fragmentation and size floor change counts."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_d50",
+      "label": "Void D50",
+      "family": "Void geometry",
+      "keys": [
+        "pore_d50"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Area-weighted 50th percentile of equivalent-circle diameter sqrt(4A/pi), after component area floor.",
+      "interpretation": "Observed section-size distribution; not a 3-D size estimate.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Grey-pore fallback thresholds make pore measurements less reliable."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_d90",
+      "label": "Void D90",
+      "family": "Void geometry",
+      "keys": [
+        "pore_d90"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Area-weighted 90th percentile of equivalent-circle diameter sqrt(4A/pi), after component area floor.",
+      "interpretation": "Observed section-size distribution; not a 3-D size estimate.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Grey-pore fallback thresholds make pore measurements less reliable."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_max_d",
+      "label": "Void maximum equivalent diameter",
+      "family": "Void geometry",
+      "keys": [
+        "pore_max_d"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Maximum equivalent-circle diameter among components above the area floor.",
+      "interpretation": "Largest segmented section component.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "primary",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Grey-pore fallback thresholds make pore measurements less reliable.",
+        "Maximum is sensitive to field size and a single merged component."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "bright_frac",
+      "label": "Bright-phase area fraction",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "All opened phase-mask pixels / trimmed image area; no component size floor.",
+      "interpretation": "Observed 2-D segmented phase area.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "primary",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B01",
+        "B04"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact. Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "bright_count_per_Mpx",
+      "label": "Bright-phase component density",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_count_per_Mpx"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "components / Mpx",
+      "definition": "8-connected components with area >= 50 px² / trimmed image area in Mpx.",
+      "interpretation": "Count of segmented components, not proven physical particles.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "Merging, fragmentation and size floor change counts."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ]
+    },
+    {
+      "id": "bright_d10",
+      "label": "Bright-phase D10",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_d10"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Area-weighted 10th percentile of equivalent-circle diameter sqrt(4A/pi), after component area floor.",
+      "interpretation": "Observed section-size distribution; not a 3-D size estimate.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "bright_d50",
+      "label": "Bright-phase D50",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_d50"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Area-weighted 50th percentile of equivalent-circle diameter sqrt(4A/pi), after component area floor.",
+      "interpretation": "Observed section-size distribution; not a 3-D size estimate.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "primary",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B01",
+        "B06"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact. Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "bright_d90",
+      "label": "Bright-phase D90",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_d90"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Area-weighted 90th percentile of equivalent-circle diameter sqrt(4A/pi), after component area floor.",
+      "interpretation": "Observed section-size distribution; not a 3-D size estimate.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "bright_max_d",
+      "label": "Bright-phase maximum equivalent diameter",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_max_d"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Maximum equivalent-circle diameter among components above the area floor.",
+      "interpretation": "Largest segmented section component.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Exclude bright low-contrast sites from material inference.",
+        "Fresh graphite–Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "Maximum is sensitive to field size and a single merged component."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "graphite_frac",
+      "label": "Remaining solid area fraction",
+      "family": "Phase fractions",
+      "keys": [
+        "graphite_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "1 - pore_frac - bright_frac.",
+      "interpretation": "Residual segmentation class; may contain binder and unresolved porosity.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Not chemically verified graphite and not a separate binder measurement."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact."
+    },
+    {
+      "id": "pore_elong",
+      "label": "Void aspect ratio",
+      "family": "Void geometry",
+      "keys": [
+        "pore_elong"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Area-weighted major-axis / max(minor-axis, 1 px) across components >=30 px².",
+      "interpretation": "Elongation of segmented voids.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "crack_frac",
+      "label": "Crack-like void area fraction",
+      "family": "Void geometry",
+      "keys": [
+        "crack_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Sum area of void components >=30 px² with major axis >500 px / trimmed image area.",
+      "interpretation": "Area occupied by long, crack-like voids.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "primary",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "500 px cutoff is an operational rule; a long void is not confirmed delamination."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "crack_count_per_Mpx",
+      "label": "Crack-like void density",
+      "family": "Void geometry",
+      "keys": [
+        "crack_count_per_Mpx"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "components / Mpx",
+      "definition": "Count of the same >500 px major-axis void components / trimmed image Mpx.",
+      "interpretation": "Density of long voids in this section.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not equate section counts to 3-D crack counts."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_circ",
+      "label": "Bright-particle circularity",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_circ"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Area-weighted 4*pi*A / max(perimeter,1)^2, component area >=50 px².",
+      "interpretation": "Boundary compactness.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Pixel perimeter, blur and fragmented boundaries affect circularity."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "bright_solidity",
+      "label": "Bright-particle solidity",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_solidity"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Area-weighted component area / convex-hull area, component area >=50 px².",
+      "interpretation": "Concavity of observed particle outlines.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "bright_aspect_aw",
+      "label": "Bright-particle aspect ratio",
+      "family": "Bright-particle geometry",
+      "keys": [
+        "bright_aspect_aw"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Area-weighted major/minor axis ratio for non-edge-clipped components >=50 px².",
+      "interpretation": "Elongation of observed bright sections.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "pore_width_d90_d50",
+      "label": "Void size-distribution width",
+      "family": "Size-distribution shape",
+      "keys": [
+        "pore_width_d90_d50"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "D90 / D50 of area-weighted equivalent-diameter quantiles.",
+      "interpretation": "Spread of section sizes; not local physical void width.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_horizontal_alignment",
+      "label": "Void horizontal alignment",
+      "family": "Orientation",
+      "keys": [
+        "pore_horizontal_alignment"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Re(mean_area(exp(2i*theta))); +1 horizontal, -1 vertical, zero balanced. Theta is relative to image horizontal; aspect >=1.5 and edge-clipped components excluded.",
+      "interpretation": "Alignment in the image section; collector direction unconfirmed.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv",
+        "analysis/morphology/output/orientation_histograms.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "pore_orientation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "pore_alignment_strength",
+      "label": "Void axial alignment strength",
+      "family": "Orientation",
+      "keys": [
+        "pore_alignment_strength"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Abs(mean_area(exp(2i*theta))); zero dispersed, one aligned; direction separate. Theta is relative to image horizontal; aspect >=1.5 and edge-clipped components excluded.",
+      "interpretation": "Alignment in the image section; collector direction unconfirmed.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv",
+        "analysis/morphology/output/orientation_histograms.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "pore_orientation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "bright_width_d90_d10",
+      "label": "Bright-particle size-distribution width",
+      "family": "Size-distribution shape",
+      "keys": [
+        "bright_width_d90_d10"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "D90 / D10 of area-weighted equivalent-diameter quantiles.",
+      "interpretation": "Spread of section sizes; not local physical void width.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "bright_horizontal_alignment",
+      "label": "Bright-particle horizontal alignment",
+      "family": "Orientation",
+      "keys": [
+        "bright_horizontal_alignment"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Re(mean_area(exp(2i*theta))); +1 horizontal, -1 vertical, zero balanced. Theta is relative to image horizontal; aspect >=1.5 and edge-clipped components excluded.",
+      "interpretation": "Alignment in the image section; collector direction unconfirmed.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv",
+        "analysis/morphology/output/orientation_histograms.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_orientation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_alignment_strength",
+      "label": "Bright-particle axial alignment strength",
+      "family": "Orientation",
+      "keys": [
+        "bright_alignment_strength"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Abs(mean_area(exp(2i*theta))); zero dispersed, one aligned; direction separate. Theta is relative to image horizontal; aspect >=1.5 and edge-clipped components excluded.",
+      "interpretation": "Alignment in the image section; collector direction unconfirmed.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv",
+        "analysis/morphology/output/orientation_histograms.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_orientation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_nn_mean_px",
+      "label": "Bright-centroid nearest-neighbour distance",
+      "family": "Arrangement",
+      "keys": [
+        "bright_nn_mean_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Mean distance to a different component centroid; only points whose nearest-neighbour circle fits in the image enter.",
+      "interpretation": "Spacing between segmented centroids.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Tiny rim fragments dominate counts; centroid distance ignores object extent."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_spacing",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "bright_nn_csr_ratio",
+      "label": "Centroid spacing / uniform-point comparator",
+      "family": "Arrangement",
+      "keys": [
+        "bright_nn_csr_ratio"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Guarded mean nearest-neighbour distance / mean over 200 uniform-point simulations with matching count, window and censoring.",
+      "interpretation": "Geometric comparator, not a validated agglomeration index.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Sensitivity to area floors was observed; uniform points do not respect finite particle shape or non-overlap."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv",
+        "analysis/morphology/output/spacing_area_floor_comparisons.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "bright_spacing",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "profile_pore",
+      "label": "Void depth profile",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_pore_0",
+        "profile_pore_1",
+        "profile_pore_2",
+        "profile_pore_3",
+        "profile_pore_4",
+        "profile_pore_5",
+        "profile_pore_6",
+        "profile_pore_7",
+        "profile_pore_8",
+        "profile_pore_9"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction per bin",
+      "definition": "Phase-mask area fraction in each of 10 equal-height bins of the trimmed image.",
+      "interpretation": "Variation with image depth.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "profile_pore_slope",
+      "label": "Void signed depth gradient",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_pore_slope"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction / normalised image depth",
+      "definition": "OLS slope of 10-bin phase profile against bin-centre depth (0.05,0.15,...,0.95).",
+      "interpretation": "Image-depth variation; signed slope changes when vertically flipped.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "profile_pore_abs_slope",
+      "label": "Void depth-gradient magnitude",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_pore_abs_slope"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction / normalised image depth",
+      "definition": "Absolute value of OLS slope of 10-bin phase profile against bin-centre depth (0.05,0.15,...,0.95).",
+      "interpretation": "Image-depth variation; signed slope changes when vertically flipped.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "profile_bright",
+      "label": "Bright-phase depth profile",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_bright_0",
+        "profile_bright_1",
+        "profile_bright_2",
+        "profile_bright_3",
+        "profile_bright_4",
+        "profile_bright_5",
+        "profile_bright_6",
+        "profile_bright_7",
+        "profile_bright_8",
+        "profile_bright_9"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction per bin",
+      "definition": "Phase-mask area fraction in each of 10 equal-height bins of the trimmed image.",
+      "interpretation": "Variation with image depth.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "profile_bright_slope",
+      "label": "Bright-phase signed depth gradient",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_bright_slope"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction / normalised image depth",
+      "definition": "OLS slope of 10-bin phase profile against bin-centre depth (0.05,0.15,...,0.95).",
+      "interpretation": "Image-depth variation; signed slope changes when vertically flipped.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "profile_bright_abs_slope",
+      "label": "Bright-phase depth-gradient magnitude",
+      "family": "Image-depth structure",
+      "keys": [
+        "profile_bright_abs_slope"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction / normalised image depth",
+      "definition": "Absolute value of OLS slope of 10-bin phase profile against bin-centre depth (0.05,0.15,...,0.95).",
+      "interpretation": "Image-depth variation; signed slope changes when vertically flipped.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/output/morphology_sites.csv"
+      ],
+      "experiments": [
+        "E18"
+      ],
+      "visual_kind": "depth_profile",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ],
+      "battery_implication": "Local additive enrichment/depletion could flag heterogeneous mixing, drying or packing even when the site mean is stable. Mask fragments, particle size and section sampling can mimic this; no agglomeration or performance claim is validated."
+    },
+    {
+      "id": "corr_len_px",
+      "label": "BSE correlation length",
+      "family": "Texture",
+      "keys": [
+        "corr_len_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "First lag below 1/e in averaged radial normalised autocorrelation from 16 seeded 512 px BSE windows.",
+      "interpretation": "Observed texture scale.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Affected by blur, contrast remapping and focus; not a particle-size substitute."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "correlation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "fft_slope",
+      "label": "BSE spectrum slope",
+      "family": "Texture",
+      "keys": [
+        "fft_slope"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "OLS log-power vs log-spatial-frequency slope, radial PSD bins 4:120 from 24 seeded 512 px Hann-windowed patches.",
+      "interpretation": "Relative distribution of fine and coarse image texture.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Contrast remapping, noise and blur can shift this feature."
+      ],
+      "evidence_paths": [
+        "analysis_cache/site_features.csv"
+      ],
+      "experiments": [
+        "E01",
+        "E18"
+      ],
+      "visual_kind": "fft",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "etd_crack_density_particles",
+      "label": "ETD dark-ridge fraction in bright interiors",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_crack_density_particles"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "fraction",
+      "definition": "Fraction of eroded bright interior where Hessian ridge > fixed RIDGE_T and orientation differs >=15 degrees from dominant curtaining angle.",
+      "interpretation": "Ridge/edge appearance, not chemically confirmed cracks or plate orientation.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv",
+        "analysis_cache/acquisition_sites.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_ridges",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B06"
+      ],
+      "battery_implication": "Fresh-particle outline and internal-line appearance may flag powder, manufacturing or preparation differences. It does not reveal cycling damage; size alone does not set lithiation time or total expansion load."
+    },
+    {
+      "id": "etd_crack_density_graphite",
+      "label": "ETD dark-ridge fraction in residual solid",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_crack_density_graphite"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "fraction",
+      "definition": "Same criterion within eroded residual solid interior.",
+      "interpretation": "Ridge/edge appearance, not chemically confirmed cracks or plate orientation.",
+      "implementation_status": "computed",
+      "evidence_status": "diagnostic_only",
+      "qc_role": "acquisition_diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv",
+        "analysis_cache/acquisition_sites.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_ridges",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "etd_curtain_frac",
+      "label": "ETD curtaining fraction",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_curtain_frac"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "fraction",
+      "definition": "Strong ridges aligned within 15 degrees of dominant ridge direction in eroded solid interiors.",
+      "interpretation": "Ridge/edge appearance, not chemically confirmed cracks or plate orientation.",
+      "implementation_status": "computed",
+      "evidence_status": "diagnostic_only",
+      "qc_role": "acquisition_diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv",
+        "analysis_cache/acquisition_sites.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_curtain",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B03"
+      ],
+      "battery_implication": "Graphite plate orientation can motivate a transport-anisotropy hypothesis. ETD ridges currently describe curtaining; reviewed graphite axes, collector direction and 3-D/transport evidence are needed."
+    },
+    {
+      "id": "etd_curtain_anisotropy",
+      "label": "ETD ridge anisotropy",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_curtain_anisotropy"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "ratio",
+      "definition": "Peak orientation-bin count / max(median orientation-bin count,1), using strongest interior ridges.",
+      "interpretation": "Ridge/edge appearance, not chemically confirmed cracks or plate orientation.",
+      "implementation_status": "computed",
+      "evidence_status": "diagnostic_only",
+      "qc_role": "acquisition_diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv",
+        "analysis_cache/acquisition_sites.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_curtain",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B03"
+      ],
+      "battery_implication": "Graphite plate orientation can motivate a transport-anisotropy hypothesis. ETD ridges currently describe curtaining; reviewed graphite axes, collector direction and 3-D/transport evidence are needed."
+    },
+    {
+      "id": "etd_boundary_sharpness",
+      "label": "ETD boundary sharpness",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_boundary_sharpness"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "ratio",
+      "definition": "Median Sobel magnitude at BSE pore-solid boundaries / image ETD IQR.",
+      "interpretation": "Ridge/edge appearance, not chemically confirmed cracks or plate orientation.",
+      "implementation_status": "computed",
+      "evidence_status": "diagnostic_only",
+      "qc_role": "acquisition_diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv",
+        "analysis_cache/acquisition_sites.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_boundary",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "inlens_particle_texture",
+      "label": "Inlens particle texture",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "inlens_particle_texture"
+      ],
+      "channels": [
+        "BSE",
+        "Inlens"
+      ],
+      "units": "ratio",
+      "definition": "Median per-component intensity SD / image Inlens IQR in eroded bright interiors, keeping area >=400 px².",
+      "interpretation": "Candidate appearance descriptor; charging and acquisition dominate.",
+      "implementation_status": "computed",
+      "evidence_status": "confounded",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Local-contrast normalisation still pending; raw intensity is not a material KPI."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv"
+      ],
+      "experiments": [
+        "E03",
+        "E20"
+      ],
+      "visual_kind": "inlens_texture",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "inlens_particle_texture_p90",
+      "label": "Inlens particle texture P90",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "inlens_particle_texture_p90"
+      ],
+      "channels": [
+        "BSE",
+        "Inlens"
+      ],
+      "units": "ratio",
+      "definition": "90th percentile of the same component texture values.",
+      "interpretation": "Candidate appearance descriptor; charging and acquisition dominate.",
+      "implementation_status": "computed",
+      "evidence_status": "confounded",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Local-contrast normalisation still pending; raw intensity is not a material KPI."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv"
+      ],
+      "experiments": [
+        "E03",
+        "E20"
+      ],
+      "visual_kind": "inlens_texture",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "inlens_speckled_particle_frac",
+      "label": "Inlens speckled-particle fraction",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "inlens_speckled_particle_frac"
+      ],
+      "channels": [
+        "BSE",
+        "Inlens"
+      ],
+      "units": "fraction",
+      "definition": "Fraction of those components with normalised texture >0.5.",
+      "interpretation": "Candidate appearance descriptor; charging and acquisition dominate.",
+      "implementation_status": "computed",
+      "evidence_status": "confounded",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Local-contrast normalisation still pending; raw intensity is not a material KPI."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv"
+      ],
+      "experiments": [
+        "E03",
+        "E20"
+      ],
+      "visual_kind": "inlens_texture",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "longest_void_px",
+      "label": "Longest void major axis",
+      "family": "Section geometry",
+      "keys": [
+        "longest_void_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Largest major axis among void components >=30 px².",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "longest_void_over_thickness",
+      "label": "Longest void / image height",
+      "family": "Section geometry",
+      "keys": [
+        "longest_void_over_thickness"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Longest void major axis / trimmed strip height.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "columns_interrupted_frac",
+      "label": "Columns intersecting long voids",
+      "family": "Section geometry",
+      "keys": [
+        "columns_interrupted_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Fraction of x-columns at x4 any-pixel downsampling that intersect at least one >500 px void.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "delamination_index",
+      "label": "Long-void horizontal-extent index",
+      "family": "Section geometry",
+      "keys": [
+        "delamination_index"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Sum of bounding-box widths of >500 px voids / strip width; may exceed one when voids stack.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "crack_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "crack_orientation_deg_median",
+      "label": "Crack-like void median tilt",
+      "family": "Section geometry",
+      "keys": [
+        "crack_orientation_deg_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "degrees",
+      "definition": "Median absolute major-axis tilt from image horizontal across long voids.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "pore_orientation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B02"
+      ],
+      "battery_implication": "Long coating voids or a confirmed collector-interface gap may indicate as-manufactured cohesion/adhesion concerns. Location and specimen preparation need review; geometry alone establishes neither contact loss nor cycling damage."
+    },
+    {
+      "id": "tortuosity_fraction_connected",
+      "label": "2-D top-to-bottom pore-path fraction",
+      "family": "Section geometry",
+      "keys": [
+        "tortuosity_fraction_connected"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Share of seed columns reaching bottom through the downsampled pore mask.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "constant_on_current_data",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "percolation",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "tortuosity_index",
+      "label": "2-D pore path-length index",
+      "family": "Section geometry",
+      "keys": [
+        "tortuosity_index"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Median connected pore path length / image height; undefined without connected paths.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "undefined_on_current_data",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "tortuosity",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "tortuosity_penalised_index",
+      "label": "Solid-penalised path index",
+      "family": "Section geometry",
+      "keys": [
+        "tortuosity_penalised_index"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Path index allowing solid crossings with fixed artificial cost.",
+      "interpretation": "2-D geometry only; no electronic continuity or 3-D transport claim.",
+      "implementation_status": "computed",
+      "evidence_status": "not_a_transport_measurement",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Image height is not verified coating thickness; downsampling changes topology."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "tortuosity",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "void_local_width_d50_px",
+      "label": "Void local width median",
+      "family": "Local void width",
+      "keys": [
+        "void_local_width_d50_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Median 2*Euclidean distance-to-solid along the deterministic medial axis of retained, non-edge-clipped voids. Skeleton samples are length-weighted approximately by sampling pixels, not area-weighted.",
+      "interpretation": "Local 2-D void-width proxy; irregular junctions are not pore throats.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No branch pruning; junctions and digital boundaries influence results.",
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/benchmark/local_width_sites.csv"
+      ],
+      "experiments": [
+        "E24"
+      ],
+      "visual_kind": "local_width",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "in_progress",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24: full-site nominal and ±5-level extraction complete; geometric tests pass."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B01",
+        "B05"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact. Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "void_local_width_d90_px",
+      "label": "Void local width P90",
+      "family": "Local void width",
+      "keys": [
+        "void_local_width_d90_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "90th percentile of the same medial-axis diameter samples. Skeleton samples are length-weighted approximately by sampling pixels, not area-weighted.",
+      "interpretation": "Local 2-D void-width proxy; irregular junctions are not pore throats.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No branch pruning; junctions and digital boundaries influence results.",
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/benchmark/local_width_sites.csv"
+      ],
+      "experiments": [
+        "E24"
+      ],
+      "visual_kind": "local_width",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "in_progress",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24: full-site nominal and ±5-level extraction complete; geometric tests pass."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "crack_local_width_d50_px",
+      "label": "Crack-like void local width median",
+      "family": "Local void width",
+      "keys": [
+        "crack_local_width_d50_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Median medial-axis width for retained voids with major axis >500 px. Skeleton samples are length-weighted approximately by sampling pixels, not area-weighted.",
+      "interpretation": "Local 2-D void-width proxy; irregular junctions are not pore throats.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No branch pruning; junctions and digital boundaries influence results.",
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/benchmark/local_width_sites.csv"
+      ],
+      "experiments": [
+        "E24"
+      ],
+      "visual_kind": "local_width",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "in_progress",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24: full-site nominal and ±5-level extraction complete; geometric tests pass."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ],
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+    },
+    {
+      "id": "bright_to_void_distance",
+      "label": "Bright-to-void boundary proximity",
+      "family": "Deferred candidates",
+      "keys": [
+        "bright_to_void_distance"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Proposed distance from bright boundaries to nearest void boundary.",
+      "interpretation": "Candidate hypothesis requiring phase or feature validation.",
+      "implementation_status": "deferred",
+      "evidence_status": "unvalidated",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No numeric material claim available."
+      ],
+      "evidence_paths": [],
+      "experiments": [
+        "E18",
+        "E24"
+      ],
+      "visual_kind": "phase_boundary_distance",
+      "review_status": "unreviewed",
+      "review_notes": "E25 supersedes this underspecified proposal with bright_void_distance_d50_px; retained as historical candidate, no duplicate numeric KPI.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "deferred",
+          "reason": "E25: implemented precisely scoped component-median minimum pixel-centre distance under a separate stable key."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact."
+    },
+    {
+      "id": "etd_plate_orientation",
+      "label": "ETD plate orientation",
+      "family": "Deferred candidates",
+      "keys": [
+        "etd_plate_orientation"
+      ],
+      "channels": [
+        "BSE",
+        "ETD"
+      ],
+      "units": "degrees",
+      "definition": "Proposed plate orientation from ETD features; current ridge angles describe curtaining.",
+      "interpretation": "Candidate hypothesis requiring phase or feature validation.",
+      "implementation_status": "deferred",
+      "evidence_status": "unvalidated",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No numeric material claim available."
+      ],
+      "evidence_paths": [],
+      "experiments": [
+        "E18",
+        "E24"
+      ],
+      "visual_kind": "etd_ridges",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "deferred",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "deferred",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B03"
+      ],
+      "battery_implication": "Graphite plate orientation can motivate a transport-anisotropy hypothesis. ETD ridges currently describe curtaining; reviewed graphite axes, collector direction and 3-D/transport evidence are needed."
+    },
+    {
+      "id": "binder_network_frac",
+      "label": "Binder-network area fraction",
+      "family": "Deferred candidates",
+      "keys": [
+        "binder_network_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Proposed fourth segmentation class; no validated binder mask exists.",
+      "interpretation": "Candidate hypothesis requiring phase or feature validation.",
+      "implementation_status": "deferred",
+      "evidence_status": "unvalidated",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "No numeric material claim available."
+      ],
+      "evidence_paths": [],
+      "experiments": [
+        "E18",
+        "E24"
+      ],
+      "visual_kind": "binder",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "deferred",
+          "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "deferred",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ],
+      "battery_implication": "In fresh graphite–Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact."
+    },
+    {
+      "id": "etd_ridge_dom_angle",
+      "label": "ETD dominant ridge direction",
+      "family": "Cross-channel / preparation",
+      "keys": [
+        "etd_ridge_dom_angle"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "degrees",
+      "definition": "Mode of the 36-bin orientation histogram among the strongest interior ETD Hessian ridges. Curtaining diagnostic; not verified plate alignment.",
+      "interpretation": "Mode of the 36-bin orientation histogram among the strongest interior ETD Hessian ridges. Curtaining diagnostic; not verified plate alignment.",
+      "implementation_status": "computed",
+      "evidence_status": "diagnostic_only",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+      ],
+      "evidence_paths": [
+        "analysis_cache/etd_inlens_features.csv"
+      ],
+      "experiments": [
+        "E04"
+      ],
+      "visual_kind": "etd_curtain",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Existing cross-channel/conditional model quantity added for inventory completeness."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ],
+      "battery_check_ids": [
+        "B03"
+      ],
+      "battery_implication": "Graphite plate orientation can motivate a transport-anisotropy hypothesis. ETD ridges currently describe curtaining; reviewed graphite axes, collector direction and 3-D/transport evidence are needed."
+    },
+    {
+      "id": "anisotropy_index",
+      "label": "Void shape anisotropy proxy",
+      "family": "Void geometry",
+      "keys": [
+        "anisotropy_index"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "pore_elong - 1; derived from the 2-D area-weighted void aspect ratio. Not a separate independent measurement.",
+      "interpretation": "pore_elong - 1; derived from the 2-D area-weighted void aspect ratio. Not a separate independent measurement.",
+      "implementation_status": "computed",
+      "evidence_status": "expert_review_pending",
+      "qc_role": "descriptive_only",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "pore_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Existing cross-channel/conditional model quantity added for inventory completeness."
+        }
+      ]
+    },
+    {
+      "id": "stereology_volume_fractions",
+      "label": "Conditional stereological volume fractions",
+      "family": "Conditional stereology",
+      "keys": [
+        "vol_frac_pore",
+        "vol_frac_bright",
+        "vol_frac_graphite"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Copies the three observed area fractions under a random representative-section assumption. Section preparation, alignment and unresolved phases are not validated.",
+      "interpretation": "Conditional model output, not a validated 3-D material measurement.",
+      "implementation_status": "computed",
+      "evidence_status": "assumption_limited",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "pore_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Existing cross-channel/conditional model quantity added for inventory completeness."
+        }
+      ]
+    },
+    {
+      "id": "nominal_additive_mass_fractions",
+      "label": "Conditional additive mass fractions",
+      "family": "Conditional stereology",
+      "keys": [
+        "nominal_mass_frac_additive_if_Si",
+        "nominal_mass_frac_additive_if_SiOx"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Density-weighted conversion of bright and residual-solid area fractions, conditional on Si or SiOx density and graphite density. Material family is confirmed; exact Si/SiOx chemistry, true phase volume and binder assignment remain unvalidated.",
+      "interpretation": "Conditional model output, not a validated 3-D material measurement.",
+      "implementation_status": "computed",
+      "evidence_status": "assumption_limited",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+      ],
+      "evidence_paths": [
+        "analysis_cache/physics_sites.csv"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "bright_mask",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "Existing cross-channel/conditional model quantity added for inventory completeness."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "D36: fresh graphite–Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        }
+      ]
+    },
+    {
+      "id": "saltykov_unfolded_size_distribution",
+      "label": "Conditional unfolded 3-D size distribution",
+      "family": "Conditional stereology",
+      "keys": [
+        "unfolded_d10",
+        "unfolded_d50",
+        "unfolded_d90"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px (conditional model)",
+      "definition": "Schwartz-Saltykov inversion for spherical particles from 2-D section diameters. Model-based secondary output; isotropic sampling and spherical-particle assumptions unvalidated.",
+      "interpretation": "Conditional model output, not a validated 3-D material measurement.",
+      "implementation_status": "implemented",
+      "evidence_status": "assumption_limited",
+      "qc_role": "excluded_from_verdict",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development; no unseen-batch validation.",
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+      ],
+      "evidence_paths": [
+        "polaron_qc/physics.py"
+      ],
+      "experiments": [
+        "E05",
+        "E13"
+      ],
+      "visual_kind": "bright_geometry",
+      "review_status": "unreviewed",
+      "review_notes": "",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "implemented",
+          "reason": "Existing cross-channel/conditional model quantity added for inventory completeness."
+        }
+      ]
+    },
+    {
+      "id": "bright_void_distance_d50_px",
+      "label": "Bright-to-void minimum distance median",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "bright_void_distance_d50_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Median over retained, non-edge-clipped bright components of the minimum Euclidean centre-to-centre distance from any component pixel to any pore-mask pixel. Adjacent face centres are 1 px apart.",
+      "interpretation": "2-D bright-to-visible-void proximity; not a 3-D pore throat, expansion clearance or wetting distance.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_neighbourhood",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ]
+    },
+    {
+      "id": "bright_ring_void_frac_16px",
+      "label": "Void fraction in 16 px bright-mask bands",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "bright_ring_void_frac_16px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Median component-wise pore fraction in Euclidean pixel-centre distance bands outside retained bright-mask components (distance >0 and <=16 px). This includes threshold holes within the silhouette, not only the physical outer neighbourhood. Only complete bands are used; overlapping bands are allowed. Other bright and residual-solid pixels are separately counted.",
+      "interpretation": "Visible local void neighbourhood of a segmented component, including threshold holes; not validated outer clearance or free volume for Si/SiOx expansion.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "The mask band includes threshold holes inside a component silhouette; it is not physical expansion clearance."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_neighbourhood",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ]
+    },
+    {
+      "id": "local_bright_std_512px",
+      "label": "Local bright dispersion: 512 px windows",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "local_bright_std_512px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Population standard deviation of original bright-mask area fractions in complete 512x512 px non-overlapping windows anchored at trimmed-image top-left; >=2 windows required. Partial edge windows excluded.",
+      "interpretation": "Spatial bright-mask heterogeneity at a fixed observed scale; also depends on mean loading, particle sizes and sampling.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_windows_512",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ]
+    },
+    {
+      "id": "local_bright_pore_spearman_512px",
+      "label": "Local bright/void association: 512 px windows",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "local_bright_pore_spearman_512px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "correlation",
+      "definition": "Spearman correlation of bright- and pore-mask fractions across the same complete 512x512 px windows; >=3 windows and both variables nonconstant required.",
+      "interpretation": "Within-section spatial co-location; compositional closure, segmentation and common depth structure can induce association. Windows are not independent material samples.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_windows_512",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ]
+    },
+    {
+      "id": "local_bright_std_1024px",
+      "label": "Local bright dispersion: 1024 px windows",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "local_bright_std_1024px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Population standard deviation of original bright-mask area fractions in complete 1024x1024 px non-overlapping windows anchored at trimmed-image top-left; >=2 windows required. Partial edge windows excluded.",
+      "interpretation": "Spatial bright-mask heterogeneity at a fixed observed scale; also depends on mean loading, particle sizes and sampling.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_windows_1024",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ]
+    },
+    {
+      "id": "local_bright_pore_spearman_1024px",
+      "label": "Local bright/void association: 1024 px windows",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "local_bright_pore_spearman_1024px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "correlation",
+      "definition": "Spearman correlation of bright- and pore-mask fractions across the same complete 1024x1024 px windows; >=3 windows and both variables nonconstant required.",
+      "interpretation": "Within-section spatial co-location; compositional closure, segmentation and common depth structure can induce association. Windows are not independent material samples.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_windows_1024",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B04"
+      ]
+    },
+    {
+      "id": "long_void_internal_area_frac",
+      "label": "Internal long-void area fraction",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "long_void_internal_area_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Area of 8-connected pore components with area >=30 px² and moment-based major axis >500 px that touch no image edge, divided by the complete trimmed image area (default parameters).",
+      "interpretation": "Fully observable internal long-void burden in one 2-D image; valid zero means no retained component, not material acceptance.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "Pore segmentation must be usable; grey/fallback sites remain quality flagged. Excludes edge-clipped long voids and is not a replacement for crack_frac. No adhesion, electrical-disconnection or 3-D claim."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "void_internal_context",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B02",
+        "B05"
+      ]
+    },
+    {
+      "id": "long_void_y_centroid_norm",
+      "label": "Internal long-void image-row centroid",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "long_void_y_centroid_norm"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "normalised image row (0–1)",
+      "definition": "Area-weighted pixel-row centroid of fully observable internal long-void components, divided by H-1. Undefined when no internal long void exists.",
+      "interpretation": "Location relative to image top and bottom; collector/separator direction and physical coating thickness are unconfirmed.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_experimental",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "Image-row location is not collector-interface distance. Field of view and excluded components affect sampling. No fixed alarm threshold; descriptive secondary only."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "void_internal_context",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B02",
+        "B05"
+      ]
+    },
+    {
+      "id": "bright_void_boundary_frac",
+      "label": "Exact bright-to-void raster boundary adjacency",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "bright_void_boundary_frac"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Pore-facing 4-neighbour raster faces / all exposed faces of retained, non-edge-clipped 8-connected bright components (area >=50 px). Faces are pooled by boundary length; diagonal adjacency is not a face.",
+      "interpretation": "Zero at every usable known site. Smoothing/threshold transition bands can prevent direct adjacency; zero is not electrical isolation.",
+      "implementation_status": "computed",
+      "evidence_status": "constant_on_current_data",
+      "qc_role": "diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_neighbourhood",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B01"
+      ]
+    },
+    {
+      "id": "battery_neighbourhood_coverage",
+      "label": "Bright neighbourhood and window coverage",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "neighbourhood_bright_pixels",
+        "neighbourhood_pore_pixels",
+        "neighbourhood_bright_components_all",
+        "neighbourhood_bright_components_small",
+        "neighbourhood_bright_components_retained",
+        "neighbourhood_bright_components_clipped",
+        "neighbourhood_bright_components_used",
+        "neighbourhood_bright_boundary_faces",
+        "neighbourhood_bright_void_faces",
+        "neighbourhood_bright_residual_solid_faces",
+        "neighbourhood_bright_other_bright_faces",
+        "neighbourhood_ring_components_used",
+        "neighbourhood_ring_components_clipped",
+        "neighbourhood_windows_512px",
+        "neighbourhood_window_coverage_512px",
+        "neighbourhood_windows_bright_present_512px",
+        "neighbourhood_windows_pore_present_512px",
+        "neighbourhood_windows_1024px",
+        "neighbourhood_window_coverage_1024px",
+        "neighbourhood_windows_bright_present_1024px",
+        "neighbourhood_windows_pore_present_1024px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "counts / fractions",
+      "definition": "Exact helper observability counts for retained/excluded components, exposed faces, complete windows and trimmed-frame window coverage.",
+      "interpretation": "Describes what was observable and excluded; counts do not increase n.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_coverage",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B01",
+        "B04"
+      ]
+    },
+    {
+      "id": "long_void_coverage",
+      "label": "Internal / clipped long-void coverage",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "long_void_n_components",
+        "long_void_internal_n_components",
+        "long_void_edge_clipped_n_components",
+        "long_void_edge_clipped_area_share",
+        "long_void_internal_area_share"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "counts / fractions",
+      "definition": "Counts and area shares of long components, separated into internal and edge-clipped sets.",
+      "interpretation": "Disclosure of excluded visible area; width/location estimates can omit substantial cavities.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "void_coverage",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B02",
+        "B05"
+      ]
+    },
+    {
+      "id": "battery_geometry_threshold_envelopes",
+      "label": "Paired threshold sensitivity envelopes",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "bright_void_boundary_frac_sensitivity_min",
+        "bright_void_boundary_frac_sensitivity_max",
+        "bright_void_boundary_frac_sensitivity_n",
+        "bright_void_distance_d50_px_sensitivity_min",
+        "bright_void_distance_d50_px_sensitivity_max",
+        "bright_void_distance_d50_px_sensitivity_n",
+        "bright_ring_void_frac_16px_sensitivity_min",
+        "bright_ring_void_frac_16px_sensitivity_max",
+        "bright_ring_void_frac_16px_sensitivity_n",
+        "local_bright_std_512px_sensitivity_min",
+        "local_bright_std_512px_sensitivity_max",
+        "local_bright_std_512px_sensitivity_n",
+        "local_bright_pore_spearman_512px_sensitivity_min",
+        "local_bright_pore_spearman_512px_sensitivity_max",
+        "local_bright_pore_spearman_512px_sensitivity_n",
+        "local_bright_std_1024px_sensitivity_min",
+        "local_bright_std_1024px_sensitivity_max",
+        "local_bright_std_1024px_sensitivity_n",
+        "local_bright_pore_spearman_1024px_sensitivity_min",
+        "local_bright_pore_spearman_1024px_sensitivity_max",
+        "local_bright_pore_spearman_1024px_sensitivity_n",
+        "long_void_internal_area_frac_sensitivity_min",
+        "long_void_internal_area_frac_sensitivity_max",
+        "long_void_internal_area_frac_sensitivity_n",
+        "long_void_y_centroid_norm_sensitivity_min",
+        "long_void_y_centroid_norm_sensitivity_max",
+        "long_void_y_centroid_norm_sensitivity_n"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "same units / counts",
+      "definition": "Minimum, maximum and finite-variant count under paired BSE threshold offsets -5, 0 and +5.",
+      "interpretation": "Measurement sensitivity, separate from site sampling variability and expert accuracy.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "diagnostic",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/neighbourhood_sites.csv",
+        "analysis/battery/output/void_sites.csv",
+        "analysis/battery/output/pipeline_battery_summary.csv",
+        "analysis/battery/output/void_threshold_envelopes.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "battery_coverage",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B01",
+        "B02",
+        "B04",
+        "B05"
+      ]
+    },
+    {
+      "id": "void_width_depth_slopes",
+      "label": "Observed local width / image-depth slopes",
+      "family": "Battery geometry / E25",
+      "keys": [
+        "void_width_depth_slope_px",
+        "crack_width_depth_slope_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px per normalised image depth",
+      "definition": "Linear slope of ten-bin median local width against normalised image-row position, using finite bins; per-bin values and usable-site counts retained in long-form depth tables.",
+      "interpretation": "Exploratory 2-D width context; image-row depth is not a confirmed coating/collector coordinate.",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Lengths use pixels; export calibration is unverified.",
+        "Known-batch development after primary-family freeze; no unseen-batch validation.",
+        "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
+        "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "Width samples are medial-axis pixels from retained non-clipped voids; not independent observations or 3-D throats.",
+        "All31 nominal width-depth profiles; paired sensitivity on11 prespecified example sites only."
+      ],
+      "evidence_paths": [
+        "analysis/battery/output/void_sites.csv",
+        "analysis/battery/output/void_width_depth_profiles.csv"
+      ],
+      "experiments": [
+        "E25"
+      ],
+      "visual_kind": "void_internal_context",
+      "review_status": "unreviewed",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        }
+      ],
+      "battery_check_ids": [
+        "B05"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "id": "segmentation_benchmark",
+      "label": "Expert segmentation benchmark",
+      "implementation_status": "built",
+      "evidence_status": "expert_annotations_pending",
+      "experiment": "E24",
+      "description": "Stratified development and held-out-site ROI pack. Manual masks kept separate from predictions; unannotated/uncertain pixels excluded. Crops do not increase statistical n.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "built",
+          "reason": "E24 artifacts generated and output contracts verified. Expert review still pending."
+        }
+      ]
+    },
+    {
+      "id": "local_void_width",
+      "label": "Distance map + deterministic medial axis",
+      "implementation_status": "computed",
+      "evidence_status": "benchmark_pending_review",
+      "experiment": "E24",
+      "description": "Evaluate at nominal thresholds and ±5 levels; exclude edge-clipped components; no primary promotion.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24 artifacts generated and output contracts verified. Expert review still pending."
+        }
+      ]
+    },
+    {
+      "id": "bright_hysteresis",
+      "label": "Histogram-anchored bright hysteresis",
+      "implementation_status": "computed",
+      "evidence_status": "benchmark_pending_review",
+      "experiment": "E24",
+      "description": "Seed >site bright threshold +5; grow inside >threshold -5 using 4-connectivity, then apply existing opening. Compare to current segmentation; not a ground-truth correction.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24 artifacts generated and output contracts verified. Expert review still pending."
+        }
+      ]
+    },
+    {
+      "id": "seeded_watershed",
+      "label": "Seeded watershed particle splitting",
+      "implementation_status": "proposed",
+      "evidence_status": "unvalidated",
+      "experiment": "E24",
+      "description": "Deferred until expert instance boundaries available; avoid automatic over-splitting."
+    },
+    {
+      "id": "inlens_background_normalisation",
+      "label": "Inlens background / contrast normalisation",
+      "implementation_status": "computed",
+      "evidence_status": "confound_unresolved",
+      "experiment": "E25",
+      "description": "31-site feasibility check of a separate sampled-gradient measurand after local standardisation. Pooled brightness association shrinks but within-batch associations persist/reverse. Existing per-particle texture is not corrected or promoted.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E25 feasibility audit complete; remains acquisition-confounded."
+        }
+      ]
+    },
+    {
+      "id": "connectivity_sensitivity",
+      "label": "4- vs 8-connected geometry audit",
+      "implementation_status": "computed",
+      "evidence_status": "measurement_sensitivity_only",
+      "experiment": "E24",
+      "description": "Quantify nominal component count and size changes; keep existing 8-connectivity definition for primary KPIs.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E24 artifacts generated and output contracts verified. Expert review still pending."
+        }
+      ]
+    },
+    {
+      "id": "battery_neighbourhood_geometry",
+      "label": "Bright neighbourhood and window geometry",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "experiment": "E25",
+      "description": "All31 sites and paired thresholds;8 scalar secondary KPIs integrated in extraction/report. Quality exclusions and missing-value rules explicit; primary/statistical/ML families frozen."
+    },
+    {
+      "id": "void_width_depth_context",
+      "label": "Long-void image location and width-depth audit",
+      "implementation_status": "computed",
+      "evidence_status": "geometry_tests_passed_expert_pending",
+      "experiment": "E25",
+      "description": "All31 nominal/paired long geometry; nominal width-depth all31 and sensitivity11. Collector absent/unconfirmed; no interfacial adhesion inference."
+    },
+    {
+      "id": "graphite_orientation_feasibility",
+      "label": "Graphite orientation feasibility / image tensors",
+      "implementation_status": "computed",
+      "evidence_status": "plate_instances_unvalidated",
+      "experiment": "E25",
+      "description": "Fixed matched patches, BSE/ETD/Inlens, two scales and support-mask sensitivity. Values are directional image texture only. Residual-solid connected regions are not graphite instances; manual plate labels/collector direction gate a material KPI."
+    }
+  ],
+  "material_confirmation": {
+    "date": "2026-10-03",
+    "source": "Santosh, direct user reply",
+    "statement": "Fresh, uncycled graphite–Si/SiOx electrode confirmed.",
+    "verbatim": "Fresh graphite–Si/SiOx electrode confirmed",
+    "limits": [
+      "Exact Si versus SiOx chemistry, recipe fractions and binder identity unspecified.",
+      "Pixelwise chemical labels and segmented bright fragments are not validated by material-family confirmation.",
+      "Collector direction, preparation protocol and physical specimen independence remain unresolved."
+    ]
+  },
+  "battery_checks": [
+    {
+      "id": "B01",
+      "label": "Additive neighbourhood and local void accommodation",
+      "priority": "high",
+      "status": "geometry_extracted_expert_review_pending",
+      "metric_ids": [
+        "bright_to_void_distance",
+        "bright_frac",
+        "bright_d50",
+        "graphite_frac",
+        "binder_network_frac",
+        "void_local_width_d50_px",
+        "bright_void_distance_d50_px",
+        "bright_ring_void_frac_16px",
+        "bright_void_boundary_frac",
+        "battery_neighbourhood_coverage"
+      ],
+      "proposed_action": "Review bright boundaries; define boundary proximity, local annular void fraction and residual-solid adjacency. Adjacency is not electronic contact or a resolved graphite/binder label.",
+      "validation_needed": "Independent phase-boundary annotations, mask/scale perturbations and section repeatability; chemical maps and electrical/cycling tests for mechanism.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    },
+    {
+      "id": "B02",
+      "label": "Long-void location and collector-interface gaps",
+      "priority": "high",
+      "status": "geometry_extracted_expert_review_pending",
+      "metric_ids": [
+        "crack_frac",
+        "pore_max_d",
+        "longest_void_px",
+        "longest_void_over_thickness",
+        "columns_interrupted_frac",
+        "delamination_index",
+        "crack_orientation_deg_median",
+        "long_void_internal_area_frac",
+        "long_void_y_centroid_norm",
+        "long_void_coverage"
+      ],
+      "proposed_action": "Review measured internal and clipped void burden/location; independently locate collector. No confirmed collector geometry in the current review, so interface-gap fields remain unavailable.",
+      "validation_needed": "Confirm collector edge/section coverage, review defect origin, repeat preparation and use adhesion/peel evidence before interfacial failure claims.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    },
+    {
+      "id": "B03",
+      "label": "Graphite plate orientation",
+      "priority": "medium",
+      "status": "feasibility_audited_material_kpi_deferred",
+      "metric_ids": [
+        "etd_plate_orientation",
+        "etd_curtain_frac",
+        "etd_curtain_anisotropy",
+        "etd_ridge_dom_angle"
+      ],
+      "proposed_action": "Validate graphite-plate axes in BSE/ETD; exclude curtaining and establish collector/through-thickness direction. Current bright/pore orientations do not measure graphite alignment.",
+      "validation_needed": "Manual plate labels and orientation sensitivity first; 3-D connectivity/tortuosity or transport tests for a battery-performance claim.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    },
+    {
+      "id": "B04",
+      "label": "Local additive homogeneity",
+      "priority": "medium",
+      "status": "geometry_extracted_expert_review_pending",
+      "metric_ids": [
+        "bright_frac",
+        "bright_nn_mean_px",
+        "bright_nn_csr_ratio",
+        "profile_bright",
+        "profile_bright_slope",
+        "profile_bright_abs_slope",
+        "bright_width_d90_d10",
+        "local_bright_std_512px",
+        "local_bright_pore_spearman_512px",
+        "local_bright_std_1024px",
+        "local_bright_pore_spearman_1024px"
+      ],
+      "proposed_action": "Use a small prespecified set of local window scales to expose enrichment/depletion and compare reviewed neighbours. Windows remain within-site summaries, not extra samples.",
+      "validation_needed": "Independent additive labels, area-floor/threshold sensitivity and site-level repeatability; specimen/recipe metadata before calling mixing or drying segregation.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    },
+    {
+      "id": "B05",
+      "label": "Void width, fraction and depth structure",
+      "priority": "medium",
+      "status": "geometry_extracted_expert_review_pending",
+      "metric_ids": [
+        "pore_frac",
+        "pore_d50",
+        "pore_d90",
+        "pore_count_per_Mpx",
+        "pore_elong",
+        "pore_width_d90_d50",
+        "pore_horizontal_alignment",
+        "pore_alignment_strength",
+        "profile_pore",
+        "profile_pore_slope",
+        "profile_pore_abs_slope",
+        "void_local_width_d50_px",
+        "void_local_width_d90_px",
+        "crack_local_width_d50_px",
+        "tortuosity_index",
+        "tortuosity_fraction_connected",
+        "tortuosity_penalised_index",
+        "void_width_depth_slopes",
+        "long_void_coverage"
+      ],
+      "proposed_action": "Review visible macrovoid structure; distinguish equivalent section diameter from local medial-axis width and from 3-D throats. More void space is not universally better.",
+      "validation_needed": "Independent void labels and preparation/edge-scope checks; wetting, loading/density and 3-D transport evidence before transport ranking.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    },
+    {
+      "id": "B06",
+      "label": "Particle-fracture appearance in fresh material",
+      "priority": "medium",
+      "status": "appearance_review_pending",
+      "metric_ids": [
+        "etd_crack_density_particles",
+        "bright_circ",
+        "bright_solidity",
+        "bright_aspect_aw",
+        "bright_d10",
+        "bright_d50",
+        "bright_d90",
+        "bright_max_d"
+      ],
+      "proposed_action": "Review internal lines and particle outlines across detectors. Low ridge-pixel coverage is not an intact-particle fraction; visible fractures are not prior cycling damage.",
+      "validation_needed": "Expert fracture labels and detection-limit/preparation checks; powder/process history and subsequent cycling evidence for failure mechanisms.",
+      "review_status": "unreviewed",
+      "qc_role": "hypothesis_only"
+    }
+  ]
+}

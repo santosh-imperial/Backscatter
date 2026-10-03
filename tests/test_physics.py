@@ -131,8 +131,10 @@ def test_additive_size_reading():
     r = ph.additive_size_reading(dict(d10=20, d50=150, d90=300), dict(d10=21, d50=180, d90=360))
     assert r["direction"]["d50"] == "coarser" and r["direction"]["d10"] == "similar"
     assert r["ratios"]["d90"] == pytest.approx(1.2)
-    assert "∝ 1.44" in r["statement"] and "direction only" in r["statement"]
-    assert "matched quantiles; diffusivity assumed unchanged; no absolute times" in r["caveats"]
+    assert "D90 coarser (×1.20)" in r["statement"]
+    assert "do not determine later lithiation time" in r["statement"]
+    assert "r2_ratio_d90" not in r
+    assert any("bias may differ" in x for x in r["caveats"])
     assert r["claims_not_made"]
     with pytest.raises(ValueError):
         ph.additive_size_reading(dict(d50=1), dict(d50=1), basis="3d")
@@ -142,21 +144,26 @@ def test_additive_mechanics_reading():
     ref = dict(bright_frac=0.05, bright_d50=150, bright_low_contrast=False, etd_crack_density_particles=0.002)
     bat = dict(bright_frac=0.07, bright_d50=150, bright_low_contrast=False, etd_crack_density_particles=0.003)
     r = ph.additive_mechanics_reading(ref, bat)
-    assert r["direction"] == "more"
-    assert r["intact_share_proxy_batch"] == pytest.approx(0.997)
-    assert r["caveats"] and r["claims_not_made"] and "direction only" in r["statement"]
+    assert r["direction"] == "not inferred" and r["loading_direction"] == "more"
+    assert r["ridge_coverage_batch"] == pytest.approx(0.003)
+    assert "intact_share_proxy_batch" not in r
+    assert r["caveats"] and r["claims_not_made"] and "not an intact-particle share" in r["statement"]
     low = dict(bat, bright_low_contrast=True)
     assert ph.additive_mechanics_reading(ref, low)["direction"].startswith("unreliable")
     less = dict(bright_frac=0.04, bright_d50=120, bright_low_contrast=False)
-    assert ph.additive_mechanics_reading(ref, less)["direction"] == "less"
+    assert ph.additive_mechanics_reading(ref, less)["loading_direction"] == "less"
     mixed = dict(bright_frac=0.07, bright_d50=120, bright_low_contrast=False)
-    assert ph.additive_mechanics_reading(ref, mixed)["direction"] == "mixed"
+    assert ph.additive_mechanics_reading(ref, mixed)["direction"] == "not inferred"
+    coarser_only = ph.additive_mechanics_reading(ref, dict(ref, bright_d50=300))
+    assert coarser_only["loading_direction"] == "similar"
+    assert coarser_only["size_direction"] == "coarser" and coarser_only["direction"] == "not inferred"
+    assert ph.additive_mechanics_reading(dict(ref, bright_frac=0), bat)["loading_direction"] == "not measurable"
 
 
 def test_qualitative_statement_pattern_and_weight_one_is_empty():
     s = ph.qualitative_statement("pore_frac", -2.1, "lower", 0.09, 0.07)
     assert s == ("Macro-pore area fraction is lower than the reference (robust shift 2.1 MAD) → "
-                 "less open macro-porosity: less favourable macro-pore transport, denser coating, direction only.")
+                 "less segmented 2-D void area; packing/wetting implications need independent validation, direction only.")
     assert ph.qualitative_statement("bright_low_contrast", 3.0, "higher", 0, 1) == ""
     assert ph.qualitative_statement("inlens_particle_texture", 3.0, "higher", 0, 1) == ""
     assert ph.qualitative_statement("bright_d50", 1.5, None, 150, 170).startswith("Bright-phase area-weighted D50 is higher")

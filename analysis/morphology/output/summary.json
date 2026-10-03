@@ -1,0 +1,19 @@
+{
+  "n_sites": 31,
+  "n_morphology_kpis": 16,
+  "min_holm_screen_morphology_matched": 1.0,
+  "strongest_matched": {
+    "reference": "Batch_1",
+    "batch": "Batch_2",
+    "kpi": "bright_nn_csr_ratio",
+    "shift_mad": 2.912408857188895,
+    "p_exploratory": 0.2563131313131313,
+    "p_holm_screen": 1.0,
+    "threshold_sign_survives": false
+  },
+  "top12_with_threshold_band": 10,
+  "top12_sign_surviving": 6,
+  "max_acquisition_loo_r2": 0.2703139146969981,
+  "acquisition_best_predictable_kpi": "pore_elong",
+  "interpretation": "Exploratory morphology screen; no primary KPIs or verdict thresholds changed."
+}

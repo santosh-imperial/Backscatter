@@ -86,7 +86,7 @@ from scipy import ndimage as ndi  # noqa: E402
 from skimage.measure import label, regionprops_table  # noqa: E402
 
 from . import BATCH_COLORS, CRACKED_SITES, GREY_PORE_SITES, LOW_CONTRAST_SITES, MATERIAL_KPIS, NM_PER_PX, PRIMARY_KPIS, UNSEEN_COLOR  # noqa: E402
-from . import acquisition, decision, ml, physics, stats  # noqa: E402
+from . import acquisition, decision, ml, physics, secondary, stats  # noqa: E402
 
 __all__ = ["KPI_TRUST", "TRUSTED_KPIS", "build_result", "render_report", "paint_crack_voids", "outline_bright",
            "novelty_overlay", "crack_void_mask", "fig_to_b64", "array_to_b64", "derive_flags", "apply_derived_flags",
@@ -676,7 +676,7 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
                                      cracked=flags_ref.site[flags_ref.cracked_known.astype(bool)].tolist(), ordinary_n=len(ordinary),
                                      source="data-derived flags (acquisition.derive_flags); cracked = known reference list"),
         mdc_range_mad=(float(min(mdcs)), float(max(mdcs))) if mdcs else (np.nan, np.nan),
-        scale="2-D sections, 25 nm/px nominal (TIFF export tag, unverified), chemistry of the bright phase unconfirmed",
+        scale="2-D sections, 25 nm/px nominal (TIFF export tag, unverified); fresh graphite–Si/SiOx confirmed by Santosh, exact chemistry and pixelwise labels unspecified",
         seven_v_seven="not applicable" if len(sites_ref) != len(sites_batch) else
                       "7 v 7: smallest attainable two-sided exact p ≈ 0.0006; power is low, most comparisons return 'cannot distinguish'",
         notes=["energy distance and drift score drop batch sites whose bright-phase KPIs are unusable (low-contrast)",
@@ -698,6 +698,9 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
                 check_a=full["check_a"], check_b=full["check_b"], abstention=full["abstention"], verdict=full["verdict"],
                 stability=stability, c2st_material=mlr["c2st_material"], c2st_flag_inclusive=mlr["c2st_flag_inclusive"],
                 c2st_extra=mlr["c2st_extra"], novelty=mlr["novelty"], physics=phys, acquisition=full.get("acquisition"), limits=limits,
+                battery_secondary=secondary.summarize(secondary.with_observed_quality(ref_t["sites"], sites_ref, flags_ref),
+                                                     secondary.with_observed_quality(bat_t["sites"], sites_batch, flags_batch),
+                                                     n_boot=cfg["n_boot"], seed=cfg["seed"]),
                 KPI_TRUST=dict(KPI_TRUST))
 
 
@@ -1209,7 +1212,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
         g = pst.groupby("batch").agg(vb=("vol_frac_bright", "median"), vp=("vol_frac_pore", "median"), mSi=("nominal_mass_frac_additive_if_Si", "median"))
         rows = [[_e(i), _f(r.vb, 3), _f(r.vp, 3), _f(r.mSi, 3)] for i, r in g.iterrows()]
         body += ("<h3>Stereology — secondary</h3>" + _table(rows, ["batch", "Delesse vol. frac. bright", "Delesse vol. frac. pore", "nominal mass frac. additive if Si"])
-                 + '<p class="note">Delesse assumes random sections (violated by plate alignment); biased by the unsegmented binder; chemistry unconfirmed. Not on the first screen and not a verdict input.</p>')
+                 + '<p class="note">Area-to-volume interpretation requires representative spatial sampling and valid phase labels; plate alignment alone does not invalidate it. Binder/unresolved pores and exact Si/SiOx density remain unspecified. Conditional model outputs, excluded from verdicts.</p>')
     parts.append(_sec("physics", "Physics sanity checks", body or "<p class='ph'>physics cache not available.</p>"))
 
     # ---- 9. secondary KPIs ------------------------------------------------------------------------------------
@@ -1220,6 +1223,35 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     body = ('<p class="note">Descriptive only: uncorrected permutation p (Hodges–Lehmann, site labels), never a verdict driver, not multiplicity-corrected into silence. Lengths in px.</p>'
             + _table(rows, ["KPI", f"{_e(ref)} median ± MAD", f"{_e(bat)} median", "robust shift", "≈ 95 % CI", "Cliff's δ", "p (uncorrected)", "usable n", "weight", "trust"]))
     parts.append(_sec("secondary", "Secondary KPIs — appendix (descriptive)", body))
+
+    # E25 additions are displayed separately, never passed to _run_pipeline/ML.
+    candidate = result.get("battery_secondary")
+    if candidate is not None and len(candidate):
+        rows = []
+        for r in candidate.itertuples():
+            spec = secondary.KPI_DEFINITIONS[r.kpi]
+            rows.append([_e(spec.get("label", r.kpi)) + f"<br><code>{_e(r.kpi)}</code>", _e(r.units),
+                         _f(r.ref_median, 4), _f(r.batch_median, 4), _f(r.median_difference, 4, signed=True),
+                         f"{_f(r.ci_low, 4)} to {_f(r.ci_high, 4)}" if r.interval_available else "not available",
+                         f"{r.n_ref_usable} / {r.n_batch_usable}",
+                         f"{_f(r.ref_median_sensitivity_range, 4)} / {_f(r.batch_median_sensitivity_range, 4)}",
+                         f"{r.n_ref_pore_threshold_unresolved} / {r.n_batch_pore_threshold_unresolved}",
+                         f"{r.n_ref_sensitivity_incomplete} / {r.n_batch_sensitivity_incomplete}"])
+        body = ('<p class="note">Experimental secondary measurements; independent expert phase-boundary review pending. '
+                'Excluded from verdicts, drift tests, localized rules, ML corroboration and release tolerances. '
+                'Developed on known Batches 1–3 after the primary decision configuration was frozen. '
+                'Surrounding-solid adjacency is geometric, not electrical contact; image row is not confirmed collector depth.</p>'
+                + _table(rows, ["Measurement", "units", f"{_e(ref)} median", f"{_e(bat)} median", "difference of site medians",
+                                "≈95% site-bootstrap interval", "usable n ref/batch", "median ±5 sensitivity range ref/batch",
+                                "pore threshold unresolved n ref/batch", "incomplete threshold variants n ref/batch"])
+                + '<p class="note">Sampling intervals assume sites are independent, which is unverified. Threshold ranges perturb both thresholds by ±5 grey levels; they are not accuracy intervals. '
+                  'Low-contrast sites are excluded from bright-dependent measurements; grey-pore sites from pore-dependent measurements. '
+                  'Unresolved pore-mode flags remain method diagnostics; usable geometry does not mean expert-validated segmentation. '
+                  'No observed internal long void gives an area fraction of zero and an undefined centroid. Small frames may lack full local windows.</p>')
+        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending", body))
+    else:
+        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending",
+                          '<p class="ph">New secondary measurements are not available in this result. Re-extract with features v1.1.0; no unavailable value is treated as zero.</p>'))
 
     # ---- 10. limits + footer ----------------------------------------------------------------------------------
     L = result["limits"]
@@ -1240,7 +1272,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
 
     toc = "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in (("verdict", "Verdict"), ("kpis", "Primary KPIs (MDC)"), ("drivers", "Drivers & physics"), ("evidence", "Evidence images"),
                                                                  ("local", "Local-anomaly flags"), ("ml", "ML corroboration"), ("acq", "Acquisition"), ("physics", "Physics sanity"),
-                                                                 ("secondary", "Secondary KPIs"), ("limits", "Limits")))
+                                                                 ("secondary", "Secondary KPIs"), ("battery-secondary", "Battery geometry candidates"), ("limits", "Limits")))
     head = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>QC report {_e(bat)}</title><style>{_CSS}</style></head><body><div class="wrap">'
             f'<h1>Polaron SEM QC — {_e(bat)} vs working reference {_e(ref)}</h1>'

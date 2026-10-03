@@ -1,0 +1,27 @@
+metric,scope,n_sites,median,min,max,units,note
+void_local_width_d50_px,all_known_sites,31,8.94427190999916,7.211102550927978,10.0,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+void_local_width_d50_px_relative_threshold_band,all_known_sites,31,0.030776406404415146,0.0,0.3675444679663241,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+void_local_width_d90_px,all_known_sites,31,29.732137494637012,22.09072203437452,38.8329756778952,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+void_local_width_d90_px_relative_threshold_band,all_known_sites,31,0.06484262477750638,0.004106793532296034,0.14715942295714138,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+crack_local_width_d50_px,all_known_sites,31,16.0,11.6619037896906,20.0,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+crack_local_width_d50_px_relative_threshold_band,all_known_sites,31,0.10068934791783841,0.019419324309079635,0.41861925472443284,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+void_local_width_d50_px,pore_mode_quality_usable,27,8.94427190999916,7.211102550927978,10.0,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+void_local_width_d50_px_relative_threshold_band,pore_mode_quality_usable,27,0.030776406404415146,0.0,0.3675444679663241,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+void_local_width_d90_px,pore_mode_quality_usable,27,29.732137494637012,22.09072203437452,38.8329756778952,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+void_local_width_d90_px_relative_threshold_band,pore_mode_quality_usable,27,0.058493053010077976,0.004106793532296034,0.14715942295714138,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+crack_local_width_d50_px,pore_mode_quality_usable,27,16.0,11.6619037896906,20.0,px,Descriptive full-site centreline width; edge components excluded; no expert accuracy claim.
+crack_local_width_d50_px_relative_threshold_band,pore_mode_quality_usable,27,0.09861218113400272,0.019419324309079635,0.41861925472443284,fraction,"(maximum - minimum across ±5 grey levels) / nominal; method sensitivity, not a confidence interval."
+hysteresis_agreement_iou,all_known_sites,31,0.9492792311799252,0.8319589924598905,0.9676912890489192,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_changed_image_fraction,all_known_sites,31,0.0028972607327037,0.0014684709821428,0.0250263385146804,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_changed_bright_area_relative,all_known_sites,31,0.0534238769113876,0.03338504697704,0.201891715916558,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_delta_frac,all_known_sites,31,0.0028710066305003,0.0014599609375,0.0248923636812237,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_delta_d50,all_known_sites,31,1.162928140394257,-8.716142519906015,6.627408090729773,px,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_agreement_iou,bright_quality_usable,29,0.950393410704402,0.8890527055237836,0.9676912890489192,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_changed_image_fraction,bright_quality_usable,29,0.0026990546218487,0.0014684709821428,0.0064705963938973,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_changed_bright_area_relative,bright_quality_usable,29,0.0521834367716026,0.03338504697704,0.1246332771184013,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_delta_frac,bright_quality_usable,29,0.0026715936374549,0.0014599609375,0.0063436893203883,fraction,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+hysteresis_delta_d50,bright_quality_usable,29,1.135983023391418,-8.716142519906015,6.627408090729773,px,"Agreement/change between algorithms, not segmentation accuracy; no ground-truth labels yet."
+pore_connectivity_count_relative_delta,all_known_sites,31,0.011312217194570044,0.002579979360165046,0.021483021483021468,fraction,"4-connected vs existing 8-connected component density; same binary mask, different object definition."
+pore_connectivity_d50_delta,all_known_sites,31,0.0,-5.3978988659952165,0.0,px,Connectivity sensitivity only; existing production definition remains 8-connected.
+bright_connectivity_count_relative_delta,all_known_sites,31,0.0052631578947368324,-0.008403361344537893,0.02670623145400606,fraction,"4-connected vs existing 8-connected component density; same binary mask, different object definition."
+bright_connectivity_d50_delta,all_known_sites,31,0.0,-2.9471355496363287,0.0,px,Connectivity sensitivity only; existing production definition remains 8-connected.
