@@ -10,7 +10,7 @@ md("""# 01 · Dataset analysis — SEM cross-sections, three batches
 
 **Scope.** Descriptive only. No baseline is assumed, no verdicts are produced. Everything here feeds the KPI design in the next notebook.
 
-**Data.** `Dataset/Batch_{1,2,3}/img_<site>_<detector>.tif`. Each *site* is one stitched cross-section imaged with three detectors: backscattered electrons (**BSE**, contrast ∝ atomic number), secondary electrons (**ETD**, labelled **SE** on four sites; topography), and the in-column **Inlens** detector (surface-sensitive, strong charging contrast).""")
+**Data.** `Dataset/Batch_{1,2,3}/img_<site>_<detector>.tif`. Grayscale stored as three identical RGB planes (39 images have a single differing edge column, nothing inside the frame). Each *site* is one stitched cross-section imaged with three detectors: backscattered electrons (**BSE**, contrast ∝ atomic number), secondary electrons (**ETD**, labelled **SE** on four sites; topography), and the in-column **Inlens** detector (surface-sensitive, strong charging contrast).""")
 
 code(r'''import os, re, glob, warnings, json
 import numpy as np, pandas as pd
@@ -86,7 +86,7 @@ Batch 3 is 2.4× larger than the others. A reference batch is often the largest,
 
 md("""## 2 · Image geometry
 
-All images are stitched strips ~7000 px wide. Height varies per site. Since each strip spans the full coating cross-section, **height is a proxy for coating thickness** — but only if magnification was constant, which we cannot verify because every acquisition tag was stripped (`Software = tifffile.py`, resolution tags are 1 inch/px placeholders).""")
+All images are stitched strips ~7000 px wide. Height varies per site. Since each strip spans the full coating cross-section, **height is a proxy for coating thickness** — but only if magnification was constant. Microscope metadata was stripped when the files were re-saved (`Software = tifffile.py`), but the TIFF resolution tags survived and encode a **nominal 25.0 nm/pixel** on every image (24.9992–25.0005). That is export metadata, not verified calibration; at face value a strip is ~175 µm wide and the coating ~40–58 µm thick. We keep all KPIs in pixels and quote µm equivalents only as "nominal".""")
 
 code(r'''geo = []
 for _, r in SITES.iterrows():
@@ -125,10 +125,11 @@ plt.tight_layout(); plt.show()''')
 
 md("""**Reading the images.** Ion-polished cross-sections of a porous electrode coating. The bulk phase is plate-like graphite (medium grey in BSE, with polishing striations in ETD). Scattered particles appear distinctly brighter in BSE, i.e. higher mean atomic number than carbon — consistent with silicon / silicon-oxide additive in a Si–graphite anode, though the chemistry is not confirmed. Black regions in BSE are open pores. Fine "spongy" texture between particles is the conductive-carbon/binder network.
 
-The three detectors carry different information:
-- **BSE** separates pore / graphite / bright phase by composition → the channel for phase fractions and particle sizes.
-- **ETD** shows topography and polishing relief → edges, cracks, delamination.
-- **Inlens** is dominated by charging and surface contamination; its brightness swings wildly between sites → texture only, never intensity.""")
+The three detectors carry different information, and each contributes specific measurements below:
+- **BSE** separates pore / graphite / bright phase by composition → phase fractions, particle and pore sizes, crack-like voids, through-thickness profiles (§6).
+- **ETD** shows topography and polishing relief → dark-ridge density *inside* bright particles (intra-particle cracking), curtaining fraction and boundary sharpness as sample-preparation flags (§6c).
+- **Inlens** is dominated by charging and surface contamination; its brightness swings wildly between sites → intra-particle texture only (speckled vs smooth particle interiors, §6c), never intensity.
+The channels are recorded simultaneously and are pixel-aligned (phase-correlation shifts ≤ 0.2 px, checked on six sites), so BSE masks can be applied directly to ETD and Inlens.""")
 
 md("""## 4 · Acquisition quality: histograms, contrast stretching, black level
 
@@ -382,6 +383,154 @@ for ax, (b, s) in zip(axes, show):
     ax.set_title(f"{b} · {s} [{r.group}] — crack-like void fraction {r.crack_frac:.4f}, {int(round(r.crack_count_per_Mpx*(r.H*r.W/1e6)))} voids > 500 px, largest pore ⌀ {r.pore_max_d:.0f} px", fontsize=9)
 plt.tight_layout(); plt.show()''')
 
+md("""### 6c · ETD and Inlens features inside the BSE masks
+
+Everything so far is measured on BSE. The ETD and Inlens channels are pixel-aligned with it, so the BSE masks can be reused to ask questions BSE cannot answer:
+
+| KPI | Channel | Meaning |
+|---|---|---|
+| `etd_crack_density_particles` | ETD | fraction of bright-particle *interior* covered by dark ridges that are **not** aligned with the ion-polishing curtaining direction — intra-particle cracking of the additive |
+| `etd_crack_density_graphite` | ETD | same, inside graphite interiors |
+| `etd_curtain_frac`, `etd_curtain_anisotropy` | ETD | fraction of solid interior covered by ridges aligned with the dominant orientation, and how dominant that orientation is — a **sample-preparation** flag (curtaining severity) |
+| `etd_boundary_sharpness` | ETD | median ETD gradient on BSE solid/pore boundaries, normalised by ETD contrast — focus / polishing-quality flag |
+| `inlens_particle_texture`, `inlens_speckled_particle_frac` | Inlens | per-particle Inlens intensity spread inside eroded bright particles, normalised by Inlens contrast — distinguishes speckled (porous / composite) from smooth (dense) particle interiors |
+| `etd_grad_energy`, `inlens_grad_energy` | ETD / Inlens | normalised texture energy over the solid phase, used only for the three-channel agreement check below |
+
+Ridges are detected as the positive principal curvature of the Gaussian-smoothed ETD image (σ = 2 px), normalised by the image's interquartile range. The curtaining direction is the modal ridge orientation inside solid interiors; ridges within ±15° of it are counted as curtaining, the rest as cracks. The ridge threshold is a single absolute value chosen once across all sites (the grid value nearest the median per-site 97th percentile), *not* a per-image percentile — a per-image percentile would make every density equal by construction.""")
+
+code(r'''from skimage.filters import sobel
+from skimage.feature import hessian_matrix
+epath = os.path.join(CACHE, "etd_inlens_features.csv")
+RIDGE_GRID = [0.05, 0.10, 0.15, 0.20, 0.30, 0.40]
+
+def multichannel_features(bse, etd, il, th_lo, th_hi, sigma=2.0, return_maps=False, T=None):
+    sm = gaussian(bse, 1.0, preserve_range=True)
+    bright = ndi.binary_opening(sm > th_hi, iterations=1); pore = ndi.binary_opening(sm < th_lo, iterations=1); solid = ~pore
+    inner_p = ndi.binary_erosion(bright, iterations=6); inner_g = ndi.binary_erosion(solid & ~bright, iterations=8); interior = inner_p | inner_g
+    e = etd.astype(float); scale = np.subtract(*np.percentile(e, [75, 25])) + 1e-6
+    Hrr, Hrc, Hcc = hessian_matrix(e, sigma=sigma, order="rc", use_gaussian_derivatives=False)
+    tr = Hrr + Hcc; det = Hrr*Hcc - Hrc**2; lam1 = tr/2 + np.sqrt(np.maximum(tr**2/4 - det, 0))
+    ridge = np.maximum(lam1, 0) * sigma**2 / scale
+    theta = np.degrees(0.5*np.arctan2(2*Hrc, Hrr - Hcc))
+    p97 = np.percentile(ridge[interior], 97)
+    ang = theta[(ridge > p97) & interior]; hist, edges = np.histogram(ang, bins=36, range=(-90, 90)); dom = edges[np.argmax(hist)] + 2.5
+    dtheta = np.abs((theta - dom + 90) % 180 - 90); aligned = dtheta < 15
+    out = dict(ridge_p97=p97, etd_ridge_dom_angle=dom, etd_curtain_anisotropy=hist.max()/max(np.median(hist), 1))
+    for t in RIDGE_GRID:
+        strong = ridge > t
+        out[f"crack_p_{t}"] = (strong & ~aligned)[inner_p].mean() if inner_p.any() else np.nan
+        out[f"crack_g_{t}"] = (strong & ~aligned)[inner_g].mean()
+        out[f"curtain_{t}"] = (strong & aligned)[interior].mean()
+    g = sobel(e); bnd = solid ^ ndi.binary_erosion(solid, iterations=2)
+    out["etd_boundary_sharpness"] = np.median(g[bnd]) / scale; out["etd_grad_energy"] = np.median(g[interior]) / scale
+    il_f = il.astype(float); il_scale = np.subtract(*np.percentile(il_f, [75, 25])) + 1e-6
+    out["inlens_grad_energy"] = np.median(sobel(il_f)[interior]) / il_scale
+    lab = label(inner_p); idx = np.arange(1, lab.max()+1)
+    if len(idx):
+        area = ndi.sum(np.ones_like(lab), lab, idx); sd = ndi.standard_deviation(il_f, lab, idx) / il_scale; keep = area >= 400
+        out.update(inlens_particle_texture=np.median(sd[keep]) if keep.any() else np.nan, inlens_particle_texture_p90=np.percentile(sd[keep], 90) if keep.any() else np.nan,
+                   inlens_speckled_particle_frac=(sd[keep] > 0.5).mean() if keep.any() else np.nan, inlens_particles_measured=int(keep.sum()))
+    if return_maps:
+        strong = ridge > T; return out, dict(curtain=strong & aligned, crack=strong & ~aligned, inner_p=inner_p, inner_g=inner_g)
+    return out
+
+if os.path.exists(epath):
+    E = pd.read_csv(epath)
+else:
+    rows = []
+    for _, r in F.iterrows():
+        t, bo = bright_bands(load(r.batch, r.site, "BSE")); sl = slice(t, -bo if bo else None)
+        bse, etd, il = [load(r.batch, r.site, d)[sl] for d in ("BSE", "ETD", "Inlens")]
+        o = multichannel_features(bse, etd, il, r.th_lo, r.th_hi); o.update(batch=r.batch, site=r.site); rows.append(o)
+        print(f"{r.batch} {r.site}: p97 {o['ridge_p97']:.3f} dom {o['etd_ridge_dom_angle']:.0f}° sharp {o['etd_boundary_sharpness']:.2f} inlens tex {o.get('inlens_particle_texture', np.nan):.2f}", flush=True)
+    E = pd.DataFrame(rows); E.to_csv(epath, index=False)
+
+T_STAR = min(RIDGE_GRID, key=lambda t: abs(t - E.ridge_p97.median()))
+E["etd_crack_density_particles"] = E[f"crack_p_{T_STAR}"]; E["etd_crack_density_graphite"] = E[f"crack_g_{T_STAR}"]; E["etd_curtain_frac"] = E[f"curtain_{T_STAR}"]
+F = F.drop(columns=[c for c in F.columns if c.startswith(("etd_", "inlens_", "ridge_"))], errors="ignore").merge(E, on=["batch", "site"])
+print(f"ridge threshold T* = {T_STAR} (median per-site p97 = {E.ridge_p97.median():.3f}, range {E.ridge_p97.min():.3f}–{E.ridge_p97.max():.3f})")''')
+
+code(r'''# overlays at T*: one site per batch
+fig, axes = plt.subplots(3, 3, figsize=(22, 10))
+for i, (b, s_) in enumerate(picks):
+    r = F[(F.batch==b)&(F.site==s_)].iloc[0]
+    t, bo = bright_bands(load(b, s_, "BSE")); sl = slice(t, -bo if bo else None)
+    bse, etd, il = [load(b, s_, d)[sl] for d in ("BSE", "ETD", "Inlens")]
+    _, M = multichannel_features(bse, etd, il, r.th_lo, r.th_hi, return_maps=True, T=T_STAR)
+    h, w = bse.shape; c = (slice(h//2-300, h//2+300), slice(w//2-500, w//2+500))
+    axes[i,0].imshow(etd[c], cmap="gray"); axes[i,0].set_title(f"{b} · {s_} · ETD", fontsize=9)
+    rgb = np.stack([etd[c]]*3, -1).astype(float)/255; rgb[M["curtain"][c]] = (0.2, 0.5, 1.0); rgb[M["crack"][c]] = (1.0, 0.3, 0.2)
+    axes[i,1].imshow(rgb); axes[i,1].contour(M["inner_p"][c], levels=[.5], colors="yellow", linewidths=.6)
+    axes[i,1].set_title(f"blue = curtaining ({r.etd_ridge_dom_angle:.0f}°) · red = other ridges · yellow = particle interiors · crack density in particles {r.etd_crack_density_particles:.4f}", fontsize=9)
+    axes[i,2].imshow(il[c], cmap="gray"); axes[i,2].contour(M["inner_p"][c], levels=[.5], colors="yellow", linewidths=.6); axes[i,2].set_title(f"Inlens · particle texture {r.inlens_particle_texture:.2f}", fontsize=9)
+    for ax in axes[i]: ax.axis("off")
+plt.tight_layout(); plt.show()
+
+mc = ["etd_crack_density_particles","etd_crack_density_graphite","etd_curtain_frac","etd_curtain_anisotropy","etd_boundary_sharpness","inlens_particle_texture","inlens_speckled_particle_frac","inlens_particles_measured"]
+mlab = {"etd_crack_density_particles":"ETD crack density in bright particles","etd_crack_density_graphite":"ETD crack density in graphite","etd_curtain_frac":"ETD curtaining fraction (prep flag)",
+        "etd_curtain_anisotropy":"ETD curtaining anisotropy (prep flag)","etd_boundary_sharpness":"ETD boundary sharpness (prep/focus flag)","inlens_particle_texture":"Inlens intra-particle texture (median)",
+        "inlens_speckled_particle_frac":"fraction of speckled particles (Inlens)","inlens_particles_measured":"particles measured (n ≥ 400 px interior)"}
+np.random.seed(1)
+fig, axes = plt.subplots(2, 4, figsize=(20, 7.5)); axes = axes.ravel()
+for ax, k in zip(axes, mc):
+    for i, g in enumerate(groups):
+        sub = F[F.group==g]; y = sub[k].values; x = np.full(len(y), i, float) + np.random.uniform(-.14, .14, len(y))
+        ax.scatter(x, y, s=26, color=COL[g], zorder=3); ax.hlines(np.nanmedian(y), i-.3, i+.3, color=COL[g], lw=2)
+        lc = sub.bright_low_contrast.values
+        if lc.any(): ax.scatter(x[lc], y[lc], s=110, facecolors="none", edgecolors="#e34948", lw=1.2, zorder=4)
+    ax.set_xticks(range(len(groups))); ax.set_xticklabels(["B1","B2","B3","B3 grey"], fontsize=9); ax.set_title(mlab[k], fontsize=10)
+plt.suptitle("ETD / Inlens KPIs per site (red ring = low bright-phase contrast, particle masks unreliable)", y=1.0); plt.tight_layout(); plt.show()
+display(F.groupby("group")[mc].agg(["median","std"]).round(4).T)''')
+
+md("""**Is the Inlens texture KPI material or instrument?** It orders the batches more strongly than any BSE feature, which is exactly when to be suspicious of a charging-sensitive channel. The cell below checks how much of it is explained by Inlens acquisition statistics alone.""")
+
+code(r"""from scipy import stats as _st
+import statsmodels.formula.api as smf
+qi = Q[Q.det=="Inlens"][["batch","site","mean","p50","std","empty_bin_frac"]].rename(columns={"mean":"il_mean","p50":"il_p50","std":"il_std","empty_bin_frac":"il_stretch"})
+Dc = F.merge(qi, on=["batch","site"])
+print("Spearman ρ of inlens_particle_texture with …")
+for c, lab_ in [("il_p50","Inlens median brightness"),("il_mean","Inlens mean"),("il_std","Inlens std"),("il_stretch","Inlens contrast-stretch fraction"),("H","frame height (session fingerprint)"),("bright_d50","bright-phase D50 (material)"),("inlens_grad_energy","Inlens texture energy (same channel)")]:
+    r_, p_ = _st.spearmanr(Dc[c], Dc.inlens_particle_texture, nan_policy="omit"); print(f"   {lab_:38s} ρ = {r_:+.2f}   p = {p_:.3f}")
+m = smf.ols("inlens_particle_texture ~ il_p50 + il_std + il_stretch", data=Dc).fit(); Dc["resid"] = m.resid
+Fr, pr = _st.f_oneway(*[g.resid.values for _, g in Dc.groupby("group")]); Fw, pw = _st.f_oneway(*[g.inlens_particle_texture.values for _, g in Dc.groupby("group")])
+print(f"\nR² of an acquisition-only model (Inlens median, std, stretch): {m.rsquared:.2f}")
+print(f"Group effect on the raw KPI:        F = {Fw:.1f}, p = {pw:.4f}")
+print(f"Group effect on the residual KPI:   F = {Fr:.1f}, p = {pr:.4f}")
+print("Within-group ρ(texture, Inlens median):", {g: round(_st.spearmanr(d.il_p50, d.inlens_particle_texture)[0], 2) for g, d in Dc.groupby("group") if len(d) >= 5})""")
+
+md("""**Reading §6c.**
+- *Intra-particle cracking is essentially absent.* ETD ridge density inside bright-particle interiors is 0.02–0.5 % of interior area in every group; the overlays show intact, smoothly polished particle faces. The KPI is a null result on this dataset, but it is exactly the measurement that would catch fractured additive particles in an unseen batch, so it stays in the pipeline.
+- *Ridge density in graphite and curtaining fraction are highest in the grey-pore group* (0.041 vs 0.021–0.030; 0.0105 vs 0.006–0.008). Together with that group's missing black level, this reads as a different polishing / imaging session rather than a different material.
+- *Boundary sharpness* is lower across Batch 3 (0.77 vs 0.92–0.97), a mild focus / polish-quality difference that the QC report should surface as a flag.
+- *Inlens intra-particle texture* orders the groups cleanly (B1 0.32 > B2 0.24 > B3 0.18 > grey 0.13) and is the single strongest between-group feature in §10 — **but it is heavily confounded.** It correlates ρ ≈ 0.8 with Inlens median brightness and ρ ≈ 0.7 with frame height, an acquisition-only model explains ~75 % of its variance, and inside each batch it still tracks Inlens brightness (ρ ≈ 0.7 in Batches 2 and 3). A weak group effect survives on the residuals (p ≈ 0.02), so there may be a real difference in particle interiors (speckled vs smooth), but it cannot be separated from charging contrast with this normalisation. Treat it as *promising, not trusted*; in the QC pipeline it needs local-contrast or rank normalisation and must never drive a verdict on its own.""")
+
+md("""### 6d · Three-channel agreement
+
+A material change should move all three detectors in a consistent way; an instrument or display change typically moves one channel's intensity without moving texture, or one channel without the others. The table below standardises six per-site quantities — median intensity of each channel (from §4) and one texture measure per channel (BSE correlation length, ETD and Inlens gradient energy) — and reports, per site, the spread of the intensity z-scores across channels and the spread of the texture z-scores across channels. Large spread = channels disagree = lower confidence that the shift is material.""")
+
+code(r'''q = Q.pivot_table(index=["batch","site"], columns="det", values="p50").reset_index().rename(columns={"BSE":"BSE_p50","ETD":"ETD_p50","Inlens":"Inlens_p50"})
+A = F[["batch","site","group","corr_len_px","etd_grad_energy","inlens_grad_energy","bright_low_contrast"]].merge(q, on=["batch","site"])
+cols_int = ["BSE_p50","ETD_p50","Inlens_p50"]; cols_tex = ["corr_len_px","etd_grad_energy","inlens_grad_energy"]
+Z = A.copy()
+for c in cols_int + cols_tex: Z[c] = (A[c] - A[c].median()) / (1.4826 * np.median(np.abs(A[c] - A[c].median())) + 1e-9)   # robust z
+Z["intensity_disagreement"] = Z[cols_int].std(axis=1); Z["texture_disagreement"] = Z[cols_tex].std(axis=1)
+Z = Z.sort_values(["group","site"]).reset_index(drop=True)
+
+fig, ax = plt.subplots(figsize=(11, 10))
+M = Z[cols_int + cols_tex].values
+im = ax.imshow(np.clip(M, -4, 4), cmap="RdBu_r", vmin=-4, vmax=4, aspect="auto")
+ax.set_xticks(range(6)); ax.set_xticklabels(["BSE median","ETD median","Inlens median","BSE corr. length","ETD texture energy","Inlens texture energy"], rotation=35, ha="right", fontsize=9)
+ax.set_yticks(range(len(Z))); ax.set_yticklabels([f"{r.site}" for _, r in Z.iterrows()], fontsize=8)
+for lbl, (_, r) in zip(ax.get_yticklabels(), Z.iterrows()): lbl.set_color(COL[r.group])
+ax.axvline(2.5, color="k", lw=1); ax.grid(False); ax.set_title("Robust z-scores per site (rows coloured by group); left block = intensity, right block = texture")
+plt.colorbar(im, ax=ax, shrink=.6, label="robust z"); plt.tight_layout(); plt.show()
+
+print("Sites whose channels disagree most (spread of z across the three channels):")
+display(Z.sort_values("texture_disagreement", ascending=False).head(8)[["batch","site","group","intensity_disagreement","texture_disagreement","bright_low_contrast"]].round(2).reset_index(drop=True))
+display(Z.groupby("group")[["intensity_disagreement","texture_disagreement"]].median().round(2))''')
+
+md("""**Reading §6d.** The grey-pore group is the clearest case of channel *disagreement*: BSE median is +2 to +3 robust-z (no black pixels) while the Inlens median is −2 to −3, with texture nearly unchanged — intensity moved in opposite directions in two detectors recorded simultaneously, which is a detector/preparation signature, not a material one. The three cracked Batch 3 sites show the opposite pattern: intensities are ordinary but ETD texture energy drops to −2 to −3 z while BSE correlation length rises, i.e. texture changed across channels while intensity did not — consistent with a real structural change (large flat crack faces). This is the logic the QC notebook will formalise: intensity-only shifts lower confidence in a material verdict, texture shifts that agree across channels raise it.""")
+
 md("""## 7 · Bright-phase particle size distribution
 
 Area-weighted cumulative distributions of equivalent diameter, pooled per group, plus per-site D50 against number density. The two low-contrast sites are excluded here because their "bright" class is contaminated. Units are pixels; without a scale bar only *relative* shifts are meaningful.""")
@@ -432,8 +581,9 @@ md("""## 10 · Site-level structure: do batches separate?
 
 Standardise the candidate KPIs, project to two principal components, and cluster. Also compute, per KPI, how much of the variance is *between* batches versus *within* (one-way ANOVA F and η²), using Batch 3 split into its two groups.""")
 
-code(r'''feat_cols = ["pore_frac","pore_d50","pore_elong","pore_max_d","crack_frac","bright_frac","bright_count_per_Mpx","bright_d50","bright_d90","bright_circ","fft_slope","corr_len_px"]
-X = F[feat_cols].values; Xs = (X - X.mean(0)) / X.std(0)
+code(r'''feat_cols = ["pore_frac","pore_d50","pore_elong","pore_max_d","crack_frac","bright_frac","bright_count_per_Mpx","bright_d50","bright_d90","bright_circ","fft_slope","corr_len_px",
+             "etd_crack_density_particles","etd_boundary_sharpness","inlens_particle_texture"]
+X = F[feat_cols].fillna(F[feat_cols].median()).values; Xs = (X - X.mean(0)) / X.std(0)
 U, S, Vt = np.linalg.svd(Xs - Xs.mean(0), full_matrices=False); pcs = U[:, :2] * S[:2]; expl = S**2 / (S**2).sum()
 fig, axes = plt.subplots(1, 2, figsize=(17, 6))
 for g in groups:
@@ -466,19 +616,25 @@ print("η² = share of variance explained by group membership (4 groups: B1, B2,
 
 md("""**Reading §10.** The first split in the dendrogram is the two low-contrast Batch 1 sites (`4ih2ggld`, `5n1q8atc`) — an acquisition artefact, not material. The second split is the three Batch 3 sites with large delamination-like cracks (`hzumfsms`, `0grcilhi`, `ufdvpb81`) — the only candidate *material* defect signature in the data. Below those two branches, Batch 1, Batch 2 and Batch 3 sites interleave freely: on these KPIs the three folders are **not** separable as batches. The grey-pore sites sit together next to Batch 2 sites, because both have lower pore fraction and smaller pores.
 
-The η² table says the same thing: once Batch 3 is split, pore-structure KPIs (`pore_frac`, `pore_max_d`, `pore_d50`, `crack_frac`) explain 27–36 % of between-site variance, bright-phase KPIs 18–24 % (and that mostly from the two low-contrast sites), and nothing reaches the level where a 7-site batch could be called different with confidence. Using the folder labels as given, only the bright-phase KPIs reach p < 0.05 — and those are the ones contaminated by the Batch 1 contrast problem.""")
+The η² table says the same thing: `inlens_particle_texture` tops the list (η² ≈ 0.53) but is confounded with Inlens brightness (§6c) and should be read as a session effect until proven otherwise. Among trusted KPIs, once Batch 3 is split, pore-structure KPIs (`pore_frac`, `pore_max_d`, `pore_d50`, `crack_frac`) explain 27–36 % of between-site variance, bright-phase KPIs 18–24 % (and that mostly from the two low-contrast sites), and nothing reaches the level where a 7-site batch could be called different with confidence. Using the folder labels as given, only the bright-phase KPIs reach p < 0.05 — and those are the ones contaminated by the Batch 1 contrast problem.""")
 
 md("""## 11 · Findings
 
 **What the dataset is**
 - 31 sites × 3 detectors = 93 stitched BSE / ETD / Inlens cross-sections, ~7000 × 1600–2300 px, 8-bit. Batch 1: 7 sites, Batch 2: 7, Batch 3: 17. Porous graphite-plate coating with a sparse bright (higher-Z) additive phase; chemistry unconfirmed.
-- No acquisition metadata survived. All sizes are in pixels; only relative comparisons are valid. Strip height carries no batch signal and partly fingerprints acquisition sessions.
+- Microscope settings did not survive; the resolution tags give a nominal 25.0 nm/px (unverified). All sizes are reported in pixels with nominal µm in parentheses where helpful (bright-phase D50 ≈ 150 px ≈ 3.8 µm; crack-like void cutoff 500 px ≈ 12.5 µm). Strip height carries no batch signal and partly fingerprints acquisition sessions.
 
 **Acquisition is not uniform, and it matters more than batch**
 1. *Contrast stretching* was applied unevenly (~half of images, strongest in Inlens). Raw gray values are not comparable between sites; every structural KPI must use per-image, histogram-anchored thresholds, and intensity statistics belong in an "instrument flags" bucket.
 2. *Two Batch 1 sites* (`4ih2ggld`, `5n1q8atc`; both 2316 px tall) were recorded with the bright phase only ~25–35 gray levels above graphite instead of the usual 50–70. No threshold can separate the additive from particle rims and binder there; their bright-phase fraction and particle count come out 2–8× too high. They dominate PC1 and are the first split in the clustering. **Bright-phase KPIs for these two sites are unreliable and must be flagged, not averaged.**
 3. *Four Batch 3 sites* (`71vgq3fw`, `kbdh4tri`, `tuy3zymq`, `x7u69zsw`; all 2060 px tall) have no black pixels, a grey plateau where pores should be, the lowest bright-phase separation of the normal-contrast sites (46–47 levels), and darker Inlens. This "grey-pore group" is most likely a different preparation or session (e.g. resin-filled pores). Their pore KPIs rest on a fallback threshold and read systematically low (pore fraction 0.075 vs ~0.09, pore D50 75 vs ~105 px).
 4. A few images carry a thin copper or stitching band at one edge (≤ 56 rows); trimmed before measurement.
+
+**Cross-channel measurements (§6c–6d)**
+- ETD and Inlens are pixel-aligned with BSE, so BSE masks transfer directly. Intra-particle crack density of the bright phase (ETD dark ridges inside particle interiors, curtaining-corrected) is 0.02–0.5 % everywhere: the additive particles are intact in all three batches. The KPI stays because it is the one that would catch fractured particles in the unseen batch.
+- Curtaining fraction, graphite ridge density and boundary sharpness behave as *preparation flags*: the grey-pore group has the most curtaining and ridge relief, Batch 3 overall the softest boundaries.
+- Inlens intra-particle texture is the strongest batch-ordered feature in the whole table (B1 > B2 > B3 > grey), but ~75 % of it is explained by Inlens brightness and session fingerprints, and only a weak group effect (p ≈ 0.02) survives after removing them. It is kept as a *candidate* KPI, flagged as confounded, and must not drive a verdict without better normalisation.
+- A three-channel agreement check (robust z of per-channel intensity and texture) separates the two kinds of anomaly already visible: the grey-pore group moves BSE and Inlens intensity in opposite directions with texture unchanged (instrument / preparation), the cracked sites move texture across channels with intensity unchanged (material).
 
 **Material structure**
 - Phase fractions are stable where acquisition is normal: bright-phase area fraction 0.04–0.08 (median ≈ 0.055) in every group, bright-phase D50 ≈ 140–165 px, pore fraction 0.06–0.14. Formulation loading does not differ between batches on this evidence.
@@ -488,15 +644,15 @@ md("""## 11 · Findings
 - After removing the two acquisition sub-groups and the three cracked sites, the three batches are **not separable** on these KPIs: sites interleave across all three folders in PCA and clustering, and no KPI reaches a between-batch effect that 7 sites could establish with confidence.
 
 **Implications for the QC design**
-1. Build on BSE-segmentation KPIs (pore fraction and size, crack-like void fraction, largest void, bright-phase fraction / count / D50 / circularity) plus one scale-free texture descriptor. Use ETD and Inlens only for texture and edge features, never for intensity.
-2. Make acquisition-quality flags first-class outputs: bright-phase separation, black level, contrast stretching, edge bands, detector label. The two biggest structures in this dataset are acquisition effects, and a QC system that cannot say "the microscope changed, not the material" will produce false rejects.
+1. Build on BSE-segmentation KPIs (pore fraction and size, crack-like void fraction, largest void, bright-phase fraction / count / D50 / circularity) plus one scale-free texture descriptor. From ETD take intra-particle crack density and the preparation flags (curtaining, boundary sharpness); from Inlens take intra-particle texture only after local-contrast normalisation, and label it as confounded until validated. Never use any channel's raw intensity as a material KPI.
+2. Make acquisition-quality flags first-class outputs: bright-phase separation, black level, contrast stretching, edge bands, detector label, curtaining, boundary sharpness, and the three-channel agreement score. The two biggest structures in this dataset are acquisition effects, and a QC system that cannot say "the microscope changed, not the material" will produce false rejects.
 3. Calibrate every threshold against *within-baseline* spread (split-half / leave-one-site-out). With 7 sites per batch the sampling noise is large and has to be displayed, not hidden; several KPIs differ between batches by less than their within-batch standard deviation.
 4. Crack-like void fraction and largest void size are the KPIs most likely to carry a real accept / investigate / reject signal; show the detected voids on the image when they drive a verdict.
 5. Keep Batch 3 split until the organisers confirm what it is. If it is the baseline, the grey-pore sites and the three cracked sites must be handled explicitly (excluded, or modelled as known sub-populations), otherwise the baseline's own spread will swallow any incoming defect.
 
 **Open questions for the organisers:** which batch is the approved baseline; whether the four grey-pore sites and the two low-contrast sites are intentional; pixel size; image orientation relative to the current collector; whether the cracked Batch 3 sites are known defects.
 
-**Cached outputs** (reused by later notebooks): `analysis_cache/site_features.csv` (one row per site, all KPIs and quality flags), `analysis_cache/bright_particles.csv` (one row per bright-phase particle), `analysis_cache/image_quality.csv` (one row per image).""")
+**Cached outputs** (reused by later notebooks): `analysis_cache/site_features.csv` (one row per site, all KPIs and quality flags), `analysis_cache/etd_inlens_features.csv` (ETD / Inlens KPIs per site), `analysis_cache/bright_particles.csv` (one row per bright-phase particle), `analysis_cache/image_quality.csv` (one row per image).""")
 
 nb["cells"] = cells
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
