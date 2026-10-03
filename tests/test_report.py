@@ -33,6 +33,12 @@ def _compare(kpis):
     return pd.DataFrame(rows)
 
 
+def test_render_next_action_line(tmp_path):
+    res = synthetic_result(); res["verdict"]["next_action"] = "no QC action from the image evidence; the release decision stays with QC"
+    html = open(report.render_report(res, str(tmp_path / "qc.html")), encoding="utf-8").read()
+    assert "Next QC action:</b> no QC action from the image evidence" in html
+
+
 def synthetic_result(verdict_text=CONSISTENT, localized="none"):
     th = Thresholds()
     ref, bat = _sites(17, "Batch_3"), _sites(7, "Batch_X")
@@ -91,6 +97,12 @@ def test_render_report_synthetic(tmp_path):
     assert "accept" not in card
     # placeholders for missing optional blocks are rendered, not crashes
     assert "not available in this run" in low   # acquisition sensitivity block placeholder (reject withheld without it)
+    # G: grouped contents, status strip, exploratory divider and next action
+    assert "Decision screen — frozen primary path" in html and "not verdict inputs" in html and 'class="card expl"' in html
+    assert "phase-mask expert review: pending" in html and "no release tolerances encoded" in html
+    # no unrendered template fragments may leak into the page (a plain string next to an f-string did exactly that once)
+    import re as _re
+    assert not _re.search(r"\{[a-z_]+\}|\{_e\(|\{_f\(", html), "unrendered placeholder in HTML"
     assert "Evidence images not rendered" in html  # no raw images in the synthetic result
 
 

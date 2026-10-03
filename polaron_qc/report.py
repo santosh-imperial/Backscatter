@@ -803,9 +803,13 @@ figure{margin:12px 0}figure img{width:100%;height:auto;border-radius:8px;border:
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.note{font-size:13px;color:var(--muted)}.small{font-size:13px}
 .drv{padding:8px 12px;border-left:3px solid var(--accent);margin:8px 0;background:var(--chip);border-radius:0 8px 8px 0}.drv .phys{display:block;color:var(--muted);font-size:13.5px;margin-top:4px}
 .toc{font-size:14px;margin:0 0 18px;padding-left:18px;columns:2;gap:24px}.toc a{color:var(--ink);text-decoration:none}.toc a:hover{color:var(--accent)}
-.ph{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;color:var(--muted)}footer{color:var(--muted);font-size:13px;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
+.ph{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;color:var(--muted)}
+.tocgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 18px}.tocgrid .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}.tocgrid .toc{columns:1;margin:0}
+.strip{margin:6px 0 14px}.strip .chip{font-size:12.5px}
+.divider{display:flex;align-items:center;gap:12px;margin:30px 0 16px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.05em}.divider::before,.divider::after{content:"";flex:1;border-top:1px dashed var(--line)}
+.card.expl{border-style:dashed}.card.expl h2::after{content:"exploratory · not a verdict input";font-size:11px;font-weight:500;color:var(--muted);margin-left:10px;text-transform:uppercase;letter-spacing:.04em}footer{color:var(--muted);font-size:13px;margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
 code{font-size:12.5px;background:var(--chip);padding:1px 5px;border-radius:4px}
-@media(max-width:760px){.cols,.grid2{grid-template-columns:1fr}.toc{columns:1}}
+@media(max-width:760px){.cols,.grid2,.tocgrid{grid-template-columns:1fr}.toc{columns:1}}
 @media print{.card{break-inside:avoid}}
 """
 
@@ -1038,10 +1042,11 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
                if abst["abstain"] else
                f'<p><b>Decision stability</b> (leave-one-site-out): {st["share"]:.2f} — {int(round(st["share"] * st["n_runs"]))} of {st["n_runs"]} re-verdicts returned the same verdict. ')
             + f'<span class="note">This is a stability share, not a probability of being right. Refit per fold: {_e(", ".join(st.get("refit_per_fold", []) or ["see method"]))}'
-            + (f'; held fixed: {_e(", ".join(st["held_fixed"]))} — stability is conditional on those inputs' if st.get("held_fixed") else "") + '.</span></p><p>{jk}</p>'
+            + (f'; held fixed: {_e(", ".join(st["held_fixed"]))} — stability is conditional on those inputs' if st.get("held_fixed") else "") + f'.</span></p><p>{jk}</p>'
             f'<p><b>Drivers:</b> {drivers}. <b>Usable n:</b> ' + "; ".join(f"{k} {nr}/{nb}" for k, (nr, nb) in result["limits"]["usable_n"].items()) + " (reference/batch sites after quality flags).</p>"
             f'<p><b>What would move it:</b> {_e(v["what_would_move_it"])}.</p>'
-            f'<p class="note">Thresholds hash <code>{_e(v["thresholds_hash"])}</code> · {_e(v["provenance"])}. '
+            + (f'<p><b>Next QC action:</b> {_e(v["next_action"])}.</p>' if v.get("next_action") else "")
+            + f'<p class="note">Thresholds hash <code>{_e(v["thresholds_hash"])}</code> · {_e(v["provenance"])}. '
             f'Release decisions remain provisional: no equivalence test against agreed tolerances has been run; "consistent" means within what this reference and n can detect (see MDC below).</p>')
     parts.append(_sec("verdict", f"{_e(bat)} vs working reference {_e(ref)} — verdict", body, "verdict " + _verdict_class(v["verdict"])))
 
@@ -1184,7 +1189,8 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
             body += "<h3>What novelty tracks — top 8 Spearman correlates (all 31 sites)</h3>" + _table(rows, ["variable", "kind", "ρ", "p", "n"]) + f"<p>{reading}</p>"
     else:
         body += '<h3>Patch-embedding novelty</h3><p class="ph">not available in analysis_cache/ml for this batch.</p>'
-    parts.append(_sec("ml", "ML corroboration (never the sole driver)", body))
+    parts.append('<div class="divider" id="exploratory"><span>Corroboration and exploratory evidence — shown for review, not verdict inputs</span></div>')
+    parts.append(_sec("ml", "ML corroboration (never the sole driver)", body, "expl"))
 
     # ---- 7. acquisition ---------------------------------------------------------------------------------------
     fb = result["flags_batch"]
@@ -1247,7 +1253,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
         rows = [[_e(i), _f(r.vb, 3), _f(r.vp, 3), _f(r.mSi, 3)] for i, r in g.iterrows()]
         body += ("<h3>Stereology — secondary</h3>" + _table(rows, ["batch", "Delesse vol. frac. bright", "Delesse vol. frac. pore", "nominal mass frac. additive if Si"])
                  + '<p class="note">Area-to-volume interpretation requires representative spatial sampling and valid phase labels; plate alignment alone does not invalidate it. Binder/unresolved pores and exact Si/SiOx density remain unspecified. Conditional model outputs, excluded from verdicts.</p>')
-    parts.append(_sec("physics", "Physics sanity checks", body or "<p class='ph'>physics cache not available.</p>"))
+    parts.append(_sec("physics", "Physics sanity checks", body or "<p class='ph'>physics cache not available.</p>", "expl"))
 
     # ---- 9. secondary KPIs ------------------------------------------------------------------------------------
     sec = cmp_[~cmp_.is_primary]
@@ -1256,7 +1262,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
              str(physics.CONSEQUENCE_WEIGHTS.get(r.kpi, "—")), _e(trust.get(r.kpi, "—"))] for r in sec.itertuples()]
     body = ('<p class="note">Descriptive only: uncorrected permutation p (Hodges–Lehmann, site labels), never a verdict driver, not multiplicity-corrected into silence. Lengths in px.</p>'
             + _table(rows, ["KPI", f"{_e(ref)} median ± MAD", f"{_e(bat)} median", "robust shift", "≈ 95 % CI", "Cliff's δ", "p (uncorrected)", "usable n", "weight", "trust"]))
-    parts.append(_sec("secondary", "Secondary KPIs — appendix (descriptive)", body))
+    parts.append(_sec("secondary", "Secondary KPIs — appendix (descriptive)", body, "expl"))
 
     # E25 additions are displayed separately, never passed to _run_pipeline/ML.
     candidate = result.get("battery_secondary")
@@ -1282,9 +1288,9 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
                   'Low-contrast sites are excluded from bright-dependent measurements; grey-pore sites from pore-dependent measurements. '
                   'Unresolved pore-mode flags remain method diagnostics; usable geometry does not mean expert-validated segmentation. '
                   'No observed internal long void gives an area fraction of zero and an undefined centroid. Small frames may lack full local windows.</p>')
-        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending", body))
+        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending", body, "expl"))
     else:
-        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending",
+        parts.append(_sec("battery-secondary", "Battery geometry candidates — measurement review pending", extra_cls="expl", body=
                           '<p class="ph">New secondary measurements are not available in this result. Re-extract with features v1.1.0; no unavailable value is treated as zero.</p>'))
 
     # ---- 10. limits + footer ----------------------------------------------------------------------------------
@@ -1304,14 +1310,23 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
               f'features v{_e(m.get("feature_version"))} · git {_e(m.get("git_describe") or "n/a")} · build runtime {_e(m.get("runtime_s"))} s · '
               f'statistic {_e(m["config"]["statistic"])}, α = {m["config"]["alpha"]}, power {m["config"]["power"]}, seed {m["config"]["seed"]}.</footer>')
 
-    toc = "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in (("verdict", "Verdict"), ("kpis", "Primary KPIs (MDC)"), ("drivers", "Drivers & physics"), ("evidence", "Evidence images"),
-                                                                 ("local", "Local-anomaly flags"), ("ml", "ML corroboration"), ("acq", "Acquisition"), ("physics", "Physics sanity"),
-                                                                 ("secondary", "Secondary KPIs"), ("battery-secondary", "Battery geometry candidates"), ("limits", "Limits")))
+    prim_toc = "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in (("verdict", "Verdict, stability, next action"), ("kpis", "Primary KPIs and MDC"), ("drivers", "Drivers and physics reading"),
+                                                                      ("evidence", "Evidence images"), ("local", "Local-anomaly flags and review state"), ("acq", "Acquisition flags and sensitivity views")))
+    expl_toc = "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t in (("ml", "ML corroboration"), ("physics", "Physics sanity"), ("secondary", "Secondary KPIs"),
+                                                                      ("battery-secondary", "Battery geometry candidates"), ("limits", "Limits and integration notes")))
+    toc = (f'<div class="tocgrid"><div><div class="k">Decision screen — frozen primary path</div><ol class="toc">{prim_toc}</ol></div>'
+           f'<div><div class="k">Corroboration and exploratory — not verdict inputs</div><ol class="toc">{expl_toc}</ol></div></div>')
+    strip = ('<div class="strip">'
+             f'<span class="chip">frozen config <code>{_e(m["config_hash"])}</code></span><span class="chip">thresholds <code>{_e(m["thresholds_hash"])}</code></span>'
+             f'<span class="chip">features v{_e(m.get("feature_version"))}</span><span class="chip">{m["n_sites_batch"]} v {m["n_sites_ref"]} sites</span>'
+             f'<span class="chip">statistic {_e(m["config"]["statistic"])}, α {m["config"]["alpha"]}</span>'
+             '<span class="chip warn">phase-mask expert review: pending (assumption register)</span>'
+             '<span class="chip">no release tolerances encoded</span></div>')
     head = (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>QC report {_e(bat)}</title><style>{_CSS}</style></head><body><div class="wrap">'
             f'<h1>Polaron SEM QC — {_e(bat)} vs working reference {_e(ref)}</h1>'
             f'<p class="lede">{m["n_sites_batch"]} incoming sites against {m["n_sites_ref"]} reference sites (site = unit of evidence; patches never count as n). '
-            f'Lengths in px (25 nm/px nominal). Batch-wide drift and localized defects are separate decision paths. Provenance: {_e(m["provenance"])}.</p><ol class="toc">{toc}</ol>')
+            f'Lengths in px (25 nm/px nominal). Batch-wide drift and localized defects are separate decision paths. Provenance: {_e(m["provenance"])}.</p>{strip}{toc}')
     html = head + "".join(parts) + footer + "</div></body></html>"
     os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:

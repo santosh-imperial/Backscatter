@@ -247,5 +247,24 @@ def test_abstention_label_prefers_escalated_localized_path():
     assert decide(a, b_rout, q)["verdict"] == INVESTIGATE_DRIFT
 
 
+def test_next_action_present_and_specific_for_every_verdict():
+    """G: every verdict carries a practical next QC action; none of them is a release decision."""
+    ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
+    a0 = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask); q = quality_abstention(bat, a0)
+    v_cons = decide(a0, check_b(local_tables([]), bat), q)
+    v_rout = decide(a0, check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat), q)
+    v_pend = decide(a0, check_b(local_tables([("crack_frac", "B_s1", 3.5)]), bat), q)
+    v_cred = decide(a0, check_b(local_tables([("crack_frac", "B_s1", 3.5)]), bat, image_reviewed={("B_s1", "crack_frac"): True}), q)
+    a1 = check_a(compare_table(p_holm={"crack_frac": 0.004}, shift={"crack_frac": 3.2}), dict(statistic=0.9, p=0.002), ref, sites(7, "B", shift={"crack_frac": 1.0}), mask, c2st=dict(auc=0.9, p=0.01))
+    v_drift = decide(a1, check_b(local_tables([]), bat), q, None)
+    v_rej = decide(a1, check_b(local_tables([]), bat), q, dict(stratified=0.1, adjusted=-0.5))
+    for v, word in ((v_cons, "no QC action"), (v_rout, "routed crop"), (v_pend, "reviews the painted crop"), (v_cred, "section additional sites"),
+                    (v_drift, "process-change query"), (v_rej, "hold the batch")):
+        assert word in v["next_action"], (v["verdict"], v["next_action"])
+        assert "accept" not in v["next_action"].lower()
+    bat3 = sites(3, "B"); a3 = check_a(compare_table(n_batch=3), dict(statistic=0.1, p=0.6), ref, bat3, mask); q3 = quality_abstention(bat3, a3)
+    assert "resolve the abstention" in decide(a3, check_b(local_tables([]), bat3), q3)["next_action"]
+
+
 def test_thresholds_hash_changes_with_values():
     assert Thresholds().hash() != Thresholds(alpha=0.01).hash()

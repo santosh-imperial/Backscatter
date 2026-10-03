@@ -277,7 +277,34 @@ def decide(a: dict, b: dict, abst: dict, att: dict | None = None, th: Thresholds
     return dict(verdict=verdict, reason=reason,
                 outcome_columns=dict(drift_alert=drift_alert, localized=local_status, quality_abstention=bool(abst["abstain"])),
                 drivers=a["drivers"], attenuation=att, escalation=esc, what_would_move_it=what_would_move(verdict, a, b, abst, att, th),
+                next_action=next_action(verdict, local_status, a, b, abst, th),
                 thresholds_hash=th.hash(), provenance=th.provenance)
+
+
+def next_action(verdict: str, local_status: str, a: dict, b: dict, abst: dict, th: Thresholds) -> str:
+    """The practical QC step that follows from this verdict (G: every conclusion carries a next action). Never a release
+    decision: no tolerances or equivalence test exist, so 'consistent' is not 'accept'."""
+    if abst["abstain"]:
+        return ("resolve the abstention before reading the paths: " + "; ".join(abst["reasons"])
+                + " — image more sites of this batch and/or re-acquire with resolved bright-phase contrast and a black level in range, then re-run the same command")
+    if verdict == REJECT:
+        return ("hold the batch (provisional): have an independent reviewer repeat the image review on the flagged sites, request the supplier's process "
+                "record for this lot, and confirm on a second specimen set before the reject is final")
+    if verdict == INVESTIGATE_LOCAL and local_status == "credible":
+        return (f"credible localized anomaly on {b['n_sites_credible']} site(s): section additional sites of this batch near the flagged positions; "
+                f"a second confirmed site at ≥ {th.reject_min_severity_mad:g} MAD moves the batch to reject (provisional)")
+    if verdict == INVESTIGATE_LOCAL:
+        return (f"a person reviews the painted crop(s) of the {b['n_sites_pending']} pending site(s) in the evidence section and records the result "
+                f"(`--review SITE:KPI=yes|no`); confirmation makes the finding credible, refutation closes it")
+    if verdict == INVESTIGATE_DRIFT:
+        drv = ", ".join(a["drivers"]) if a["drivers"] else "the multivariate shift"
+        return (f"check {drv} on the painted evidence images and the per-site drift table, request the acquisition/session metadata for this batch, "
+                "and re-read the stratified/adjusted views; if the shift survives, raise it with the supplier as a process-change query, not a defect claim")
+    if local_status == "review_routed":
+        return (f"review the routed crop(s) of {b['n_sites_pending']} site(s) and record the result with `--review`; the verdict changes only on confirmation. "
+                "No release decision follows from this report (no agreed tolerances)")
+    return ("no QC action from the image evidence; the release decision stays with QC under its own tolerances (none are encoded here). "
+            "Re-run when more sites of this batch are imaged: the minimum detectable change shrinks with n")
 
 
 def escalation(b: dict, th: Thresholds) -> dict:
