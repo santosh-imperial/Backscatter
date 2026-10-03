@@ -317,7 +317,7 @@ def fig_strips(sites, tests):
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
     rng = np.random.default_rng(0)
-    fig, axes = plt.subplots(1, len(PRIMARY_VARIANTS), figsize=(3.4 * len(PRIMARY_VARIANTS), 4.2))
+    fig, axes = plt.subplots(1, len(PRIMARY_VARIANTS), figsize=(4.4 * len(PRIMARY_VARIANTS), 4.6))
     t = tests[(tests.view == "all31") & (tests.statistic == "median")].set_index("variant")
     for ax, v in zip(axes, PRIMARY_VARIANTS):
         for i, b in enumerate(BATCHES):
@@ -329,8 +329,8 @@ def fig_strips(sites, tests):
                            marker="s" if crk else "o")
             ax.hlines(sub[f"{v}_median"].median(), i - 0.3, i + 0.3, color="black", linewidth=2, zorder=4)
         ax.set_xticks(range(3)); ax.set_xticklabels(["B1\nn=7", "B2\nn=7", "B3\nn=17"])
-        ax.set_title(f"{VARIANT_LABEL[v]}\nKruskal p = {t.loc[v, 'kruskal_p']:.3g}; B1 vs B3 p = {t.loc[v, 'B1_vs_B3_p']:.2g}, B2 vs B3 p = {t.loc[v, 'B2_vs_B3_p']:.2g}",
-                     fontsize=8.5)
+        ax.set_title(f"{VARIANT_LABEL[v]}\nKruskal p = {t.loc[v, 'kruskal_p']:.3g}\nexact perm. p: B1 vs B3 {t.loc[v, 'B1_vs_B3_p']:.2g}, B2 vs B3 {t.loc[v, 'B2_vs_B3_p']:.2g}",
+                     fontsize=8)
         ax.set_ylabel("site median over particles", fontsize=8)
         ax.grid(axis="y", alpha=0.25)
     handles = [Line2D([], [], marker="o", linestyle="", color=BATCH_COLORS[b], label=b.replace("_", " ")) for b in BATCHES]
@@ -348,14 +348,14 @@ def fig_brightness(sites, corr):
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
     c = corr[(corr.view == "all31") & (corr.statistic == "median") & (corr.covariate == "inlens_p50")].set_index(["variant", "scope"])
-    fig, axes = plt.subplots(1, len(PRIMARY_VARIANTS), figsize=(3.4 * len(PRIMARY_VARIANTS), 4.0))
+    fig, axes = plt.subplots(1, len(PRIMARY_VARIANTS), figsize=(4.4 * len(PRIMARY_VARIANTS), 4.4))
     for ax, v in zip(axes, PRIMARY_VARIANTS):
         for _, s in sites.iterrows():
             col, lowc, crk = _style(s)
             ax.scatter(s.inlens_p50, s[f"{v}_median"], s=42, color=col, edgecolor=LOWC_COLOR if lowc else "none", linewidth=2 if lowc else 0,
                        marker="s" if crk else "o", zorder=3)
         within = " / ".join(f"{c.loc[(v, b), 'rho']:+.2f}" for b in BATCHES)
-        ax.set_title(f"{VARIANT_LABEL[v]}\nρ(all 31) = {c.loc[(v, 'all'), 'rho']:+.2f}; within B1/B2/B3 = {within}", fontsize=8.5)
+        ax.set_title(f"{VARIANT_LABEL[v]}\nSpearman ρ, all 31 sites: {c.loc[(v, 'all'), 'rho']:+.2f}\nwithin B1 / B2 / B3 (n 7/7/17): {within}", fontsize=8)
         ax.set_xlabel("Inlens median grey level (acquisition covariate)", fontsize=8); ax.set_ylabel("site median", fontsize=8)
         ax.grid(alpha=0.25)
     handles = [Line2D([], [], marker="o", linestyle="", color=BATCH_COLORS[b], label=b.replace("_", " ")) for b in BATCHES]
@@ -412,7 +412,7 @@ def fig_evidence():
         axes[i, 0].set_ylabel(f"{e['batch'].replace('_', ' ')} {e['site']}\ninterior {e['area']:.0f} px\ncur {v['cur']:.2f} a {v['a_cv']:.2f} b {v['b_aff']:.2f}\nc {v['c_loc64']:.2f} d {v['d_lbp']:.2f}",
                               fontsize=7.5)
     fig.suptitle("E20 evidence — largest interior particle of the first/last site by id per batch: raw vs normalised Inlens (crops are illustrations, not n)", fontsize=9.5)
-    fig.tight_layout(rect=(0, 0, 1, 0.97)); fig.savefig(os.path.join(FIG, "evidence_particles.png"), dpi=130); plt.close(fig)
+    fig.tight_layout(rect=(0, 0, 1, 0.97)); fig.savefig(os.path.join(FIG, "evidence_particles.png"), dpi=100); plt.close(fig)
 
 
 def stage_analyse():
