@@ -1,0 +1,214 @@
+# QC workflow — one picture
+
+Rendered by GitHub and most Markdown viewers (Mermaid). Boxes are modules or notebook sections; edges carry the tables named in the contracts below. Dashed edges are inputs that are not data (configuration, reviews, organiser answers). Numbers in brackets refer to `docs/qc_plan.md` sections.
+
+```mermaid
+flowchart TD
+  %% ---------------- inputs
+  subgraph IN["Inputs"]
+    D[("Dataset/Batch_*/img_&lt;site&gt;_{BSE,ETD|SE,Inlens}.tif<br/>31 sites · 3 channels · 25 nm/px nominal")]
+    U[("Unseen batch folder<br/>(arrives mid-event) [2.10]")]
+    CFG["Configuration cell [2.1]<br/>reference = Batch_3 · compare list · α, power<br/>5 primary KPIs · consequence weights · Thresholds (hashed)<br/><i>developed on Batches 1–3, frozen before the unseen batch</i>"]
+    REG["Assumption register A1–A15<br/>+ organiser answers"]
+  end
+
+  %% ---------------- features
+  subgraph FE["polaron_qc.features  [2.2]   extract_batch(folder) → 4 tables"]
+    F0["Load channel 0 · SE→ETD alias"]
+    F5["Per-image quality (untrimmed)<br/>mean, p1, p50, p99, std, gray_levels, empty_bin_frac, band_top/bottom<br/><i>derived flags (stretch > 0.2, BSE p1 > 10) are applied downstream</i>"]
+    F1["Trim bright edge bands"]
+    F2["BSE segmentation (site thresholds)<br/>graphite-mode valley · pore / graphite / bright<br/>bright_sep · bright_low_contrast · pore_mode_resolved"]
+    F3["Site KPIs (BSE)<br/>pore, crack-like voids (> 500 px), bright phase, profiles, texture<br/>+ particle table"]
+    F4["ETD / Inlens inside BSE masks<br/>intra-particle cracks @ RIDGE_T = 0.4, curtaining, boundary sharpness,<br/>Inlens texture (confounded)"]
+    F6["512-px patches (trimmed-frame y0, x0!)<br/>pore_frac, bright_frac, bright_count, crack_area_frac,<br/>pore_max_d (whole component), corr_len_px, graphite_mode_local, flags"]
+    F0 --> F5
+    F0 --> F1 --> F2 --> F3
+    F2 --> F4
+    F2 --> F6
+    F3 --> F6
+  end
+  D --> F0
+  U --> F0
+
+  FCACHE[("analysis_cache/features/<br/>&lt;batch&gt;_&lt;hash&gt;.{sites,images,particles,patches}.parquet<br/>hash = files + mtimes + FEATURE_VERSION + patch geometry")]
+  F3 --> FCACHE
+  F4 --> FCACHE
+  F5 --> FCACHE
+  F6 --> FCACHE
+
+  %% ---------------- reference
+  subgraph REF["Reference characterisation  [2.3]  (polaron_qc.stats)"]
+    R1["Per-KPI reference spread<br/>with / without known-anomalous sites<br/>(grey-pore, cracked)"]
+    R2["Minimum detectable change<br/>α, 80 % power, usable n by simulation"]
+    R3["Reference-split diagnostics (driver calls CMP + DEC on 7-v-10 splits)<br/>drift alerts · local flags · quality abstentions<br/>(internal, with uncertainty; does not validate 7 v 17)"]
+  end
+  GATE["Usable-n gate (per KPI × batch)<br/>bright_* KPIs drop low-contrast sites · pore_*/crack_* keep grey-pore as 'fallback'<br/>→ n_ref_usable, n_batch_usable, allocation counts"]
+  FCACHE --> GATE
+  F5 -.-> GATE
+  GATE --> R1 --> R2
+  GATE -.->|"n_incoming per KPI"| R2
+
+  %% ---------------- comparison
+  subgraph CMP["Pairwise comparison  [2.4]  (polaron_qc.stats)"]
+    C1["Per-KPI: robust shift (median diff / ref MAD) · bootstrap CI (approx.)<br/>site-level permutation p — statistic = <b>hl_shift</b> (Hodges–Lehmann; median_diff is too discrete at 7 v 17)<br/>Holm on primary 5"]
+    C2["Multivariate: energy distance on primary KPIs<br/>consequence-weighted · permutation p<br/>scaling re-fitted inside every permutation"]
+    C3["Per-site drift score<br/>batch-wide vs few sites"]
+    C4["Local-anomaly check<br/>per-site maxima & extreme patches vs ordinary-reference max<br/>→ <b>evidence flag</b> (≈ 41 % chance on a clean 7-site batch)"]
+  end
+  GATE --> C1
+  GATE --> C2
+  GATE --> C3
+  GATE --> C4
+  F6 -.->|"patch extremes aggregated to per-site maxima by caller"| C4
+  CFG -.-> C1
+  CFG -.-> C2
+
+  %% ---------------- ML
+  subgraph ML["ML corroboration  [2.5]  (polaron_qc.ml)"]
+    M1["Grouped-CV L1 logistic regression<br/>site = group · equal site weight · scaler refit per fold<br/>site-level Monte Carlo null → AUC band, p, selected KPIs, per-site OOF prob<br/><b>material-only run drives A(iv); flag-inclusive run shown separately</b>"]
+    M2["Patch-embedding novelty (exploratory)<br/>DINOv2 ViT-S/14 @ 518 px on per-image-normalised BSE patches<br/>PCA(32) on reference, refit per LOO fold · kNN(5)<br/>novelty tracks acquisition (bse_std, curtaining, black level)"]
+  end
+  FCACHE --> M1
+  D --> M2
+  U --> M2
+  MLCACHE[("analysis_cache/ml/<br/>embeddings (hash-keyed, portable) · c2st results · novelty tables · correlates")]
+  M2 --> MLCACHE
+  M1 --> MLCACHE
+
+  %% ---------------- acquisition & physics
+  subgraph ACQ["Sensitivity to acquisition adjustment  [2.6]  (polaron_qc.acquisition — to build)"]
+    A1["Unadjusted"] --- A2["Stratified by acquisition group<br/>(ordinary / low-contrast / grey-pore / cracked)"] --- A3["Adjusted (residualised on flags)"]
+  end
+  C1 --> A1
+  F5 -.-> A2
+  F2 -.-> A2
+  F5 -.-> A3
+
+  subgraph PHY["Physics reading  [2.6b]  (polaron_qc.physics) — qualitative, relative"]
+    P1["Stereology (secondary)<br/>Delesse · Saltykov (additive only) · nominal mass fraction<br/>(biased by unsegmented binder → not on first screen)"]
+    P2["Void geometry (re-opens masks)<br/>delamination index · columns interrupted · longest void / thickness<br/>(geometry, not continuity)"]
+    P3["Section connectivity: fraction_connected = 0 on all 31 sites<br/>(one dataset-level fact; tortuosity index undefined)<br/>additive size reading (matched quantiles) · mechanics direction"]
+    P4a["Consequence weights (ordinal 1–3)<br/>+ rationale + KPI labels"]
+    P4b["Measurement sanity checks<br/>fractions sum · ±5-level threshold band (every site) ·<br/>porosity-vs-typical (dataset-level, with alternatives)"]
+  end
+  FCACHE --> P1
+  F2 --> P2
+  F2 --> P3
+  F2 --> P4b
+  PCACHE[("analysis_cache/physics_sites.csv")]
+  P2 --> PCACHE
+  P3 --> PCACHE
+  P4b --> PCACHE
+  P4a -.-> C2
+
+  %% ---------------- decision
+  subgraph DEC["Decision  [2.7]  (polaron_qc.decision)"]
+    DA["Check A — batch-wide drift (primary KPIs)<br/>(i) beyond null · (ii) carried by primary · (iii) consistent across sites · (iv) material-only classifier p &lt; α"]
+    DB["Check B — localized defect<br/>flag → <b>credible</b> only with severity margin + reliable measurement<br/>(low-contrast hard, grey-pore soft, inside ±5-level band) + image review"]
+    V{{"Verdict<br/>consistent within detectable limits ·<br/>investigate: drift · investigate: localized ·<br/>reject (provisional)"}}
+    S["Decision stability (leave-one-site-out)<br/>what would move it · usable n · 3 outcome columns"]
+    DA --> V
+    DB --> V
+    V --> S
+  end
+  C1 --> DA
+  C2 --> DA
+  C3 --> DA
+  C3 -.->|"per-site z, top driver"| E1
+  M1 --> DA
+  C4 --> DB
+  M2 -.->|"flag only; forces investigate only if no trusted KPI moves"| DB
+  P4b -.-> DB
+  A3 -.-> DA
+  R2 -.-> V
+  P4a -.-> DA
+  CFG -.-> DA
+  CFG -.-> DB
+
+  %% ---------------- outputs
+  subgraph OUT["Explanation & outputs  [2.8–2.10]  (polaron_qc.report)"]
+    E1["Driver sentences + qualitative physics reading<br/>(physics reading only when |shift| exceeds the threshold band)"]
+    E2["Evidence images<br/>voids painted · particles outlined · novelty map ·<br/>most / least typical site · extreme patch<br/><i>patch y0 + images.band_top = raw-image row</i>"]
+    E3["KPI table: ref range (±known anomalies) · shift · CI · p · MDC · trust · weight · flag · threshold band"]
+    E4["Acquisition views · classifier flag-inclusive run · novelty correlates ·<br/>limits-of-this-dataset paragraph"]
+    NB["notebooks/02_batch_qc.ipynb<br/>(all sections)"]
+    HTML["reports/qc_&lt;batch&gt;.html<br/>one per compared batch"]
+    E1 --> NB
+    E2 --> NB
+    E3 --> NB
+    E4 --> NB
+    E1 --> HTML
+    E2 --> HTML
+    E3 --> HTML
+    E4 --> HTML
+  end
+  S --> E1
+  S --> E3
+  PHY --> E1
+  P4b --> E3
+  ACQ --> E4
+  MLCACHE --> E4
+  R2 --> E3
+  F6 --> E2
+  F2 -.->|"segment() / ridge_maps() masks on demand"| E2
+  F4 -.-> E2
+  MLCACHE --> E2
+
+  %% ---------------- self-test
+  ST["Self-test [2.9]<br/>false-alarm diagnostics · power curves · synthetic shifts ·<br/>heterogeneity check · identical-reference sanity"]
+  DEC -.->|"pipeline_fn callback"| R3
+  R3 --> ST
+  R2 -->|"power curves"| ST
+  CMP --> ST
+  ST --> NB
+
+  %% ---------------- governance
+  LOG["docs/decision_log.md<br/>Part A decisions · Part B checklist · Part C open items"]
+  REV["External / teammate reviews<br/>+ agent diagram reviews"]
+  REV -.-> LOG
+  LOG -.-> CFG
+  REG -.-> CFG
+  REG -.-> E4
+```
+
+## Data contracts between modules
+
+| From → To | Table / object | Key columns (unit = site unless stated) |
+|---|---|---|
+| features → everything | `sites` (87 cols) | batch, site, H, W, th_lo, th_hi, graphite_mode, sigma_l/r, bright_mode, bright_sep, bright_mode_resolved, bright_low_contrast, pore_mode_resolved, grey_pore, pore_frac, pore_d50, pore_d90, pore_elong, pore_max_d, pore_count_per_Mpx, crack_frac, crack_count_per_Mpx, bright_frac, bright_count_per_Mpx, bright_d10/50/90, bright_circ, bright_solidity, bright_max_d, graphite_frac, profile_pore_0..9, profile_bright_0..9, fft_slope, corr_len_px, ridge_p97 (diagnostic), etd_ridge_dom_angle, crack_p_&lt;t&gt;/crack_g_&lt;t&gt;/curtain_&lt;t&gt; (RIDGE_GRID sensitivity), etd_crack_density_particles, etd_crack_density_graphite, etd_curtain_frac (all three at RIDGE_T = 0.4, derived by features), etd_curtain_anisotropy, etd_boundary_sharpness (**flag, not a material KPI**), etd_grad_energy, inlens_grad_energy, inlens_particle_texture(+p90), inlens_speckled_particle_frac, inlens_particles_measured, n_patches, batch_dir |
+| features → stats, decision, report | `images` | batch, site, det, H, mean, p1, p50, p99, std, gray_levels, empty_bin_frac, band_top, band_bottom — **raw statistics; flags derived downstream:** contrast_stretched = empty_bin_frac &gt; 0.2, raised_black_level = (det == BSE &amp; p1 &gt; 10), acquisition_group ∈ {ordinary, low_contrast, grey_pore, cracked} |
+| features → physics, report | `particles` | batch, site, area, equivalent_diameter_area, eccentricity, solidity, perimeter, major/minor_axis_length, circ |
+| features → ml, report (and, via per-site aggregation, stats local check) | `patches` | batch, site, patch_id, **y0, x0 in trimmed-frame px**, pore_frac, bright_frac, bright_count, crack_area_frac, pore_max_d (whole component touching patch), corr_len_px, graphite_mode_local, bright_low_contrast, grey_pore |
+| features → report (on demand) | `segment()`, `ridge_maps()`, `multichannel_features(return_maps=True)` | masks and maps for painting evidence |
+| features (to add) → decision, report | `threshold_band(site)` | pore_frac / bright_frac under th ± 5 levels for **every** site (physics ran it on 6) |
+| stats → decision | `compare_kpis` tidy table | kpi, n_ref_usable, n_batch_usable, n_ref_fallback, n_batch_fallback, n_*_excluded, ref_median, batch_median, ref_mad, shift_mad, ci_low, ci_high, cliffs_delta, p_perm, p_method, n_perm, min_p_attainable, p_holm, p_reported, is_primary, direction (CI excludes 0), flag_alpha — statistic chosen in CFG (`hl_shift` recommended); plus energy-distance dict {statistic, p, n_perm, n_dropped}, `per_site_drift` table (distance, LOO percentile, per-site z, top_driver), `local_exceedance` tables per KPI {site, value, ref_max, exceeds, margin_in_mad, credible_severity} + `iid_flag_probability` |
+| stats → decision, report | `mdc(x_ref, n_incoming=usable batch n)` **separate call per KPI × batch** | mdc_mad, mdc_abs, power_curve, design string ("7 v remaining, without replacement") — computed on the full usable reference (17), never on the 10 ordinary sites |
+| decision → stats (callbacks) | `jackknife(fn, site_ids)`, `reference_split_diagnostics(…, pipeline_fn)` | fn / pipeline_fn re-run CMP + DEC on the reduced site set |
+| stats consumes | `sites` only | stats never reads `images` or `patches`; callers aggregate patch extremes to per-site maxima and derive flags from `images` |
+| ml → decision | `c2st` dict | auc, auc_null (array), p (Monte Carlo, n stated), cv scheme, coef table (feature, coef, sign, selected, selection_stability, mean_abs_shap), per_site_scores — run **twice**: material KPIs only (drives A iv) and flag-inclusive (evidence) |
+| ml → decision | `novelty` dict | per_site (novelty_median, novelty_p90, pct_median, exceeds_ref_loo_max), ref_loo distribution — exploratory, flag only |
+| ml → report | per-patch novelty with original-image y0/x0, nearest reference patches, correlates table (novelty vs KPIs and acquisition stats) |
+| physics → stats, decision | `CONSEQUENCE_WEIGHTS`, `weights_vector()`, `CONSEQUENCE_RATIONALE`, `KPI_LABELS` | ordinal weight per KPI |
+| physics → decision (reliability), report | `threshold_sensitivity`, `sanity_checks` | ±5-level bands; fractions sum; porosity note (dataset-level) |
+| physics → report | readings | statement + caveats + claims_not_made per reading (DataFrames carry them in `.attrs` — read immediately) |
+| decision → report | `verdict` dict | verdict, reason, outcome_columns {drift_alert, localized ∈ none/flag/pending_review/credible, quality_abstention}, drivers, attenuation, what_would_move_it, thresholds_hash, provenance |
+| (owner to assign) | `KPI_TRUST` dict | trust level per KPI from the findings-doc catalogue (high / medium / flag / confounded / diagnostic) — needed by E3; proposed home `polaron_qc/__init__.py` |
+
+## Known integration hazards (from the agents' diagram reviews)
+1. **Patch coordinates are trimmed-frame.** Add `images.band_top` for the BSE site before painting anything on a raw image.
+2. **`etd_boundary_sharpness` is a flag.** It alone separates Batch 1 from Batch 3 in the classifier (AUC 0.79 → 0.53 without it); it must not sit in any "material KPI" list.
+3. **Novelty tracks acquisition.** Top correlates are bse_std, curtaining, low-contrast flag, black level; ranking is unstable across input resolutions (ρ 0.43). Exploratory only.
+4. **Threshold band is as large as the batch differences for pore_frac** (±15–25 % relative for ±5 levels). Must be computed per site and printed next to every pore-based shift; physics transport wording is gated on it.
+5. **No 2-D macro-pore percolation on any site.** Do not present a tortuosity index; state `fraction_connected = 0` once.
+6. **Edge-band trimming is implemented three times** (features, ml, physics). Integration imports it from features.
+7. **MDC simulation must draw without replacement.** The with-replacement design in the first plan draft rejected 11 % at zero shift. MDC uses the full usable reference (17 sites); on the 10 ordinary sites it is undefined for n = 7.
+8. **Exact median-difference tests are too discrete at 7 v 17** (56 attainable values, 21 % of null p-values exactly 1; bright_d50 MDC 3.75 MAD vs 2.5 with Hodges–Lehmann). Use `hl_shift` for the verdict test; keep median/MAD as the reported effect size.
+9. **Caches:** features cache is machine-specific (mtimes in hash) → git-ignored; ml embeddings are portable → committed; physics_sites.csv committed.
+
+## Rules the picture encodes
+- Site is the unit everywhere; patches localise, they never add to n.
+- The reference's known anomalies stay visible at every stage (R1, C4, V).
+- "Consistent" is always printed with MDC (R2 → V, E3).
+- Flags (F5) feed the acquisition views and the quality-abstention column, never a material verdict directly.
+- The physics layer informs weights and wording; it never produces a number that drives a verdict on its own.
+- Reviews flow into the decision log, and the log into the configuration — never the other way round after the freeze.

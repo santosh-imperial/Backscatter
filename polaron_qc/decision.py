@@ -1,0 +1,224 @@
+"""Decision layer — plan §2.7, built on the small-sample discipline of §2.0.
+
+Pure functions over the tables produced by polaron_qc.stats (compare_kpis tidy table, energy-distance dict,
+per-site drift table, local-exceedance tables) and the acquisition views (§2.6). Nothing here touches images.
+
+Outcomes are always reported in three separate columns — drift alert, localized anomaly, quality abstention —
+so that an abstention caused by image quality is never counted as an alarm.
+
+Verdicts (plan §2.7):
+  CONSISTENT  "consistent with the working reference, within detectable limits"   (never "accept")
+  INVESTIGATE_DRIFT, INVESTIGATE_LOCAL, REJECT_PROVISIONAL
+Provenance of every threshold: developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived.
+"""
+from __future__ import annotations
+from dataclasses import dataclass, field, asdict
+import hashlib, json
+import numpy as np, pandas as pd
+from . import PRIMARY_KPIS
+
+CONSISTENT = "consistent with working reference (within detectable limits)"
+INVESTIGATE_DRIFT = "investigate — batch-wide drift"
+INVESTIGATE_LOCAL = "investigate — localized anomaly"
+REJECT = "reject (provisional)"
+
+# KPIs whose per-site reliability depends on a flag (plan §2.0 rules 1 and 5)
+KPI_RELIABILITY_FLAG = {"bright_frac": "bright_low_contrast", "bright_d50": "bright_low_contrast", "bright_d90": "bright_low_contrast",
+                        "bright_count_per_Mpx": "bright_low_contrast", "bright_circ": "bright_low_contrast",
+                        "pore_frac": "grey_pore", "pore_d50": "grey_pore", "pore_max_d": "grey_pore", "crack_frac": "grey_pore",
+                        "crack_count_per_Mpx": "grey_pore", "pore_elong": "grey_pore"}
+# for grey_pore the measurement is "fallback threshold", not unusable: it reduces reliability for Check B only
+SOFT_FLAGS = {"grey_pore"}
+
+
+@dataclass
+class Thresholds:
+    """All decision thresholds in one place. Hashed; the notebook asserts the hash before running on the unseen batch."""
+    alpha: float = 0.05                 # for permutation p-values (Holm-adjusted on primary KPIs)
+    min_effect_mad: float = 1.0         # a primary KPI "carries" drift only if |robust shift| >= this (in reference MADs)
+    consistency_share: float = 0.5      # share of usable batch sites beyond the ordinary-reference range, in the shift direction
+    min_usable_sites: int = 5           # below this, Check A abstains for that KPI; below for all primary KPIs → quality abstention
+    severity_margin_mad: float = 1.0    # Check B: margin beyond ordinary-reference max, in MADs of per-site maxima
+    strong_attenuation: float = 0.5     # if the multivariate shift drops by more than this share under stratified/adjusted views → investigate, not reject
+    reject_min_credible_sites: int = 2  # Check B alone can reject only with ≥ this many credible sites …
+    reject_min_severity_mad: float = 2.0  # … each beyond the reference max by ≥ this many MADs
+    provenance: str = "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived"
+
+    def hash(self) -> str:
+        return hashlib.sha1(json.dumps(asdict(self), sort_keys=True).encode()).hexdigest()[:12]
+
+
+# ----------------------------------------------------------------------------- helpers
+def _ordinary_range(ref_values: pd.Series) -> tuple[float, float]:
+    v = pd.Series(ref_values).dropna().astype(float)
+    return (float(v.min()), float(v.max())) if len(v) else (np.nan, np.nan)
+
+
+def consistency_across_sites(ref_values, batch_values, direction: str) -> dict:
+    """Share of batch sites that lie beyond the ordinary-reference range in the direction of the shift (§2.7 A iii)."""
+    lo, hi = _ordinary_range(ref_values)
+    b = pd.Series(batch_values).dropna().astype(float)
+    if direction == "higher":
+        beyond = (b > hi)
+    elif direction == "lower":
+        beyond = (b < lo)
+    else:
+        beyond = (b > hi) | (b < lo)
+    return dict(share=float(beyond.mean()) if len(b) else np.nan, n_beyond=int(beyond.sum()), n=int(len(b)), ref_lo=lo, ref_hi=hi)
+
+
+# ----------------------------------------------------------------------------- Check A
+def check_a(compare: pd.DataFrame, energy: dict, ref_sites: pd.DataFrame, batch_sites: pd.DataFrame,
+            ordinary_ref_mask: pd.Series, c2st: dict | None = None, th: Thresholds = Thresholds(),
+            primary: list[str] = PRIMARY_KPIS) -> dict:
+    """Batch-wide drift on the primary KPIs.
+
+    compare      : tidy table from stats.compare_kpis (one row per KPI; columns kpi, n_ref_usable, n_batch_usable,
+                   shift_mad, ci_low, ci_high, p_perm, p_holm, is_primary, direction)
+    energy       : dict from stats.energy_distance_test on the primary KPIs ({statistic, p, n_perm})
+    ref_sites, batch_sites : site tables (need the primary KPI columns and the flag columns)
+    ordinary_ref_mask : boolean Series aligned with ref_sites, True for ordinary reference sites
+    c2st         : dict from ml.c2st ({auc, p, coef}) or None
+    """
+    prim = compare[compare.kpi.isin(primary)].set_index("kpi")
+    out = dict(i_beyond_null=bool(energy.get("p", 1.0) < th.alpha), energy_p=float(energy.get("p", np.nan)),
+               energy_stat=float(energy.get("statistic", np.nan)), drivers=[], per_kpi={}, abstained_kpis=[])
+    for k, r in prim.iterrows():
+        usable_ok = (r.n_batch_usable >= th.min_usable_sites) and (r.n_ref_usable >= th.min_usable_sites)
+        sig = bool(np.isfinite(r.p_holm) and r.p_holm < th.alpha and abs(r.shift_mad) >= th.min_effect_mad)
+        cons = consistency_across_sites(ref_sites.loc[ordinary_ref_mask.values, k], batch_sites[k], r.direction) if usable_ok else dict(share=np.nan, n_beyond=0, n=0)
+        out["per_kpi"][k] = dict(shift_mad=float(r.shift_mad), ci=(float(r.ci_low), float(r.ci_high)), p_holm=float(r.p_holm),
+                                 n_ref_usable=int(r.n_ref_usable), n_batch_usable=int(r.n_batch_usable), significant=sig,
+                                 direction=r.direction, consistency_share=cons["share"], n_beyond=cons["n_beyond"], usable_ok=usable_ok)
+        if not usable_ok:
+            out["abstained_kpis"].append(k)
+        elif sig:
+            out["drivers"].append(k)
+    out["ii_carried_by_primary"] = len(out["drivers"]) > 0
+    shares = [out["per_kpi"][k]["consistency_share"] for k in out["drivers"]]
+    out["iii_consistent"] = bool(len(shares) and np.nanmax(shares) >= th.consistency_share)
+    out["iv_classifier_corroborates"] = None if c2st is None else bool(c2st.get("p", 1.0) < th.alpha)
+    out["all_usable"] = len(out["abstained_kpis"]) < len(primary)
+    return out
+
+
+# ----------------------------------------------------------------------------- Check B
+def check_b(local_tables: dict[str, pd.DataFrame], batch_sites: pd.DataFrame, image_reviewed: dict | None = None,
+            th: Thresholds = Thresholds(), primary: list[str] = PRIMARY_KPIS) -> dict:
+    """Localized defect check.
+
+    local_tables : {kpi: DataFrame from stats.local_exceedance with columns site, value, ref_max, exceeds, margin_in_mad}
+    batch_sites  : site table with flag columns (bright_low_contrast, grey_pore)
+    image_reviewed : {(site, kpi): True/False} supplied by a human after looking at the evidence image; None = not yet reviewed.
+    A flag is 'credible' only with severity margin AND reliable measurement AND image review (plan §2.0 rule 5).
+    Without review, the best status is 'credible_pending_review'.
+    """
+    flags, credible, pending = [], [], []
+    bs = batch_sites.set_index("site")
+    for k, tab in local_tables.items():
+        if k not in primary or tab is None or len(tab) == 0:
+            continue
+        rel_flag = KPI_RELIABILITY_FLAG.get(k)
+        for _, r in tab[tab.exceeds.astype(bool)].iterrows():
+            site = r.site
+            unreliable = bool(rel_flag and rel_flag in bs.columns and bs.loc[site, rel_flag] and rel_flag not in SOFT_FLAGS)
+            soft = bool(rel_flag and rel_flag in bs.columns and bs.loc[site, rel_flag] and rel_flag in SOFT_FLAGS)
+            rec = dict(site=site, kpi=k, value=float(r.value), ref_max=float(r.ref_max), margin_in_mad=float(r.margin_in_mad),
+                       severity_ok=bool(r.margin_in_mad >= th.severity_margin_mad), measurement_reliable=not unreliable,
+                       measurement_note="fallback threshold (grey-pore site)" if soft else ("unreliable (low-contrast site)" if unreliable else "ok"),
+                       image_reviewed=None if image_reviewed is None else bool(image_reviewed.get((site, k), False)))
+            flags.append(rec)
+            if rec["severity_ok"] and rec["measurement_reliable"]:
+                (credible if rec["image_reviewed"] else pending).append(rec)
+    return dict(flags=flags, credible=credible, credible_pending_review=pending,
+                n_sites_flagged=len({f["site"] for f in flags}), n_sites_credible=len({f["site"] for f in credible}),
+                n_sites_pending=len({f["site"] for f in pending}),
+                max_severity_mad=max([f["margin_in_mad"] for f in credible + pending], default=np.nan))
+
+
+# ----------------------------------------------------------------------------- quality abstention
+def quality_abstention(batch_sites: pd.DataFrame, a: dict, th: Thresholds = Thresholds()) -> dict:
+    reasons = []
+    n = len(batch_sites)
+    if n < th.min_usable_sites:
+        reasons.append(f"only {n} sites in batch (< {th.min_usable_sites})")
+    if not a.get("all_usable", True):
+        reasons.append("fewer than min usable sites on every primary KPI")
+    for col, label in [("bright_low_contrast", "low bright-phase contrast"), ("grey_pore", "raised black level / grey pores")]:
+        if col in batch_sites.columns and batch_sites[col].astype(bool).mean() > 0.5:
+            reasons.append(f"{label} on more than half of the sites")
+    return dict(abstain=len(reasons) > 0, reasons=reasons)
+
+
+# ----------------------------------------------------------------------------- attenuation under acquisition views
+def attenuation(energy_unadjusted: dict, energy_stratified: dict | None, energy_adjusted: dict | None) -> dict:
+    """Share by which the multivariate statistic drops under the stratified / adjusted views (§2.6). Descriptive, not causal."""
+    base = float(energy_unadjusted.get("statistic", np.nan))
+    def share(e):
+        if e is None or not np.isfinite(base) or base <= 0: return np.nan
+        return float(1 - e.get("statistic", np.nan) / base)
+    return dict(stratified=share(energy_stratified), adjusted=share(energy_adjusted))
+
+
+# ----------------------------------------------------------------------------- verdict
+def decide(a: dict, b: dict, abst: dict, att: dict | None = None, th: Thresholds = Thresholds()) -> dict:
+    """Combine the checks into one verdict plus the three outcome columns and a 'what would move it' sentence."""
+    att = att or dict(stratified=np.nan, adjusted=np.nan)
+    strong_att = any(np.isfinite(v) and v > th.strong_attenuation for v in att.values())
+    drift_alert = bool(a["i_beyond_null"])
+    local_status = "credible" if b["n_sites_credible"] else ("pending_review" if b["n_sites_pending"] else ("flag" if b["n_sites_flagged"] else "none"))
+
+    a_full = a["i_beyond_null"] and a["ii_carried_by_primary"] and a["iii_consistent"] and (a["iv_classifier_corroborates"] in (True, None))
+    b_reject = b["n_sites_credible"] >= th.reject_min_credible_sites and np.nan_to_num(b["max_severity_mad"]) >= th.reject_min_severity_mad
+
+    if abst["abstain"]:
+        verdict = INVESTIGATE_DRIFT if drift_alert else INVESTIGATE_LOCAL if local_status in ("credible", "pending_review") else INVESTIGATE_DRIFT
+        reason = "quality abstention: " + "; ".join(abst["reasons"])
+    elif (a_full and not strong_att) or b_reject:
+        verdict = REJECT
+        reason = ("batch-wide drift beyond null, carried by primary KPIs %s, consistent across sites%s, not attenuated by acquisition adjustment" %
+                  (a["drivers"], "" if a["iv_classifier_corroborates"] is None else ", classifier corroborates")) if a_full and not strong_att else \
+                 f"{b['n_sites_credible']} sites with credible localized anomalies, max severity {b['max_severity_mad']:.1f} MAD beyond reference max"
+    elif local_status in ("credible", "pending_review"):
+        verdict = INVESTIGATE_LOCAL
+        reason = f"{b['n_sites_credible'] or b['n_sites_pending']} site(s) with a severe localized anomaly" + (" (image review pending)" if local_status == "pending_review" else "")
+    elif drift_alert:
+        verdict = INVESTIGATE_DRIFT
+        why = []
+        if not a["ii_carried_by_primary"]: why.append("not carried by a primary KPI")
+        if a["ii_carried_by_primary"] and not a["iii_consistent"]: why.append("not consistent across sites")
+        if a["iv_classifier_corroborates"] is False: why.append("classifier does not corroborate")
+        if strong_att: why.append("shift attenuates strongly under acquisition stratification/adjustment")
+        reason = "multivariate shift beyond reference null; " + ("; ".join(why) if why else "see drivers")
+    else:
+        verdict = CONSISTENT
+        reason = "no drift beyond the reference null on primary KPIs and no credible localized anomaly; see MDC for what could not have been detected"
+        if local_status == "flag":
+            reason += f"; {b['n_sites_flagged']} site(s) exceed the ordinary-reference max without meeting the severity/reliability conditions (expected on ~40 % of clean batches)"
+
+    return dict(verdict=verdict, reason=reason,
+                outcome_columns=dict(drift_alert=drift_alert, localized=local_status, quality_abstention=bool(abst["abstain"])),
+                drivers=a["drivers"], attenuation=att, what_would_move_it=what_would_move(verdict, a, b, abst, att, th),
+                thresholds_hash=th.hash(), provenance=th.provenance)
+
+
+def what_would_move(verdict: str, a: dict, b: dict, abst: dict, att: dict, th: Thresholds) -> str:
+    if verdict == CONSISTENT:
+        # nearest primary KPI to significance
+        cand = sorted(((v["p_holm"], k) for k, v in a["per_kpi"].items() if np.isfinite(v["p_holm"])), key=lambda t: t[0])
+        if cand:
+            p, k = cand[0]
+            return f"would become 'investigate — drift' if {k} (Holm p = {p:.2f}, shift {a['per_kpi'][k]['shift_mad']:+.1f} MAD) crossed α = {th.alpha} with |shift| ≥ {th.min_effect_mad} MAD, or if any site exceeded the reference max by ≥ {th.severity_margin_mad} MAD on a reliable measurement"
+        return "would become 'investigate' if any primary KPI crossed α or any site showed a credible localized anomaly"
+    if verdict == INVESTIGATE_DRIFT:
+        if abst["abstain"]:
+            return "would become decidable with " + "; ".join(abst["reasons"]).replace("only", "at least") + " resolved"
+        missing = []
+        if not a["ii_carried_by_primary"]: missing.append("a primary KPI crossing α with |shift| ≥ %.1f MAD" % th.min_effect_mad)
+        if a["ii_carried_by_primary"] and not a["iii_consistent"]: missing.append("≥ %.0f %% of sites beyond the ordinary-reference range" % (100 * th.consistency_share))
+        if a["iv_classifier_corroborates"] is False: missing.append("classifier corroboration")
+        if any(np.isfinite(v) and v > th.strong_attenuation for v in att.values()): missing.append("the shift surviving acquisition stratification/adjustment")
+        return ("would become 'reject' with " + " and ".join(missing)) if missing else "would become 'consistent' if the multivariate shift fell inside the reference null"
+    if verdict == INVESTIGATE_LOCAL:
+        return f"would become 'reject' with ≥ {th.reject_min_credible_sites} credible sites each ≥ {th.reject_min_severity_mad} MAD beyond the reference max; would become 'consistent' if image review did not confirm the anomaly"
+    return "would become 'investigate' if the drift attenuated strongly under acquisition adjustment or if fewer sites carried it"

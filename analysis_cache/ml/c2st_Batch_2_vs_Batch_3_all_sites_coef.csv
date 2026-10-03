@@ -1,0 +1,13 @@
+feature,coef,sign,selected,selection_stability,mean_abs_shap
+etd_crack_density_particles,-0.33374839307484605,-,True,1.0,0.29638094562481226
+pore_frac,-0.37113652893033944,-,True,0.8,0.25738844797407745
+corr_len_px,-0.23084304514092452,-,True,0.6,0.1693929795425143
+etd_boundary_sharpness,0.18228967951671415,+,True,0.8,0.15333358583196158
+pore_max_d,-0.13149306241356062,-,True,0.4,0.08385919787070398
+pore_d50,0.0,0,False,0.0,0.0
+pore_elong,0.0,0,False,0.2,0.0
+crack_frac,0.0,0,False,0.2,0.0
+bright_frac,0.0,0,False,0.2,0.0
+bright_count_per_Mpx,0.0,0,False,0.0,0.0
+bright_d50,0.0,0,False,0.4,0.0
+bright_circ,0.0,0,False,0.2,0.0

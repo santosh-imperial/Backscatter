@@ -26,6 +26,7 @@ analysis/                parallel label-free audit (scripts, findings.md, report
                          proxies with bootstrap CIs. Complements notebook 01; do not duplicate its checks, cite them.
 docs/problem_and_findings.md       state of knowledge — keep it current
 docs/qc_plan.md                    agreed plan for the QC notebook (components, methods, decision logic, checkpoints)
+docs/workflow.md                   Mermaid diagram of the whole pipeline + data contracts between modules; update when an interface changes
 docs/decision_log.md               Part A: every consequential decision with rationale; Part B: pre-presentation review
                                    checklist built from reviewer catches; Part C: open items. Append, never delete.
 docs/assumption_register.html      self-contained HTML: every interpretive assumption with an annotated example image and a

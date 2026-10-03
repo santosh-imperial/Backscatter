@@ -1,0 +1,13 @@
+feature,coef,sign,selected,selection_stability,mean_abs_shap
+etd_boundary_sharpness,1.067650047859371,+,True,1.0,0.887124456152565
+bright_d50,0.22317117762019278,+,True,0.6,0.1800920763900455
+pore_frac,0.0,0,False,0.0,0.0
+pore_d50,0.0,0,False,0.0,0.0
+pore_elong,0.0,0,False,0.0,0.0
+pore_max_d,0.0,0,False,0.2,0.0
+crack_frac,0.0,0,False,0.0,0.0
+bright_frac,0.0,0,False,0.0,0.0
+bright_count_per_Mpx,0.0,0,False,0.0,0.0
+bright_circ,0.0,0,False,0.2,0.0
+corr_len_px,0.0,0,False,0.2,0.0
+etd_crack_density_particles,0.0,0,False,0.0,0.0

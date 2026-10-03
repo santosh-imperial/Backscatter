@@ -11,3 +11,6 @@ __pycache__/
 
 # local tool config
 .claude/
+
+# regenerable, machine-specific feature cache (hash includes mtimes)
+analysis_cache/features/
