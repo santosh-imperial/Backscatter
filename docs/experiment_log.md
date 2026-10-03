@@ -220,6 +220,7 @@ Target: an interpretable, uncertainty-aware QC system that returns accept / inve
 | | exploratory morphology geometry | ◑ | E18: 16 descriptors; nominal-cache agreement on all sites; threshold/size-floor sensitivity; 5 geometry tests | expert review A16; ETD plate orientation and binder class pending; no robust known-batch separation |
 | | morphology inventory / visual atlas | ◑ | E24/E25: 74 entries; real-mask atlas, full-site numeric/status/coordinate checks | expert interpretation remains unreviewed |
 | | segmentation measurement benchmark | ◔ | E24: 11 unreviewed crops, independent manual masks, width/hysteresis candidates extracted on 31 sites; 16 tests | no expert accuracy yet; annotate development and held-out sites separately |
+| | additional ML-method feasibility | ◔ | D38: specialist source/code review; graph geometry and balanced frozen-encoder protocols proposed | no new empirical architecture validation; masks/specimens/outcome labels still gated |
 | | ETD / Inlens KPIs | ◑ | E04 (null), E03 (confounded) | E25 sampled-gradient feasibility remains confounded; existing per-particle texture not corrected |
 | | battery geometry secondary KPIs | ◕ | E25:8 scalars extracted/reported; coverage, quality counts, sampling intervals and paired sensitivity | phase/instance review and repeatability pending; excluded from verdicts |
 | | per-site threshold band | ◑ | E15: all 31 sites; pore_frac band ≈ 33 % | gate physics wording; print beside pore shifts |
@@ -234,7 +235,7 @@ Target: an interpretable, uncertainty-aware QC system that returns accept / inve
 | Honest uncertainty | MDC, permutation nulls, stability | ● | E22: MDC infeasible designs reported as "not available" (D32); LOO refits every input (D30); 96 tests | labelled upper-bound MDC design if the unseen batch is as large as the reference |
 | | acquisition sensitivity views | ● | E22: three views inside the pipeline; `attenuation.available` gates the drift reject (D30) | — |
 | Real-world usability | one-command unseen-batch path | ● | E23: rehearsed on a renamed copy of Batch 1 — 123 s cold, no edits, same verdict; README drop procedure; `--review` for the human gate | — |
-| | assumption register / decision log | ● | A1–A18; decisions through D37; review checklist through C29 | keep current; metadata confirmation is separate from interpretive review |
+| | assumption register / decision log | ● | A1–A18; decisions through D38; review checklist through C30 | keep current; metadata confirmation is separate from interpretive review |
 
 **Known-batch dry run (target: all three verdicts with drivers, stability and reports):** all three pairs run (E17); both incoming batches *consistent within detectable limits*; Batch 1 vs Batch 2 indistinguishable at 7 v 7.
 

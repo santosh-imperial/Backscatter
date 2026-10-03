@@ -52,7 +52,7 @@ What the verdicts mean: *consistent with the working reference (within detectabl
 
 ## Status
 
-Pipeline works on known batches; the drop procedure was rehearsed on a renamed known batch (E23). Both known batches remain consistent within detectable limits. Next: independent measurement review, specimen/process/tolerance metadata and a fresh delivery rehearsal after the latest additions.
+Pipeline works on known batches; the drop procedure was rehearsed on a renamed known batch (E23). Both known batches remain consistent within detectable limits. Next: independent measurement review, specimen/process/tolerance metadata, bounded ML audits and a fresh delivery rehearsal after the latest additions.
 
 
 ## Battery geometry audit and secondary KPIs
@@ -60,3 +60,8 @@ Pipeline works on known batches; the drop procedure was rehearsed on a renamed k
 Open [the illustrated battery audit](analysis/battery/output/report.html) and [the live metric atlas](analysis/morphology/output/metric_atlas.html). The normal one-command QC path now extracts eight experimental geometry measurements and prints a separate secondary section with site sampling intervals, paired threshold sensitivity and quality counts. They do not change primary tests, classifier inputs or verdicts. Graphite plate orientation and Inlens material texture remain unvalidated; collector gaps require a reviewed collector edge.
 
 Reproduce individual known-site audits with `/opt/anaconda3/bin/python3 -m analysis.battery.run_neighbourhoods`, `-m analysis.battery.run_void_context`, and `-m analysis.battery.run_orientation_audit`; then `-m analysis.battery.build_report`. Each audit saves measured-source/input provenance. `-m analysis.battery.verify_pipeline` is an explicitly labelled warm replay using recomputed secondary geometry and verified unchanged original feature columns.
+
+
+## Additional ML methods review
+
+The [specialist assessment](analysis/ml_options/assessment.md) recommends two unrun audits: fixed particle-neighbourhood graph geometry and equal-site frozen-encoder novelty. [Candidate statuses](analysis/ml_options/candidate_register.json) distinguish recommended, optional and deferred methods; [primary sources](analysis/ml_options/sources.json) record retrieval limits. CNN/GNN defect training needs task-valid outcomes and independent material validation; supervised segmentation also needs reviewed phase/instance annotations. This review changes no classifier or verdict inputs.

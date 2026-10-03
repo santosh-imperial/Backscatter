@@ -1,19 +1,20 @@
 """polaron_qc.ml — ML corroboration (plan §2.5): two members, never the sole driver.
 
 1. ``c2st``   grouped classifier two-sample test. L1-logistic regression reference-vs-batch with the SITE as the
-              independent unit: StandardScaler + LogisticRegression refitted inside every fold, grouped CV (sites
+              statistical unit (physical specimen independence unconfirmed): StandardScaler + LogisticRegression refitted inside every fold, grouped CV (sites
               never straddle folds), equal total weight per site regardless of patch count, out-of-fold
               probabilities averaged to site means, AUC at the site level, Monte Carlo null from SITE-level label
               permutations with the whole CV procedure repeated inside each permutation (plan §2.0 rules 2, 6).
 2. ``patch_embeddings`` + ``novelty`` + ``novelty_correlates``   exploratory patch-embedding novelty: per-image-
               normalised 512-px BSE patches → pretrained DINOv2 ViT-S/14 CLS embedding (fallback: torchvision
               ResNet-50) → PCA fitted on the reference only → mean distance to the k nearest reference patches.
-              Calibrated against the reference's own leave-one-site-out novelty with PCA re-fitted in every fold.
+              Compared with the reference's own leave-one-site-out novelty, with PCA re-fitted in every fold.
               Correlations with KPIs and acquisition statistics are reported so a reader sees what it tracks.
 
-Both members are corroborators: a classifier that separates beyond the site-permutation null corroborates a KPI
-drift and names the KPIs; a novelty signal that fires when no trusted KPI moves forces *investigate* with the
-novelty map as evidence (plan §2.5). Neither drives a verdict alone. Patches never enter n.
+The material-only classifier can corroborate primary-KPI drift under the frozen decision rules. Embedding
+novelty is displayed as exploratory retrieval/acquisition evidence and is not passed to the decision pipeline.
+LOO ranks are not calibrated defect probabilities. Patches never enter material n; the proposed D38 audit also
+balances site contribution during PCA/reference-memory fitting, which the current novelty routine does not.
 
 Inputs are plain arrays / DataFrames so the functions do not depend on the patch table that ``features`` produces.
 """
