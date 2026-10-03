@@ -1,5 +1,6 @@
 # raw data (1.6 GB)
 Dataset/
+Hackathon-Polaron-test/
 
 # python / jupyter
 __pycache__/
@@ -18,3 +19,7 @@ analysis_cache/features/
 # rehearsal fixtures (hard links to raw TIFFs) and scratch outputs (E25 / next_steps task H)
 _fixtures/
 _scratch/
+
+# organisers' test / evaluation drops (raw TIFFs, never committed)
+Hackathon-Polaron-test/
+Hackathon-Polaron-*/

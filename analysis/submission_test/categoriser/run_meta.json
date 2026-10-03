@@ -1,0 +1,448 @@
+{
+ "known_dirs": [
+  "Dataset/Batch_3",
+  "Dataset/Batch_1",
+  "Dataset/Batch_2"
+ ],
+ "score_dir": "Hackathon-Polaron-test",
+ "ref_batch": "Batch_3",
+ "n_perm": 200,
+ "seed": 0,
+ "C_grid": [
+  0.1,
+  0.5,
+  2.0
+ ],
+ "n_inner": 3,
+ "k_nn": 3,
+ "families": {
+  "morph": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles",
+   "pore_d90",
+   "pore_count_per_Mpx",
+   "bright_d10",
+   "bright_solidity",
+   "bright_max_d"
+  ],
+  "acq": [
+   "bse_p1",
+   "bse_std",
+   "bse_empty_bin_frac",
+   "H",
+   "bright_sep",
+   "etd_boundary_sharpness",
+   "etd_curtain_frac",
+   "bse_p50",
+   "etd_p50",
+   "inlens_p50"
+  ],
+  "combined": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles",
+   "pore_d90",
+   "pore_count_per_Mpx",
+   "bright_d10",
+   "bright_solidity",
+   "bright_max_d",
+   "etd_crack_density_graphite",
+   "crack_g_0.05",
+   "crack_g_0.1",
+   "crack_g_0.2",
+   "crack_g_0.3",
+   "ridge_p97",
+   "inlens_particle_texture",
+   "inlens_particle_texture_p90",
+   "inlens_speckled_particle_frac",
+   "inlens_grad_energy",
+   "bse_p1",
+   "bse_std",
+   "bse_empty_bin_frac",
+   "H",
+   "bright_sep",
+   "etd_boundary_sharpness",
+   "etd_curtain_frac",
+   "bse_p50",
+   "etd_p50",
+   "inlens_p50"
+  ]
+ },
+ "ood_variants": {
+  "morph": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles",
+   "pore_d90",
+   "pore_count_per_Mpx",
+   "bright_d10",
+   "bright_solidity",
+   "bright_max_d"
+  ],
+  "morph_texture": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles",
+   "pore_d90",
+   "pore_count_per_Mpx",
+   "bright_d10",
+   "bright_solidity",
+   "bright_max_d",
+   "etd_crack_density_graphite",
+   "crack_g_0.05",
+   "crack_g_0.1",
+   "crack_g_0.2",
+   "crack_g_0.3",
+   "ridge_p97",
+   "inlens_particle_texture",
+   "inlens_particle_texture_p90",
+   "inlens_speckled_particle_frac",
+   "inlens_grad_energy"
+  ],
+  "acq": [
+   "bse_p1",
+   "bse_std",
+   "bse_empty_bin_frac",
+   "H",
+   "bright_sep",
+   "etd_boundary_sharpness",
+   "etd_curtain_frac",
+   "bse_p50",
+   "etd_p50",
+   "inlens_p50"
+  ]
+ },
+ "primary_family": "combined",
+ "primary_ood_variant": "morph",
+ "texture_label": "acquisition-sensitive; batch-fingerprint evidence, origin (microstructure vs imaging) not established",
+ "chosen_C_full_fit": {
+  "morph": 0.5,
+  "acq": 0.5,
+  "combined": 0.5
+ },
+ "ood_dropped": {
+  "morph": [],
+  "morph_texture": [],
+  "acq": []
+ },
+ "wall_s": 37.63180494308472,
+ "results": {
+  "morph": {
+   "features": [
+    "pore_frac",
+    "pore_d50",
+    "pore_elong",
+    "pore_max_d",
+    "crack_frac",
+    "crack_count_per_Mpx",
+    "bright_frac",
+    "bright_count_per_Mpx",
+    "bright_d50",
+    "bright_d90",
+    "bright_circ",
+    "corr_len_px",
+    "fft_slope",
+    "etd_crack_density_particles",
+    "pore_d90",
+    "pore_count_per_Mpx",
+    "bright_d10",
+    "bright_solidity",
+    "bright_max_d"
+   ],
+   "metrics": {
+    "n": 31,
+    "accuracy": 0.3870967741935484,
+    "accuracy_ci95": [
+     0.21849959849856906,
+     0.5781304108659586
+    ],
+    "n_correct": 12,
+    "balanced_accuracy": 0.3473389355742296,
+    "chance_balanced": 0.3333333333333333,
+    "majority_accuracy": 0.5483870967741935,
+    "recall": {
+     "Batch_1": 0.5714285714285714,
+     "Batch_2": 0.0,
+     "Batch_3": 0.47058823529411764
+    },
+    "confusion": [
+     {
+      "pred Batch_1": 4,
+      "pred Batch_2": 1,
+      "pred Batch_3": 2
+     },
+     {
+      "pred Batch_1": 5,
+      "pred Batch_2": 0,
+      "pred Batch_3": 2
+     },
+     {
+      "pred Batch_1": 4,
+      "pred Batch_2": 5,
+      "pred Batch_3": 8
+     }
+    ]
+   },
+   "calibration": {
+    "brier": 0.6847107230506334,
+    "brier_prior": 0.5972944849115503,
+    "ece": 0.06295005013738879,
+    "reliability": [
+     {
+      "bin": "[0.33, 0.50)",
+      "n": 25,
+      "mean_top_prob": 0.40220561577103864,
+      "observed_top_accuracy": 0.36
+     },
+     {
+      "bin": "[0.50, 0.70)",
+      "n": 5,
+      "mean_top_prob": 0.5303800370287355,
+      "observed_top_accuracy": 0.4
+     },
+     {
+      "bin": "[0.70, 1.00)",
+      "n": 1,
+      "mean_top_prob": 0.7555890251605912,
+      "observed_top_accuracy": 1.0
+     }
+    ],
+    "mean_top_prob": 0.4342783743412979,
+    "top_accuracy": 0.3870967741935484
+   },
+   "p": 0.15920398009950248,
+   "n_perm": 200,
+   "p_method": "Monte Carlo site-label permutation of the whole fold-local LOO procedure, 200 resamples, statistic = balanced accuracy, p = (b+1)/(n+1), one-sided"
+  },
+  "acq": {
+   "features": [
+    "bse_p1",
+    "bse_std",
+    "bse_empty_bin_frac",
+    "H",
+    "bright_sep",
+    "etd_boundary_sharpness",
+    "etd_curtain_frac",
+    "bse_p50",
+    "etd_p50",
+    "inlens_p50"
+   ],
+   "metrics": {
+    "n": 31,
+    "accuracy": 0.5483870967741935,
+    "accuracy_ci95": [
+     0.36034232716081716,
+     0.7268350139962649
+    ],
+    "n_correct": 17,
+    "balanced_accuracy": 0.47338935574229685,
+    "chance_balanced": 0.3333333333333333,
+    "majority_accuracy": 0.5483870967741935,
+    "recall": {
+     "Batch_1": 0.5714285714285714,
+     "Batch_2": 0.14285714285714285,
+     "Batch_3": 0.7058823529411765
+    },
+    "confusion": [
+     {
+      "pred Batch_1": 4,
+      "pred Batch_2": 3,
+      "pred Batch_3": 0
+     },
+     {
+      "pred Batch_1": 2,
+      "pred Batch_2": 1,
+      "pred Batch_3": 4
+     },
+     {
+      "pred Batch_1": 2,
+      "pred Batch_2": 3,
+      "pred Batch_3": 12
+     }
+    ]
+   },
+   "calibration": {
+    "brier": 0.5161283081628517,
+    "brier_prior": 0.5972944849115503,
+    "ece": 0.1209109607558863,
+    "reliability": [
+     {
+      "bin": "[0.33, 0.50)",
+      "n": 16,
+      "mean_top_prob": 0.41329148829009604,
+      "observed_top_accuracy": 0.3125
+     },
+     {
+      "bin": "[0.50, 0.70)",
+      "n": 9,
+      "mean_top_prob": 0.5585579391595856,
+      "observed_top_accuracy": 0.7777777777777778
+     },
+     {
+      "bin": "[0.70, 1.00)",
+      "n": 6,
+      "mean_top_prob": 0.8062337627954652,
+      "observed_top_accuracy": 0.8333333333333334
+     }
+    ],
+    "mean_top_prob": 0.5315189626403419,
+    "top_accuracy": 0.5483870967741935
+   },
+   "p": 0.07960199004975124,
+   "n_perm": 200,
+   "p_method": "Monte Carlo site-label permutation of the whole fold-local LOO procedure, 200 resamples, statistic = balanced accuracy, p = (b+1)/(n+1), one-sided"
+  },
+  "combined": {
+   "features": [
+    "pore_frac",
+    "pore_d50",
+    "pore_elong",
+    "pore_max_d",
+    "crack_frac",
+    "crack_count_per_Mpx",
+    "bright_frac",
+    "bright_count_per_Mpx",
+    "bright_d50",
+    "bright_d90",
+    "bright_circ",
+    "corr_len_px",
+    "fft_slope",
+    "etd_crack_density_particles",
+    "pore_d90",
+    "pore_count_per_Mpx",
+    "bright_d10",
+    "bright_solidity",
+    "bright_max_d",
+    "etd_crack_density_graphite",
+    "crack_g_0.05",
+    "crack_g_0.1",
+    "crack_g_0.2",
+    "crack_g_0.3",
+    "ridge_p97",
+    "inlens_particle_texture",
+    "inlens_particle_texture_p90",
+    "inlens_speckled_particle_frac",
+    "inlens_grad_energy",
+    "bse_p1",
+    "bse_std",
+    "bse_empty_bin_frac",
+    "H",
+    "bright_sep",
+    "etd_boundary_sharpness",
+    "etd_curtain_frac",
+    "bse_p50",
+    "etd_p50",
+    "inlens_p50"
+   ],
+   "metrics": {
+    "n": 31,
+    "accuracy": 0.6774193548387096,
+    "accuracy_ci95": [
+     0.48627017040724996,
+     0.8331763625770405
+    ],
+    "n_correct": 21,
+    "balanced_accuracy": 0.6638655462184874,
+    "chance_balanced": 0.3333333333333333,
+    "majority_accuracy": 0.5483870967741935,
+    "recall": {
+     "Batch_1": 0.7142857142857143,
+     "Batch_2": 0.5714285714285714,
+     "Batch_3": 0.7058823529411765
+    },
+    "confusion": [
+     {
+      "pred Batch_1": 5,
+      "pred Batch_2": 2,
+      "pred Batch_3": 0
+     },
+     {
+      "pred Batch_1": 2,
+      "pred Batch_2": 4,
+      "pred Batch_3": 1
+     },
+     {
+      "pred Batch_1": 3,
+      "pred Batch_2": 2,
+      "pred Batch_3": 12
+     }
+    ]
+   },
+   "calibration": {
+    "brier": 0.4567160673072741,
+    "brier_prior": 0.5972944849115505,
+    "ece": 0.10982221934317661,
+    "reliability": [
+     {
+      "bin": "[0.33, 0.50)",
+      "n": 10,
+      "mean_top_prob": 0.43650754107712253,
+      "observed_top_accuracy": 0.4
+     },
+     {
+      "bin": "[0.50, 0.70)",
+      "n": 14,
+      "mean_top_prob": 0.6018093496505269,
+      "observed_top_accuracy": 0.7857142857142857
+     },
+     {
+      "bin": "[0.70, 1.00)",
+      "n": 7,
+      "mean_top_prob": 0.7907508165750532,
+      "observed_top_accuracy": 0.8571428571428571
+     }
+    ],
+    "mean_top_prob": 0.5911503878033538,
+    "top_accuracy": 0.6774193548387096
+   },
+   "p": 0.004975124378109453,
+   "n_perm": 200,
+   "p_method": "Monte Carlo site-label permutation of the whole fold-local LOO procedure, 200 resamples, statistic = balanced accuracy, p = (b+1)/(n+1), one-sided"
+  }
+ }
+}
