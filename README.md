@@ -31,6 +31,23 @@ python3 -m polaron_qc.report Dataset/Batch_3 Dataset/Batch_2 reports/qc_Batch_2.
 
 Batch 3 is the working reference (confirmed by the organisers; it is a single batch with more samples, not a clean baseline). The command extracts features from the raw TIFFs (≈ 1 min per 7-site batch, cached afterwards), derives the acquisition flags from the batch's own images, runs the site-level comparison (Hodges–Lehmann shift, exact site permutations, Holm over the five primary KPIs, energy distance), the material-only classifier, the three acquisition sensitivity views, the localized-defect check, the decision and the leave-one-site-out stability, and writes one self-contained HTML. ≈ 70 s with a warm feature cache, ≈ 2 min cold. The executed notebook [`notebooks/02_batch_qc.ipynb`](notebooks/02_batch_qc.ipynb) runs the same pipeline for every compared batch with the reference characterisation, self-tests and the decision table around it.
 
+## Sample identification — three separate answers per sample (after the provider's clarification, D49P)
+
+The organisers judge by categorising held-back samples and by saying whether an unknown batch is inside or outside the supplier-promised Batch 3 distribution. `polaron_qc.categorise` answers that per site, and keeps the answers apart:
+
+| output | question it answers | what it is, and is not |
+|---|---|---|
+| site categorisation | does this sample resemble Batch 1, 2 or 3? | 3-class model **probabilities** (not calibrated: top bin 0.83 vs observed 0.67); the pre-registered primary uses morphology + ETD/Inlens texture + acquisition statistics and is a **batch fingerprint** — morphology alone is at chance (E31) |
+| baseline OOD assessment | is it outside Batch 3's promised distribution? | k-NN robust-z distance to all 17 Batch 3 sites with leave-one-site-out reference percentiles (rank floor 1/18); built separately from the classifier — a high Batch 3 probability never establishes membership |
+| QC interpretation | what changed, how reliable is the evidence, what action follows? | the batch-level verdict from `polaron_qc.report` (frozen five-KPI path, image evidence, next action); `docs/batch_signatures.md` says what differs per batch |
+
+```bash
+python3 -m polaron_qc.categorise Dataset/Batch_3 Dataset/Batch_1 Dataset/Batch_2                 # LOO evaluation on the known sites (≈ 35 s)
+python3 -m polaron_qc.categorise Dataset/Batch_3 Dataset/Batch_1 Dataset/Batch_2 --score Dataset/<folder>   # fit on the known folders, score every site in <folder>
+```
+
+Outputs: `analysis/categoriser/output/site_table.csv` and an HTML/markdown table per site with model probabilities per feature family, the OOD percentile per variant, nearest reference sites, the top contributing features with sign and the Batch 3 median ± MAD, the data-derived acquisition flags, and a pointer to the report. Known-site result: balanced accuracy 0.66 (p 0.005, 200 site-label permutations), accuracy 0.68 with a 95 % interval of 0.49–0.83 on 31 sites; Batch 2 sits inside the Batch 3 morphology, Batch 1's two exceedances are low-contrast segmentation artefacts. Read the OOD column and the flags before the argmax: a sample from an unseen session will be placed away from all three known batches by the fingerprint and the model will still return an argmax.
+
 ## Unseen batch — the drop procedure (rehearsed, see experiment log E23)
 
 1. Put the folder at `Dataset/<name>/img_<site>_<BSE|ETD|Inlens>.tif` (`SE` is accepted as `ETD`). Nothing else is edited: no site lists, no thresholds.
