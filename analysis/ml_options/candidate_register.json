@@ -18,13 +18,20 @@
     {
       "id": "equal_site_frozen_novelty",
       "label": "Equal-site frozen-encoder novelty audit",
-      "status": "recommended_not_run",
+      "status": "run_pilot",
       "reason": "Reuses current cached DINOv2 representations; audits unequal patch contributions and nuisance sensitivity.",
       "gate": "Equal site influence in fitting/memory and evaluation; fold-local PCA; nearest-reference evidence; acquisition-only and geometry baselines; abstention for unavailable quality.",
       "review_status": "unreviewed_by_materials_expert",
       "qc_role": "excluded_from_verdict",
       "validation_state": "no_new_empirical_validation",
-      "evidence_path": "analysis/ml_options/assessment.md"
+      "evidence_path": "analysis/ml_options/f_audit/findings.md",
+      "pilot": {
+        "date": "2026-10-03",
+        "script": "analysis/ml_options/f_audit/run_f_audit.py",
+        "outputs": "analysis/ml_options/f_audit/output/",
+        "finding": "retain as retrieval/review assistant with disclosed sensitivity; material interpretation stopped (resolution dependence of ranks and acquisition-flagged top sites). Balanced vs unbalanced site rankings agree (Spearman 0.97 at 518 px); unequal site influence was not the driver of E07.",
+        "validation_state": "exploratory pilot on Batches 1-3; no outcome labels; not a performance claim"
+      }
     },
     {
       "id": "fixed_gabor",

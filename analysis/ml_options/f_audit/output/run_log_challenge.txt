@@ -1,0 +1,45 @@
+[f_audit] eligible sites: 31/31
+[f_audit] all_sites 518 balanced: memory rows 544, PCA 32 comps (0.76 var), 0.9 s
+[f_audit] all_sites 518 unbalanced: memory rows 819, PCA 32 comps (0.75 var), 1.0 s
+[f_audit] all_sites 224 balanced: memory rows 544, PCA 32 comps (0.73 var), 1.1 s
+[f_audit] all_sites 224 unbalanced: memory rows 819, PCA 32 comps (0.72 var), 1.0 s
+[f_audit] quality_matched 518 balanced: memory rows 320, PCA 32 comps (0.78 var), 0.4 s
+[f_audit] quality_matched 518 unbalanced: memory rows 468, PCA 32 comps (0.77 var), 0.7 s
+[f_audit] quality_matched 224 balanced: memory rows 320, PCA 32 comps (0.75 var), 0.4 s
+[f_audit] quality_matched 224 unbalanced: memory rows 468, PCA 32 comps (0.74 var), 0.7 s
+[f_audit] ordinary_reference 518 balanced: memory rows 320, PCA 32 comps (0.78 var), 0.5 s
+[f_audit] ordinary_reference 518 unbalanced: memory rows 468, PCA 32 comps (0.77 var), 0.7 s
+[f_audit] ordinary_reference 224 balanced: memory rows 320, PCA 32 comps (0.75 var), 0.5 s
+[f_audit] ordinary_reference 224 unbalanced: memory rows 468, PCA 32 comps (0.74 var), 0.7 s
+[f_audit] challenge model: dinov2_vits14
+[f_audit] challenge 518 Batch_1/f1vzngrs gamma_0.75: median 16.86 -> 17.03, top1 same 0.54
+[f_audit] challenge 518 Batch_1/f1vzngrs gamma_1.25: median 16.86 -> 17.29, top1 same 0.87
+[f_audit] challenge 518 Batch_1/f1vzngrs affine_0.8x+20: median 16.86 -> 16.91, top1 same 0.92
+[f_audit] challenge 518 Batch_1/4ih2ggld gamma_0.75: median 17.02 -> 17.35, top1 same 0.75
+[f_audit] challenge 518 Batch_1/4ih2ggld gamma_1.25: median 17.02 -> 17.27, top1 same 0.79
+[f_audit] challenge 518 Batch_1/4ih2ggld affine_0.8x+20: median 17.02 -> 17.00, top1 same 0.96
+[f_audit] challenge 518 Batch_2/3806gxp0 gamma_0.75: median 15.59 -> 15.81, top1 same 0.52
+[f_audit] challenge 518 Batch_2/3806gxp0 gamma_1.25: median 15.59 -> 15.88, top1 same 0.69
+[f_audit] challenge 518 Batch_2/3806gxp0 affine_0.8x+20: median 15.59 -> 15.60, top1 same 0.94
+[f_audit] challenge 518 Batch_3/9luzk4jm gamma_0.75: median 14.74 -> 15.00, top1 same 0.69
+[f_audit] challenge 518 Batch_3/9luzk4jm gamma_1.25: median 14.74 -> 14.62, top1 same 0.67
+[f_audit] challenge 518 Batch_3/9luzk4jm affine_0.8x+20: median 14.74 -> 14.79, top1 same 0.88
+[f_audit] challenge 518 Batch_3/71vgq3fw gamma_0.75: median 15.44 -> 15.52, top1 same 0.77
+[f_audit] challenge 518 Batch_3/71vgq3fw gamma_1.25: median 15.44 -> 15.24, top1 same 0.85
+[f_audit] challenge 518 Batch_3/71vgq3fw affine_0.8x+20: median 15.44 -> 15.48, top1 same 0.88
+[f_audit] challenge 224 Batch_1/f1vzngrs gamma_0.75: median 17.33 -> 17.25, top1 same 0.65
+[f_audit] challenge 224 Batch_1/f1vzngrs gamma_1.25: median 17.33 -> 17.30, top1 same 0.69
+[f_audit] challenge 224 Batch_1/f1vzngrs affine_0.8x+20: median 17.33 -> 17.30, top1 same 1.00
+[f_audit] challenge 224 Batch_1/4ih2ggld gamma_0.75: median 18.80 -> 18.46, top1 same 0.73
+[f_audit] challenge 224 Batch_1/4ih2ggld gamma_1.25: median 18.80 -> 19.00, top1 same 0.81
+[f_audit] challenge 224 Batch_1/4ih2ggld affine_0.8x+20: median 18.80 -> 18.82, top1 same 0.96
+[f_audit] challenge 224 Batch_2/3806gxp0 gamma_0.75: median 16.70 -> 16.88, top1 same 0.58
+[f_audit] challenge 224 Batch_2/3806gxp0 gamma_1.25: median 16.70 -> 16.76, top1 same 0.67
+[f_audit] challenge 224 Batch_2/3806gxp0 affine_0.8x+20: median 16.70 -> 16.71, top1 same 0.98
+[f_audit] challenge 224 Batch_3/9luzk4jm gamma_0.75: median 16.84 -> 16.91, top1 same 0.77
+[f_audit] challenge 224 Batch_3/9luzk4jm gamma_1.25: median 16.84 -> 16.44, top1 same 0.63
+[f_audit] challenge 224 Batch_3/9luzk4jm affine_0.8x+20: median 16.84 -> 16.89, top1 same 1.00
+[f_audit] challenge 224 Batch_3/71vgq3fw gamma_0.75: median 17.20 -> 17.49, top1 same 0.75
+[f_audit] challenge 224 Batch_3/71vgq3fw gamma_1.25: median 17.20 -> 17.30, top1 same 0.85
+[f_audit] challenge 224 Batch_3/71vgq3fw affine_0.8x+20: median 17.20 -> 17.25, top1 same 0.94
+[f_audit] done in 80 s; checks {'max_abs_diff_vs_ml_novelty_query_median': 3.0533993715664565e-06, 'max_abs_diff_vs_ml_novelty_ref_loo_median': 5.449032364879258e-06, 'max_abs_diff_vs_committed_E07_median': 8.735276750826415e-06, 'n_sites_compared_with_E07': 31}

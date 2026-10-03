@@ -1,0 +1,13 @@
+view,res,method,n_ref_sites,n_loo_folds,max_own_tiles_in_pca_fit_when_held_out,max_own_tiles_in_memory_when_held_out,held_out_tiles_scored_total,min_tiles_per_site_in_pca_fit_full,max_tiles_per_site_in_pca_fit_full,min_tiles_per_site_in_memory_full,max_tiles_per_site_in_memory_full,min_tiles_per_remaining_site_in_loo_fits,max_tiles_per_remaining_site_in_loo_fits,pca_fit_rows_equal_memory_rows,n_ref_sites_not_eligible_abstained
+all_sites,224,balanced,17,17,0,0,819,32,32,32,32,32,32,True,0
+all_sites,224,unbalanced,17,17,0,0,819,39,52,39,52,39,52,True,0
+all_sites,518,balanced,17,17,0,0,819,32,32,32,32,32,32,True,0
+all_sites,518,unbalanced,17,17,0,0,819,39,52,39,52,39,52,True,0
+ordinary_reference,224,balanced,10,10,0,0,468,32,32,32,32,32,32,True,0
+ordinary_reference,224,unbalanced,10,10,0,0,468,39,52,39,52,39,52,True,0
+ordinary_reference,518,balanced,10,10,0,0,468,32,32,32,32,32,32,True,0
+ordinary_reference,518,unbalanced,10,10,0,0,468,39,52,39,52,39,52,True,0
+quality_matched,224,balanced,10,10,0,0,468,32,32,32,32,32,32,True,0
+quality_matched,224,unbalanced,10,10,0,0,468,39,52,39,52,39,52,True,0
+quality_matched,518,balanced,10,10,0,0,468,32,32,32,32,32,32,True,0
+quality_matched,518,unbalanced,10,10,0,0,468,39,52,39,52,39,52,True,0

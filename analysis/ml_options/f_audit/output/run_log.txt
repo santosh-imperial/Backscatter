@@ -1,0 +1,14 @@
+[f_audit] eligible sites: 31/31
+[f_audit] all_sites 518 balanced: memory rows 544, PCA 32 comps (0.76 var), 0.9 s
+[f_audit] all_sites 518 unbalanced: memory rows 819, PCA 32 comps (0.75 var), 1.0 s
+[f_audit] all_sites 224 balanced: memory rows 544, PCA 32 comps (0.73 var), 0.9 s
+[f_audit] all_sites 224 unbalanced: memory rows 819, PCA 32 comps (0.72 var), 1.0 s
+[f_audit] quality_matched 518 balanced: memory rows 320, PCA 32 comps (0.78 var), 0.5 s
+[f_audit] quality_matched 518 unbalanced: memory rows 468, PCA 32 comps (0.77 var), 0.7 s
+[f_audit] quality_matched 224 balanced: memory rows 320, PCA 32 comps (0.75 var), 0.5 s
+[f_audit] quality_matched 224 unbalanced: memory rows 468, PCA 32 comps (0.74 var), 0.7 s
+[f_audit] ordinary_reference 518 balanced: memory rows 320, PCA 32 comps (0.78 var), 0.5 s
+[f_audit] ordinary_reference 518 unbalanced: memory rows 468, PCA 32 comps (0.77 var), 0.8 s
+[f_audit] ordinary_reference 224 balanced: memory rows 320, PCA 32 comps (0.75 var), 0.5 s
+[f_audit] ordinary_reference 224 unbalanced: memory rows 468, PCA 32 comps (0.74 var), 0.7 s
+[f_audit] done in 15 s; checks {'max_abs_diff_vs_ml_novelty_query_median': 3.0533993715664565e-06, 'max_abs_diff_vs_ml_novelty_ref_loo_median': 5.449032364879258e-06, 'max_abs_diff_vs_committed_E07_median': 8.735276750826415e-06, 'n_sites_compared_with_E07': 31}
