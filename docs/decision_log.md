@@ -245,6 +245,14 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Scope / alternatives:** planning and status-summary corrections only; no extraction/training, metric-register value/status change, new numerical experiment, primary/classifier/verdict input change or agent dispatch. An unrestricted feature sweep and automatic promotion are deferred; plate orientation/binder segmentation retain their independent observability gates. No candidate is selected on unseen results.
 - **Review applied:** C04–C09,C13,C14,C16–C18,C21,C22,C28–C30. Checked computed claims against E18 source and E24/E25 inventory; existing provider/assumption confirmation remains intact. Documentation links and whitespace are checked before delivery; computational tests are not needed for this prose-only change.
 
+### D42 · 2026-10-03 · Frozen-encoder novelty stays out of material interpretation after the balanced audit (E27)
+- **Decision:** keep the DINOv2 novelty as a retrieval / review assistant only (nearest-reference panels with disclosed sensitivities); no material reading, no verdict input, `qc_role` unchanged (`excluded_from_verdict`). Protocol F's go/stop rules, fixed before the run, are met on the "stop material interpretation" side.
+- **Why:** equal site influence during PCA fitting and k-NN memory (32 seeded tiles per reference site, whole sites held out in LOO — verified: 0 own tiles in any fit or memory, 32 per site everywhere) leaves the E07 ranking unchanged (Spearman 0.97 over 31 sites, 0 exceedance-flag flips in the all-sites and quality-matched views), so unequal coverage was not the driver of E07. What limits the method is resolution (518 vs 224: ρ 0.53, flag flips in every view), tone curve (gamma 0.75/1.25 moves site medians by up to 0.43, the size of the between-batch gap) and acquisition-flagged top sites (the two low-contrast sites sit at the 100th percentile in every method and resolution). The acquisition-only ridge control is non-predictive out of fold (R² ≤ 0.11), which does not demonstrate invariance.
+- **Alternatives considered:** matched-reference-count calibration (shown as a sensitivity only, ≤ 11.8 percentile points, not substituted); conformal-style ranks (floor 1/18 with 17 reference sites; not pursued); re-tuning crop scale or encoder (excluded by the protocol: it would make the known batches development data for a representation choice).
+- **Caught by / checks:** C01–C03, C06/C09/C14, C07/C10/C17, C16/C21/C22, C30. Open for Santosh: materials review of the eight nearest-reference crop panels in `analysis/ml_options/f_audit/output/crops/`.
+
+---
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.
