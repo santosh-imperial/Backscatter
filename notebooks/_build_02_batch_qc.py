@@ -3,7 +3,8 @@
     python3 notebooks/_build_02_batch_qc.py
     cd notebooks && PYDEVD_DISABLE_FILE_VALIDATION=1 jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=3600 02_batch_qc.ipynb
 
-All ten sections are implemented against polaron_qc (see docs/workflow.md for the data flow).
+Sections 0–11 are implemented against polaron_qc (see docs/workflow.md for the data flow). Running this script alone writes an
+UNEXECUTED notebook over the executed one; always execute it afterwards (needs the raw Dataset/ folder).
 """
 import nbformat as nbf
 nb = nbf.v4.new_notebook(); cells = []
@@ -119,8 +120,8 @@ print("Design limit: the split-reference simulation needs ≥ 3 reference sites 
 
 md("""### 2b · Reference-split diagnostics (internal)
 
-Repeated random splits of the reference into *n* pseudo-incoming sites versus the rest, run through the same comparison and decision as §3–§4. Outcomes are tallied separately — statistical drift alerts, local flags, quality abstentions — and the split (7 vs 10) is smaller than the real comparison (7 vs 17), so this is a diagnostic with its own uncertainty, not a verified false-alarm rate. *(Filled in after §4 is wired; placeholder.)*""")
-code(r'''# placeholder — wired after the decision pipeline function exists (see §4)
+Repeated random splits of the reference into *n* pseudo-incoming sites versus the rest, run through the same comparison and decision as §3–§4. Outcomes are tallied separately — statistical drift alerts, local flags, quality abstentions — and the split (7 vs 10) is smaller than the real comparison (7 vs 17), so this is a diagnostic with its own uncertainty, not a verified false-alarm rate. The splits are run in §9, after the pipeline function used by the decision (`report._run_pipeline`) is in scope; the rates are tabulated there (`SPLIT_DIAG`, plus the ordinary-only 5-vs-5 variant `SPLIT_ORD`).""")
+code(r'''# assigned in §9 (reference_split_diagnostics needs the pipeline function defined there); kept here so the name exists early
 SPLIT_DIAG = None''')
 
 md("""## 3 · Pairwise comparison
@@ -169,7 +170,7 @@ for b, res in RESULTS.items():
 
 md("""### 3d · Local-anomaly evidence flags
 
-Per-site exceedance of the **ordinary-reference maximum** on the extreme-semantics KPIs (`decision.LOCAL_KPIS`). Under an i.i.d. null, at least one of 7 sites exceeds the max of 10 with probability 7/17 ≈ 41 % on a single KPI, so a flag is evidence, not a defect. A flag is promoted only with a severity margin ≥ 1 MAD of the reference per-site values, a reliable measurement on that site, and a reviewed image. Exceedances on batch-mean KPIs are listed separately as outlying sites.""")
+Per-site exceedance of the **ordinary-reference maximum** on the extreme-semantics KPIs (`decision.LOCAL_KPIS`). Under an i.i.d. null, at least one of 7 sites exceeds the max of 10 with probability 7/17 ≈ 41 % on a single KPI, so a flag is evidence, not a defect. A flag is promoted only on `crack_frac` or `pore_max_d` (D29), with a severity margin ≥ 2 MAD of the ordinary-reference per-site values (`Thresholds.severity_margin_mad`), a reliable measurement on that site, and a confirmed image review; an unreviewed severe flag is *pending* — one site between 2 and 3 MAD is routed to review without changing the verdict, one site ≥ 3 MAD or two sites / both KPIs ≥ 2 MAD escalate to *investigate — localized* (D33). Exceedances on batch-mean KPIs are listed separately as outlying sites.""")
 code(r'''for b, res in RESULTS.items():
     cb = res["check_b"]
     print(f"\n### {b}: {cb['n_sites_flagged']} site(s) flagged · {cb['n_sites_pending']} pending image review · {cb['n_sites_credible']} credible · i.i.d. flag probability {ST.iid_flag_probability(len(res['ordinary_ref_sites']), res['meta']['n_sites_batch']):.2f}")
@@ -188,7 +189,7 @@ print(f"energy distance Batch_1 (n={len(X1.dropna())}) vs Batch_2 (n={len(X2.dro
 
 md("""## 4 · ML corroboration (never the sole driver)
 
-Two members. A grouped-cross-validated L1 logistic regression on **material KPIs only** (sites are the groups and carry equal weight; the null is a site-level label permutation) drives Check A(iv). Since D30 it is **run inside `build_result` on the site tables** (and refit in every leave-one-site-out fold), so an unseen batch needs no pre-computed ML cache for Check A(iv); the cached material run, where present, is kept beside it as `material_cached` for comparison. The same classifier with the acquisition flag `etd_boundary_sharpness` included is shown as acquisition evidence because that one flag carries the whole Batch 1 vs Batch 3 separation (E06). DINOv2 patch-embedding novelty is exploratory: on this data it tracks acquisition variables (E07) and can only raise an evidence flag.""")
+Two members. A grouped-cross-validated L1 logistic regression on **material KPIs only** (sites are the groups and carry equal weight; the null is a site-level label permutation) drives Check A(iv). Since D30 it is **run inside `build_result` on the site tables** (and refit in every leave-one-site-out fold), so an unseen batch needs no pre-computed ML cache for Check A(iv); the cached material run, where present, is kept beside it as `material_cached` for comparison — it predates the canonical content order of D43, so its AUC / p differ from the in-pipeline run by fold-realisation noise (0.51 / 0.46 vs 0.59 / 0.30 on Batch 1), not by content; the report also prints a seed range for the in-pipeline run (D45). The same classifier with the acquisition flag `etd_boundary_sharpness` included is shown as acquisition evidence because that one flag carries the whole Batch 1 vs Batch 3 separation (E06). DINOv2 patch-embedding novelty is exploratory: on this data it tracks acquisition variables (E07) and can only raise an evidence flag.""")
 code(r'''rows = []
 for b, res in RESULTS.items():
     for lab, d in [("material only, in-pipeline (drives A iv)", res["c2st_material"]), ("material only, cached pre-run (comparison)", res["c2st_extra"].get("material_cached")), ("flag-inclusive (acquisition evidence)", res["c2st_flag_inclusive"])]:
@@ -256,7 +257,7 @@ for b, res in RESULTS.items():
 
 md("""## 8 · Per-batch reports
 
-One self-contained HTML per compared batch, with the MDC on the first screen, evidence images, the local-anomaly table, ML and acquisition evidence, physics sanity and the limits paragraph.""")
+One self-contained HTML per compared batch, with the MDC on the first screen, evidence images, the local-anomaly table, ML and acquisition evidence, physics sanity, the secondary-KPI appendix, the exploratory *battery geometry candidates* block (eight E25 measurements, `KPI_TRUST` = exploratory, never a verdict input; not repeated in this notebook) and the limits paragraph. The footer's run-config hash covers the `build_result` settings; the frozen configuration hash asserted in §0 is a different quantity (see §10).""")
 code(r'''for b, res in RESULTS.items():
     out = os.path.join(REPORTS, f"qc_{b}.html"); RP.render_report(res, out); print(f"wrote {os.path.relpath(out, ROOT)} ({os.path.getsize(out)/1e6:.2f} MB)")''')
 

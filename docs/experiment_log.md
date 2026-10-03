@@ -279,19 +279,19 @@ Target: an interpretable, uncertainty-aware QC system that returns accept / inve
 | | ETD / Inlens KPIs | ◑ | E04 (null), E03 (confounded) | E25 sampled-gradient feasibility remains confounded; existing per-particle texture not corrected |
 | | battery geometry secondary KPIs | ◕ | E25:8 scalars extracted/reported; coverage, quality counts, sampling intervals and paired sensitivity | phase/instance review and repeatability pending; excluded from verdicts |
 | | per-site threshold band | ◑ | E15: all 31 sites; pore_frac band ≈ 33 % | gate physics wording; print beside pore shifts |
-| Accuracy on the new batch | comparison engine | ◕ | E16 end to end; one command per batch (`python -m polaron_qc.report ref batch out`) | notebook 02 sections 3–9 |
+| Accuracy on the new batch | comparison engine | ● | E16 end to end; one command per batch (`python -m polaron_qc.report ref batch out`, `--review`, `--cache-dir`, `--summary`); notebook 02 §3–§9 executed | Santosh editorial review of the judge-facing story (task G/I) |
 | | localized path | ● | E19 / D33: tiered rule; clean-batch verdict flips ≈ 0.12, routed-only ≈ 0.07 (parametric 7 v 10); cracked sites 5.8 / 5.4 flip, 2.6 routed | reviewer loop is manual (`--review`) |
 | | classifier corroboration | ● | E22: in-pipeline, refit per fold (D30); E28: canonical content order, bit-identical under relabelling / row permutation (AUC 0.59 / p 0.30 and 0.59 / 0.29); seeds 0–9 never below α; seed range printed in the report (D45) | point estimate carries realisation noise at this n (disclosed) |
 | | novelty catch-all | ◑ | E07 tracks acquisition; E27 balanced audit: ranking unchanged by equal site influence (ρ 0.97), unstable across resolution (ρ 0.53) and gamma; retained as retrieval aid only | exploratory; excluded from verdict; Santosh review of 8 nearest-reference panels |
-| Interpretability | decision layer | ● | E16: both known batches; 14 tests; D28 fixes from the end-to-end run | image-review loop is manual |
+| Interpretability | decision layer | ● | E16: both known batches; 20 decision tests (D28–D33, D45 semantics covered); D28 fixes from the end-to-end run | image-review loop is manual |
 | | physics reading | ◑ | E25/D37 production wording corrections and regenerated reports | independent mechanism validation pending; no monotonic transport, intact-share or size-only expansion claims |
 | | battery application hypotheses | ◔ | D36: fresh graphite–Si/SiOx confirmed; source-backed B01–B06 mapped to the metric atlas | E25 secondary geometry integrated; independent labels, process metadata and matched application validation pending |
 | | per-batch HTML report | ● | reports/qc_Batch_{1,2}.html, 11 sections, MDC on first screen; acquisition views integrated | expert review and practical tolerances remain pending |
-| Honest uncertainty | MDC, permutation nulls, stability | ● | E22: MDC infeasible designs reported as "not available" (D32); LOO refits every input (D30); 96 tests | labelled upper-bound MDC design if the unseen batch is as large as the reference |
+| Honest uncertainty | MDC, permutation nulls, stability | ● | E22: MDC infeasible designs reported as "not available" (D32); LOO refits every input (D30); suite 174 tests at the G reconciliation | labelled upper-bound MDC design if the unseen batch is as large as the reference |
 | | acquisition sensitivity views | ● | E22: three views inside the pipeline; `attenuation.available` gates the drift reject (D30) | — |
 | Real-world usability | one-command unseen-batch path | ● | E23 + E28: rehearsed cold on five renamed fixtures (consistent / quality abstention from data flags / n < 5 / cracked + n < 5); `--review` crash found and fixed, both review states exercised; notebook path zero errors with a fixture in the compare list, §0 assert passed; `--cache-dir`, `--summary` | repeat after the last core change (C31) |
 | | assumption register / decision log | ● | A1–A18; E/F/H/J integrated, D46J delivery receipt; review checklist through C31 | keep current; metadata confirmation is separate from interpretive review |
 
 **Known-batch dry run (target: all three verdicts with drivers, stability and reports):** all three pairs run (E17); both incoming batches *consistent within detectable limits*; Batch 1 vs Batch 2 indistinguishable at 7 v 7.
 
-**Unseen batch:** not yet available; drop procedure rehearsed (E23) and configuration frozen (D34).
+**Unseen batch:** not yet available; drop procedure rehearsed (E23), repeated cold on five renamed fixtures (E28) and configuration frozen (D34, `99d2bbcae6f3` / thresholds `b4f4da2e357c`). Documentation reconciled with the code in `analysis/g_reconcile/audit.md` (task G).

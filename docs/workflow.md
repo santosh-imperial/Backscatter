@@ -18,7 +18,7 @@ flowchart TD
     D[("Dataset/Batch_*/img_&lt;site&gt;_{BSE,ETD|SE,Inlens}.tif<br/>31 sites · 3 channels · 25 nm/px nominal")]
     U[("Unseen batch folder<br/>(arrives mid-event) [2.10]")]
     CFG["Configuration cell [2.1]<br/>reference = Batch_3 · compare list · α, power<br/>5 primary KPIs · consequence weights · Thresholds (hashed)<br/><i>developed on Batches 1–3, frozen before the unseen batch</i>"]
-    REG["Assumption register A1–A15<br/>+ organiser answers"]
+    REG["Assumption register A1–A18<br/>+ organiser answers"]
   end
 
   %% ---------------- features
@@ -74,7 +74,7 @@ flowchart TD
 
   %% ---------------- ML
   subgraph ML["ML corroboration  [2.5]  (polaron_qc.ml)"]
-    M1["Grouped-CV L1 logistic regression<br/>site = group · equal site weight · scaler refit per fold<br/>site-level Monte Carlo null → AUC band, p, selected KPIs, per-site OOF prob<br/><b>material-only run drives A(iv); flag-inclusive run shown separately</b>"]
+    M1["Grouped-CV L1 logistic regression<br/>site = group · equal site weight · scaler refit per fold · canonical content order, seeded solver (D43)<br/>site-level Monte Carlo null → AUC band, p, selected KPIs, per-site OOF prob · seed range printed (D45)<br/><b>material-only run drives A(iv); flag-inclusive run shown separately</b>"]
     M2["Patch-embedding novelty (exploratory)<br/>DINOv2 ViT-S/14 @ 518 px on per-image-normalised BSE patches<br/>PCA(32) on reference, refit per LOO fold · kNN(5)<br/>novelty tracks acquisition (bse_std, curtaining, black level)"]
   end
   FCACHE --> M1
@@ -141,7 +141,7 @@ flowchart TD
   C3 -.->|"per-site z, top driver"| E1
   M1 --> DA
   C4 --> DB
-  M2 -.->|"flag only; forces investigate only if no trusted KPI moves"| DB
+  M2 -.->|"exploratory evidence only; not a Check B input (D38)"| DB
   P4b -.-> DB
   ACQ -.->|"attenuation {stratified, adjusted, available} (negative = not explained away; not available → reject withheld)"| V
   A2 -.-> DA
@@ -226,7 +226,7 @@ flowchart TD
 | physics → decision (reliability), report | `threshold_sensitivity`, `sanity_checks` | ±5-level bands; fractions sum; porosity note (dataset-level) |
 | physics → report | readings | statement + caveats + claims_not_made per reading (DataFrames carry them in `.attrs` — read immediately) |
 | decision → report | `verdict` dict | verdict, reason, outcome_columns {drift_alert, localized ∈ none/flag/**review_routed**/pending_review/credible, quality_abstention}, drivers, attenuation {stratified, adjusted, available}, **escalation** {escalate, by_single_site, by_site_agreement, by_kpi_agreement, max_pending_margin_mad, rule}, what_would_move_it, thresholds_hash, provenance. `check_b` adds `refuted`, `n_sites_refuted`, per-flag `review_status`. Tiered rule D33: review_routed = one site in [2, 3) MAD, verdict unchanged |
-| (owner to assign) | `KPI_TRUST` dict | trust level per KPI from the findings-doc catalogue (high / medium / flag / confounded / diagnostic) — needed by E3; proposed home `polaron_qc/__init__.py` |
+| `polaron_qc/__init__.py` → everything | `KPI_TRUST`, `PRIMARY_KPIS`, `MATERIAL_KPIS`, `BATTERY_SECONDARY_KPIS` | categorical trust level per KPI (high / medium / flag / confounded / diagnostic / **exploratory** for the eight battery-secondary KPIs), asserted disjoint from the primary/material lists; `report.KPI_TRUST` holds the descriptive labels printed in tables (same catalogue) |
 
 ## Report sections → sources (added after the first end-to-end run)
 
@@ -241,25 +241,26 @@ flowchart TD
 | Acquisition | A0 flags table + ACQ three views + A4 agreement |
 | Physics sanity | PCACHE + ACACHE bands + dataset-level porosity note |
 | Secondary KPIs | C1 rows with is_primary = False, uncorrected, labelled descriptive |
+| Battery geometry candidates | `secondary.summarize` on the eight E25 KPIs (raw-unit site-median differences, site-bootstrap intervals, paired ±5 threshold ranges, observability counts); exploratory, never passed to `_run_pipeline` / ML |
 | Limits of this dataset | GATE usable n + R2 MDC range + REG (specimen independence, scale, chemistry) |
 
 ## Known integration hazards (from the agents' diagram reviews)
 1. **Patch coordinates are trimmed-frame.** Add `images.band_top` for the BSE site before painting anything on a raw image.
 2. **`etd_boundary_sharpness` is a flag.** It alone separates Batch 1 from Batch 3 in the classifier (AUC 0.79 → 0.53 without it); it must not sit in any "material KPI" list.
 3. **Novelty tracks acquisition.** Top correlates are bse_std, curtaining, low-contrast flag, black level; ranking is unstable across input resolutions (ρ 0.43). Exploratory only.
-4. **Threshold band is as large as the batch differences for pore_frac** (±15–25 % relative for ±5 levels). Must be computed per site and printed next to every pore-based shift; physics transport wording is gated on it.
+4. **Threshold band is as large as the batch differences for pore_frac** (±15–25 % relative for ±5 levels). Computed per site for all 31 sites by `acquisition.threshold_bands` into `analysis_cache/acquisition_sites.csv`; physics wording is gated on it. The report's physics table still reads the band from `physics_sites.csv` (6 of 31 sites), so its "available for 4 of 24 sites" note is a cache-source limitation, not a missing feature — open item to point the report at `acquisition_sites.csv`.
 5. **No 2-D macro-pore percolation on any site.** Do not present a tortuosity index; state `fraction_connected = 0` once.
 6. **Edge-band trimming is implemented three times** (features, ml, physics). Integration imports it from features.
 7. **MDC simulation must draw without replacement.** The with-replacement design in the first plan draft rejected 11 % at zero shift. MDC uses the full usable reference (17 sites); on the 10 ordinary sites it is undefined for n = 7.
 8. **Exact median-difference tests are too discrete at 7 v 17** (56 attainable values, 21 % of null p-values exactly 1; bright_d50 MDC 3.75 MAD vs 2.5 with Hodges–Lehmann). Use `hl_shift` for the verdict test; keep median/MAD as the reported effect size.
 9. **Covariate adjustment on this reference amplifies the shift** (attenuation −1.4 / −3.0): covariates fitted on the heterogeneous reference encode its sub-populations. Read negative attenuation as "not explained away"; always show the 7-covariate ridge variant beside the 3-covariate OLS; fixed-residual p-values are anti-conservative (0.002 vs 0.021) — only in-loop refit counts.
 10. **`stats.compare_kpis` ignored a per-site `grey_pore` column** (fixed E21: `usable_n` now ORs the boolean column with the list; `report.apply_derived_flags` writes the derived flags into `sites` first). Still pass `flags=` when calling stats on tables that carry no flag columns.
+11. **Localized flags on batch-mean KPIs are not local defects.** Check B reads only `decision.LOCAL_KPIS`; `None` for the classifier never counts as corroboration (D28).
+12. **Caches:** features cache is machine-specific (mtimes in hash) → git-ignored; ml embeddings are portable → committed; physics_sites.csv committed.
 13. **A missing acquisition view is not "no attenuation".** `decide(att=None)` once allowed a drift reject whose reason claimed the shift was not attenuated (E21). Now `attenuation.available` must be True for a Check A reject; the views run inside the pipeline. Any new verdict input must define its missing-value behaviour in the conservative direction (C25, C27).
 14. **MDC is undefined when the incoming batch is as large as the reference.** The split design raised for n_in > n_ref and returned ∞ with zero simulations at n_in = n_ref (E21). It now returns feasible=False / NaN with a reason; the report prints "not available" and nothing else stops.
 15. **Image review has three states.** An explicit `False` used to be read as "not reviewed" and kept the investigation pending forever (E21). unreviewed → pending, confirmed → credible, refuted → closed (flag still listed).
 16. **Leave-one-site-out held the classifier fixed** at its full-sample value, so "stability" was conditional on that evidence (E21). The material classifier and the acquisition views are now refit in every fold; `stability.refit_per_fold` / `held_fixed` state exactly what was re-run.
-11. **Localized flags on batch-mean KPIs are not local defects.** Check B reads only `decision.LOCAL_KPIS`; `None` for the classifier never counts as corroboration (D28).
-12. **Caches:** features cache is machine-specific (mtimes in hash) → git-ignored; ml embeddings are portable → committed; physics_sites.csv committed.
 
 ## Rules the picture encodes
 - Site is the unit everywhere; patches localise, they never add to n.
@@ -272,7 +273,7 @@ flowchart TD
 
 ## E25 secondary geometry contract
 
-`features.extract_site` now adds `secondary.extract` after the original BSE features, reusing nominal masks and computing paired -5/+5 threshold variants. Feature version1.1.0 invalidates older families. `battery_secondary_version`, nine extracted quantities (eight variable secondary scalars plus constant boundary diagnostic), component/window/clipped-area coverage and finite-variant counts are stored per site.
+`features.extract_site` now adds `secondary.extract` after the original BSE features, reusing nominal masks and computing paired -5/+5 threshold variants. Feature version 1.1.0 invalidates older families. `battery_secondary_version`, nine extracted quantities (eight variable secondary scalars plus constant boundary diagnostic), component/window/clipped-area coverage and finite-variant counts are stored per site.
 
 `report.build_result` derives acquisition flags first, runs the frozen decision pipeline, then calls `secondary.summarize` separately. Eight rows enter `battery_secondary`; no new row enters `cmp`, primary multiplicity, energy test, classifier or decision. Bright-dependent measurements require a known false low-contrast flag; pore-dependent ones require a known false grey-pore flag. The universally unresolved pore-mode method flag is counted, not used to infer mask accuracy. Missing flags or measurements are unusable. The secondary-only quality view requires an observed extraction bright-quality boolean and finite BSE black level; legacy false defaults cannot imply observations. Original decision tables remain unchanged. Raw-unit differences and bootstrap intervals avoid zero-MAD division; intervals require at least two usable sites per side. Threshold range and sampling uncertainty are separate.
 
