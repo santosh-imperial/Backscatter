@@ -1,0 +1,4 @@
+,pred Batch_1,pred Batch_2,pred Batch_3
+true Batch_1,4,3,0
+true Batch_2,2,1,4
+true Batch_3,2,3,12
