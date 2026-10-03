@@ -1,0 +1,6 @@
+family,scanned,p_lt_05,p_lt_01
+acquisition,15,3,0
+morphology (BSE geometry),50,7,2
+"secondary (battery geometry, exploratory)",27,1,1
+texture (ETD/Inlens; acquisition-sensitive),27,13,9
+all,119,24,12
