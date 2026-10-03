@@ -3894,6 +3894,349 @@
           "reason": "E28J: single fixed all-known-site run, five modes; eight mathematical tests. Computation is distinct from expert validation; no QC promotion."
         }
       ]
+    },
+    {
+      "id": "bright_aspect_count_iqr",
+      "label": "Bright aspect count iqr",
+      "family": "Bright shape distributions",
+      "keys": [
+        "bright_aspect_count_iqr"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Linear Q75−Q25 of major/minor axis ratio, equal weight per eligible bright component.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_solidity_count_q10",
+      "label": "Bright solidity count q10",
+      "family": "Bright shape distributions",
+      "keys": [
+        "bright_solidity_count_q10"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "0–1",
+      "definition": "Linear Q10 of raster solidity, equal weight per eligible bright component.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_circularity_count_iqr",
+      "label": "Bright circularity count iqr",
+      "family": "Bright shape distributions",
+      "keys": [
+        "bright_circularity_count_iqr"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Linear Q75−Q25 of 4π area/perimeter², equal weight per eligible bright component; raster estimates are not clipped to one.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_autocorr_xy_contrast_64px",
+      "label": "Bright autocorr xy contrast 64px",
+      "family": "Directional phase arrangement",
+      "keys": [
+        "bright_autocorr_xy_contrast_64px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−2–2",
+      "definition": "Binary bright-mask Pearson correlation at x lag 64px minus y lag 64px, using pair-specific marginals in the finite overlapping domains.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_autocorr_xy_contrast_256px",
+      "label": "Bright autocorr xy contrast 256px",
+      "family": "Directional phase arrangement",
+      "keys": [
+        "bright_autocorr_xy_contrast_256px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−2–2",
+      "definition": "Binary bright-mask Pearson correlation at x lag 256px minus y lag 256px, using pair-specific marginals in the finite overlapping domains.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_pore_crosscorr_xy_contrast_64px",
+      "label": "Bright pore crosscorr xy contrast 64px",
+      "family": "Directional phase arrangement",
+      "keys": [
+        "bright_pore_crosscorr_xy_contrast_64px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−2–2",
+      "definition": "Symmetric ±64px bright-to-void binary Pearson correlation along x minus along y. Each signed direction uses its own finite overlapping domain and marginals.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
+    },
+    {
+      "id": "bright_pore_crosscorr_xy_contrast_256px",
+      "label": "Bright pore crosscorr xy contrast 256px",
+      "family": "Directional phase arrangement",
+      "keys": [
+        "bright_pore_crosscorr_xy_contrast_256px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−2–2",
+      "definition": "Symmetric ±256px bright-to-void binary Pearson correlation along x minus along y. Each signed direction uses its own finite overlapping domain and marginals.",
+      "interpretation": "Observed 2-D threshold-geometry variation; material identity and manufacturing relevance require independent review.",
+      "implementation_status": "computed",
+      "evidence_status": "math_and_source_checks_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; x/y are image axes, not confirmed collector coordinates.",
+        "Bright/void appearance masks are not independently validated chemical phases.",
+        "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
+        "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
+        "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+      ],
+      "evidence_paths": [
+        "analysis/morphology/k_pilot/protocol.json",
+        "analysis/morphology/k_pilot/sites.csv",
+        "analysis/morphology/k_pilot/findings.md",
+        "analysis/morphology/k_pilot/report.html"
+      ],
+      "experiments": [
+        "E30K"
+      ],
+      "visual_kind": "k_morphology",
+      "review_status": "unreviewed",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 exact definitions fixed before extraction; known data explored previously."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        }
+      ]
     }
   ],
   "methods": [
@@ -4040,6 +4383,44 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E28J complete: retained maps for review; all material/QC use deferred."
+        }
+      ]
+    },
+    {
+      "id": "shape_distribution_pilot",
+      "label": "Count-weighted bright shape distributions",
+      "implementation_status": "computed",
+      "evidence_status": "exploratory_geometry_material_use_deferred",
+      "description": "Fixed aspect/circularity spread and solidity lower tail; cached E26G geometry with coverage and raw replay guards; no new particle identities.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 before fresh raster measurements."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K complete; no production/QC promotion."
+        }
+      ]
+    },
+    {
+      "id": "directional_phase_correlation_pilot",
+      "label": "Finite-frame directional phase correlation",
+      "implementation_status": "computed",
+      "evidence_status": "exploratory_geometry_material_use_deferred",
+      "description": "Two fixed x/y lags; paired finite-domain binary correlations with threshold and loading controls; no contact/transport interpretation.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E30K.1 before fresh raster measurements."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E30K complete; no production/QC promotion."
         }
       ]
     }

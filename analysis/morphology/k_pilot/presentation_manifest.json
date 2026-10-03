@@ -1,0 +1,5 @@
+{
+  "source": "qualify_report.py",
+  "sha256": "714edbb296eab66158f89974ed0290bfc0d4a89931f0d663c993821ab0737aaa",
+  "scope": "Post-run qualification of saved tables only; extraction/settings unchanged"
+}

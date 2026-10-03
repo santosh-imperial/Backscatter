@@ -300,6 +300,15 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Caught by:** G audit (C04, C06, C13, C16, C21, C27).
 
 ---
+### D47K · 2026-10-03 · Freeze the bounded morphology K pilot before extraction
+- **Decision:** E30K.1 fixes seven secondary descriptors: three count-weighted bright shape distribution summaries and bright auto/cross-phase x−y correlation contrasts at 64/256 px. Four fixed modes cover nominal, threshold ±5 and a nominal 100 px² shape floor; floor has no effect on the raster descriptors. Existing E26G shape geometry is reused with input-hash and raw-replay guards; raster counts are freshly measured from raw BSE.
+- **Coverage / uncertainty:** exclude frame-clipped components, require 20 eligible objects and disclosed pixel-pair coverage. Sites are n, with phase-specific quality flags, site bootstrap/deletion ranges and fixed fold-local acquisition/geometry/loading controls. Count weighting, finite-frame marginals and the lack of a floor/threshold interaction test are explicit.
+- **Alternatives / gates:** nonlinear image-depth structure is deferred until independent phase/section/collector review. No new primary/classifier/verdict input, fitted defect model or settings selected from folder separation. Independent masks, specimen metadata and practical tolerance gates remain open. Review C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30.
+
+### D48K · 2026-10-03 · Retain K geometry for review and defer all material/QC use
+- **Decision:** E30K completes the fixed shape-distribution/directional-phase pilot in an isolated worktree. Retain seven observed 2-D descriptors and image explanations; keep all outside the primary/classifier/verdict inputs. Nonlinear image-depth structure remains deferred.
+- **Why:** 2/21 nominal matched intervals exclude zero among correlated exploratory contrasts without multiplicity correction. Differences, deletion ranges, threshold/floor changes and fixed controls remain visible rather than being selected for the best batch separation. Count quantiles and finite-frame phase correlations have distinct measurands and unresolved expert/section/phase validity. Even a stable known-site contrast cannot establish manufacturing failure or release tolerances.
+- **Validation / limits:** mathematical conventions, cached-node summaries, signed-domain pair counts, bootstrap/deletion tables and prespecified raw-image bindings are checked. Warm geometry reuse and the execution-import repair are recorded; no original data or historical caches are rewritten. The inventory keeps prior entries/review histories; new entries are computed and expert-unreviewed. Review C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30. No unseen, contact, transport or battery-performance claim.
 
 ## Part B — Pre-presentation review checklist
 

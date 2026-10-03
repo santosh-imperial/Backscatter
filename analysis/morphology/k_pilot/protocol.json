@@ -1,0 +1,104 @@
+{
+  "experiment": "E30K",
+  "version": "E30K.1",
+  "date": "2026-10-03",
+  "base_commit": "a83d12d4b683b5a803f602c399b99b58af5fe1a4",
+  "stage": "definitions_fixed_before_new_outputs",
+  "keys": [
+    "bright_aspect_count_iqr",
+    "bright_solidity_count_q10",
+    "bright_circularity_count_iqr",
+    "bright_autocorr_xy_contrast_64px",
+    "bright_autocorr_xy_contrast_256px",
+    "bright_pore_crosscorr_xy_contrast_64px",
+    "bright_pore_crosscorr_xy_contrast_256px"
+  ],
+  "definitions": {
+    "bright_aspect_count_iqr": {
+      "units": "ratio",
+      "definition": "Linear Q75\u2212Q25 of major/minor axis ratio, equal weight per eligible bright component."
+    },
+    "bright_solidity_count_q10": {
+      "units": "0\u20131",
+      "definition": "Linear Q10 of raster solidity, equal weight per eligible bright component."
+    },
+    "bright_circularity_count_iqr": {
+      "units": "dimensionless",
+      "definition": "Linear Q75\u2212Q25 of 4\u03c0 area/perimeter\u00b2, equal weight per eligible bright component; raster estimates are not clipped to one."
+    },
+    "bright_autocorr_xy_contrast_64px": {
+      "units": "\u22122\u20132",
+      "definition": "Binary bright-mask Pearson correlation at x lag 64px minus y lag 64px, using pair-specific marginals in the finite overlapping domains."
+    },
+    "bright_autocorr_xy_contrast_256px": {
+      "units": "\u22122\u20132",
+      "definition": "Binary bright-mask Pearson correlation at x lag 256px minus y lag 256px, using pair-specific marginals in the finite overlapping domains."
+    },
+    "bright_pore_crosscorr_xy_contrast_64px": {
+      "units": "\u22122\u20132",
+      "definition": "Symmetric \u00b164px bright-to-void binary Pearson correlation along x minus along y. Each signed direction uses its own finite overlapping domain and marginals."
+    },
+    "bright_pore_crosscorr_xy_contrast_256px": {
+      "units": "\u22122\u20132",
+      "definition": "Symmetric \u00b1256px bright-to-void binary Pearson correlation along x minus along y. Each signed direction uses its own finite overlapping domain and marginals."
+    }
+  },
+  "lags_px": [
+    64,
+    256
+  ],
+  "settings": {
+    "nominal": {
+      "threshold_offset": 0,
+      "shape_area_floor_px2": 50
+    },
+    "threshold_minus5": {
+      "threshold_offset": -5,
+      "shape_area_floor_px2": 50
+    },
+    "threshold_plus5": {
+      "threshold_offset": 5,
+      "shape_area_floor_px2": 50
+    },
+    "floor100": {
+      "threshold_offset": 0,
+      "shape_area_floor_px2": 100
+    }
+  },
+  "shape_scope": "8-connected bright threshold components; frame-clipped excluded; positive finite minor axis/perimeter; equal component weights; linear quantiles; >=20 eligible objects; E26G geometry reused with hash/replay guards",
+  "raster_scope": "All pixels of full trimmed bright/pore masks after existing smooth/opening; no component floor for phase correlation; per signed overlap marginal normalisation; no wrap, no fitted coordinate direction",
+  "pair_coverage": {
+    "min_pair_pixels": 10000,
+    "min_each_phase_and_complement_pixels": 100
+  },
+  "quality_views": [
+    "phase_usable",
+    "quality_matched",
+    "ordinary_reference"
+  ],
+  "quality": "Known low-bright contrast excluded for all; grey-pore excluded for cross-phase or matched view; ordinary-reference additionally excludes known long-void reference sites; unknown required flags abstain",
+  "n_boot": 4000,
+  "seed": 20261003,
+  "controls": "Fixed Ridge alpha=1; median imputation/scaling fitted inside whole-site LOO; acquisition six and existing geometry/loading ten variables; within-batch and ordinary-reference correlations",
+  "examples": [
+    [
+      "Batch_2",
+      "3806gxp0"
+    ],
+    [
+      "Batch_1",
+      "4ih2ggld"
+    ],
+    [
+      "Batch_3",
+      "71vgq3fw"
+    ],
+    [
+      "Batch_3",
+      "hzumfsms"
+    ]
+  ],
+  "overlay": "Fixed central min(768,H) x min(1280,W) crop; scalar/histogram summaries use full frame",
+  "stop_go": "No primary/classifier/verdict promotion; defer material use if unreviewed, unstable, confounded/redundant or insufficient; no selection from known-folder or unseen separation",
+  "depth_extension": "Deferred: collector direction and expert/representative phase/section validity unresolved"
+}

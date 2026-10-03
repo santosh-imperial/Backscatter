@@ -71,3 +71,5 @@ Pick work from the [next-step plan](docs/next_steps.md): priorities, proposed le
 
 
 The combined [morphology atlas](analysis/morphology/output/metric_atlas.html) includes the [fixed Gabor appearance audit](analysis/ml_options/j_gabor/report.html) (E28J). Its three sampled-window descriptors remain exploratory, expert-unreviewed and excluded from verdicts; read the [qualification](analysis/ml_options/j_gabor/review.md) before interpreting differences. Graph (E26G) and balanced frozen-encoder (E27) evidence remain available alongside it.
+
+The isolated [task K report](analysis/morphology/k_pilot/report.html) and [measured qualification](analysis/morphology/k_pilot/review.md) add fixed shape-distribution and directional phase-arrangement evidence. Seven computed descriptors remain secondary, expert-unreviewed and excluded from production inputs; the nonlinear depth extension is deferred.

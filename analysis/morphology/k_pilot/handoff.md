@@ -1,0 +1,9 @@
+# K additive integration handoff — E30K / D47K–D48K
+
+Owner: Codex. Isolated managed worktree `morphology-k-pilot`, based on main `a83d12d` after J integration and K ownership. Seven computed descriptors and two methods remain secondary exploratory, expert-unreviewed; all material/QC use and the conditional nonlinear-depth extension are deferred.
+
+Use the measured qualification (`review.md`), visual report and findings before interpreting the descriptors. Copy the new `analysis/morphology/k_pilot/` evidence directory, append only seven new metric entries and two methods to the current register, and preserve every prior history/review. Merge only the K atlas table/adapter and A16 paragraph/image, then regenerate the views. Append only E30K registry/log/decision records; preserve J/E/F/H. No production source, notebook, historical cache, classifier input or primary threshold is changed. This worktree has 88 metrics / 13 methods; reconcile that count with any newer main additions before integration.
+
+Shape geometry is declared warm reuse of E26G. Its raw/source hashes and full-table summaries are checked; four prespecified nominal sites replay from raw masks. Phase pairs use freshly reconstructed full trimmed frames with finite signed domains and explicit coverage/quality abstention. Saved comparisons include bootstrap/deletion uncertainty and fixed acquisition/geometry/loading controls; no stable observed contrast is automatically promoted.
+
+Eleven mathematical tests and the independent evidence/atlas verifiers are the delivery checks. Verification is relative to `a83d12d`; adapt the additive base/history check if main changed before integration, keeping this original receipt. Independent expert, specimen, spatial and unseen validity remain open. Review C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30.
