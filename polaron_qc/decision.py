@@ -24,11 +24,17 @@ REJECT = "reject (provisional)"
 
 # KPIs whose per-site reliability depends on a flag (plan §2.0 rules 1 and 5)
 KPI_RELIABILITY_FLAG = {"bright_frac": "bright_low_contrast", "bright_d50": "bright_low_contrast", "bright_d90": "bright_low_contrast",
-                        "bright_count_per_Mpx": "bright_low_contrast", "bright_circ": "bright_low_contrast",
+                        "bright_count_per_Mpx": "bright_low_contrast", "bright_circ": "bright_low_contrast", "bright_max_d": "bright_low_contrast",
+                        "patch_crack_area_frac_max": "grey_pore", "patch_pore_max_d_max": "grey_pore",
                         "pore_frac": "grey_pore", "pore_d50": "grey_pore", "pore_max_d": "grey_pore", "crack_frac": "grey_pore",
                         "crack_count_per_Mpx": "grey_pore", "pore_elong": "grey_pore"}
 # for grey_pore the measurement is "fallback threshold", not unusable: it reduces reliability for Check B only
 SOFT_FLAGS = {"grey_pore"}
+# KPIs with per-site EXTREME semantics — the only ones that can raise a localized-anomaly flag (plan §2.4 local check; D28).
+# Batch-mean KPIs (pore_frac, bright_frac, bright_d50) describe a site, not a local defect: an outlying site on those
+# shows up in the per-site drift score and in Check A, never in Check B.
+LOCAL_KPIS = ["crack_frac", "crack_count_per_Mpx", "pore_max_d", "bright_max_d",
+              "patch_crack_area_frac_max", "patch_pore_max_d_max", "etd_crack_density_particles"]
 
 
 @dataclass
@@ -86,7 +92,13 @@ def check_a(compare: pd.DataFrame, energy: dict, ref_sites: pd.DataFrame, batch_
     for k, r in prim.iterrows():
         usable_ok = (r.n_batch_usable >= th.min_usable_sites) and (r.n_ref_usable >= th.min_usable_sites)
         sig = bool(np.isfinite(r.p_holm) and r.p_holm < th.alpha and abs(r.shift_mad) >= th.min_effect_mad)
-        cons = consistency_across_sites(ref_sites.loc[ordinary_ref_mask.values, k], batch_sites[k], r.direction) if usable_ok else dict(share=np.nan, n_beyond=0, n=0)
+        # consistency is judged on USABLE batch sites only (hard reliability flag excludes a site for that KPI)
+        hard_flag = KPI_RELIABILITY_FLAG.get(k)
+        if hard_flag and hard_flag not in SOFT_FLAGS and hard_flag in batch_sites.columns:
+            batch_vals = batch_sites.loc[~batch_sites[hard_flag].astype(bool), k]
+        else:
+            batch_vals = batch_sites[k]
+        cons = consistency_across_sites(ref_sites.loc[ordinary_ref_mask.values, k], batch_vals, r.direction) if usable_ok else dict(share=np.nan, n_beyond=0, n=0)
         out["per_kpi"][k] = dict(shift_mad=float(r.shift_mad), ci=(float(r.ci_low), float(r.ci_high)), p_holm=float(r.p_holm),
                                  n_ref_usable=int(r.n_ref_usable), n_batch_usable=int(r.n_batch_usable), significant=sig,
                                  direction=r.direction, consistency_share=cons["share"], n_beyond=cons["n_beyond"], usable_ok=usable_ok)
@@ -104,19 +116,28 @@ def check_a(compare: pd.DataFrame, energy: dict, ref_sites: pd.DataFrame, batch_
 
 # ----------------------------------------------------------------------------- Check B
 def check_b(local_tables: dict[str, pd.DataFrame], batch_sites: pd.DataFrame, image_reviewed: dict | None = None,
-            th: Thresholds = Thresholds(), primary: list[str] = PRIMARY_KPIS) -> dict:
+            th: Thresholds = Thresholds(), primary: list[str] | None = None, local_kpis: list[str] = LOCAL_KPIS) -> dict:
     """Localized defect check.
 
     local_tables : {kpi: DataFrame from stats.local_exceedance with columns site, value, ref_max, exceeds, margin_in_mad}
     batch_sites  : site table with flag columns (bright_low_contrast, grey_pore)
     image_reviewed : {(site, kpi): True/False} supplied by a human after looking at the evidence image; None = not yet reviewed.
+    local_kpis   : only KPIs with per-site extreme semantics are considered (LOCAL_KPIS, D28); tables for other KPIs are
+                   returned under 'descriptive_flags' and never promote.
+    `primary` is accepted for backward compatibility and ignored.
     A flag is 'credible' only with severity margin AND reliable measurement AND image review (plan §2.0 rule 5).
-    Without review, the best status is 'credible_pending_review'.
+    Without review, the best status is 'credible_pending_review' — the verdict for that is 'investigate — localized anomaly
+    (image review pending)', because routing the crop to a reviewer *is* the investigation.
     """
-    flags, credible, pending = [], [], []
+    flags, credible, pending, descriptive = [], [], [], []
     bs = batch_sites.set_index("site")
     for k, tab in local_tables.items():
-        if k not in primary or tab is None or len(tab) == 0:
+        if tab is None or len(tab) == 0:
+            continue
+        if k not in local_kpis:
+            for _, r in tab[tab.exceeds.astype(bool)].iterrows():
+                descriptive.append(dict(site=r.site, kpi=k, value=float(r.value), ref_max=float(r.ref_max), margin_in_mad=float(r.margin_in_mad),
+                                        note="batch-mean KPI: outlying site, not a localized defect (see per-site drift)"))
             continue
         rel_flag = KPI_RELIABILITY_FLAG.get(k)
         for _, r in tab[tab.exceeds.astype(bool)].iterrows():
@@ -130,7 +151,7 @@ def check_b(local_tables: dict[str, pd.DataFrame], batch_sites: pd.DataFrame, im
             flags.append(rec)
             if rec["severity_ok"] and rec["measurement_reliable"]:
                 (credible if rec["image_reviewed"] else pending).append(rec)
-    return dict(flags=flags, credible=credible, credible_pending_review=pending,
+    return dict(flags=flags, credible=credible, credible_pending_review=pending, descriptive_flags=descriptive,
                 n_sites_flagged=len({f["site"] for f in flags}), n_sites_credible=len({f["site"] for f in credible}),
                 n_sites_pending=len({f["site"] for f in pending}),
                 max_severity_mad=max([f["margin_in_mad"] for f in credible + pending], default=np.nan))
@@ -168,7 +189,9 @@ def decide(a: dict, b: dict, abst: dict, att: dict | None = None, th: Thresholds
     drift_alert = bool(a["i_beyond_null"])
     local_status = "credible" if b["n_sites_credible"] else ("pending_review" if b["n_sites_pending"] else ("flag" if b["n_sites_flagged"] else "none"))
 
-    a_full = a["i_beyond_null"] and a["ii_carried_by_primary"] and a["iii_consistent"] and (a["iv_classifier_corroborates"] in (True, None))
+    # reject via Check A requires classifier corroboration to be PRESENT and positive; a missing classifier run cannot
+    # count as corroboration (report-agent finding; D28)
+    a_full = a["i_beyond_null"] and a["ii_carried_by_primary"] and a["iii_consistent"] and (a["iv_classifier_corroborates"] is True)
     b_reject = b["n_sites_credible"] >= th.reject_min_credible_sites and np.nan_to_num(b["max_severity_mad"]) >= th.reject_min_severity_mad
 
     if abst["abstain"]:
@@ -188,6 +211,7 @@ def decide(a: dict, b: dict, abst: dict, att: dict | None = None, th: Thresholds
         if not a["ii_carried_by_primary"]: why.append("not carried by a primary KPI")
         if a["ii_carried_by_primary"] and not a["iii_consistent"]: why.append("not consistent across sites")
         if a["iv_classifier_corroborates"] is False: why.append("classifier does not corroborate")
+        if a["iv_classifier_corroborates"] is None: why.append("classifier corroboration not available")
         if strong_att: why.append("shift attenuates strongly under acquisition stratification/adjustment")
         reason = "multivariate shift beyond reference null; " + ("; ".join(why) if why else "see drivers")
     else:
@@ -216,7 +240,7 @@ def what_would_move(verdict: str, a: dict, b: dict, abst: dict, att: dict, th: T
         missing = []
         if not a["ii_carried_by_primary"]: missing.append("a primary KPI crossing α with |shift| ≥ %.1f MAD" % th.min_effect_mad)
         if a["ii_carried_by_primary"] and not a["iii_consistent"]: missing.append("≥ %.0f %% of sites beyond the ordinary-reference range" % (100 * th.consistency_share))
-        if a["iv_classifier_corroborates"] is False: missing.append("classifier corroboration")
+        if a["iv_classifier_corroborates"] is not True: missing.append("classifier corroboration (material-only run, p < α)")
         if any(np.isfinite(v) and v > th.strong_attenuation for v in att.values()): missing.append("the shift surviving acquisition stratification/adjustment")
         return ("would become 'reject' with " + " and ".join(missing)) if missing else "would become 'consistent' if the multivariate shift fell inside the reference null"
     if verdict == INVESTIGATE_LOCAL:

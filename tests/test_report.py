@@ -1,0 +1,180 @@
+"""Fast tests for polaron_qc.report: rendering on a small synthetic result (no extraction, no raw images) and the
+evidence helpers on synthetic arrays."""
+import os, sys, re
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import numpy as np, pandas as pd, pytest
+from polaron_qc import PRIMARY_KPIS
+from polaron_qc import report
+from polaron_qc.decision import Thresholds, CONSISTENT
+
+rng = np.random.default_rng(0)
+
+
+# ----------------------------------------------------------------------------- synthetic result
+def _sites(n, batch):
+    df = pd.DataFrame({k: rng.normal(1.0, 0.1, n) for k in PRIMARY_KPIS})
+    df["bright_max_d"] = rng.normal(300, 20, n); df["corr_len_px"] = rng.normal(20, 2, n)
+    df["pore_elong"] = rng.normal(2.0, 0.2, n); df["graphite_frac"] = 1 - df.pore_frac * 0.1 - df.bright_frac * 0.05
+    df["th_lo"] = 40.0; df["th_hi"] = 100.0; df["H"] = 2000; df["bright_sep"] = 60.0
+    df.insert(0, "site", [f"{batch[-1]}s{i}" for i in range(n)]); df.insert(0, "batch", batch)
+    df["bright_low_contrast"] = False; df["grey_pore"] = False
+    return df
+
+
+def _compare(kpis):
+    rows = []
+    for k in kpis:
+        prim = k in PRIMARY_KPIS
+        rows.append(dict(kpi=k, is_primary=prim, n_ref_usable=17, n_batch_usable=7, n_ref_fallback=4 if k.startswith(("pore", "crack")) else 0,
+                         n_batch_fallback=0, n_ref_excluded=0, n_batch_excluded=2 if k.startswith("bright") else 0,
+                         ref_median=1.0, batch_median=1.05, ref_mad=0.1, shift_mad=0.5, ci_low=-0.3, ci_high=1.2, cliffs_delta=0.2,
+                         p_perm=0.3, p_method="exact", n_perm=346104, p_holm=0.9 if prim else np.nan, p_reported=0.9 if prim else 0.3,
+                         flag_alpha=False, direction="none"))
+    return pd.DataFrame(rows)
+
+
+def synthetic_result(verdict_text=CONSISTENT, localized="none"):
+    th = Thresholds()
+    ref, bat = _sites(17, "Batch_3"), _sites(7, "Batch_X")
+    kpis = PRIMARY_KPIS + ["bright_max_d", "corr_len_px", "pore_elong"]
+    cmp_ = _compare(kpis)
+    mdc = {k: dict(mdc_mad=1.75, mdc_abs=0.175, n_incoming=7, n_sim_used=400, design="7 sites drawn without replacement vs remaining", ref_mad=0.1)
+           for k in PRIMARY_KPIS}
+    drift = pd.DataFrame(dict(site=list(ref.site) + list(bat.site), group=["reference"] * 17 + ["batch"] * 7,
+                              distance=rng.uniform(0.5, 3, 24), percentile_in_ref=rng.uniform(0, 100, 24),
+                              top_driver="pore_frac", top_driver_z=0.5))
+    local = {k: dict(table=pd.DataFrame(dict(site=bat.site, value=bat[k], ref_max=1.3, exceeds=False, margin_in_mad=-1.0, credible_severity=False)),
+                     ref_max=1.3, ref_mad=0.1, n_ref=10, n_batch=7, n_exceed=0, n_credible=0, iid_flag_probability=7 / 17, margin_mad=1.0)
+             for k in PRIMARY_KPIS}
+    per_kpi = {k: dict(shift_mad=0.5, ci=(-0.3, 1.2), p_holm=0.9, n_ref_usable=17, n_batch_usable=7, significant=False, direction="none",
+                       consistency_share=0.0, n_beyond=0, usable_ok=True) for k in PRIMARY_KPIS}
+    a = dict(i_beyond_null=False, energy_p=0.4, energy_stat=0.1, drivers=[], per_kpi=per_kpi, abstained_kpis=[], ii_carried_by_primary=False,
+             iii_consistent=False, iv_classifier_corroborates=None, all_usable=True)
+    b = dict(flags=[], credible=[], credible_pending_review=[], n_sites_flagged=0, n_sites_credible=0, n_sites_pending=0, max_severity_mad=np.nan)
+    verdict = dict(verdict=verdict_text, reason="no drift beyond the reference null on primary KPIs and no credible localized anomaly",
+                   outcome_columns=dict(drift_alert=False, localized=localized, quality_abstention=False), drivers=[],
+                   attenuation=dict(stratified=np.nan, adjusted=np.nan), what_would_move_it="would become 'investigate — drift' if pore_frac crossed α",
+                   thresholds_hash=th.hash(), provenance=th.provenance)
+    stability = dict(share=1.0, n_runs=7, full_verdict=verdict_text, method="leave-one-site-out",
+                     runs=[dict(left_out=s, verdict=verdict_text, outcome_columns=verdict["outcome_columns"]) for s in bat.site])
+    flags = pd.DataFrame(dict(batch="Batch_X", site=bat.site, contrast_stretched_bse=False, contrast_stretched_any=True, bse_empty_bin_frac=0.1, bse_p1=3.0,
+                              raised_black_level=False, bright_low_contrast=False, grey_pore=False, cracked=False, bright_sep=60.0, band_top=0, band_bottom=0,
+                              H=2000, acquisition_group="ordinary"))
+    meta = dict(reference="Batch_3", batch="Batch_X", reference_dir=None, batch_dir=None, n_sites_ref=17, n_sites_batch=7, timestamp="2026-10-03T12:00:00",
+                thresholds_hash=th.hash(), provenance=th.provenance,
+                config=dict(report.DEFAULT_CONFIG, thresholds_resolved=dict(severity_margin_mad=1.0)), config_hash="abc123", git_describe=None,
+                feature_version="1.0.1", runtime_s=1.0, primary_kpis=list(PRIMARY_KPIS), trusted_kpis=kpis, notes=["synthetic"])
+    limits = dict(usable_n={k: (17, 7) for k in PRIMARY_KPIS}, excluded={}, fallback={}, specimen_independence="unconfirmed",
+                  reference_heterogeneity=dict(grey_pore=["g1"], cracked=["c1"], ordinary_n=10), mdc_range_mad=(1.5, 2.5),
+                  scale="2-D sections, 25 nm/px nominal, chemistry unconfirmed", seven_v_seven="not applicable", notes=["synthetic"])
+    return dict(meta=meta, sites_ref=ref, sites_batch=bat, images_ref=None, images_batch=None, patches_batch=None, flags_ref=flags, flags_batch=flags,
+                ordinary_ref_sites=list(ref.site[:10]), compare=cmp_, energy=dict(statistic=0.1, p=0.4, n_perm=5000), mdc=mdc, drift=drift, local=local,
+                check_a=a, check_b=b, abstention=dict(abstain=False, reasons=[]), verdict=verdict, stability=stability,
+                c2st_material=None, c2st_flag_inclusive=None, c2st_extra={}, novelty=None, physics=None, acquisition=None, limits=limits,
+                KPI_TRUST=dict(report.KPI_TRUST))
+
+
+def test_render_report_synthetic(tmp_path):
+    res = synthetic_result()
+    out = report.render_report(res, str(tmp_path / "qc_Batch_X.html"))
+    html = open(out, encoding="utf-8").read()
+    low = html.lower()
+    assert CONSISTENT in html
+    for col in ("Drift alert", "Localized anomaly", "Quality abstention"):
+        assert col in html
+    assert "MDC" in html and "decision stability" in low
+    assert "developed using exploratory analysis of batches 1–3; frozen before the unseen batch arrived" in low
+    assert "confidence" not in low
+    assert "instrument share" not in low
+    # "accept" must not appear as a verdict (we check the verdict card, and that no verdict text contains it)
+    card = re.search(r'<section class="card verdict[^"]*".*?</section>', html, re.S).group(0).lower()
+    assert "accept" not in card
+    # placeholders for missing optional blocks are rendered, not crashes
+    assert "not yet available" in low           # acquisition sensitivity block
+    assert "Evidence images not rendered" in html  # no raw images in the synthetic result
+
+
+def test_kpi_trust_covers_primary():
+    for k in PRIMARY_KPIS:
+        assert k in report.KPI_TRUST and report.KPI_TRUST[k].startswith("high")
+    # no flag or confounded KPI may sit in the trusted list (checklist C21)
+    for k in report.TRUSTED_KPIS:
+        assert not report.KPI_TRUST[k].startswith(("flag", "confounded", "diagnostic"))
+
+
+# ----------------------------------------------------------------------------- evidence helpers
+def _synthetic_bse():
+    """Graphite-grey image with a long thin dark void (major axis ~600 px) and a short one (~100 px)."""
+    img = np.full((400, 900), 120, np.uint8)
+    img[180:200, 100:700] = 0        # long void: 600 px long
+    img[300:320, 100:200] = 0        # short void: 100 px long
+    img[50:90, 400:440] = 230        # one bright particle (40 x 40 = 1600 px)
+    return img
+
+
+def test_paint_crack_voids_only_long_components():
+    img = _synthetic_bse()
+    rgb = report.paint_crack_voids(img, th_lo=50, th_hi=200, major_axis_px=500)
+    assert rgb.shape == img.shape + (3,) and rgb.dtype == np.uint8
+    red = (rgb[..., 0] == 227) & (rgb[..., 1] == 73) & (rgb[..., 2] == 72)
+    assert red[190, 400]            # inside the long void
+    assert not red[310, 150]        # short void untouched
+    assert not red[100, 100]        # background untouched
+    # painted pixels are exactly the crack-void mask of the segmentation (long component only)
+    from polaron_qc.features import segment
+    pore, _, _ = segment(img, 50, 200)
+    mask = report.crack_void_mask(pore, 500)
+    assert np.array_equal(red, mask)
+    assert mask[190, 400] and not mask[310, 150]
+    # a lower cutoff paints both
+    both = report.crack_void_mask(pore, 50)
+    assert both[310, 150]
+
+
+def test_outline_bright_marks_edge_not_interior():
+    img = _synthetic_bse()
+    rgb = report.outline_bright(img, th_lo=50, th_hi=200)
+    yellow = (rgb[..., 0] == 255) & (rgb[..., 1] == 209) & (rgb[..., 2] == 102)
+    assert yellow[50:90, 400:440].any()
+    assert not yellow[70, 420]      # interior of the particle keeps its grey value
+    assert rgb[70, 420, 0] == 230
+
+
+def test_novelty_overlay_places_patches_on_the_right_rows():
+    bse = np.full((1100, 512), 100, np.uint8)
+    df = pd.DataFrame(dict(y0=[0, 512], x0=[0, 0], novelty=[0.0, 1.0]))
+    rgb = report.novelty_overlay(bse, df, patch=512, alpha=0.5)
+    assert rgb.shape == (1100, 512, 3)
+    top, bottom, outside = rgb[100, 100].astype(int), rgb[600, 100].astype(int), rgb[1050, 100].astype(int)
+    assert np.array_equal(outside, [100, 100, 100])         # rows beyond the two patches are untouched
+    assert not np.array_equal(top, [100, 100, 100])         # both patches are tinted ...
+    assert not np.array_equal(bottom, [100, 100, 100])
+    assert not np.array_equal(top, bottom)                  # ... with different colours (novelty 0 vs 1)
+    # the patch boundary is exactly at row 512
+    assert np.array_equal(rgb[511, 100], rgb[100, 100]) and np.array_equal(rgb[512, 100], rgb[600, 100])
+
+
+def test_fig_and_array_to_b64_downsample():
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(14, 3)); ax.plot([0, 1])
+    s = report.fig_to_b64(fig, width_px=600)
+    assert s.startswith("data:image/jpeg;base64,")
+    import base64, io
+    from PIL import Image
+    im = Image.open(io.BytesIO(base64.b64decode(s.split(",", 1)[1])))
+    assert im.width <= 600
+    s2 = report.array_to_b64(np.zeros((100, 3000), np.uint8), width_px=1100)
+    im2 = Image.open(io.BytesIO(base64.b64decode(s2.split(",", 1)[1])))
+    assert im2.width == 1100
+
+
+def test_derive_flags_rules():
+    sites = _sites(2, "Batch_Y")
+    images = pd.DataFrame([dict(batch="Batch_Y", site=sites.site[0], det="BSE", H=2000, mean=80, p1=15, p50=80, p99=200, std=30, gray_levels=120, empty_bin_frac=0.3, band_top=20, band_bottom=0),
+                           dict(batch="Batch_Y", site=sites.site[1], det="BSE", H=2000, mean=80, p1=2, p50=80, p99=200, std=30, gray_levels=250, empty_bin_frac=0.05, band_top=0, band_bottom=0),
+                           dict(batch="Batch_Y", site=sites.site[1], det="Inlens", H=2000, mean=80, p1=2, p50=80, p99=200, std=30, gray_levels=90, empty_bin_frac=0.6, band_top=0, band_bottom=0)])
+    f = report.derive_flags(sites, images).set_index("site")
+    s0, s1 = sites.site[0], sites.site[1]
+    assert f.loc[s0, "contrast_stretched_bse"] and f.loc[s0, "raised_black_level"] and f.loc[s0, "band_top"] == 20
+    assert not f.loc[s1, "contrast_stretched_bse"] and f.loc[s1, "contrast_stretched_any"] and not f.loc[s1, "raised_black_level"]
+    assert "provisional" in f.attrs["status"]

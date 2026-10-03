@@ -1,0 +1,56 @@
+experiment,date,metric,reference,batch,kpi,statistic,n_ref,n_batch,value,unit,note
+E01,2026-10-03,bright_frac_multiotsu,,Batch_1,bright_frac,,,,0.196,fraction,site 4ih2ggld multi-Otsu
+E01,2026-10-03,bright_frac_valley,,Batch_1,bright_frac,,,,0.123,fraction,site 4ih2ggld valley threshold (still low-contrast)
+E03,2026-10-03,spearman_rho,,,inlens_particle_texture,vs inlens p50,31,,0.77,rho,
+E03,2026-10-03,acq_only_R2,,,inlens_particle_texture,OLS p50+std+stretch,31,,0.74,R2,
+E06,2026-10-03,c2st_auc,Batch_3,Batch_1,material_only,grouped-CV L1 LR,17,7,0.529,auc,p 0.398 n_perm 200
+E06,2026-10-03,c2st_auc,Batch_3,Batch_1,incl_boundary_sharpness,grouped-CV L1 LR,17,7,0.790,auc,p 0.030
+E06,2026-10-03,c2st_auc,Batch_3,Batch_2,material_only,grouped-CV L1 LR,17,7,0.639,auc,p 0.239
+E08,2026-10-03,mdc_null_rejection,Batch_3,,synthetic,with_replacement,17,7,0.110,rate,alpha 0.05 400 sims
+E08,2026-10-03,mdc_null_rejection,Batch_3,,synthetic,without_replacement,17,7,0.055,rate,alpha 0.05 400 sims
+E09,2026-10-03,null_P_p_eq_1,,,synthetic,median_diff exact 7v17,17,7,0.21,rate,
+E09,2026-10-03,mdc_mad,Batch_3,,crack_frac,hl_shift,17,7,1.75,MAD,power 0.8
+E09,2026-10-03,mdc_mad,Batch_3,,pore_max_d,hl_shift,17,7,1.75,MAD,
+E09,2026-10-03,mdc_mad,Batch_3,,pore_frac,hl_shift,17,7,2.00,MAD,
+E09,2026-10-03,mdc_mad,Batch_3,,bright_frac,hl_shift,17,7,1.50,MAD,
+E09,2026-10-03,mdc_mad,Batch_3,,bright_d50,hl_shift,17,7,2.50,MAD,median_diff gives 3.75
+E10,2026-10-03,shift_mad,Batch_3,Batch_1,bright_d50,hl_shift,17,5,1.45,MAD,p_perm 0.072 p_holm 0.36
+E10,2026-10-03,shift_mad,Batch_3,Batch_2,pore_frac,hl_shift,17,7,-0.96,MAD,p_perm 0.14 p_holm 0.57
+E10,2026-10-03,energy_p,Batch_3,Batch_1,primary5,energy_distance,17,5,0.40,p,E 0.98
+E10,2026-10-03,energy_p,Batch_3,Batch_2,primary5,energy_distance,17,7,0.34,p,E 0.89
+E11,2026-10-03,local_margin_mad,Batch_3,Batch_3,crack_frac,vs ordinary max,10,,5.8,MAD,hzumfsms credible
+E11,2026-10-03,split_alert_rate,Batch_3,,crack_frac,median_diff 7v10,10,7,0.04,rate,100 splits
+E12,2026-10-03,pore_frac_band_rel,,Batch_3,pore_frac,th_lo±5,,,0.499,rel,site 71vgq3fw grey-pore
+E12,2026-10-03,bright_frac_band_rel,,Batch_1,bright_frac,th_hi±5,,,0.478,rel,site 4ih2ggld low-contrast
+E13,2026-10-03,fraction_connected,,all,pore mask 2D,top-bottom,31,,0.0,fraction,all sites
+E14,2026-10-03,ref_mad_all17,Batch_3,,crack_frac,,17,,0.0139,unit of KPI,
+E14,2026-10-03,ref_mad_ordinary10,Batch_3,,crack_frac,,10,,0.0046,unit of KPI,
+E14,2026-10-03,mdc_abs,Batch_3,,crack_frac,hl_shift,17,7,0.0244,unit of KPI,mdc_mad 1.75
+E14,2026-10-03,ref_mad_all17,Batch_3,,pore_max_d,,17,,104.69,unit of KPI,
+E14,2026-10-03,ref_mad_ordinary10,Batch_3,,pore_max_d,,10,,66.41,unit of KPI,
+E14,2026-10-03,mdc_abs,Batch_3,,pore_max_d,hl_shift,17,7,183.2,unit of KPI,mdc_mad 1.75
+E14,2026-10-03,ref_mad_all17,Batch_3,,pore_frac,,17,,0.0183,unit of KPI,
+E14,2026-10-03,ref_mad_ordinary10,Batch_3,,pore_frac,,10,,0.0136,unit of KPI,
+E14,2026-10-03,mdc_abs,Batch_3,,pore_frac,hl_shift,17,7,0.0366,unit of KPI,mdc_mad 2.0
+E14,2026-10-03,ref_mad_all17,Batch_3,,bright_frac,,17,,0.0086,unit of KPI,
+E14,2026-10-03,ref_mad_ordinary10,Batch_3,,bright_frac,,10,,0.0068,unit of KPI,
+E14,2026-10-03,mdc_abs,Batch_3,,bright_frac,hl_shift,17,7,0.013,unit of KPI,mdc_mad 1.5
+E14,2026-10-03,ref_mad_all17,Batch_3,,bright_d50,,17,,13.53,unit of KPI,
+E14,2026-10-03,ref_mad_ordinary10,Batch_3,,bright_d50,,10,,31.73,unit of KPI,
+E14,2026-10-03,mdc_abs,Batch_3,,bright_d50,hl_shift,17,7,33.83,unit of KPI,mdc_mad 2.5
+E15,2026-10-03,energy_unadjusted,Batch_3,Batch_1,primary5,hl/energy,17,,0.981,E,
+E15,2026-10-03,energy_stratified,Batch_3,Batch_1,primary5,hl/energy,10,,0.704,E,
+E15,2026-10-03,energy_adjusted_3cov,Batch_3,Batch_1,primary5,hl/energy,17,,2.343,E,
+E15,2026-10-03,energy_adjusted_7cov_ridge,Batch_3,Batch_1,primary5,hl/energy,17,,0.68,E,
+E15,2026-10-03,attenuation_stratified,Batch_3,Batch_1,primary5,,,,0.28,share,
+E15,2026-10-03,attenuation_adjusted,Batch_3,Batch_1,primary5,,,,-1.39,share,negative = not explained away
+E15,2026-10-03,energy_unadjusted,Batch_3,Batch_2,primary5,hl/energy,17,,0.886,E,
+E15,2026-10-03,energy_stratified,Batch_3,Batch_2,primary5,hl/energy,10,,1.533,E,
+E15,2026-10-03,energy_adjusted_3cov,Batch_3,Batch_2,primary5,hl/energy,17,,3.555,E,
+E15,2026-10-03,energy_adjusted_7cov_ridge,Batch_3,Batch_2,primary5,hl/energy,17,,2.12,E,
+E15,2026-10-03,attenuation_stratified,Batch_3,Batch_2,primary5,,,,-0.73,share,
+E15,2026-10-03,attenuation_adjusted,Batch_3,Batch_2,primary5,,,,-3.01,share,negative = not explained away
+E16,2026-10-03,verdict,Batch_3,Batch_1,primary5,decision D22/D28,17,7,consistent,verdict,stability 1.00
+E16,2026-10-03,verdict,Batch_3,Batch_2,primary5,decision D22/D28,17,7,consistent,verdict,stability 1.00
+E16,2026-10-03,c2st_auc,Batch_3,Batch_1,material_only_all_sites,grouped-CV L1 LR,17,7,0.513,auc,p 0.458 n_perm 200
+E16,2026-10-03,c2st_auc,Batch_3,Batch_2,material_only_all_sites,grouped-CV L1 LR,17,7,0.613,auc,p 0.264 n_perm 200

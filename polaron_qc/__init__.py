@@ -15,3 +15,29 @@ LOW_CONTRAST_SITES = ["4ih2ggld", "5n1q8atc"]
 GREY_PORE_SITES = ["71vgq3fw", "kbdh4tri", "tuy3zymq", "x7u69zsw"]
 CRACKED_SITES = ["hzumfsms", "0grcilhi", "ufdvpb81"]
 PRIMARY_KPIS = ["crack_frac", "pore_max_d", "pore_frac", "bright_frac", "bright_d50"]
+
+# Trust level per KPI, from docs/problem_and_findings.md §4 (KPI catalogue). Levels:
+#   "high"       validated measurement, used in verdicts when usable
+#   "medium"     usable, with stated caveats
+#   "flag"       acquisition / preparation diagnostic — never a material KPI
+#   "confounded" candidate material KPI shown to track acquisition — evidence only
+#   "diagnostic" segmentation / threshold bookkeeping
+KPI_TRUST = {
+    **{k: "high" for k in ["pore_frac", "pore_d50", "pore_elong", "pore_max_d", "pore_d90", "pore_count_per_Mpx",
+                           "crack_frac", "crack_count_per_Mpx",
+                           "bright_frac", "bright_count_per_Mpx", "bright_d10", "bright_d50", "bright_d90", "bright_circ",
+                           "bright_solidity", "bright_max_d", "etd_crack_density_particles"]},
+    **{k: "medium" for k in ["fft_slope", "corr_len_px", "graphite_frac"] + [f"profile_pore_{i}" for i in range(10)] + [f"profile_bright_{i}" for i in range(10)]},
+    **{k: "flag" for k in ["etd_boundary_sharpness", "etd_curtain_frac", "etd_curtain_anisotropy", "etd_crack_density_graphite",
+                           "etd_ridge_dom_angle", "etd_grad_energy", "inlens_grad_energy", "bright_low_contrast", "grey_pore",
+                           "pore_mode_resolved", "bright_mode_resolved"]},
+    **{k: "confounded" for k in ["inlens_particle_texture", "inlens_particle_texture_p90", "inlens_speckled_particle_frac"]},
+    **{k: "diagnostic" for k in ["th_lo", "th_hi", "graphite_mode", "sigma_l", "sigma_r", "bright_mode", "bright_sep", "ridge_p97",
+                                 "inlens_particles_measured", "H", "W", "n_patches"]},
+}
+# KPIs eligible for any "material KPI" list (classifier runs, drift drivers): trust high or medium, never flag/confounded/diagnostic
+MATERIAL_KPIS = ["pore_frac", "pore_d50", "pore_elong", "pore_max_d", "crack_frac", "crack_count_per_Mpx",
+                 "bright_frac", "bright_count_per_Mpx", "bright_d50", "bright_d90", "bright_circ",
+                 "corr_len_px", "fft_slope", "etd_crack_density_particles"]
+assert all(KPI_TRUST[k] in ("high", "medium") for k in MATERIAL_KPIS)
+assert all(k in MATERIAL_KPIS for k in PRIMARY_KPIS)

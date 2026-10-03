@@ -59,7 +59,7 @@ Not as folders. In PCA and Ward clustering on standardised site KPIs, the first 
 
 ### 3.4 Cross-channel findings
 
-- A **three-channel agreement** check (robust z of per-channel median intensity and per-channel texture energy) separates the two kinds of anomaly: the grey-pore group moves BSE and Inlens intensity in *opposite* directions with texture unchanged (instrument / preparation signature); the cracked sites move texture across channels with intensity unchanged (material signature).
+- A **three-channel agreement** check (robust z of per-channel median intensity and per-channel texture energy) separates the two kinds of anomaly: the grey-pore group moves BSE and Inlens intensity in *opposite* directions with texture unchanged (instrument / preparation signature; BSE +1.7…+2.0 z, Inlens −2.3…−2.4 z); the cracked sites show an ETD texture-energy drop (−2.2, −3.0 z) with intensity unchanged — at a |z| ≥ 2 cut-off BSE correlation length does **not** rise on those sites (z ≤ 0.67), so the cross-channel texture reading rests on ETD alone (D27).
 - **Inlens intra-particle texture** orders the groups more strongly than any other feature (B1 0.32 > B2 0.24 > B3 0.18 > grey 0.13; η² ≈ 0.53). It is **confounded**: ρ ≈ 0.8 with Inlens median brightness, ρ ≈ 0.7 with frame height, ~75 % of its variance explained by Inlens acquisition statistics, and it still tracks brightness within each batch. Only a weak group effect (p ≈ 0.02) survives on the residuals. Status: candidate, not trusted.
 
 ## 4. KPI catalogue
@@ -82,6 +82,17 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 | per-image `p1`, `empty_bin_frac`, `gray_levels`, `band_top/bottom` | all | black level, contrast stretching, edge bands | diagnostic |
 
 Cached outputs: `analysis_cache/site_features.csv` (one row per site), `analysis_cache/etd_inlens_features.csv`, `analysis_cache/bright_particles.csv` (one row per bright particle), `analysis_cache/image_quality.csv` (one row per image).
+
+### 3.5 Sensitivity to acquisition adjustment (added after the acquisition module)
+
+Three views of each primary-KPI comparison against Batch 3 (energy distance, HL statistic, site-level permutation, 5 000 resamples): unadjusted · stratified to ordinary acquisition groups (10 reference sites) · adjusted by residualising on bright_sep, bse_p1 and etd_boundary_sharpness with the regression re-fitted inside every permutation.
+
+| batch | unadjusted E (p) | stratified E (p), n | adjusted E (p) | attenuation strat. / adj. |
+|---|---|---|---|---|
+| Batch 1 | 0.98 (0.40), 17 v 5 | 0.70 (0.83), 10 v 5 | 2.34 (0.078) | +0.28 / −1.39 |
+| Batch 2 | 0.89 (0.34), 17 v 7 | 1.53 (0.16), 10 v 7 | 3.56 (0.015) | −0.73 / −3.01 |
+
+Adjustment **amplifies** rather than attenuates: the covariates, fitted on a heterogeneous reference, encode Batch 3's own sub-populations (bse_p1 vs pore_frac ρ = −0.52 on 17 sites, ≤ 0.36 on the ordinary 10). A 7-covariate ridge variant reverses the picture (p 0.97 / 0.27). Negative attenuation is read as "not explained away by acquisition covariates" and nothing more (D26). The ±5-gray-level threshold band, now computed for all 31 sites, is ≈ 33 % relative on pore_frac in every acquisition group (52 % on grey-pore sites) and exceeds every between-batch pore_frac shift.
 
 ## 4b. Assumption register
 

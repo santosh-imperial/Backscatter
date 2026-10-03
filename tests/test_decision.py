@@ -28,9 +28,10 @@ def compare_table(p_holm=None, shift=None, n_batch=7, n_ref=17, direction="highe
 
 def local_tables(flags):
     """flags: list of (kpi, site, margin_in_mad)"""
-    out = {k: pd.DataFrame(columns=["site", "value", "ref_max", "exceeds", "margin_in_mad"]) for k in PRIMARY_KPIS}
+    out = {k: pd.DataFrame(columns=["site", "value", "ref_max", "exceeds", "margin_in_mad"]) for k in set(PRIMARY_KPIS) | {"bright_max_d"}}
     for k, site, m in flags:
-        out[k] = pd.concat([out[k], pd.DataFrame([dict(site=site, value=2.0, ref_max=1.3, exceeds=True, margin_in_mad=m)])], ignore_index=True)
+        row = pd.DataFrame([dict(site=site, value=2.0, ref_max=1.3, exceeds=True, margin_in_mad=m)])
+        out[k] = row if len(out[k]) == 0 else pd.concat([out[k], row], ignore_index=True)
     return out
 
 
@@ -66,9 +67,34 @@ def test_localized_pending_review_then_credible():
 def test_localized_unreliable_measurement_is_only_a_flag():
     ref = sites(17, "R"); bat = sites(7, "B", flags={"bright_low_contrast": [1]}); mask = pd.Series([True] * 17)
     a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
-    b = check_b(local_tables([("bright_frac", "B_s1", 3.0)]), bat)
+    b = check_b(local_tables([("bright_max_d", "B_s1", 3.0)]), bat)
     assert b["n_sites_flagged"] == 1 and b["n_sites_pending"] == 0 and b["flags"][0]["measurement_reliable"] is False
     assert decide(a, b, quality_abstention(bat, a))["verdict"] == CONSISTENT
+
+
+def test_batch_mean_kpi_exceedance_is_descriptive_not_localized():
+    """A site with high bright_frac is an outlying site, not a local defect (D28)."""
+    ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
+    a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    b = check_b(local_tables([("bright_frac", "B_s3", 2.5)]), bat)
+    assert b["n_sites_flagged"] == 0 and b["n_sites_pending"] == 0 and len(b["descriptive_flags"]) == 1
+    assert decide(a, b, quality_abstention(bat, a))["verdict"] == CONSISTENT
+
+
+def test_reject_requires_classifier_present():
+    ref = sites(17, "R"); bat = sites(7, "B", shift={"crack_frac": 1.0}); mask = pd.Series([True] * 17)
+    cmp = compare_table(p_holm={"crack_frac": 0.004}, shift={"crack_frac": 3.2})
+    a = check_a(cmp, dict(statistic=0.9, p=0.002), ref, bat, mask, c2st=None)
+    v = decide(a, check_b(local_tables([]), bat), quality_abstention(bat, a))
+    assert v["verdict"] == INVESTIGATE_DRIFT and "not available" in v["reason"]
+
+
+def test_consistency_uses_usable_sites_only():
+    ref = sites(17, "R"); bat = sites(7, "B", shift={"bright_frac": 1.0}, flags={"bright_low_contrast": [0, 1]}); mask = pd.Series([True] * 17)
+    bat.loc[[0, 1], "bright_frac"] = 0.0   # unusable sites carry garbage values that must not count
+    cmp = compare_table(p_holm={"bright_frac": 0.004}, shift={"bright_frac": 3.0}, n_batch=5)
+    a = check_a(cmp, dict(statistic=0.9, p=0.002), ref, bat, mask)
+    assert a["per_kpi"]["bright_frac"]["n_beyond"] == 5 and a["per_kpi"]["bright_frac"]["consistency_share"] == 1.0
 
 
 def test_grey_pore_is_soft_flag():

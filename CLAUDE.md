@@ -27,6 +27,8 @@ analysis/                parallel label-free audit (scripts, findings.md, report
 docs/problem_and_findings.md       state of knowledge — keep it current
 docs/qc_plan.md                    agreed plan for the QC notebook (components, methods, decision logic, checkpoints)
 docs/workflow.md                   Mermaid diagram of the whole pipeline + data contracts between modules; update when an interface changes
+docs/experiment_log.md             Part A: ledger of experiments with numbers; Part B: progress scoreboard vs the target.
+experiments/registry.csv           one row per reported metric (experiment, metric, reference, batch, kpi, value) — append, never edit
 docs/decision_log.md               Part A: every consequential decision with rationale; Part B: pre-presentation review
                                    checklist built from reviewer catches; Part C: open items. Append, never delete.
 docs/assumption_register.html      self-contained HTML: every interpretive assumption with an annotated example image and a
@@ -87,7 +89,7 @@ Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`
 
 ## Before presenting anything
 
-Run the checklist in `docs/decision_log.md` Part B against the plan, result, figure or verdict you are about to present, and say which items you checked. When you take a consequential decision, append it to Part A with rationale and alternatives. When a reviewer catches something the checklist did not cover, add a checklist item in the same change.
+Run the checklist in `docs/decision_log.md` Part B against the plan, result, figure or verdict you are about to present, and say which items you checked. When you take a consequential decision, append it to Part A with rationale and alternatives. When you run an experiment or produce a number you will quote, add an entry to `docs/experiment_log.md` Part A and rows to `experiments/registry.csv`, and update the Part B scoreboard if the status of a capability changed. When a reviewer catches something the checklist did not cover, add a checklist item in the same change.
 
 ## Keeping docs current
 

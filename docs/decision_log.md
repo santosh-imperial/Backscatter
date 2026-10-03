@@ -131,6 +131,22 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Why:** novelty's top correlates are bse_std, curtaining, low-contrast flag and black level; its site ranking changes with input resolution (ρ 0.43). No site has a 2-D macro-pore path top-to-bottom at 6–14 % area fraction. The band moves pore_frac by 28–50 % relative, as large as the between-batch differences.
 - **Caught by:** ML and physics build agents.
 
+### D26 · 2026-10-03 · Acquisition adjustment is shown as two variants and read as "not explained away" when it amplifies
+- **Decision:** the adjusted view uses three a-priori covariates (bright_sep, bse_p1, etd_boundary_sharpness; OLS, re-fitted inside every permutation) and is always shown next to a 7-covariate ridge variant; negative attenuation is reported as "the shift is not explained away by acquisition covariates", never as evidence of a material change; fixed-residual p-values are kept as a column to show they are anti-conservative.
+- **Why:** on this reference the adjustment *amplifies* the shift (attenuation −1.39 for Batch 1, −3.01 for Batch 2): covariates fitted on the heterogeneous reference encode its own grey-pore and cracked sub-populations (bse_p1 vs pore_frac ρ = −0.52 on all 17 sites, |ρ| ≤ 0.36 on the 10 ordinary ones), predict higher pore_frac for every black-level-0 site and shrink the residual MAD. Fixed residuals gave p 0.002 where in-loop refitting gives 0.021. The 7-covariate ridge variant reverses the conclusion (p 0.97 / 0.27), which is itself the plan §2.6 point: the conclusion depends on the covariate set.
+- **Caught by:** acquisition build agent (C03, C09, C19). Lesson → C23.
+- **Reverses if:** covariates are fitted on the ordinary subset only (an option to evaluate) or a clean reference becomes available.
+
+### D27 · 2026-10-03 · Three-channel agreement does not support "BSE correlation length rises on cracked sites"
+- **Decision:** the findings doc and register wording for the cracked sites is reduced to what the agreement check supports at |z| ≥ 2: ETD texture energy drops (−2.2, −3.0 z); BSE correlation length does not cross the threshold (z ≤ 0.67). The grey-pore "intensity-only shift" reading stands (BSE +1.7…+2.0 z, Inlens −2.3…−2.4 z).
+- **Caught by:** acquisition build agent porting notebook-01 §6d with fixed thresholds. Lesson → C24.
+
+### D28 · 2026-10-03 · Localized path restricted to extreme-semantics KPIs; a missing classifier run never counts as corroboration; unreviewed severe flags route to review
+- **Decision:** Check B considers only KPIs with per-site *extreme* semantics (`LOCAL_KPIS`: crack_frac, crack_count_per_Mpx, pore_max_d, bright_max_d, patch maxima of crack area and pore size, intra-particle crack density). Exceedances on batch-mean KPIs (pore_frac, bright_frac, bright_d50) are reported as "outlying site" descriptive flags and feed the per-site drift score, never a localized verdict. Reject via Check A requires the material-only classifier to be present *and* positive; `c2st=None` yields "classifier corroboration not available" and caps the verdict at investigate. A severe, reliable, unreviewed flag yields "investigate — localized anomaly (image review pending)" with its crop, because routing to a reviewer is the investigation; Check A's cross-site consistency counts usable sites only.
+- **Why:** the first end-to-end run returned "investigate — localized anomaly" for Batch 2 on a single-site bright_frac exceedance (+2.1 MAD) — a high-loading site, not a defect — and would have allowed a reject with no classifier result because `None` was treated as satisfied. The report agent caught both.
+- **Caught by:** report build agent (end-to-end assembly). Lesson → C25.
+- **Reverses if:** organisers define per-site tolerances for batch-mean KPIs.
+
 ---
 
 ## Part B — Pre-presentation review checklist
@@ -158,6 +174,9 @@ Run this before presenting a plan, a result, a figure or a verdict. Each item na
 - [ ] **C20 — Check the discreteness of an exact test statistic at the actual n.** Count attainable values and P(p = 1) under the null; prefer a near-continuous robust statistic (Hodges–Lehmann) when the median difference is too coarse. (D23)
 - [ ] **C21 — Audit every "trusted / material KPI" list against the catalogue's trust column.** A flag that leaks into a material list will dominate a classifier and look like a discovery. (D24)
 - [ ] **C22 — A derived index that is undefined or constant on all real sites is not reported, even with caveats.** State the underlying fact once. (D25)
+- [ ] **C23 — Covariate adjustment on a heterogeneous reference can manufacture signal.** Check covariate–KPI correlations on the ordinary subset vs the full reference; show at least two covariate sets; read negative attenuation as "not explained away", never as material evidence. (D26)
+- [ ] **C25 — Run the decision logic end to end on real data before trusting it.** Unit tests on synthetic components passed while `None` counted as corroboration and a batch-mean KPI triggered the localized path; only the integrated run showed it. Also check every "missing input" default (None, NaN) against the conservative direction. (D28)
+- [ ] **C24 — Prose written from a figure must be re-checked against a thresholded number.** "Rises" / "drops" claims need a stated |z| or effect cut-off that the data actually cross. (D27)
 
 **Language and provenance**
 - [ ] **C11 — Is any causal word justified?** "Share explained by the instrument" is a regression adjustment, not attribution. Show unadjusted, stratified and adjusted. (D19)

@@ -1,0 +1,170 @@
+{
+ "Batch_1_vs_Batch_3_material_all_sites": {
+  "auc": 0.5126050420168067,
+  "p": 0.4577114427860697,
+  "null_lo": 0.17647058823529413,
+  "null_hi": 0.7563025210084032,
+  "n_perm": 200,
+  "n_ref": 17,
+  "n_batch": 7,
+  "features": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles"
+  ],
+  "selected": [
+   [
+    "bright_count_per_Mpx",
+    0.407
+   ],
+   [
+    "bright_d50",
+    0.399
+   ],
+   [
+    "pore_max_d",
+    -0.313
+   ]
+  ],
+  "elapsed_s": 1.3
+ },
+ "Batch_1_vs_Batch_3_material_usable_sites": {
+  "auc": 0.6941176470588235,
+  "p": 0.15920398009950248,
+  "null_lo": 0.1058823529411765,
+  "null_hi": 0.8358823529411765,
+  "n_perm": 200,
+  "n_ref": 17,
+  "n_batch": 5,
+  "features": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles"
+  ],
+  "selected": [
+   [
+    "bright_d50",
+    0.611
+   ],
+   [
+    "bright_d90",
+    -0.524
+   ],
+   [
+    "pore_max_d",
+    -0.302
+   ]
+  ],
+  "elapsed_s": 1.2
+ },
+ "Batch_2_vs_Batch_3_material_all_sites": {
+  "auc": 0.6134453781512605,
+  "p": 0.263681592039801,
+  "null_lo": 0.1426470588235294,
+  "null_hi": 0.8489495798319328,
+  "n_perm": 200,
+  "n_ref": 17,
+  "n_batch": 7,
+  "features": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles"
+  ],
+  "selected": [
+   [
+    "pore_frac",
+    -0.478
+   ],
+   [
+    "etd_crack_density_particles",
+    -0.35
+   ],
+   [
+    "corr_len_px",
+    -0.232
+   ],
+   [
+    "pore_max_d",
+    -0.068
+   ]
+  ],
+  "elapsed_s": 1.2
+ },
+ "Batch_2_vs_Batch_3_material_usable_sites": {
+  "auc": 0.6134453781512605,
+  "p": 0.263681592039801,
+  "null_lo": 0.1426470588235294,
+  "null_hi": 0.8489495798319328,
+  "n_perm": 200,
+  "n_ref": 17,
+  "n_batch": 7,
+  "features": [
+   "pore_frac",
+   "pore_d50",
+   "pore_elong",
+   "pore_max_d",
+   "crack_frac",
+   "crack_count_per_Mpx",
+   "bright_frac",
+   "bright_count_per_Mpx",
+   "bright_d50",
+   "bright_d90",
+   "bright_circ",
+   "corr_len_px",
+   "fft_slope",
+   "etd_crack_density_particles"
+  ],
+  "selected": [
+   [
+    "pore_frac",
+    -0.478
+   ],
+   [
+    "etd_crack_density_particles",
+    -0.35
+   ],
+   [
+    "corr_len_px",
+    -0.232
+   ],
+   [
+    "pore_max_d",
+    -0.068
+   ]
+  ],
+  "elapsed_s": 1.2
+ }
+}
