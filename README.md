@@ -37,8 +37,8 @@ The organisers judge by categorising held-back samples and by saying whether an 
 
 | output | question it answers | what it is, and is not |
 |---|---|---|
-| site categorisation | does this sample resemble Batch 1, 2 or 3? | 3-class model **probabilities** (not calibrated: top bin 0.83 vs observed 0.67); the pre-registered primary uses morphology + ETD/Inlens texture + acquisition statistics and is a **batch fingerprint** — morphology alone is at chance (E31) |
-| baseline OOD assessment | is it outside Batch 3's promised distribution? | k-NN robust-z distance to all 17 Batch 3 sites with leave-one-site-out reference percentiles (rank floor 1/18); built separately from the classifier — a high Batch 3 probability never establishes membership |
+| site categorisation | does this sample resemble Batch 1, 2 or 3? | 3-class model **probabilities** (not calibrated: top bin 0.83 vs observed 0.67); the primary (v2, D52) uses morphology + ETD/Inlens texture and **no session statistics** (frame height and the other acquisition statistics are shown only in a labelled comparator); morphology alone is at chance, so it is a fingerprint of the sample as imaged (E31, E34) |
+| baseline OOD assessment | how unusual is its measured morphology relative to Batch 3? | k-NN robust-z distance to all 17 Batch 3 sites with descriptive leave-one-site-out reference percentiles; legacy tail-rank floor 1/18 is resolution, not a calibrated p-value or false-alert guarantee; built separately from the classifier — a high Batch 3 probability never establishes membership |
 | QC interpretation | what changed, how reliable is the evidence, what action follows? | the batch-level verdict from `polaron_qc.report` (frozen five-KPI path, image evidence, next action); `docs/batch_signatures.md` says what differs per batch |
 
 ```bash
@@ -46,9 +46,16 @@ python3 -m polaron_qc.categorise Dataset/Batch_3 Dataset/Batch_1 Dataset/Batch_2
 python3 -m polaron_qc.categorise Dataset/Batch_3 Dataset/Batch_1 Dataset/Batch_2 --score Dataset/<folder>   # fit on the known folders, score every site in <folder>
 ```
 
-Outputs: `analysis/categoriser/output/site_table.csv` and an HTML/markdown table per site with model probabilities per feature family, the OOD percentile per variant, nearest reference sites, the top contributing features with sign and the Batch 3 median ± MAD, the data-derived acquisition flags, and a pointer to the report. Known-site result: balanced accuracy 0.66 (p 0.005, 200 site-label permutations), accuracy 0.68 with a 95 % interval of 0.49–0.83 on 31 sites; Batch 2 sits inside the Batch 3 morphology, Batch 1's two exceedances are low-contrast segmentation artefacts. Read the OOD column and the flags before the argmax: a sample from an unseen session will be placed away from all three known batches by the fingerprint and the model will still return an argmax.
+Outputs: `analysis/categoriser/output/site_table.csv` and an HTML/markdown table per site with model probabilities per feature family, the OOD percentile per variant, nearest reference sites, the top contributing features with sign and the Batch 3 median ± MAD, the data-derived acquisition flags, and a pointer to the report. Known-site result: balanced accuracy 0.66 (p 0.005, 200 site-label permutations), accuracy 0.68 on 31 sites; the 0.49–0.83 binomial reference interval is descriptive, since LOO fits overlap. No Batch 2 site exceeds the observed reference LOO maximum under the primary morphology score; this does not establish membership or equivalence. Batch 1's two exceedances are driven by unreliable bright-phase segmentation on low-contrast sites. An unseen session can change the fingerprint, yet the classifier still returns a known-class argmax; neither that label nor a low distance establishes membership. Read the flags and contributing features alongside both outputs. [Merged review and drop priorities](docs/merged_qc_review.md).
 
 ## Unseen batch — the drop procedure (rehearsed, see experiment log E23)
+
+For organiser folders that contain samples to identify, use the per-site categoriser command above with
+its current primary family (D52). The [frozen first-drop predictions and illustrated
+submission](analysis/organiser_drop_01/README.md) (D53/E34R) preserve the original v1 bets, uncertainty,
+baseline morphology context and image evidence, with an isolated replay command for that version.
+The folder may mix source batches. The manufacturing-batch procedure below requires a folder with
+common batch provenance.
 
 1. Put the folder at `Dataset/<name>/img_<site>_<BSE|ETD|Inlens>.tif` (`SE` is accepted as `ETD`). Nothing else is edited: no site lists, no thresholds.
 2. Run the one command above with `Dataset/<name>`; open `reports/qc_<name>.html`. Optional flags: `--summary reports/qc_<name>.json` writes a diff-able JSON snapshot of every verdict input, `--cache-dir DIR` uses a separate feature cache (cold timing), `--no-images` skips the evidence images. First screen: verdict, the three outcome columns (drift alert / localized / quality abstention), decision stability, drivers, usable n, what would move it, thresholds hash and provenance. Second screen: the five primary KPIs with the minimum detectable change at this batch's n. The footer prints two hashes: the thresholds hash `b4f4da2e357c` (decision thresholds, D22/D33) and a run-config hash of the `build_result` settings; the latter is not the notebook's frozen configuration hash `99d2bbcae6f3` (D34), which only the notebook's §0 cell asserts.

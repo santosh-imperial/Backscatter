@@ -324,11 +324,11 @@ The provider's clarification: Batch 3 is the supplier-promised baseline; Batches
 
 | output | question | what it is — and is not |
 |---|---|---|
-| **site categorisation** | does this sample resemble Batch 1, 2 or 3? | 3-class **model probabilities** (not posteriors: calibration assessed and failed, top bin 0.83 vs observed 0.67); three feature families reported side by side — morphology-only, acquisition-only, combined (pre-registered primary). The primary separates above the site-label null, **on texture and session statistics; morphology alone is at chance** → a *batch fingerprint*, not a material classification. |
-| **baseline OOD assessment** | is it outside Batch 3's promised distribution? | k-NN robust-z distance to all 17 Batch 3 sites, reference percentiles by leave-one-site-out (rank floor 1/18); built separately from the classifier — a 3-class model must pick a known batch even for an unfamiliar sample, so a high Batch 3 probability never establishes membership. Never a probability of defect. |
+| **site categorisation** | does this sample resemble Batch 1, 2 or 3? | 3-class **model probabilities** (not posteriors: calibration assessed and failed, top bin 0.83 vs observed 0.67); feature families reported side by side — **material (morphology + ETD/Inlens texture, no session statistics; primary v2, D52)**, morphology-only, acquisition-only, and the v1 combined family kept as a labelled fingerprint comparator. Frame height and the other session statistics were removed from the primary after the first test drop because they do not generalise beyond the imaging sessions in the known data (D52; the three test assignments did not change). The primary still separates above the site-label null **mostly on texture; morphology alone is at chance**, so it remains a fingerprint of the sample as imaged, not a validated material classification. |
+| **baseline OOD assessment** | how unusual is its measured morphology relative to Batch 3? | k-NN robust-z distance to all 17 Batch 3 sites, descriptive reference percentiles by leave-one-site-out. The legacy tail-rank floor 1/18 is resolution, not a calibrated p-value or false-alert guarantee: reference fits use 16 sites, queries 17. A high Batch 3 model probability or a low distance never establishes membership or equivalence. |
 | **QC interpretation** | what changed, how reliable, what action follows? | §7 verdict + §8 reports (image evidence, next QC action); `docs/batch_signatures.md` for what differs per batch. |
 
-Feature selection, imputation and scaling run inside every leave-one-site-out fold and inside every permutation; the primary family was fixed before the first run (`analysis/categoriser/findings.md` §1, commit 691990e). Sites are n (7 / 7 / 17); the intervals are wide. Read the OOD column and the acquisition flags before the argmax (checklist C32).""")
+Feature selection, imputation and scaling run inside every leave-one-site-out fold and inside every permutation; the primary family was fixed before the first run (`analysis/categoriser/findings.md` §1, commit 691990e). Sites are n (7 / 7 / 17); `accuracy_ci95` is a descriptive binomial reference interval, not an exact 95% generalisation interval for overlapping LOO fits. Read the OOD column, contributing features and acquisition flags alongside the argmax (checklists C32/C33R; `docs/merged_qc_review.md`).""")
 code(r"""from polaron_qc import categorise as CAT
 t0 = time.time()
 CAT_OUT = os.path.join(ROOT, "analysis", "categoriser", "output")
@@ -337,16 +337,17 @@ print(f"categoriser LOO + OOD in {time.time()-t0:.0f} s → {os.path.relpath(CAT
 summ = pd.read_csv(os.path.join(CAT_OUT, "categoriser_summary.csv"))
 print("\nSite categorisation — leave-one-site-out on the 31 known sites (balanced accuracy; chance 1/3; majority-class accuracy 0.55):")
 display(summ[["family", "primary", "n_features", "accuracy", "accuracy_ci95", "balanced_accuracy", "recall_Batch_1", "recall_Batch_2", "recall_Batch_3", "perm_p", "brier", "brier_prior", "ece"]].round(3))
-print("confusion of the pre-registered primary (rows = true batch, columns = argmax of the model probabilities):")
-display(pd.read_csv(os.path.join(CAT_OUT, "confusion_combined.csv"), index_col=0))
-print("\nBaseline OOD — percentile of each site's k-NN robust-z distance within the Batch 3 leave-one-site-out reference (floor 1/18 = 5.6 %):")
+print(f"confusion of the pre-registered primary ({CAT.PRIMARY_FAMILY}; rows = true batch, columns = argmax of the model probabilities):")
+display(pd.read_csv(os.path.join(CAT_OUT, f"confusion_{CAT.PRIMARY_FAMILY}.csv"), index_col=0))
+print("\nBaseline OOD — descriptive percentile (0–100) of each site's k-NN robust-z distance within the Batch 3 leave-one-site-out reference; not a calibrated p-value or false-alert guarantee:")
 ood = pd.read_csv(os.path.join(CAT_OUT, "ood_batch_summary.csv"))
 display(ood[["variant", "batch", "n_sites", "pct_min", "pct_median", "pct_max", "n_exceed_ref_max", "label"]].round(1))
 st = pd.read_csv(os.path.join(CAT_OUT, "site_table.csv"))
-cols = ["batch", "site", "acquisition_group", "argmax__combined", "mp_Batch_1__combined", "mp_Batch_2__combined", "mp_Batch_3__combined", "argmax__morph"] + [c for c in st.columns if c.startswith("ood_pct") and c.endswith("__morph")][:1] + [c for c in st.columns if c.startswith("ood_exceed") and c.endswith("__morph")][:1]
+PF = CAT.PRIMARY_FAMILY
+cols = ["batch", "site", "acquisition_group", f"argmax__{PF}", f"mp_Batch_1__{PF}", f"mp_Batch_2__{PF}", f"mp_Batch_3__{PF}", "argmax__morph", "argmax__acq"] + [c for c in st.columns if c.startswith("ood_pct") and c.endswith("__morph")][:1] + [c for c in st.columns if c.startswith("ood_exceed") and c.endswith("__morph")][:1]
 print("\nper-site hand-off (model probabilities of the primary; morphology-only argmax; OOD percentile of the primary morphology variant) — compared batches:")
 display(st[st.batch.isin(CONFIG["compare"])][[c for c in cols if c in st.columns]].round(2).reset_index(drop=True))
-print("Reading: resemblance (argmax) and baseline membership (OOD percentile) are different questions and can disagree; model probabilities are not calibrated; a sample from an unseen session will be placed away from all three known batches by the fingerprint and still receive an argmax — the OOD column and the flags come first.")""")
+print("Reading: resemblance (argmax) and unusual measured morphology (OOD percentile) are different questions and can disagree. Model probabilities are not calibrated. An unseen session can change the fingerprint; the classifier still returns a known-class argmax. Neither the label nor a low distance establishes membership or equivalence; read flags and contributing features alongside both outputs.")""")
 
 nb["cells"] = cells
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}

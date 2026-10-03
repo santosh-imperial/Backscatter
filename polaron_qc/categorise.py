@@ -13,8 +13,10 @@ Three SEPARATE answers per sample (sample = one site = one BSE/ETD/Inlens image 
 2. **Baseline OOD assessment** — "is it outside Batch 3's promised distribution?"  Built independently of (1): a
    3-class model must pick a known batch even for an unfamiliar sample, so a high Batch 3 probability cannot
    establish membership. Robust-z (reference median / MAD) k-nearest-reference distance, with the reference's own
-   leave-one-site-out distribution as the yardstick. Percentiles are evidence ranks with a floor of 1/(n_ref + 1);
-   they are never a probability of being defective.
+   leave-one-site-out distribution as the yardstick. Percentiles are descriptive evidence ranks (0–100).
+   The legacy ``ood_rank_p_*`` columns are tail ranks with a floor of 1/(n_ref + 1), not calibrated p-values:
+   reference scores use n_ref−1-site fits whereas queries use an n_ref-site fit. No false-alert guarantee follows.
+   They are never a probability of being defective.
 3. **Hand-off** — per sample: the top contributing features to (1) and (2) with sign and the Batch 3 median/MAD,
    the data-derived acquisition flags (``report.derive_flags`` / ``apply_derived_flags``) and a pointer to the
    batch-level QC verdict (``polaron_qc.report``), which is a separate output and is not touched here.
@@ -63,20 +65,24 @@ __all__ = [
 # ----------------------------------------------------------------------------------------------------------------
 MORPH_EXTRA = ["pore_d90", "pore_count_per_Mpx", "bright_d10", "bright_solidity", "bright_max_d"]
 MORPH_FEATURES = list(MATERIAL_KPIS) + MORPH_EXTRA
-ACQ_FEATURES = ["bse_p1", "bse_std", "bse_empty_bin_frac", "H", "bright_sep", "etd_boundary_sharpness", "etd_curtain_frac",
+# v2 (D52): frame height H is excluded from every family — it is a session / stitching fingerprint with no material meaning and
+# does not generalise beyond the sessions in the known data. The remaining acquisition statistics stay in a labelled comparator family only.
+ACQ_FEATURES = ["bse_p1", "bse_std", "bse_empty_bin_frac", "bright_sep", "etd_boundary_sharpness", "etd_curtain_frac",
                 "bse_p50", "etd_p50", "inlens_p50"]
 TEXTURE_FEATURES = ["etd_crack_density_graphite", "crack_g_0.05", "crack_g_0.1", "crack_g_0.2", "crack_g_0.3", "ridge_p97",
                     "inlens_particle_texture", "inlens_particle_texture_p90", "inlens_speckled_particle_frac", "inlens_grad_energy"]
 TEXTURE_LABEL = "acquisition-sensitive; batch-fingerprint evidence, origin (microstructure vs imaging) not established"
-FAMILIES = {"morph": MORPH_FEATURES, "acq": ACQ_FEATURES, "combined": MORPH_FEATURES + TEXTURE_FEATURES + ACQ_FEATURES}
+MATERIAL_FEATURES = MORPH_FEATURES + TEXTURE_FEATURES          # v2 primary: nothing that describes the session rather than the sample
+FAMILIES = {"morph": MORPH_FEATURES, "acq": ACQ_FEATURES, "material": MATERIAL_FEATURES, "combined": MORPH_FEATURES + TEXTURE_FEATURES + ACQ_FEATURES}
 FAMILY_LABELS = {"morph": "morphology-only (trusted BSE geometry KPIs; no intensity statistics)",
-                 "acq": "acquisition-only (session / instrument statistics; never material evidence)",
-                 "combined": f"combined = morphology + texture [{TEXTURE_LABEL}] + acquisition (PRIMARY, pre-registered)"}
+                 "acq": "acquisition-only (session / instrument statistics; never material evidence; comparator)",
+                 "material": f"material = morphology + texture [{TEXTURE_LABEL}]; no session statistics (PRIMARY v2, pre-registered D52)",
+                 "combined": f"combined = material + acquisition statistics (v1 primary, E31; kept as a labelled batch-fingerprint comparator)"}
 OOD_VARIANTS = {"morph": MORPH_FEATURES, "morph_texture": MORPH_FEATURES + TEXTURE_FEATURES, "acq": ACQ_FEATURES}
 OOD_LABELS = {"morph": "morphology (PRIMARY, pre-registered)",
               "morph_texture": f"texture-inclusive [{TEXTURE_LABEL}]",
               "acq": "acquisition-only (session fingerprint, not material)"}
-PRIMARY_FAMILY = "combined"
+PRIMARY_FAMILY = "material"   # v2 (D52); v1 (E31) was "combined"
 PRIMARY_OOD_VARIANT = "morph"
 C_GRID = (0.1, 0.5, 2.0)
 N_INNER = 3
@@ -410,8 +416,9 @@ class OODModel:
     loo_fits: list = field(default_factory=list)   # per held-out ref site: (med, scale, keep, Zref_minus) for the matched-count view
     dropped: list = field(default_factory=list)
     label: str = ""
-    note: str = ("percentiles are evidence ranks within the reference's own leave-one-site-out distribution; floor 1/(n_ref+1); "
-                 "never a probability of defect, out-of-spec or rejection")
+    note: str = ("percentiles are descriptive evidence ranks (0–100) within the reference's own leave-one-site-out distribution; "
+                 "legacy ood_rank_p columns have tail-rank floor 1/(n_ref+1), not calibrated p-values or false-alert guarantees; "
+                 "reference and query fits have different sizes; never a probability of defect, out-of-spec or rejection")
 
     @property
     def n_ref(self) -> int:
@@ -448,7 +455,7 @@ def _pct_rank(ref_scores: np.ndarray, s: float):
 
 
 def ood_score(model: OODModel, df: pd.DataFrame, top: int = 3) -> pd.DataFrame:
-    """Score every row of ``df`` against the reference: primary k-NN score with percentile / rank p / exceedance in the
+    """Score every row of ``df`` against the reference: primary k-NN score with descriptive percentile / tail rank / exceedance in the
     reference LOO distribution, the two secondary scores, the matched-count sensitivity (median percentile over the
     n_ref LOO reference sets), the nearest reference sites (with their acquisition group) and the top contributing
     features (largest mean squared z-difference to the k nearest neighbours, sign = sign of the query's robust z)."""
@@ -730,11 +737,14 @@ def _site_view(site_table: pd.DataFrame) -> pd.DataFrame:
 def render_markdown(results, summ, oods, site_table, ref_batch) -> str:
     out = ["# Site categorisation, baseline OOD assessment and hand-off", "",
            "Three separate answers per site; model probabilities are classifier scores, not posteriors or confidence; "
-           "OOD percentiles are evidence ranks (floor 1/(n_ref+1)), not probabilities of defect. "
+           "OOD percentiles are descriptive evidence ranks (0–100), not probabilities of defect or evidence of equivalence. "
+           "Legacy ood_rank_p columns have tail-rank floor 1/(n_ref+1), not calibrated p-values or false-alert guarantees: "
+           "reference LOO fits use n_ref−1 sites and query fits use n_ref sites. "
            f"Texture family: {TEXTURE_LABEL}.", "",
            "## 1. Site categorisation (leave-one-site-out, fold-local imputer/scaler/C choice, balanced class weights)", "",
            _md_table(summ[["family", "primary", "n_features", "accuracy", "accuracy_ci95", "majority_accuracy", "balanced_accuracy",
-                           "chance_balanced"] + [c for c in summ.columns if c.startswith("recall_")] + ["perm_p", "n_perm", "brier", "brier_prior", "ece"]]), ""]
+                           "chance_balanced"] + [c for c in summ.columns if c.startswith("recall_")] + ["perm_p", "n_perm", "brier", "brier_prior", "ece"]]), "",
+           "accuracy_ci95 is a binomial reference interval; overlapping LOO fits make it descriptive, not an exact 95% generalisation interval.", ""]
     for fam, r in results.items():
         out += [f"### Confusion — {fam} ({r['label']})", "", _md_table(r["metrics"]["confusion"].reset_index().rename(columns={"index": ""}), "{:.0f}"), "",
                 f"Reliability of the top-class model probability — {fam}", "", _md_table(r["calibration"]["reliability"]), ""]
@@ -756,8 +766,11 @@ def render_html(results, summ, oods, site_table, ref_batch) -> str:
              "<h1>Site categorisation, baseline OOD assessment and hand-off</h1>",
              f"<p class='note'>Three separate answers per site. <b>Model probabilities</b> are normalised classifier scores, not posteriors "
              f"or confidence (calibration assessed in the findings). <b>OOD percentiles</b> are evidence ranks within the reference's own "
-             f"leave-one-site-out distribution, floor 1/(n_ref+1); never a probability of defect. Texture family: {TEXTURE_LABEL}. {QC_POINTER}.</p>",
-             "<h2>1. Site categorisation</h2>", t(summ.drop(columns=["label"]))]
+             f"leave-one-site-out distribution (0–100), not probabilities of defect or evidence of equivalence. Legacy ood_rank_p columns have "
+             f"tail-rank floor 1/(n_ref+1), not calibrated p-values or false-alert guarantees: reference LOO fits use n_ref−1 sites, queries n_ref sites. "
+             f"Texture family: {TEXTURE_LABEL}. {QC_POINTER}.</p>",
+             "<h2>1. Site categorisation</h2>", t(summ.drop(columns=["label"])),
+             "<p>accuracy_ci95 is a binomial reference interval; overlapping LOO fits make it descriptive, not an exact 95% generalisation interval.</p>"]
     for fam, r in results.items():
         parts += [f"<h3>Confusion — {fam}: {r['label']}</h3>", r["metrics"]["confusion"].to_html(border=0),
                   f"<p>Reliability of the top-class model probability ({fam})</p>", t(r["calibration"]["reliability"])]

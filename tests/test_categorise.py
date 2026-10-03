@@ -38,11 +38,14 @@ def test_feature_families_are_disjoint_and_trusted():
     assert not set(cat.MORPH_FEATURES) & set(cat.ACQ_FEATURES)
     assert not set(cat.MORPH_FEATURES) & set(cat.TEXTURE_FEATURES)
     assert not set(cat.ACQ_FEATURES) & set(cat.TEXTURE_FEATURES)
-    assert len(cat.FAMILIES["combined"]) == len(set(cat.FAMILIES["combined"])) == 39
+    assert len(cat.FAMILIES["combined"]) == len(set(cat.FAMILIES["combined"])) == 38
+    assert len(cat.FAMILIES["material"]) == 29 and set(cat.FAMILIES["material"]) == set(cat.FAMILIES["morph"]) | set(cat.TEXTURE_FEATURES)
+    assert all("H" not in f for f in cat.FAMILIES.values()), "frame height is a session fingerprint and may not enter any family (D52)"
     assert "etd_boundary_sharpness" not in cat.MORPH_FEATURES          # D24: a flag, never material
     assert all("inlens" not in f for f in cat.MORPH_FEATURES)          # confounded texture never in morphology
-    assert cat.PRIMARY_FAMILY == "combined" and cat.PRIMARY_OOD_VARIANT == "morph"
-    assert "not established" in cat.TEXTURE_LABEL and "not established" in cat.FAMILY_LABELS["combined"]
+    assert cat.PRIMARY_FAMILY == "material" and cat.PRIMARY_OOD_VARIANT == "morph"
+    assert "not established" in cat.TEXTURE_LABEL and "not established" in cat.FAMILY_LABELS["material"]
+    assert "no session statistics" in cat.FAMILY_LABELS["material"] and "comparator" in cat.FAMILY_LABELS["combined"]
 
 
 # ---------------------------------------------------------------- categoriser ---------------------------------------

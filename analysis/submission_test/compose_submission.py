@@ -9,6 +9,8 @@ observed 0.67); the qualitative band uses fixed cut-offs declared here, not tune
 import os, sys, json, hashlib, re
 import pandas as pd, numpy as np
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))); sys.path.insert(0, ROOT); os.chdir(ROOT)
+from polaron_qc import categorise as _C
+PRIMARY = _C.PRIMARY_FAMILY   # "combined" for the frozen E33 drop (v1), "material" from D52 on
 OUT = os.path.join(ROOT, "analysis", "submission_test")
 # bands = the calibration bins already used in E31 (analysis/categoriser/findings.md): [0.7, 1] observed LOO accuracy 0.67; [0.5, 0.7) 0.77; [1/3, 0.5) chance-like
 BANDS = [(0.70, "moderate (E31 top bin: observed LOO accuracy 0.67 at mean model probability 0.83)"), (0.50, "low (E31 middle bin: observed 0.77 at mean 0.60)"), (0.0, "very low — a bet, as requested (E31 bottom bin)")]
@@ -27,14 +29,15 @@ def main(drop_name="Hackathon-Polaron-test"):
     ood_exc = [c for c in st.columns if c.startswith("ood_exceed") and c.endswith("__morph")][:1]
     rows = []
     for r in q.itertuples():
-        probs = {b: float(getattr(r, f"mp_{b}__combined")) for b in ("Batch_1", "Batch_2", "Batch_3")}
+        fam = PRIMARY if f"mp_Batch_1__{PRIMARY}" in st.columns else "combined"
+        probs = {b: float(getattr(r, f"mp_{b}__{fam}")) for b in ("Batch_1", "Batch_2", "Batch_3")}
         assigned = max(probs, key=probs.get); p = probs[assigned]
         second = sorted(probs.items(), key=lambda kv: -kv[1])[1]
         rows.append(dict(sample=r.site, assigned_batch=assigned, confidence_model_probability=round(p, 3), confidence_band=band(p),
                          runner_up=f"{second[0]} ({second[1]:.2f})",
                          p_Batch_1=round(probs["Batch_1"], 3), p_Batch_2=round(probs["Batch_2"], 3), p_Batch_3=round(probs["Batch_3"], 3),
                          morphology_only_argmax=getattr(r, "argmax__morph", ""), acquisition_only_argmax=getattr(r, "argmax__acq", ""),
-                         drivers=getattr(r, "cat_top_features__combined", ""),
+                         drivers=getattr(r, f"cat_top_features__{fam}", ""),
                          baseline_ood_percentile_morphology=(round(float(getattr(r, ood_pct[0])), 1) if ood_pct else np.nan),
                          beyond_baseline_max=(bool(getattr(r, ood_exc[0])) if ood_exc else None),
                          acquisition_group=getattr(r, "acquisition_group", ""), low_contrast=bool(getattr(r, "bright_low_contrast", False)),

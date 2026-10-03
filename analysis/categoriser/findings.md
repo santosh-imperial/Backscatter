@@ -26,6 +26,10 @@ examined. Nothing here feeds `decision.py`, `report.py` thresholds or the frozen
 Script / module: `polaron_qc/categorise.py`; CLI `python -m polaron_qc.categorise`. Every number in §3–§6 is
 read from a CSV/JSON in `analysis/categoriser/output/`.
 
+**Post-merge interpretation correction (D52R/E33R):** §1 is preserved as registration history. Its IID
+exceedance-probability interpretation is withdrawn in §5.1: the implemented reference/query fits do not
+establish calibrated p-values or false-alert guarantees. The numerical scores and protocol are unchanged.
+
 ## 1. Pre-registration — written and committed before the first run
 
 This section was written and committed before `polaron_qc/categorise.py` was executed on the real cache.
@@ -159,6 +163,14 @@ Recorded after the run; §1.1–§1.6 above are unchanged from commit 691990e.
 4. *Procedure, no number affected:* a `--score-cache-dir` CLI option was added after the first run so a scored
    folder can use a scratch feature cache without writing into the shared one.
 
+### 1.8 Version 2 pre-registration (D52, 2026-10-03, registered before the first test-drop truth and before the final evaluation)
+
+**Change:** the judged primary family becomes **material = morphology + texture (29 features)**; frame height `H` is removed from every family; the remaining acquisition statistics stay only in the `acq` comparator and in the v1 `combined` family, which is kept as a labelled batch-fingerprint comparator. Everything else (fold-local imputer / scaler / C grid, LOO, 200 site-label permutations, calibration bins, OOD construction) is unchanged.
+
+**Why:** Santosh's objection, which stands on its own: frame height and session statistics are not generalisable and reduce the real-world utility of a categoriser that must work on batches imaged in other sessions. The decision is not driven by test outcomes — the truth of the first drop was unknown when this was registered — and the three E33 assignments are identical under v2 (model probabilities 0.84 / 0.50 / 0.62 instead of 0.77 / 0.45 / 0.74).
+
+**Known-site cost (E34, same LOO procedure):** balanced accuracy 0.608 vs 0.664 for v1, accuracy 0.677 unchanged, permutation p 0.005; without the Inlens features as well 0.616 / 0.645; morphology alone 0.347 (p 0.16). The E33 predictions file stays frozen as produced by v1.
+
 ## 2. Setup and provenance
 
 * Branch `worktree-agent-a861a0e9f8558250c` from main 87ecee3. Pre-registration (§1) committed as 691990e before
@@ -197,8 +209,9 @@ Confusion counts (rows = true, columns = predicted B1 / B2 / B3):
 Reading, with the rules fixed in §1.3:
 
 * The pre-registered primary (combined) separates the three batches above the site-label null (no permutation of
-  200 reached its balanced accuracy; p = 1/201 is the Monte Carlo floor). Its accuracy interval [0.49, 0.83] is
-  0.34 wide: 31 sites cannot say whether this categoriser is "two-thirds right" or "half right".
+  200 reached its balanced accuracy; p = 1/201 is the Monte Carlo floor). Its binomial reference interval
+  [0.49, 0.83] is wide, but is not an exact 95% generalisation interval: LOO fits overlap and predictions are
+  dependent. These known sites do not establish performance on a new specimen or acquisition session.
 * **Morphology alone does not categorise** (balanced accuracy 0.35, p 0.16; Batch 2 recall 0 — every Batch 2 site is
   called Batch 1 or Batch 3). In 9 of the 31 folds the fold-local C = 0.1 zeroed every coefficient, so those sites
   received the uniform 1/3 vector. The one morphology KPI that the model keeps selecting is `pore_count_per_Mpx`
@@ -214,8 +227,8 @@ Reading, with the rules fixed in §1.3:
   `corr_len_px` (−, B2), `bse_p50` (B1 +, B2 −), `etd_boundary_sharpness` (+, B1), `bse_std` (−, B3). Full-fit
   (C = 0.5) non-zero coefficients: 8 / 8 / 7 per class.
   **Rule (a) applies: this is a batch fingerprint in the images. Predictive usefulness of ETD/Inlens texture and
-  of session statistics does not settle whether the signature is microstructure or imaging; one session per batch
-  makes the two inseparable in this dataset.**
+  of session statistics does not settle whether the signature is microstructure or imaging; session identities
+  and independent repeated acquisitions are unavailable, so their contributions cannot be separated here.**
 * Univariate context agrees (§6): 9 of the 10 texture features and 4 of the 10 acquisition features differ across
   batches at unadjusted p < 0.05, against 1 of the 19 morphology features.
 
@@ -289,7 +302,7 @@ for an unseen batch even if these bins had agreed (assessment.md, "One-class mod
 
 ### 5.1 Per-batch summary (`ood_batch_summary.csv`)
 
-| variant | batch | pct min / median / max | n exceeding ref. LOO max (of 7) | rank p at the floor 1/18 | matched-count median pct | RMS-z exceed | Mahalanobis (LW) exceed |
+| variant | batch | pct min / median / max | n exceeding ref. LOO max (of 7) | descriptive tail rank at floor 1/18 | matched-count median pct | RMS-z exceed | Mahalanobis (LW) exceed |
 |---|---|---|---|---|---|---|---|
 | **morph (PRIMARY)** | Batch 1 | 11.8 / 29.4 / 100.0 | **2** (0.29) | 2 | 29.4 | 2 | 2 |
 | morph | Batch 2 | 0.0 / 41.2 / 76.5 | 0 | 0 | 47.1 | 0 | 0 |
@@ -298,14 +311,21 @@ for an unseen batch even if these bins had agreed (assessment.md, "One-class mod
 | acq (session fingerprint) | Batch 1 | 47.1 / 70.6 / 82.4 | 0 | 0 | 70.6 | 0 | 0 |
 | acq | Batch 2 | 23.5 / 47.1 / 70.6 | 0 | 0 | 58.8 | 0 | 0 |
 
-Resolution floor: with 17 reference sites the smallest rank p is 1/18 = 0.056 and the percentile grid is 100/17 ≈
-5.9 points; no single site can be placed outside the reference at 5 %. Under an i.i.d. null one site exceeds the
-reference LOO maximum with probability 1/18 and at least one of seven does so with probability ≈ 0.33, so one
-exceedance per batch is unremarkable and two or three are an evidence flag, not a defect call.
+**Interpretation correction (D52R; no numerical changes):** with 17 reference sites the tail-rank column
+(`ood_rank_p_*`, retained for compatibility) has floor 1/18 = 0.056; percentiles themselves run from 0 to 100 on
+a grid of 100/17 ≈ 5.9 points. This is numerical rank resolution, **not a calibrated p-value, 5% test or
+false-alert guarantee**. Reference scores refit scaling and neighbours on 16 sites; queries use the full 17-site
+fit. A simple exchangeable-score rank argument therefore does not establish calibration for this procedure.
+The earlier i.i.d. probability interpretation in §1.4 is preserved as registration history and withdrawn here.
+Even with a fixed common score, multiple queries share a reference maximum; multiplying independent
+single-query probabilities would require an additional justification. Exceedance counts remain descriptive
+evidence for investigation, not defect calls or established distribution membership. See
+[the merged review](../../docs/merged_qc_review.md) and the calibration requirements in
+[Angelopoulos & Bates](https://arxiv.org/abs/2107.07511).
 
 ### 5.2 Per-site, primary variant (Batch 1 and Batch 2 sites; `site_table.csv`)
 
-| batch | site | flags | score | pct | rank p | exceeds | 3 nearest reference sites | top contributing features (robust z) |
+| batch | site | flags | score | pct | descriptive tail rank | exceeds | 3 nearest reference sites | top contributing features (robust z) |
 |---|---|---|---|---|---|---|---|---|
 | B1 | 4ih2ggld | low_contrast | 37.8 | 100 | 0.056 | yes | x7u69zsw, tuy3zymq, kbdh4tri (grey-pore) | bright_count_per_Mpx +36.7, bright_frac +8.1, bright_solidity −7.7 |
 | B1 | 5n1q8atc | low_contrast | 44.2 | 100 | 0.056 | yes | x7u69zsw, cfe5vt7s, tuy3zymq | bright_count_per_Mpx +39.5, bright_frac +13.6, bright_max_d +9.9 |
@@ -325,8 +345,8 @@ exceedance per batch is unremarkable and two or three are an evidence flag, not 
 Reference LOO scores (primary): 3.7 (71vgq3fw) … 5.3 (ptg8lmto) for the 12 ordinary + grey-pore sites, then
 ufdvpb81 5.8 (cracked), mgxahqnk 6.1, x7u69zsw 6.6, 0grcilhi 7.3 and hzumfsms 8.3 (cracked). **The reference
 maximum is set by a cracked Batch 3 site**: "exceeds the reference" therefore means "farther from its three
-nearest Batch 3 sites than the most unusual cracked reference site is from its own", and conversely a cracked
-unseen site would sit *inside* this reference. Cracks are the business of the batch-level report's localized
+nearest Batch 3 sites than the most unusual cracked reference site is from its own". A cracked unseen site may
+resemble an included cracked site, but is not guaranteed to fall below this maximum. Cracks are the business of the batch-level report's localized
 path (Check B), not of this percentile.
 
 Reading:
@@ -336,12 +356,13 @@ Reading:
   low-contrast BSE image the fallback bright threshold fragments the bright phase into many small components
   (rule 4 in CLAUDE.md: bright-phase KPIs unreliable on these sites). This is a measurement artefact flagged by the
   acquisition flags in the same row, not evidence about the material; C03 applies and the post-hoc check in §5.3
-  confirms it.
+  supports that interpretation.
 * f1vzngrs (ordinary) sits at the 94th percentile with `pore_count_per_Mpx` +6.6 z (134 /Mpx vs reference 98 ± 5.5
   MAD) and ETD crack density on particles +2.3 z; it exceeds in the texture-inclusive variant. One such site in
-  seven is within what the i.i.d. null produces (≈ 0.33).
-* **Batch 2 sits inside the Batch 3 morphology** (median percentile 41, none above the maximum, one site at the
-  0th percentile). Its recurring direction is a lower pore count per Mpx (−2 to −5 z on five of seven sites), which
+  seven is descriptive evidence; its null exceedance probability is not calibrated by this procedure.
+* **No Batch 2 site exceeds the observed Batch 3 LOO maximum under the primary morphology score** (median
+  percentile 41, one site at the 0th percentile). This does not establish membership or equivalence. Its recurring
+  direction is a lower pore count per Mpx (−2 to −5 z on five of seven sites), which
   is also what the morphology categoriser keeps selecting — a shift in the interior of the reference range, not an
   excursion beyond it. Batch 2 is told apart from Batch 3 by texture and session statistics (§3), not by geometry
   outside the reference.
@@ -375,23 +396,26 @@ survives correction. Next morphology features: `bright_d50` p 0.07, `pore_frac` 
 
 ## 7. Limitations
 
-* **31 sites.** Every accuracy carries a Clopper–Pearson interval ≈ ± 0.17–0.20; per-class recall rests on 7 sites
+* **31 sites.** Every accuracy carries a descriptive binomial reference interval ≈ ± 0.17–0.20, not an exact
+  generalisation interval for dependent LOO predictions; per-class recall rests on 7 sites
   (one site = 0.14). Balanced accuracy 0.66 vs 0.47 is not a demonstrated ordering of two models.
-* **Batch = session.** Each batch was imaged in its own session(s); texture and acquisition statistics that separate
-  batches cannot be attributed to the material. The pre-registered primary is therefore a *batch fingerprint*
+* **Session confounding unresolved.** Session identities and independent repeated acquisitions are unavailable;
+  texture and acquisition statistics that separate batches cannot be attributed to the material. The pre-registered primary is therefore a *batch fingerprint*
   categoriser. The morphology-only model — the only one that could carry a material reading — is at chance.
 * **Model probabilities are not calibrated** (§4): over-confident top bin, Brier 0.49; errors at 0.84–0.85.
 * **Specimen independence unconfirmed** (plan §2.0 rule 9); if sites share specimens the effective n is smaller and
-  every p here is anti-conservative.
+  site-level permutation exchangeability may fail and significance can be optimistic; the direction and size of
+  that error are not established here.
 * **Reference heterogeneity.** The OOD reference includes 4 grey-pore and 3 cracked sites; its LOO maximum is a
-  cracked site. A cracked unseen site is "inside"; a site resembling the grey-pore group is "inside". Membership of
-  the promised distribution is thus read against Batch 3 *as delivered*, including its sub-populations, which the
+  cracked site. Resemblance to these sub-populations can lower a query's distance, but does not guarantee that an
+  unseen cracked or grey-pore site falls below the maximum. Descriptive reference comparisons use Batch 3
+  *as delivered*, including its sub-populations, which the
   hand-off shows through the nearest-neighbour column.
 * **Low-contrast sites** inflate bright-phase KPIs by one to two orders of magnitude in robust z; they are kept
   (the procedure must run unchanged on an unseen batch) and flagged. Any exceedance whose top contributor is a
   bright-phase KPI on a `bright_low_contrast` site is an acquisition finding (§5.3).
-* **Resolution floor** 1/18 for the rank p; percentile steps of 5.9 points; "exceeds the maximum" fires for ≈ 33 %
-  of 7-site batches under the null.
+* **Rank resolution, not calibration.** Legacy tail-rank floor 1/18; percentile steps of 5.9 points. The actual
+  procedure does not establish a null exceedance probability or false-alert guarantee (§5.1, D52R).
 * **Multiplicity.** Three categoriser families (one pre-registered primary; secondaries read at 0.017), three OOD
   variants, one post-hoc OOD variant, two extra seeds; all listed, none promoted.
 * **Scope.** Nothing here is an accept / reject; no equivalence test and no MDC are computed in this module; the
@@ -410,9 +434,9 @@ survives correction. Next morphology features: `bright_d50` p 0.07, `pore_frac` 
 * **C06 / C09 / C14** — 31 site units, patches never counted; three models pre-registered with Bonferroni for the
   secondaries; the null repeats the whole fold-local procedure under site-label permutation; n after flags stated
   (bright-phase KPIs rest on 5 of 7 Batch 1 sites; the two flagged sites are kept and marked).
-* **C07 / C10 / C17** — no acceptance claim from a percentile inside the reference; false-alarm rate of the
-  exceedance rule stated (1/18 per site, ≈ 0.33 per 7-site batch); wording "model probability", "percentile of the
-  reference LOO", "evidence rank"; no "confidence", no "probability correct".
+* **C07 / C10 / C17 / C33R** — no acceptance/membership claim from a low reference percentile; the previously
+  stated exceedance false-alarm probabilities are withdrawn (§5.1, D52R). Wording is "model probability",
+  "descriptive percentile of the reference LOO" and "tail rank", not calibrated p-value or confidence.
 * **C16 / C21 / C22** — provenance: developed using exploratory analysis of Batches 1–3; definitions committed
   (691990e) before the run; deviations listed in §1.7; the morphology list is asserted against `KPI_TRUST` at
   import and in a test (no flag or confounded column); nothing undefined or constant is reported.

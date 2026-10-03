@@ -1,0 +1,232 @@
+{
+  "review": "E33R / D52R",
+  "snapshot_base_commit": "c14504ec9ab7cb98165fe05bcb520e6566a991f3",
+  "verified_utc": "2026-10-03T22:20:05.391427+00:00",
+  "scope": "Interpretation/presentation and E32 evidence tracking only; no new statistical experiment or feature promotion.",
+  "protected_hashes": {
+    "polaron_qc/battery_metrics.py": {
+      "before": "fb4432fd205414488081fb336aec296a69a45e9408d63e8196b1aa1645335b15",
+      "after": "fb4432fd205414488081fb336aec296a69a45e9408d63e8196b1aa1645335b15"
+    },
+    "polaron_qc/void_metrics.py": {
+      "before": "0ce8cbc8c86a459b1ec96c041ac679dfe6c1c94622bb8ed07c674f860adb00d2",
+      "after": "0ce8cbc8c86a459b1ec96c041ac679dfe6c1c94622bb8ed07c674f860adb00d2"
+    },
+    "polaron_qc/secondary.py": {
+      "before": "b117e55d22693efbadffe807c77501adc336b8dd9a69a9a4c65ab4665ce04c94",
+      "after": "b117e55d22693efbadffe807c77501adc336b8dd9a69a9a4c65ab4665ce04c94"
+    },
+    "polaron_qc/__init__.py": {
+      "before": "c4ca6332c240463d02cf79e0278638a9fe7c9d05a37f2b87b31d2d241d0de5fb",
+      "after": "c4ca6332c240463d02cf79e0278638a9fe7c9d05a37f2b87b31d2d241d0de5fb"
+    },
+    "polaron_qc/features.py": {
+      "before": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b",
+      "after": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b"
+    },
+    "polaron_qc/decision.py": {
+      "before": "db19924f7fbb6658a7a9936f38de1f0802dd4ec67c9f135bda70f5ffdfb916eb",
+      "after": "db19924f7fbb6658a7a9936f38de1f0802dd4ec67c9f135bda70f5ffdfb916eb"
+    },
+    "polaron_qc/ml.py": {
+      "before": "69423c14d52223e91b431954d7cfe3953ef2febcede9b5848d0ae32337e084d4",
+      "after": "69423c14d52223e91b431954d7cfe3953ef2febcede9b5848d0ae32337e084d4"
+    },
+    "polaron_qc/physics.py": {
+      "before": "f4950d084d48834d07416b07c68a283fb0b77ba4e072893c8efbc18bb725e737",
+      "after": "f4950d084d48834d07416b07c68a283fb0b77ba4e072893c8efbc18bb725e737"
+    },
+    "polaron_qc/stats.py": {
+      "before": "30b31c6483ae0ef587233045941c4238409bc88e300067b14fddf3c2d60ea6be",
+      "after": "30b31c6483ae0ef587233045941c4238409bc88e300067b14fddf3c2d60ea6be"
+    },
+    "polaron_qc/acquisition.py": {
+      "before": "ea2f3e61f7d6385a4d609f18c7938087836d5858464211b056e286a89777c834",
+      "after": "ea2f3e61f7d6385a4d609f18c7938087836d5858464211b056e286a89777c834"
+    },
+    "polaron_qc/report.py": {
+      "before": "2baf3bc6983a0535a1c3aeb80f46c902a93fccc4d6528e19b56973c80a37b57a",
+      "after": "2baf3bc6983a0535a1c3aeb80f46c902a93fccc4d6528e19b56973c80a37b57a"
+    },
+    "analysis/categoriser/output/reliability_acq.csv": {
+      "before": "16026a0d0caa0f00a4b9871e3cf121eb5ac8a0e6319825e73848dd0291419580",
+      "after": "16026a0d0caa0f00a4b9871e3cf121eb5ac8a0e6319825e73848dd0291419580"
+    },
+    "analysis/categoriser/output/ood_posthoc_morph_no_bright.csv": {
+      "before": "5233dc506e97615f74b1c480eaff62471c904e3792df74391b0f02f9c1887440",
+      "after": "5233dc506e97615f74b1c480eaff62471c904e3792df74391b0f02f9c1887440"
+    },
+    "analysis/categoriser/output/perm_null_morph.csv": {
+      "before": "5463c52014a27d6f21e0b38a00a628c796a418def291e4efcb48f1abf8bf84e2",
+      "after": "5463c52014a27d6f21e0b38a00a628c796a418def291e4efcb48f1abf8bf84e2"
+    },
+    "analysis/categoriser/output/site_table.csv": {
+      "before": "9e4f80f345fb38682768fa1ad2e5dc0f139144e3e0b0d4625f96b38a07d6e005",
+      "after": "9e4f80f345fb38682768fa1ad2e5dc0f139144e3e0b0d4625f96b38a07d6e005"
+    },
+    "analysis/categoriser/output/ood_ref_loo_acq.csv": {
+      "before": "743b689e6d8b74e83266d076a8001d3412f5062cfce904f89c7efb864d905597",
+      "after": "743b689e6d8b74e83266d076a8001d3412f5062cfce904f89c7efb864d905597"
+    },
+    "analysis/categoriser/output/confusion_combined.csv": {
+      "before": "6b2c07f1c6239b7f3956fecb8d8c7d9fd714591f8bc7afd6d7a463775d1e59c3",
+      "after": "6b2c07f1c6239b7f3956fecb8d8c7d9fd714591f8bc7afd6d7a463775d1e59c3"
+    },
+    "analysis/categoriser/output/reliability_morph.csv": {
+      "before": "f9099f65b9063adca19d19ac384498ddfc3c0ce20d2ca5ad414d5ef48582ecc9",
+      "after": "f9099f65b9063adca19d19ac384498ddfc3c0ce20d2ca5ad414d5ef48582ecc9"
+    },
+    "analysis/categoriser/output/categoriser_summary.csv": {
+      "before": "cc7a6aa42272f4ffc0aa043263439287870399efcb3393150c09464ab5988582",
+      "after": "cc7a6aa42272f4ffc0aa043263439287870399efcb3393150c09464ab5988582"
+    },
+    "analysis/categoriser/output/confusion_acq.csv": {
+      "before": "48a197d8e9705ce71d098ac631d6ce3a74b0d298c02406787aa37dbbcbfa779d",
+      "after": "48a197d8e9705ce71d098ac631d6ce3a74b0d298c02406787aa37dbbcbfa779d"
+    },
+    "analysis/categoriser/output/kruskal_context.csv": {
+      "before": "42d0b827ae53ab0d6319c5b3ff4b06a73354d18f1a54455a4499aabaaf4d7127",
+      "after": "42d0b827ae53ab0d6319c5b3ff4b06a73354d18f1a54455a4499aabaaf4d7127"
+    },
+    "analysis/categoriser/output/ood_ref_loo_morph_texture.csv": {
+      "before": "131c1f3d4d59205d2560f00c561837c8c0837e0244aea6dac1b5c29dd092cbf8",
+      "after": "131c1f3d4d59205d2560f00c561837c8c0837e0244aea6dac1b5c29dd092cbf8"
+    },
+    "analysis/categoriser/output/reliability_combined.csv": {
+      "before": "4e092eafab521bf1f79bb105876c585488c489f6665598324da630f9c213b0a1",
+      "after": "4e092eafab521bf1f79bb105876c585488c489f6665598324da630f9c213b0a1"
+    },
+    "analysis/categoriser/output/ood_batch_summary.csv": {
+      "before": "cb533886094a6b058fbb1904abec2711eeb66998a7c87d7a4bb9db7f73be1fa8",
+      "after": "cb533886094a6b058fbb1904abec2711eeb66998a7c87d7a4bb9db7f73be1fa8"
+    },
+    "analysis/categoriser/output/confusion_morph.csv": {
+      "before": "d5b3b67df6119ed0193374ece27574a0438945a15c57dd46b5797075595fe296",
+      "after": "d5b3b67df6119ed0193374ece27574a0438945a15c57dd46b5797075595fe296"
+    },
+    "analysis/categoriser/output/ood_ref_loo_morph.csv": {
+      "before": "d3d9708a9283d083349286a5d610a3086441981a2639426a6103d756a21337f8",
+      "after": "d3d9708a9283d083349286a5d610a3086441981a2639426a6103d756a21337f8"
+    },
+    "analysis/categoriser/output/perm_null_acq.csv": {
+      "before": "db92233726b4aa992e4123b0778bb18facf7041cae3da456e8c6baff4a30a85c",
+      "after": "db92233726b4aa992e4123b0778bb18facf7041cae3da456e8c6baff4a30a85c"
+    },
+    "analysis/categoriser/output/perm_null_combined.csv": {
+      "before": "1389c06a696e2b331086deb216115115f7b3a2d2bd519461bc77a35a8dd9115c",
+      "after": "1389c06a696e2b331086deb216115115f7b3a2d2bd519461bc77a35a8dd9115c"
+    },
+    "analysis/e20_inlens/manifest.json": {
+      "before": "7bdc887a0369bad24a6bfaf2a6b2cdb3cf52f7b6b080517f05cb449dfdf9dc8e",
+      "after": "7bdc887a0369bad24a6bfaf2a6b2cdb3cf52f7b6b080517f05cb449dfdf9dc8e"
+    }
+  },
+  "categoriser_changed_function_bodies": [
+    "render_markdown",
+    "render_html"
+  ],
+  "categoriser_other_function_bodies_unchanged": true,
+  "categoriser_docstring_and_ood_model_note_updated": true,
+  "preregistration_section1_sha256": "5ec296c78a3573ab3d69b85ff9a4ba59803e09600ee9b8c8a6075a1dc91f335d",
+  "preregistration_section1_unchanged": true,
+  "categoriser_meta_changed_keys": [
+    "wall_s"
+  ],
+  "metric_count": 88,
+  "method_count": 15,
+  "all_metric_ids_states_roles_manual_reviews_and_prior_histories_preserved": true,
+  "all_prior_method_histories_preserved": true,
+  "e32_method_variants": [
+    {
+      "id": "a_cv",
+      "role": "primary",
+      "definition": "SD(I[P])/max(mean(I[P]),1)",
+      "implementation_status": "computed",
+      "use_status": "deferred",
+      "reason": "Gain-invariant but offset-sensitive; brightness relationship changed by construction."
+    },
+    {
+      "id": "b_aff",
+      "role": "primary",
+      "definition": "SD(I[P])/max(IQR(I[P]),1)",
+      "implementation_status": "computed",
+      "use_status": "deferred",
+      "reason": "Per-particle distribution-shape index, nearly constant; useful amplitude information discarded."
+    },
+    {
+      "id": "c_loc64",
+      "role": "primary",
+      "definition": "SD of local Gaussian z-normalised Inlens values inside P; sigma64px, floor0.05 image IQR",
+      "implementation_status": "computed",
+      "use_status": "deferred",
+      "reason": "Retains brightness/acquisition association; not established as material-specific."
+    },
+    {
+      "id": "d_lbp",
+      "role": "primary",
+      "definition": "Fraction of uniform LBP8/R1 code9 in P",
+      "implementation_status": "computed",
+      "use_status": "deferred",
+      "reason": "Quantisation/noise-sensitive; does not qualify under the fixed rule."
+    },
+    {
+      "id": "c_loc32",
+      "role": "sensitivity",
+      "definition": "Local-z variant with sigma32px",
+      "implementation_status": "computed",
+      "use_status": "sensitivity_only",
+      "reason": "Not eligible for winner selection."
+    },
+    {
+      "id": "d_lbp_ent",
+      "role": "sensitivity",
+      "definition": "Normalised entropy of the uniform LBP codes in P",
+      "implementation_status": "computed",
+      "use_status": "sensitivity_only",
+      "reason": "Not eligible for winner selection."
+    }
+  ],
+  "validation": {
+    "categoriser_tests": {
+      "command": "/opt/anaconda3/bin/python3 -m pytest tests/test_categorise.py -q",
+      "passed": 12,
+      "warnings": "13 existing matplotlib/pyparsing deprecation warnings"
+    },
+    "notebook": {
+      "path": "notebooks/02_batch_qc.ipynb",
+      "code_cells_executed": 20,
+      "errors": 0,
+      "frozen_configuration_hash": "99d2bbcae6f3",
+      "thresholds_hash": "b4f4da2e357c",
+      "previous_figures_and_numerical_display_tables_identical": true,
+      "all_prior_qc_code_cell_sources_identical": true,
+      "final_cell_computation_ast_identical_excluding_prints": true
+    },
+    "atlas": {
+      "metrics": 88,
+      "methods": 15,
+      "assets": 53,
+      "e32_completed_method_visible": true,
+      "stale_normalisation_pending_text_absent": true
+    },
+    "regenerated_reports": {
+      "reports/qc_Batch_1.html": {
+        "scientific_text_unchanged": true,
+        "changed_image_indices": [
+          0
+        ],
+        "timing_and_revision_metadata_updated": true,
+        "after_sha256": "ff65226a663f50f50d626ed7e739967f71714182b928dca8506bc73d90bb1c38"
+      },
+      "reports/qc_Batch_2.html": {
+        "scientific_text_unchanged": true,
+        "changed_image_indices": [],
+        "timing_and_revision_metadata_updated": true,
+        "after_sha256": "037beb6eb0c0ff4704cff9c5d2442186cd86ec918f4799f8a92966d307d325e8"
+      }
+    },
+    "batch1_rerendered_primary_plot_visually_checked": "Labels, units, reference groups, low-contrast exclusions and site counts remain readable. JPEG bytes differ; no claim of pixel identity.",
+    "git_diff_check": "passed"
+  },
+  "delivery": "Uncommitted Codex edits; historical E31L receipts preserved; no external message sent."
+}
