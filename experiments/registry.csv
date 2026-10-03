@@ -36901,3 +36901,30 @@ E31L,2026-10-03,delivery_count,known-data,L audit,L_K_tests_passed,count,,,22,co
 E31L,2026-10-03,delivery_count,known-data,L audit,inventory_metrics,count,,,88,count,Administrative/coverage/trial count; not material-independent n or defect accuracy
 E31L,2026-10-03,delivery_count,known-data,L audit,inventory_methods,count,,,14,count,Administrative/coverage/trial count; not material-independent n or defect accuracy
 E31L,2026-10-03,delivery_count,known-data,L audit,numerical_registry_fields,count,,,11127,count,Administrative/coverage/trial count; not material-independent n or defect accuracy
+E32,2026-10-03,e20_spearman_inlens_p50,known-data,all31,inlens_particle_texture,rho,,31,0.77,rho,"cur site median vs Inlens p50; reproduces E03"
+E32,2026-10-03,e20_kruskal_p,known-data,all31,inlens_particle_texture,p,,31,0.00105,p,"cur site median; 3 batches"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_1,inlens_particle_texture,robust_shift,17,7,2.18,B3 MAD,"cur; bootstrap 95% [0.97, 10.52]; exact hl_shift p 4.6e-5"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_2,inlens_particle_texture,robust_shift,17,7,0.92,B3 MAD,"cur; [−0.00, 9.59]; exact p 0.0126"
+E32,2026-10-03,e20_loo_r2_acquisition,known-data,all31,inlens_particle_texture,r2,,31,0.754,R2,"LOO ridge alpha 1; inlens p50/std, bse p1/std, bright_sep, H"
+E32,2026-10-03,e20_spearman_inlens_p50,known-data,all31,inlens_texture_a_cv,rho,,31,0.09,rho,"within B1 −0.74 (n 7)"
+E32,2026-10-03,e20_kruskal_p,known-data,all31,inlens_texture_a_cv,p,,31,0.0228,p,
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_1,inlens_texture_a_cv,robust_shift,17,7,0.83,B3 MAD,"exact p 0.0151"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_2,inlens_texture_a_cv,robust_shift,17,7,0.87,B3 MAD,"exact p 0.0707"
+E32,2026-10-03,e20_loo_r2_acquisition,known-data,all31,inlens_texture_a_cv,r2,,31,0.400,R2,
+E32,2026-10-03,e20_perturb_affine_delta_over_gap,known-data,4 sites,inlens_texture_a_cv,max_abs,,4,4.70,gap,"affine 0.6x+40; offset-sensitive by construction"
+E32,2026-10-03,e20_kruskal_p,known-data,all31,inlens_texture_b_aff,p,,31,0.142,p,"near-constant shape index (site medians 0.72–0.81); not reportable (C22)"
+E32,2026-10-03,e20_spearman_inlens_p50,known-data,all31,inlens_texture_c_loc64,rho,,31,0.68,rho,"within B1/B2/B3 −0.18/+0.94/+0.75"
+E32,2026-10-03,e20_kruskal_p,known-data,all31,inlens_texture_c_loc64,p,,31,0.00161,p,
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_1,inlens_texture_c_loc64,robust_shift,17,7,1.98,B3 MAD,"[0.31, 6.42]; exact p 0.00344"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_2,inlens_texture_c_loc64,robust_shift,17,7,1.95,B3 MAD,"[0.27, 5.97]; exact p 0.00921"
+E32,2026-10-03,e20_loo_r2_acquisition,known-data,all31,inlens_texture_c_loc64,r2,,31,0.714,R2,
+E32,2026-10-03,e20_perturb_affine_delta_over_gap,known-data,4 sites,inlens_texture_c_loc64,max_abs,,4,0.04,gap,"gain/offset invariant up to rounding"
+E32,2026-10-03,e20_perturb_gamma_delta_over_gap,known-data,4 sites,inlens_texture_c_loc64,max_abs,,4,0.45,gap,"gamma 1.25 on f1vzngrs"
+E32,2026-10-03,e20_perturb_gamma_delta_over_gap,known-data,4 sites,inlens_particle_texture,max_abs,,4,0.34,gap,"gamma 0.75/1.25 on f1vzngrs"
+E32,2026-10-03,e20_spearman_inlens_p50,known-data,all31,inlens_texture_d_lbp,rho,,31,0.39,rho,"within B2 rho with Inlens std −0.96 (n 7)"
+E32,2026-10-03,e20_kruskal_p,known-data,all31,inlens_texture_d_lbp,p,,31,0.0586,p,"fails pre-registered threshold 0.05"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_1,inlens_texture_d_lbp,robust_shift,17,7,2.89,B3 MAD,"B3 MAD 0.0031; absolute gap 0.009; exact p 0.0171"
+E32,2026-10-03,e20_shift_mad,Batch_3,Batch_2,inlens_texture_d_lbp,robust_shift,17,7,3.17,B3 MAD,"exact p 0.0201"
+E32,2026-10-03,e20_loo_r2_acquisition,known-data,all31,inlens_texture_d_lbp,r2,,31,0.025,R2,
+E32,2026-10-03,e20_perturb_gamma_delta_over_gap,known-data,4 sites,inlens_texture_d_lbp,max_abs,,4,0.54,gap,"gamma 0.75 on 9luzk4jm; re-quantisation of a stretched image"
+E32,2026-10-03,e20_integrity_sites_matching_cache,known-data,all31,inlens_particle_texture,count,,31,31,count,"recomputed cur median, particle count, th_lo, th_hi equal cache"
