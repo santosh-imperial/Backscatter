@@ -15,7 +15,7 @@ Schema of ``result`` (a plain dict; DataFrames where noted; every key always pre
 meta            {reference, batch, reference_dir, batch_dir, n_sites_ref, n_sites_batch, timestamp,
                  thresholds_hash, provenance, config, config_hash, git_describe, feature_version, runtime_s,
                  primary_kpis, trusted_kpis, notes[list of integration notes produced while building]}
-sites_ref       DataFrame, features.extract_batch(...)["sites"] of the reference (one row per site, 87 cols)
+sites_ref       DataFrame, features.extract_batch(...)["sites"] of the reference (one row per site; 87 original cols + secondary geometry, 150 at v1.1.0)
 sites_batch     DataFrame, same for the incoming batch
 images_ref, images_batch   DataFrame, features ``images`` tables (raw per-image statistics)
 patches_batch   DataFrame, features ``patches`` table of the batch (y0, x0 in the TRIMMED frame)
