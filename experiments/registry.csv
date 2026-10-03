@@ -20736,3 +20736,16 @@ E26G,2026-10-03,graph_control_correlation,,Batch_3_ordinary,graph_log_area_assor
 E26G,2026-10-03,graph_audit_qualification,all_pairs,bright_usable,four_fixed_graph_descriptors,nominal_intervals_including_zero,0,12,12,comparison_count,12 correlated descriptive contrasts; count is not independent sample n; all nominal settings 50px2/offset0
 E26G,2026-10-03,graph_audit_qualification,all_pairs,quality_matched,four_fixed_graph_descriptors,nominal_intervals_including_zero,0,12,12,comparison_count,12 correlated descriptive contrasts; count is not independent sample n; all nominal settings 50px2/offset0
 E26G,2026-10-03,graph_audit_qualification,all_pairs,bright_usable,four_fixed_graph_descriptors,sign_stable_across_six_variants,0,12,2,comparison_count,10/12 reverse direction; stable direction is not robust significance or expert validity; contrasts are correlated
+E28,2026-10-03,c2st_material_in_pipeline_auc,Batch_3,Batch_1,material14,200 site perms canonical order,17,7,0.588,AUC,p 0.299; before (site-id order) 0.513 / 0.458; renamed copy identical
+E28,2026-10-03,c2st_material_in_pipeline_auc,Batch_3,Batch_2,material14,200 site perms canonical order,17,7,0.588,AUC,p 0.294; before 0.613 / 0.264; renamed copy identical
+E28,2026-10-03,c2st_material_in_pipeline_auc,Batch_3,Batch_1_renamed_before_fix,material14,200 site perms,17,7,0.395,AUC,p 0.697; same images as Batch_1 under new ids and shuffled rows; pre-fix symptom
+E28,2026-10-03,c2st_auc_seed_range_min,Batch_3,Batch_1,material14,seeds 0-9,17,7,0.336,AUC,max 0.588; p 0.299-0.726; no seed below alpha
+E28,2026-10-03,c2st_auc_seed_range_min,Batch_3,Batch_2,material14,seeds 0-9,17,7,0.370,AUC,max 0.655; p 0.209-0.677; no seed below alpha
+E28,2026-10-03,drop_runtime_cold_s,Batch_3,Batch_R,one command,fixture cold / reference warm,17,7,151.1,s,verdict consistent; stability 1.00 (7/7); low-contrast flags from data on 2 sites
+E28,2026-10-03,drop_runtime_cold_s,Batch_3,Batch_Q,one command,fixture cold / reference warm,17,6,123.8,s,quality abstention: grey pore on 4 of 6 sites from BSE p1 rule
+E28,2026-10-03,drop_runtime_cold_s,Batch_3,Batch_S,one command,fixture cold / reference warm,17,3,57.2,s,quality abstention: n < 5
+E28,2026-10-03,drop_runtime_cold_s,Batch_3,Batch_C,one command,fixture cold / reference warm,17,3,65.1,s,drift alert + localized pending_review (3 sites) + n < 5 abstention
+E28,2026-10-03,reference_cold_extraction_s,Batch_3,,features 1.0.1,fresh cache,17,,360.8,s,CPU shared with pytest during the run
+E28,2026-10-03,review_confirmed_localized_status,Batch_3,Batch_C,crack_frac,--review c20a68de:crack_frac=yes,17,3,1,credible sites,verdict label unchanged under abstention; 2 sites still pending
+E28,2026-10-03,review_refuted_sites,Batch_3,Batch_C,crack_frac+pore_max_d,--review x4 =no,17,3,3,refuted sites,localized column flag; escalation off; stability 3/3
+E28,2026-10-03,tests_passed,,,pytest,tests/,,,107,count,96 before this change

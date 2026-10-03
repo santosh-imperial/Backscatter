@@ -164,6 +164,8 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Caught by:** E21 implementation review (checklist C25 "every missing-input default against the conservative direction" was written after D28 but had not been re-applied to `att`). Lesson → C27 (exercise the unseen-batch boundaries) stays; C25 now explicitly lists `att`.
 - **Consequence for stability:** nothing is held fixed across leave-one-site-out folds any more; `stability.refit_per_fold` / `held_fixed` are printed on the verdict card.
 
+- **Superseded figures:** the classifier numbers above (0.51 / 0.458, 0.61 / 0.264) predate D43; current 0.59 / 0.30 and 0.59 / 0.29 (E28).
+
 ### D31 · 2026-10-03 · Acquisition flags are data-derived and written into the site tables before any statistic runs
 - **Decision:** `report.derive_flags` delegates to `acquisition.derive_flags` (grey_pore = BSE p1 > 10 OR known reference list; bright_low_contrast from features; cracked = known reference list only). `report.apply_derived_flags` writes grey_pore / bright_low_contrast / raised_black_level / acquisition_group back into `sites_ref` and `sites_batch` before `compare_kpis`, Check B and the quality abstention run, and `ordinary_ref_sites` is now the set of reference sites with `acquisition_group == "ordinary"`. `stats.usable_n` ORs a boolean `grey_pore` column with the list for the fallback count, as it already did for `bright_low_contrast`.
 - **Why:** E21 showed five new site ids with BSE p1 = 24 receiving `raised_black_level` on all five but `grey_pore` on none in the report path (known-ID lookup), while `acquisition.derive_flags` flagged all five; and even a merged boolean column gave zero fallback sites in `usable_n`. On an unseen batch that would have let grey-pore sites pass as ordinary for the pore KPIs and could have hidden a quality abstention (more than half the sites raised black level). After the change the probe gives 5 / 5 / 5, fallback 5, abstention True; on Batches 1–3 the derived groups are identical to the lists (test `test_real_cache_flags_match_known_groups`), so no known-batch number moves.
@@ -198,6 +200,8 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Caught by:** C27 (exercise the unseen-batch boundaries). The stale note "Check A(iv) ran with c2st=None" from the cache reader was also found and corrected in the same run.
 
 ---
+
+- **Superseded:** the renamed-copy discrepancy (0.41 / 0.66) is closed by D43 / E28.
 
 ### D35 · 2026-10-03 · Maintain a live morphology inventory; validate candidate methods against independent human annotations
 - **Decision:** E24 adds a canonical JSON metric register with stable IDs, exact keys, units, definitions, limitations, artifact provenance, history and separate implementation/evidence/expert-review/QC-role fields. Markdown and a self-contained visual atlas are generated from it. The experiment adds a stratified known-site annotation pack, local void-width estimates, a single histogram-anchored hysteresis candidate and connectivity sensitivity. Only the existing five primary KPIs carry verdicts; no automated status update promotes a candidate.
@@ -258,6 +262,26 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 
 ---
 
+### D43 · 2026-10-03 · Classifier two-sample test runs on a canonical content order; liblinear seeded
+- **Decision:** `ml.c2st` sorts rows inside each site by their (rounded) feature vector and sites by a content hash before grouped CV, derives the integer group ids from that order, and seeds the liblinear solver with `seed`. Results are bit-identical for identical content under any site relabelling or row permutation; site-level weights and site-level permutation are unchanged. Known-batch material-only numbers move from AUC 0.51 / p 0.458 (Batch 1) and 0.61 / 0.264 (Batch 2) to 0.59 / 0.30 and 0.59 / 0.29; both verdicts, stability shares, attenuation and MDC are unchanged.
+- **Why:** E23 showed AUC 0.51 → 0.41 on the same images under new ids because fold assignment and the permutation stream followed site-id sort order. The unseen batch arrives with ids nobody chose, so the classifier cell would otherwise carry an arbitrary component. Seeds 0–9 span AUC 0.34–0.59 / p 0.30–0.73 on Batch 1: the realisation noise is real and now at least reproducible; the corroboration decision (p vs α) did not flip for any seed on either batch.
+- **Alternatives rejected:** averaging over several seeds (hides the noise rather than removing the id dependence; can be added as a reported band later); sorting by raw feature values (deterministic but makes fold membership a function of feature magnitude); leave-one-site-out everywhere (removes fold randomness but changes the statistic's power, a method change after the freeze).
+- **Caught by:** E23 (C27); closed by E28.
+
+### D44 · 2026-10-03 · The one drop command gains `--cache-dir` and `--summary`; `--review` fixed
+- **Decision:** `python3 -m polaron_qc.report` accepts `--cache-dir DIR` (default unchanged) and `--summary OUT.json` (machine-readable snapshot of the verdict inputs); `_config_hash` serialises the review keys. No change to what the verdict reads.
+- **Why:** the rehearsal needs a cold cache without writing into the shared one, and a JSON record lets the drop be diffed against the rehearsal; `--review` had crashed on first use.
+- **Caught by:** E28 (C27, C04).
+
+### D45 · 2026-10-03 · Under a quality abstention the escalated localized path names the label; stability is not quoted; classifier seed range is printed
+- **Decision:** (1) `decide` under `abstain=True` returns *investigate — localized anomaly* when the localized column is `credible` or `pending_review` (escalated), otherwise *investigate — batch-wide drift*; the reason lists the paths observed despite the abstention. (2) The verdict card prints "decision stability: not meaningful under a quality abstention" with the share shown for transparency only. (3) `build_result` re-runs the material-only classifier on three extra seeds (100 permutations each, ≈ 3 s) and the ML block prints the AUC and p range with whether corroboration holds on every seed, no seed, or differs (then flagged fragile in the integration notes). The verdict still uses seed 0; the range is disclosed, not averaged.
+- **Why:** E28 Batch_C (three cracked reference sites as a batch) showed the label *drift* over three confirmed 2.6–5.8 MAD cracks because the abstention branch preferred the drift label; the more specific, image-backed path should name the verdict a reader sees first. Its stability printed 0.00 only because two-site folds cannot raise a drift alert — a label switch between two investigate paths, not instability. Seeds 0–9 span p 0.30–0.73 on Batch 1 (E28): that realisation noise belongs on the page next to the point estimate (judging criterion: honest uncertainty).
+- **Alternatives rejected:** a fourth verdict label "quality abstention" (the three outcome columns already carry it, and a fourth label changes the frozen vocabulary); averaging AUC over seeds (hides the noise); raising n_perm (reduces Monte Carlo noise but not fold-assignment noise).
+- **Provenance:** decision-code change after the configuration freeze; thresholds hash unchanged (b4f4da2e357c); known-batch verdicts unchanged (both not abstained); logged here rather than silently.
+- **Caught by:** E28 (C27, C31).
+
+---
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.
@@ -286,6 +310,7 @@ Run this before presenting a plan, a result, a figure or a verdict. Each item na
 - [ ] **C23 — Covariate adjustment on a heterogeneous reference can manufacture signal.** Check covariate–KPI correlations on the ordinary subset vs the full reference; show at least two covariate sets; read negative attenuation as "not explained away", never as material evidence. (D26)
 - [ ] **C25 — Run the decision logic end to end on real data before trusting it.** Unit tests on synthetic components passed while `None` counted as corroboration and a batch-mean KPI triggered the localized path; only the integrated run showed it. Also check every "missing input" default (None, NaN) against the conservative direction — the list so far: classifier `c2st` (D28), acquisition attenuation `att` (D30), image review (D32), MDC feasibility (D32). (D28, D30–D32)
 - [ ] **C27 — Exercise the unseen-batch boundaries, not just the known folders.** Use new site IDs with data-derived quality flags, smaller/equal/larger usable batch counts than the reference, and explicit confirmed/refuted/unreviewed human reviews. Verify that infeasible simulations are labelled unavailable and that the report still renders. Passing tests on the known cardinalities do not cover these contracts. (E21 implementation review)
+- [ ] **C31 — Run every documented operator step, not only the happy path, on a renamed fixture before freezing a procedure.** The `--review` flag was added with the procedure (E23) and documented in README, but first executed in E28, where it crashed before producing a result. A step that is written down and untested is a promise the code does not keep (C04 at the procedure level). (E28)
 - [ ] **C26 — Every alert rule gets its false-alarm rate measured two ways before it ships:** on an i.i.d. null and on splits of the homogeneous part of the real reference. Count KPIs: k rules at rate r give ≈ k·r alarms. (D29)
 - [ ] **C24 — Prose written from a figure must be re-checked against a thresholded number.** "Rises" / "drops" claims need a stated |z| or effect cut-off that the data actually cross. (D27)
 
@@ -314,7 +339,7 @@ Run this before presenting a plan, a result, a figure or a verdict. Each item na
 - Owner for `KPI_TRUST` (trust level per KPI in code); proposed `polaron_qc/__init__.py`.
 - `polaron_qc.acquisition` (stratified / adjusted views) has no owner yet.
 - Deduplicate edge-band trimming (features, ml, physics) by importing from features.
-- E23: `ml.c2st` fold assignment and permutation stream depend on site-id order (AUC 0.51 → 0.41 on identical images under relabeling, n_perm 200). Options: sort rows by a content key before CV, or raise n_perm and report the band. Decision-neutral on the known batches.
+- E23: `ml.c2st` fold assignment and permutation stream depend on site-id order (AUC 0.51 → 0.41 on identical images under relabeling, n_perm 200). Options: sort rows by a content key before CV, or raise n_perm and report the band. Decision-neutral on the known batches. — **closed by D43 / E28** (canonical content order; bit-identical under relabelling).
 - E19: a labelled parametric tail estimate (lognormal, ten ordinary sites) is shown as context for the review load; it is not a rule input.
 - E21: missing acquisition views must not support a drift reject or a claim that adjustment was checked; wire the available acquisition module into the report and decision. — **resolved D30 (E22)**
 - E21: derive unseen grey-pore flags from image measurements, propagate them into the decision/statistics inputs, and honour the boolean column when counting fallback measurements. — **resolved D31 (E22)**

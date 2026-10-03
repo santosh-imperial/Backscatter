@@ -131,6 +131,8 @@ DEFAULT_CONFIG = dict(
     mdc_n_sim=400, mdc_n_mc=999, jackknife_n_boot=500, jackknife_energy_n_mc=2000,
     # material-only classifier (Check A iv) is run inside the pipeline on the site tables (D30); n_perm per run
     c2st_in_pipeline=True, c2st_n_perm=200, jackknife_c2st_n_perm=100,
+    # extra seeds for the material classifier (fold / permutation realisation noise is reported as a range, D45)
+    c2st_seed_sensitivity=3,
     # acquisition sensitivity views (stratified / adjusted) inside the pipeline; Monte Carlo sizes for the full run and per fold
     acquisition_views=True, acq_n_mc=5000, jackknife_acq_n_mc=1000,
     # human image review of routed / pending crops: {(site, kpi): True (confirmed) | False (refuted)}; absent = unreviewed (D32)
@@ -584,6 +586,23 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
         try:
             c2st_for_decision = material_c2st(sites_ref, sites_batch, n_perm=cfg["c2st_n_perm"], seed=cfg["seed"])
             log(f"material-only c2st in {time.time() - t0:.0f}s: AUC {c2st_for_decision['auc']:.2f}, p = {c2st_for_decision['p']:.3f}")
+            n_extra = int(cfg.get("c2st_seed_sensitivity", 0) or 0)
+            if n_extra:
+                aucs, ps = [c2st_for_decision["auc"]], [c2st_for_decision["p"]]
+                for sd in range(1, n_extra + 1):
+                    try:
+                        d_ = material_c2st(sites_ref, sites_batch, n_perm=cfg["jackknife_c2st_n_perm"], seed=cfg["seed"] + sd)
+                        aucs.append(d_["auc"]); ps.append(d_["p"])
+                    except Exception as ex:
+                        notes.append(f"c2st seed {cfg['seed'] + sd} failed ({ex!r})")
+                c2st_for_decision["seed_sensitivity"] = dict(
+                    n_seeds=len(aucs), seeds=list(range(cfg["seed"], cfg["seed"] + len(aucs))), n_perm_extra=cfg["jackknife_c2st_n_perm"],
+                    auc_min=float(min(aucs)), auc_max=float(max(aucs)), p_min=float(min(ps)), p_max=float(max(ps)),
+                    corroborates_all=bool(all(p < cfg["alpha"] for p in ps)), corroborates_any=bool(any(p < cfg["alpha"] for p in ps)))
+                ss = c2st_for_decision["seed_sensitivity"]
+                if ss["corroborates_any"] and not ss["corroborates_all"]:
+                    notes.append(f"classifier corroboration differs across seeds (p {ss['p_min']:.3f}–{ss['p_max']:.3f}); the verdict uses seed {cfg['seed']} — treat A(iv) as fragile")
+                log(f"c2st seed sensitivity ({ss['n_seeds']} seeds): AUC {ss['auc_min']:.2f}–{ss['auc_max']:.2f}, p {ss['p_min']:.3f}–{ss['p_max']:.3f}")
         except Exception as ex:
             notes.append(f"in-pipeline material c2st failed ({ex!r}); Check A(iv) ran with the cached run if any, else None")
             c2st_for_decision = mlr["c2st_material"]
@@ -1015,8 +1034,10 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     drivers = ", ".join(v["drivers"]) if v["drivers"] else "none (no primary KPI meets Holm p &lt; α with |shift| ≥ 1 MAD)"
     jk = "".join(f'<span class="chip {"ok" if r["verdict"] == st["full_verdict"] else "warn"}">− {_e(r["left_out"])}: {_e(r["verdict"].split(" (")[0])}</span>' for r in st["runs"])
     body = (f'<p class="vtext">{_e(v["verdict"])}</p><p class="reason">{_e(v["reason"])}</p>{cols}'
-            f'<p><b>Decision stability</b> (leave-one-site-out): {st["share"]:.2f} — {int(round(st["share"] * st["n_runs"]))} of {st["n_runs"]} re-verdicts returned the same verdict. '
-            f'<span class="note">This is a stability share, not a probability of being right. Refit per fold: {_e(", ".join(st.get("refit_per_fold", []) or ["see method"]))}'
+            + (f'<p><b>Decision stability</b> (leave-one-site-out): not meaningful under a quality abstention — every fold re-runs the same abstention (share {st["share"]:.2f} over {st["n_runs"]} folds shown for transparency only). '
+               if abst["abstain"] else
+               f'<p><b>Decision stability</b> (leave-one-site-out): {st["share"]:.2f} — {int(round(st["share"] * st["n_runs"]))} of {st["n_runs"]} re-verdicts returned the same verdict. ')
+            + f'<span class="note">This is a stability share, not a probability of being right. Refit per fold: {_e(", ".join(st.get("refit_per_fold", []) or ["see method"]))}'
             + (f'; held fixed: {_e(", ".join(st["held_fixed"]))} — stability is conditional on those inputs' if st.get("held_fixed") else "") + '.</span></p><p>{jk}</p>'
             f'<p><b>Drivers:</b> {drivers}. <b>Usable n:</b> ' + "; ".join(f"{k} {nr}/{nb}" for k, (nr, nb) in result["limits"]["usable_n"].items()) + " (reference/batch sites after quality flags).</p>"
             f'<p><b>What would move it:</b> {_e(v["what_would_move_it"])}.</p>'
@@ -1138,6 +1159,9 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
         return (f'<h3>{title}</h3><p>Cross-validated AUC <b>{_f(d["auc"], 3)}</b>; null 95 % band {_f(band[0], 2)}–{_f(band[1], 2)}; Monte Carlo p = {_p(d["p"])} '
                 f'({d.get("n_perm")} site-label permutations; {_e(d.get("cv"))}; {d.get("n_sites_ref")} v {d.get("n_sites_batch")} sites; equal site weight; scaler refit per fold). '
                 f'KPIs in the run: {_e(", ".join(d.get("kpis", [])))}.</p>'
+                + ((lambda ss: f'<p class="note"><b>Seed sensitivity</b> ({ss["n_seeds"]} seeds; extra seeds at {ss["n_perm_extra"]} permutations): AUC {_f(ss["auc_min"], 2)}–{_f(ss["auc_max"], 2)}, p {_p(ss["p_min"])}–{_p(ss["p_max"])}; '
+                            f'corroboration (p &lt; α) {"on every seed" if ss["corroborates_all"] else "on no seed" if not ss["corroborates_any"] else "<b>differs between seeds — fragile</b>"}. '
+                            f'The verdict uses the first seed; the range is fold / permutation realisation noise at this n, not material uncertainty.</p>')(d["seed_sensitivity"]) if d.get("seed_sensitivity") else "")
                 + (_table(rows, ["selected KPI", "sign", "coef", "selection stability", "trust"]) if rows else "<p>No KPI selected.</p>"))
     body = c2st_block(result.get("c2st_material"), "Grouped-CV logistic regression two-sample test — material KPIs only (drives Check A iv)")
     body += c2st_block(result.get("c2st_flag_inclusive"), "Flag-inclusive run — acquisition evidence, not a verdict input")

@@ -231,5 +231,21 @@ def test_usable_n_abstains_per_kpi():
     assert a["abstained_kpis"] == ["bright_frac"] and a["all_usable"]
 
 
+def test_abstention_label_prefers_escalated_localized_path():
+    """D45: under a quality abstention a credible/escalated localized finding names the label, not a drift alert n<5 cannot support."""
+    ref = sites(17, "R"); bat = sites(3, "B"); mask = pd.Series([True] * 17)
+    cmp = compare_table(n_batch=3)
+    a = check_a(cmp, dict(statistic=0.9, p=0.002), ref, bat, mask)           # drift alert positive, but abstained (n < 5)
+    q = quality_abstention(bat, a); assert q["abstain"]
+    b_loc = check_b(local_tables([("crack_frac", "B_s0", 5.8), ("crack_frac", "B_s1", 5.4)]), bat)
+    v = decide(a, b_loc, q)
+    assert v["verdict"] == INVESTIGATE_LOCAL and v["outcome_columns"] == dict(drift_alert=True, localized="pending_review", quality_abstention=True)
+    assert "paths observed" in v["reason"] and "drift alert yes" in v["reason"]
+    v2 = decide(a, check_b(local_tables([]), bat), q)
+    assert v2["verdict"] == INVESTIGATE_DRIFT and v2["outcome_columns"]["quality_abstention"]
+    b_rout = check_b(local_tables([("crack_frac", "B_s0", 2.4)]), bat)      # routed only → not escalated → drift label
+    assert decide(a, b_rout, q)["verdict"] == INVESTIGATE_DRIFT
+
+
 def test_thresholds_hash_changes_with_values():
     assert Thresholds().hash() != Thresholds(alpha=0.01).hash()

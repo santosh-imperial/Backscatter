@@ -238,8 +238,11 @@ def decide(a: dict, b: dict, abst: dict, att: dict | None = None, th: Thresholds
     b_reject = b["n_sites_credible"] >= th.reject_min_credible_sites and np.nan_to_num(b["max_severity_mad"]) >= th.reject_min_severity_mad
 
     if abst["abstain"]:
-        verdict = INVESTIGATE_DRIFT if drift_alert else INVESTIGATE_LOCAL if local_status in ("credible", "pending_review") else INVESTIGATE_DRIFT
-        reason = "quality abstention: " + "; ".join(abst["reasons"])
+        # D45: under an abstention the more specific path names the label — a credible or escalated localized finding
+        # (confirmed cracks) beats a drift alert that n < 5 cannot support; the three outcome columns carry the full state
+        verdict = INVESTIGATE_LOCAL if local_status in ("credible", "pending_review") else INVESTIGATE_DRIFT
+        reason = ("quality abstention: " + "; ".join(abst["reasons"])
+                  + f" — paths observed despite the abstention: drift alert {'yes' if drift_alert else 'no'}, localized {local_status}")
     elif (a_full and att["available"] and not strong_att) or b_reject:
         verdict = REJECT
         reason = ("batch-wide drift beyond null, carried by primary KPIs %s, consistent across sites, classifier corroborates, "

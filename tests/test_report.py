@@ -219,6 +219,19 @@ def test_material_c2st_in_pipeline_shape():
     assert list(d["coef"].columns[:2]) == ["feature", "coef"]
 
 
+def test_render_abstention_stability_wording_and_seed_sensitivity(tmp_path):
+    res = synthetic_result(verdict_text="investigate — batch-wide drift")
+    res["abstention"] = dict(abstain=True, reasons=["only 3 sites in batch (< 5)"])
+    res["verdict"]["outcome_columns"]["quality_abstention"] = True
+    res["c2st_material"] = dict(auc=0.59, null_band=[0.2, 0.8], p=0.30, n_perm=200, p_method="mc", cv="StratifiedGroupKFold(5)", n_sites_ref=17, n_sites_batch=7,
+                                coef=pd.DataFrame(columns=["feature", "coef", "sign", "selected", "selection_stability"]), per_site_scores=pd.DataFrame(), kpis=["pore_frac"],
+                                variant="material_all_sites_in_pipeline", key="k", flag_inclusive=False,
+                                seed_sensitivity=dict(n_seeds=4, seeds=[0, 1, 2, 3], n_perm_extra=100, auc_min=0.34, auc_max=0.59, p_min=0.30, p_max=0.73, corroborates_all=False, corroborates_any=False))
+    html = open(report.render_report(res, str(tmp_path / "qc.html")), encoding="utf-8").read()
+    assert "not meaningful under a quality abstention" in html
+    assert "Seed sensitivity" in html and "0.34–0.59" in html and "on no seed" in html
+
+
 def test_render_report_with_acquisition_views_and_infeasible_mdc(tmp_path):
     res = synthetic_result()
     e = dict(statistic=0.2, p=0.3)
