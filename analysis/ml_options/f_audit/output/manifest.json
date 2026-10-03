@@ -1,0 +1,289 @@
+{
+ "generated": "2026-10-03 17:17:00",
+ "runtime_s": 79.5,
+ "settings": {
+  "F_SEED": 20261003,
+  "tiles_per_site": 32,
+  "n_components_cap": 32,
+  "k": 5,
+  "resolutions": [
+   518,
+   224
+  ],
+  "reference": "Batch_3",
+  "compared": [
+   "Batch_1",
+   "Batch_2"
+  ],
+  "covariates": [
+   "bright_sep",
+   "bse_p1",
+   "bse_std",
+   "bse_empty_bin_frac",
+   "etd_boundary_sharpness",
+   "H"
+  ],
+  "top_tiles_per_batch": 4,
+  "challenge_sites": {
+   "Batch_1": [
+    "f1vzngrs",
+    "4ih2ggld"
+   ],
+   "Batch_2": [
+    "3806gxp0"
+   ],
+   "Batch_3": [
+    "9luzk4jm",
+    "71vgq3fw"
+   ]
+  },
+  "challenge_perturbations": {
+   "gamma_0.75": "('gamma', 0.75)",
+   "gamma_1.25": "('gamma', 1.25)",
+   "affine_0.8x+20": "('affine', (0.8, 20.0))"
+  }
+ },
+ "pca": {
+  "all_sites_518_balanced": {
+   "n_components": 32,
+   "explained": 0.7607703880015196,
+   "memory_rows": 544
+  },
+  "all_sites_518_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7495300174999517,
+   "memory_rows": 819
+  },
+  "all_sites_224_balanced": {
+   "n_components": 32,
+   "explained": 0.7281888984746996,
+   "memory_rows": 544
+  },
+  "all_sites_224_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7173125088542547,
+   "memory_rows": 819
+  },
+  "quality_matched_518_balanced": {
+   "n_components": 32,
+   "explained": 0.7828778824746306,
+   "memory_rows": 320
+  },
+  "quality_matched_518_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7680624681253803,
+   "memory_rows": 468
+  },
+  "quality_matched_224_balanced": {
+   "n_components": 32,
+   "explained": 0.7529426476577978,
+   "memory_rows": 320
+  },
+  "quality_matched_224_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7356522298694321,
+   "memory_rows": 468
+  },
+  "ordinary_reference_518_balanced": {
+   "n_components": 32,
+   "explained": 0.7828778824746306,
+   "memory_rows": 320
+  },
+  "ordinary_reference_518_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7680624681253803,
+   "memory_rows": 468
+  },
+  "ordinary_reference_224_balanced": {
+   "n_components": 32,
+   "explained": 0.7529426476577978,
+   "memory_rows": 320
+  },
+  "ordinary_reference_224_unbalanced": {
+   "n_components": 32,
+   "explained": 0.7356522298694321,
+   "memory_rows": 468
+  }
+ },
+ "views": {
+  "all_sites": {
+   "n_ref": 17,
+   "n_query": 14,
+   "ref": [
+    "0grcilhi",
+    "71vgq3fw",
+    "9luzk4jm",
+    "cfe5vt7s",
+    "hawkfj64",
+    "hzumfsms",
+    "kbdh4tri",
+    "mgxahqnk",
+    "pl8uabbv",
+    "ptg8lmto",
+    "tuy3zymq",
+    "ufdvpb81",
+    "utfgcjfa",
+    "vc2whyaq",
+    "x77cy643",
+    "x7u69zsw",
+    "xgj4xftb"
+   ],
+   "query": [
+    "4ih2ggld",
+    "5n1q8atc",
+    "f1vzngrs",
+    "ffwubibz",
+    "fzrt2k6r",
+    "iv6g2oq0",
+    "uhdslk0o",
+    "3806gxp0",
+    "avn74qx1",
+    "b3esycq1",
+    "epqdaau9",
+    "i9jiqjwl",
+    "r17byphk",
+    "rxax5ozo"
+   ]
+  },
+  "quality_matched": {
+   "n_ref": 10,
+   "n_query": 12,
+   "ref": [
+    "9luzk4jm",
+    "cfe5vt7s",
+    "hawkfj64",
+    "mgxahqnk",
+    "pl8uabbv",
+    "ptg8lmto",
+    "utfgcjfa",
+    "vc2whyaq",
+    "x77cy643",
+    "xgj4xftb"
+   ],
+   "query": [
+    "f1vzngrs",
+    "ffwubibz",
+    "fzrt2k6r",
+    "iv6g2oq0",
+    "uhdslk0o",
+    "3806gxp0",
+    "avn74qx1",
+    "b3esycq1",
+    "epqdaau9",
+    "i9jiqjwl",
+    "r17byphk",
+    "rxax5ozo"
+   ]
+  },
+  "ordinary_reference": {
+   "n_ref": 10,
+   "n_query": 14,
+   "ref": [
+    "9luzk4jm",
+    "cfe5vt7s",
+    "hawkfj64",
+    "mgxahqnk",
+    "pl8uabbv",
+    "ptg8lmto",
+    "utfgcjfa",
+    "vc2whyaq",
+    "x77cy643",
+    "xgj4xftb"
+   ],
+   "query": [
+    "4ih2ggld",
+    "5n1q8atc",
+    "f1vzngrs",
+    "ffwubibz",
+    "fzrt2k6r",
+    "iv6g2oq0",
+    "uhdslk0o",
+    "3806gxp0",
+    "avn74qx1",
+    "b3esycq1",
+    "epqdaau9",
+    "i9jiqjwl",
+    "r17byphk",
+    "rxax5ozo"
+   ]
+  }
+ },
+ "checks": {
+  "max_abs_diff_vs_ml_novelty_query_median": 3.0533993715664565e-06,
+  "max_abs_diff_vs_ml_novelty_ref_loo_median": 5.449032364879258e-06,
+  "max_abs_diff_vs_committed_E07_median": 8.735276750826415e-06,
+  "n_sites_compared_with_E07": 31
+ },
+ "challenge_done": true,
+ "feature_version": "1.0.1",
+ "embedding_cache_files": {
+  "emb_Batch_1_4ih2ggld_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "2530103929b8",
+  "emb_Batch_1_4ih2ggld_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "3e70a09d648e",
+  "emb_Batch_1_5n1q8atc_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "6b356d91ceb3",
+  "emb_Batch_1_5n1q8atc_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "0320d1dc3830",
+  "emb_Batch_1_f1vzngrs_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "df498eeb202a",
+  "emb_Batch_1_f1vzngrs_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "83478c387b48",
+  "emb_Batch_1_ffwubibz_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "b9722dad9b91",
+  "emb_Batch_1_ffwubibz_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "feccbcd9c432",
+  "emb_Batch_1_fzrt2k6r_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "df117f0c043b",
+  "emb_Batch_1_fzrt2k6r_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "f2b551bf99d1",
+  "emb_Batch_1_iv6g2oq0_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "2ac8bc7cf3a0",
+  "emb_Batch_1_iv6g2oq0_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "f06d7c04313e",
+  "emb_Batch_1_uhdslk0o_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "8f2f63857fae",
+  "emb_Batch_1_uhdslk0o_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "5daa8d4f4605",
+  "emb_Batch_2_3806gxp0_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "4d248008918b",
+  "emb_Batch_2_3806gxp0_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "aca902598396",
+  "emb_Batch_2_avn74qx1_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "460d3f152551",
+  "emb_Batch_2_avn74qx1_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "719a67077389",
+  "emb_Batch_2_b3esycq1_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "39134df21bb5",
+  "emb_Batch_2_b3esycq1_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "2266b93cefa6",
+  "emb_Batch_2_epqdaau9_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "7aa8b6dd7625",
+  "emb_Batch_2_epqdaau9_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "31dedef1daa6",
+  "emb_Batch_2_i9jiqjwl_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "6952b73cdeaa",
+  "emb_Batch_2_i9jiqjwl_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "c8a4aa665471",
+  "emb_Batch_2_r17byphk_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "b6fefac89420",
+  "emb_Batch_2_r17byphk_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "be74a0edce84",
+  "emb_Batch_2_rxax5ozo_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "054e5c163fb5",
+  "emb_Batch_2_rxax5ozo_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "adcc0cbaa872",
+  "emb_Batch_3_0grcilhi_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "6ef2a558a9e0",
+  "emb_Batch_3_0grcilhi_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "4dfa733c06b7",
+  "emb_Batch_3_71vgq3fw_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "4486604d3580",
+  "emb_Batch_3_71vgq3fw_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "31a072cb9170",
+  "emb_Batch_3_9luzk4jm_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "ae3c30c24560",
+  "emb_Batch_3_9luzk4jm_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "1d4416e18692",
+  "emb_Batch_3_cfe5vt7s_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "30810bc0edf1",
+  "emb_Batch_3_cfe5vt7s_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "e9dc5420fc3a",
+  "emb_Batch_3_hawkfj64_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "2e7f49835938",
+  "emb_Batch_3_hawkfj64_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "b6d75c365413",
+  "emb_Batch_3_hzumfsms_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "2503bc250d46",
+  "emb_Batch_3_hzumfsms_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "02660e86dd8a",
+  "emb_Batch_3_kbdh4tri_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "88fa14d4c805",
+  "emb_Batch_3_kbdh4tri_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "d113e729476f",
+  "emb_Batch_3_mgxahqnk_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "68fbfc09bdeb",
+  "emb_Batch_3_mgxahqnk_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "4271cb82dd65",
+  "emb_Batch_3_pl8uabbv_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "87e3337acef8",
+  "emb_Batch_3_pl8uabbv_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "96df70037644",
+  "emb_Batch_3_ptg8lmto_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "e89894f2c040",
+  "emb_Batch_3_ptg8lmto_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "2b2ce90ac0f9",
+  "emb_Batch_3_tuy3zymq_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "2c7f27d7222e",
+  "emb_Batch_3_tuy3zymq_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "d7428b57d201",
+  "emb_Batch_3_ufdvpb81_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "e59ea332e6c1",
+  "emb_Batch_3_ufdvpb81_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "63640e6a55fb",
+  "emb_Batch_3_utfgcjfa_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "12eeb3f6d342",
+  "emb_Batch_3_utfgcjfa_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "8062e1f5fa6b",
+  "emb_Batch_3_vc2whyaq_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "0a79869cc5a5",
+  "emb_Batch_3_vc2whyaq_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "f94fee075e7a",
+  "emb_Batch_3_x77cy643_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "438b4013d57f",
+  "emb_Batch_3_x77cy643_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "dcd5755b54eb",
+  "emb_Batch_3_x7u69zsw_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "38caa21e41c4",
+  "emb_Batch_3_x7u69zsw_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "03afc27ec7b6",
+  "emb_Batch_3_xgj4xftb_BSE_dinov2_vits14_p512_s512_r224_n1c3.npz": "10ae27dc20fa",
+  "emb_Batch_3_xgj4xftb_BSE_dinov2_vits14_p512_s512_r518_n1c3.npz": "44bf884331f7"
+ },
+ "versions": {
+  "python": "3.12.2",
+  "numpy": "1.26.4",
+  "pandas": "2.2.2",
+  "sklearn": "1.4.2"
+ }
+}
