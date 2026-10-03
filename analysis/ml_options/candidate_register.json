@@ -7,13 +7,25 @@
     {
       "id": "fixed_object_graph",
       "label": "Fixed bright-object graph / spatial descriptors",
-      "status": "recommended_not_run",
+      "status": "audit_complete_exploratory",
       "reason": "Measures arrangement beyond per-object sizes without fitting neural weights.",
       "gate": "Expert component/crop review; deterministic topology and object-floor sensitivity; site statistics; loading/size and acquisition controls; no electrical-connectivity interpretation.",
       "review_status": "unreviewed_by_materials_expert",
       "qc_role": "excluded_from_verdict",
-      "validation_state": "no_new_empirical_validation",
-      "evidence_path": "analysis/ml_options/assessment.md"
+      "validation_state": "known_site_geometry_controls_expert_pending",
+      "evidence_path": "analysis/ml_options/e_graph/findings.md",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "recommended_not_run",
+          "reason": "D38 methods review."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "audit_complete_exploratory",
+          "reason": "E26G: no neural training, expert/outcome accuracy or QC promotion."
+        }
+      ]
     },
     {
       "id": "equal_site_frozen_novelty",
@@ -101,7 +113,7 @@
     }
   ],
   "guardrails": [
-    "No current model training or new numerical performance measurements.",
+    "Method review recommendations are separate from experiments: E26G adds a fixed-graph geometry/control audit, with no CNN/GNN or defect-model training.",
     "No change to primary KPIs, material classifier inputs, thresholds or verdicts.",
     "All reference-dependent preprocessing/model selection inside site/specimen folds and permutations.",
     "Do not tune on unseen data and still call it independent validation.",

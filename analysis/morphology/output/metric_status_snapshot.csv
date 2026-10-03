@@ -73,3 +73,7 @@ battery_neighbourhood_coverage,Bright neighbourhood and window coverage,Battery 
 long_void_coverage,Internal / clipped long-void coverage,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,diagnostic
 battery_geometry_threshold_envelopes,Paired threshold sensitivity envelopes,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,diagnostic
 void_width_depth_slopes,Observed local width / image-depth slopes,Battery geometry / E25,computed,geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+graph_edge_length_median_px,Graph edge length median px,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+graph_edge_length_iqr_ratio,Graph edge length iqr ratio,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+graph_edge_axial_strength,Graph edge axial strength,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+graph_log_area_assortativity,Graph log area assortativity,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory

@@ -1,0 +1,13 @@
+kpi,batch,reference,nominal_difference,variant_min,variant_max,complete_variants,common_sign,nominal_sampling_interval_excludes_zero,nominal_deletion_range_excludes_zero
+graph_edge_length_median_px,Batch_1,Batch_3,-4.538504252162454,-12.152542069581898,35.15636002830922,6,False,False,False
+graph_edge_length_median_px,Batch_2,Batch_3,16.52453308477618,-17.10014053470823,16.52453308477618,6,False,False,False
+graph_edge_length_median_px,Batch_2,Batch_1,21.063037336938635,-39.76157193242372,27.406791136232016,6,False,False,True
+graph_edge_length_iqr_ratio,Batch_1,Batch_3,-0.0276924374940521,-0.0948710355389188,0.1125686156156334,6,False,False,False
+graph_edge_length_iqr_ratio,Batch_2,Batch_3,-0.1491525437402456,-0.1491525437402456,0.1201877963387381,6,False,False,True
+graph_edge_length_iqr_ratio,Batch_2,Batch_1,-0.1214601062461935,-0.1214601062461935,0.2150588318776569,6,False,False,True
+graph_edge_axial_strength,Batch_1,Batch_3,-0.0093736773643358,-0.0254179934814056,0.0148498147337668,6,False,False,False
+graph_edge_axial_strength,Batch_2,Batch_3,0.0276390793640624,0.0173308916347854,0.0326463415624475,6,True,False,True
+graph_edge_axial_strength,Batch_2,Batch_1,0.0370127567283982,0.0055194647850116,0.0427488851161911,6,True,False,True
+graph_log_area_assortativity,Batch_1,Batch_3,-0.0634786517398147,-0.0957329517378285,0.0095220874989763,6,False,False,True
+graph_log_area_assortativity,Batch_2,Batch_3,0.0216763735225663,-0.0123486840019145,0.0655581512688668,6,False,False,True
+graph_log_area_assortativity,Batch_2,Batch_1,0.0851550252623811,-0.0119267520879776,0.0851550252623811,6,False,False,True

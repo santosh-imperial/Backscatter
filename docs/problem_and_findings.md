@@ -113,9 +113,9 @@ Every interpretive assumption, with an example image and a review log, lives in 
 
 What follows from it: (1) the long-void reference sites are not a contradiction — the reference may carry defects, so the localized path stays separate and the reference's own anomalies stay visible; (2) the five primary KPIs are defect- and loading-centred; batches may differ in morphology that those do not capture, without that difference establishing a defect.
 
-**Current computed scope (E18/E24/E25):** size-distribution widths; bright circularity, solidity and aspect ratio; void elongation; axial bright/void orientation histograms and alignment; guarded bright-centroid spacing; linear image-row phase-profile slopes; BSE texture scale; local void widths; bright/void neighbourhood and local homogeneity; long-void burden/location. Centroid spacing is not a validated agglomeration index. Image tensors/ETD ridges are not graphite plate-instance orientations, and image-row profiles are not confirmed through-thickness coordinates.
+**Current computed scope (E18/E24/E25/E26G):** size-distribution widths; bright circularity, solidity and aspect ratio; void elongation; axial bright/void orientation histograms and alignment; guarded bright-centroid spacing; linear image-row phase-profile slopes; BSE texture scale; local void widths; bright/void neighbourhood and local homogeneity; long-void burden/location; fixed bright-object graph edge scale/spread, axial strength and neighbouring log-area association. Centroid spacing is not a validated agglomeration index. Image tensors/ETD ridges are not graphite plate-instance orientations, and image-row profiles are not confirmed through-thickness coordinates.
 
-**Explicit next expansion (D40):** [task K](next_steps.md#k-morphology-differences-beyond-defect-counts) proposes shape-distribution variability and directional two-point phase association, with nonlinear image-depth structure conditional on coverage. Task E adds fixed graph arrangement; J is an optional texture comparator. Graphite plate orientation and binder-network segmentation remain validation-gated. New descriptors are proposed, not computed, and remain secondary unless separately validated and promoted. See plan §2.2b and the live metric register/atlas for statuses.
+**Explicit next expansion (D40):** [task K](next_steps.md#k-morphology-differences-beyond-defect-counts) proposes shape-distribution variability and directional two-point phase association, with nonlinear image-depth structure conditional on coverage. Task E has computed fixed graph arrangement in E26G; J is an optional texture comparator. Graphite plate orientation and binder-network segmentation remain validation-gated. The K descriptors remain proposed; E26G graph descriptors are computed but expert-unreviewed. All remain secondary unless separately validated and promoted. See plan §2.2b and the live metric register/atlas for statuses.
 
 ## 6. Open questions for the organisers
 
@@ -159,7 +159,7 @@ Every mask-derived descriptor has a perturbation envelope, every inferential cal
 
 ## 10. Morphology metric inventory and measurement validation (E24, 2026-10-03)
 
-The canonical inventory `analysis/morphology/metric_register.json` tracks 61 metric entries plus six candidate methods. Ten-bin profiles and conditional fraction families list all underlying keys. Implementation, evidence, expert review and QC role are distinct statuses. Generated views are `docs/morphology_metrics.md` and `analysis/morphology/output/metric_atlas.html`; the atlas shows real SEM markup/image-derived graphs, full-site values, source coordinates and limitations. Deferred, confounded, conditional and undefined quantities are visible without invented scalars.
+The canonical inventory `analysis/morphology/metric_register.json` now tracks 78 metric entries plus ten methods (including E25 and E26G additions). Ten-bin profiles and conditional fraction families list all underlying keys. Implementation, evidence, expert review and QC role are distinct statuses. Generated views are `docs/morphology_metrics.md` and `analysis/morphology/output/metric_atlas.html`; the atlas shows real SEM markup/image-derived graphs, full-site values, source coordinates and limitations. Deferred, confounded, conditional and undefined quantities are visible without invented scalars.
 
 An independent expert annotation page at `analysis/morphology/benchmark/review.html` contains eleven purposive crops from distinct known sites: six for development, five held out for method checks. It covers ordinary, low-contrast, grey-pore, long-void and trimmed-band cases. Manual polygons are separate from predictions; unreviewed crops are not scored, uncertain pixels are ignored and unmeasurable images can abstain. There are currently zero expert-reviewed reference masks and no segmentation-accuracy estimate. The held-out-site split is not unseen-batch validation, and crops do not increase material sample count.
 
@@ -211,3 +211,34 @@ No new model was trained, no architecture advantage/generalisation was measured 
 ## 14. Next working session (D39)
 
 `docs/next_steps.md` provides selectable unclaimed tasks for independent annotation, specimen/process/tolerance metadata, battery-context review, annotation-based measurement evaluation, two bounded ML audits, explicit morphology expansion (K, D40), notebook/report consistency, a current cold drop rehearsal and the judging narrative. Prioritise measurement validity and delivery; new morphology and ML branches remain experimental. These planning updates change no measurements or verdicts and start no new experiments.
+
+## 15. Fixed particle-neighbourhood graph audit (E26G / D41G)
+
+Task E is complete as an exploratory known-site measurement/control audit in an
+isolated Codex worktree. Four registered descriptors summarise edge scale,
+spread, axial organisation and endpoint log-area association for a fixed
+3-nearest-neighbour centroid graph. All known sites and the prespecified
+threshold/object-floor variants are measured; object/edge counts are coverage,
+not independent sample n. The bright-only quality view is distinct from
+grey-pore-excluded and ordinary-reference sensitivities.
+
+`analysis/ml_options/e_graph/report.html` explains the graph on real BSE images;
+`findings.md`, `comparisons.csv`, `sensitivity_summary.csv` and
+`control_predictions.csv` preserve site uncertainty, threshold/floor/deletion
+sensitivity and acquisition/node-loading redundancy. Proximity is not physical
+or electrical contact. Fixed ridge controls do not prove causal attribution or
+an architecture advantage. Retain for visual review; defer material/QC use until
+independent component/specimen/process validation. The primary/classifier and
+decision paths remain unchanged; no unseen or defect-accuracy claim follows.
+
+**Measured qualification:** all 12 nominal pairwise site-bootstrap intervals
+include zero in both the bright-usable and grey-pore-excluded views. Ten of the
+12 bright-usable comparison directions reverse across the six fixed threshold/
+floor settings; the two stable directions also have intervals including zero.
+These are correlated descriptive comparisons, not independent tests. Typical
+edge length is partly predicted by the node/loading control (whole-site LOO
+R² 0.496). Poor acquisition prediction does not establish invariance. These
+results support exploratory review and deferral, not equivalence or acceptance.
+
+G integration should reconcile additive register/log changes with parallel
+H/F/E18 work; see the graph `handoff.md`. Independent expert review remains open.

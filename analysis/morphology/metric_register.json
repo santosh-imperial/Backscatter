@@ -3551,6 +3551,202 @@
       "battery_check_ids": [
         "B05"
       ]
+    },
+    {
+      "id": "graph_edge_length_median_px",
+      "label": "Graph edge length median px",
+      "family": "Fixed graph geometry / E26G",
+      "keys": [
+        "graph_edge_length_median_px"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "px",
+      "definition": "Median Euclidean centroid distance across the unique undirected union of each retained node's three nearest distinct neighbours.",
+      "interpretation": "Exploratory 2-D object arrangement; review mask identity and nuisance/size/loading dependence.",
+      "implementation_status": "computed",
+      "evidence_status": "known_site_geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Known-data development after the primary freeze; no unseen validation.",
+        "Bright mask fragments are not independently reviewed chemical/particle instances.",
+        "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
+        "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
+        "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/e_graph/protocol.json",
+        "analysis/ml_options/e_graph/sites.csv",
+        "analysis/ml_options/e_graph/comparisons.csv",
+        "analysis/ml_options/e_graph/report.html"
+      ],
+      "experiments": [
+        "E26G"
+      ],
+      "visual_kind": "bright_graph",
+      "review_status": "unreviewed",
+      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Protocol G settings and exact keys fixed before graph extraction."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
+        }
+      ]
+    },
+    {
+      "id": "graph_edge_length_iqr_ratio",
+      "label": "Graph edge length iqr ratio",
+      "family": "Fixed graph geometry / E26G",
+      "keys": [
+        "graph_edge_length_iqr_ratio"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "ratio",
+      "definition": "Edge-distance interquartile range (linear quantiles) divided by median edge distance; unavailable for zero median.",
+      "interpretation": "Exploratory 2-D object arrangement; review mask identity and nuisance/size/loading dependence.",
+      "implementation_status": "computed",
+      "evidence_status": "known_site_geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Known-data development after the primary freeze; no unseen validation.",
+        "Bright mask fragments are not independently reviewed chemical/particle instances.",
+        "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
+        "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
+        "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/e_graph/protocol.json",
+        "analysis/ml_options/e_graph/sites.csv",
+        "analysis/ml_options/e_graph/comparisons.csv",
+        "analysis/ml_options/e_graph/report.html"
+      ],
+      "experiments": [
+        "E26G"
+      ],
+      "visual_kind": "bright_graph",
+      "review_status": "unreviewed",
+      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Protocol G settings and exact keys fixed before graph extraction."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
+        }
+      ]
+    },
+    {
+      "id": "graph_edge_axial_strength",
+      "label": "Graph edge axial strength",
+      "family": "Fixed graph geometry / E26G",
+      "keys": [
+        "graph_edge_axial_strength"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "0–1",
+      "definition": "Unweighted absolute mean exp(2j theta) across positive-length undirected edges; theta uses image x/y axes.",
+      "interpretation": "Exploratory 2-D object arrangement; review mask identity and nuisance/size/loading dependence.",
+      "implementation_status": "computed",
+      "evidence_status": "known_site_geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Known-data development after the primary freeze; no unseen validation.",
+        "Bright mask fragments are not independently reviewed chemical/particle instances.",
+        "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
+        "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
+        "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/e_graph/protocol.json",
+        "analysis/ml_options/e_graph/sites.csv",
+        "analysis/ml_options/e_graph/comparisons.csv",
+        "analysis/ml_options/e_graph/report.html"
+      ],
+      "experiments": [
+        "E26G"
+      ],
+      "visual_kind": "bright_graph",
+      "review_status": "unreviewed",
+      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Protocol G settings and exact keys fixed before graph extraction."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
+        }
+      ]
+    },
+    {
+      "id": "graph_log_area_assortativity",
+      "label": "Graph log area assortativity",
+      "family": "Fixed graph geometry / E26G",
+      "keys": [
+        "graph_log_area_assortativity"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−1–1",
+      "definition": "Pearson correlation of natural-log component area at both endpoints, including both directed copies of every unique undirected edge; unavailable for zero endpoint variance.",
+      "interpretation": "Exploratory 2-D object arrangement; review mask identity and nuisance/size/loading dependence.",
+      "implementation_status": "computed",
+      "evidence_status": "known_site_geometry_tests_passed_expert_pending",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Known-data development after the primary freeze; no unseen validation.",
+        "Bright mask fragments are not independently reviewed chemical/particle instances.",
+        "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
+        "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
+        "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/e_graph/protocol.json",
+        "analysis/ml_options/e_graph/sites.csv",
+        "analysis/ml_options/e_graph/comparisons.csv",
+        "analysis/ml_options/e_graph/report.html"
+      ],
+      "experiments": [
+        "E26G"
+      ],
+      "visual_kind": "bright_graph",
+      "review_status": "unreviewed",
+      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Protocol G settings and exact keys fixed before graph extraction."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
+        }
+      ]
     }
   ],
   "methods": [
@@ -3660,6 +3856,26 @@
       "evidence_status": "plate_instances_unvalidated",
       "experiment": "E25",
       "description": "Fixed matched patches, BSE/ETD/Inlens, two scales and support-mask sensitivity. Values are directional image texture only. Residual-solid connected regions are not graphite instances; manual plate labels/collector direction gate a material KPI."
+    },
+    {
+      "id": "fixed_bright_graph",
+      "label": "Fixed bright-centroid 3-NN graph audit",
+      "implementation_status": "computed",
+      "evidence_status": "known_site_geometry_expert_pending",
+      "scope": "Four secondary geometry descriptors; no neural training or QC input changes.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "in_progress",
+          "reason": "Task E claimed by Codex in isolated worktree."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E26G audit complete; retained as exploratory review evidence only."
+        }
+      ],
+      "description": "Fixed 3-NN union on retained bright centroids; four site descriptors, threshold/floor coverage, acquisition and node/loading controls. Proximity is not contact; expert review pending."
     }
   ],
   "material_confirmation": {

@@ -364,6 +364,17 @@ add("A16", "Mask-derived shape, orientation, centroid spacing and local void wid
     "Bright rims or threshold fragments were mistaken for additive particles; disconnected void geometry were interpreted as actual cracks; imaging/section orientation changed; or centroids from finite particles were interpreted as a validated random-point clustering test.",
     "Which component sizes correspond to actual additive particles? Are the detected orientation, spacing and local-width patterns physically meaningful? Review the E24 annotation pack, including uncertain or unmeasurable phase boundaries, before treating candidate segmentation as improved.")
 
+# E26G: extend A16 without changing its expert-review state.
+graph_card = next(c for c in CARDS if c["id"] == "A16")
+graph_card["why"] += " E26G adds a fixed 3-NN bright-centroid graph with four secondary summaries, site-level controls and threshold/object-floor sensitivity. Proximity edges are not physical/electrical contacts or a defect label; finite-frame neighbour bias remains. Expert component and specimen/process validation are pending."
+graph_image = os.path.join(ROOT, "analysis", "ml_options", "e_graph", "overlay_Batch_2_3806gxp0.png")
+if os.path.exists(graph_image):
+    with Image.open(graph_image) as im:
+        im = im.convert("RGB")
+        if im.width > 1500: im = im.resize((1500, int(im.height*1500/im.width)), Image.LANCZOS)
+        buf = io.BytesIO(); im.save(buf,"JPEG",quality=85,optimize=True)
+        graph_card["figures"].append(("data:image/jpeg;base64,"+base64.b64encode(buf.getvalue()).decode(), "E26G prespecified central BSE crop; full-site graphs at 50/100 px² object floors. Source coordinates, exclusions and thresholds are in the graph report. This is unreviewed geometry, not expert truth."))
+
 # ----------------------------------------------------------------------------- A17 confirmed material/state metadata
 material_example = next(c for c in CARDS if c["id"] == "A3")["figures"][0][0]
 add("A17", "The sections are fresh, uncycled graphite–Si/SiOx electrode material.", "confirmed by Santosh",

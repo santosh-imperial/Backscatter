@@ -1,0 +1,91 @@
+{
+  "version": "E26G.1",
+  "experiment": "E26G",
+  "date": "2026-10-03",
+  "stage": "prespecified_before_new_outputs",
+  "keys": [
+    "graph_edge_length_median_px",
+    "graph_edge_length_iqr_ratio",
+    "graph_edge_axial_strength",
+    "graph_log_area_assortativity"
+  ],
+  "definitions": {
+    "graph_edge_length_median_px": {
+      "units": "px",
+      "definition": "Median Euclidean centroid distance across the unique undirected union of each retained node's three nearest distinct neighbours."
+    },
+    "graph_edge_length_iqr_ratio": {
+      "units": "ratio",
+      "definition": "Edge-distance interquartile range (linear quantiles) divided by median edge distance; unavailable for zero median."
+    },
+    "graph_edge_axial_strength": {
+      "units": "0\u20131",
+      "definition": "Unweighted absolute mean exp(2j theta) across positive-length undirected edges; theta uses image x/y axes."
+    },
+    "graph_log_area_assortativity": {
+      "units": "\u22121\u20131",
+      "definition": "Pearson correlation of natural-log component area at both endpoints, including both directed copies of every unique undirected edge; unavailable for zero endpoint variance."
+    }
+  },
+  "k": 3,
+  "connectivity": 8,
+  "area_floors_px2": [
+    50,
+    100
+  ],
+  "threshold_offsets": [
+    -5,
+    0,
+    5
+  ],
+  "exclude_clipped": true,
+  "tie_breaking": "Euclidean distance, y coordinate, x coordinate, component label",
+  "coverage_floor": {
+    "nodes": 10,
+    "edges": 10
+  },
+  "n_boot": 4000,
+  "seed": 20261003,
+  "acquisition_control": [
+    "bright_sep",
+    "bse_p1",
+    "bse_std",
+    "bse_empty_bin_frac",
+    "etd_boundary_sharpness",
+    "H"
+  ],
+  "node_loading_control": [
+    "bright_frac",
+    "bright_d50",
+    "local_bright_std_512px",
+    "local_bright_std_1024px",
+    "graph_node_density_per_mpx",
+    "graph_node_log_area_median",
+    "graph_node_log_area_iqr"
+  ],
+  "controls": "Ridge alpha=1, median imputation and scaling fitted within every whole-site LOO fold; within-batch Spearman screens.",
+  "c2st": "Not run; optional classifier omitted. No GNN training or new QC alert.",
+  "overlays": {
+    "sites": [
+      [
+        "Batch_2",
+        "3806gxp0"
+      ],
+      [
+        "Batch_3",
+        "hzumfsms"
+      ],
+      [
+        "Batch_1",
+        "4ih2ggld"
+      ],
+      [
+        "Batch_3",
+        "71vgq3fw"
+      ]
+    ],
+    "crop": "Fixed centre of trimmed frame, at most 1280\u00d7768; graph built on entire frame."
+  },
+  "graph_scope": "2-D bright-mask proximity, not chemistry/contact/connectivity/battery performance.",
+  "qc_role": "Excluded from primary tests, classifiers, decisions and release tolerances."
+}

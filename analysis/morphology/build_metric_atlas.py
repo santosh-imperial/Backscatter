@@ -60,7 +60,8 @@ TABLE_PATHS = [OUT / "morphology_sites.csv", ROOT / "analysis_cache/site_feature
                ROOT / "analysis/morphology/benchmark/local_width_sites.csv",
                ROOT / "analysis/battery/output/neighbourhood_sites.csv",
                ROOT / "analysis/battery/output/void_sites.csv",
-               ROOT / "analysis/battery/output/void_threshold_envelopes.csv"]
+               ROOT / "analysis/battery/output/void_threshold_envelopes.csv",
+               ROOT / "analysis/ml_options/e_graph/sites.csv"]
 
 
 def digest(path):
@@ -391,7 +392,29 @@ class Atlas:
         note = "Crop illustrates the operation; values on the card come from saved full-site tables."
         legend = "Cyan: segmented void phase. Gold: segmented bright phase. No chemistry is inferred from these labels."
         channel = "BSE"
-        if kind in ("pore_mask", "bright_mask", "pore_count", "bright_count", "crack_mask", "graphite_mask", "void_span", "columns", "delamination", "crack_orientation"):
+        if kind == "bright_graph":
+            from matplotlib.collections import LineCollection
+            graph_root = ROOT / "analysis/ml_options/e_graph"
+            nodes = pd.read_csv(graph_root / "nodes.csv.gz")
+            edges = pd.read_csv(graph_root / "edges.csv.gz")
+            def select(t):
+                return t[(t.batch == d["batch"]) & (t.site == d["site"]) &
+                         (t.threshold_offset == 0) & (t.area_floor_px2 == 50)]
+            nodes, edges = select(nodes).sort_values("node_id"), select(edges)
+            points = nodes[["centroid-1", "centroid-0"]].to_numpy(float)
+            self.image(axs[1], d["bse"], "Full-site graph cropped for display")
+            segments = points[edges[["node_a", "node_b"]].to_numpy(int)]
+            axs[1].add_collection(LineCollection(segments, colors="#49d7ed", linewidths=.65))
+            axs[1].scatter(points[:,0], points[:,1], s=8, color=PALETTE["bright"])
+            axs[1].set_xlim(crop["x"], crop["x"]+crop["width"])
+            axs[1].set_ylim(crop["y_trimmed"]+crop["height"], crop["y_trimmed"])
+            axs[2].hist(edges.length_px, bins=25, color="#668ddd")
+            axs[2].axvline(edges.length_px.median(), color="#ffc65b", label="Median")
+            axs[2].set(xlabel="Edge length (px)", ylabel="Unique undirected edges", title="Full-site graph distances")
+            axs[2].legend(fontsize=8)
+            legend="Gold: retained bright centroid; cyan: undirected union of three nearest distinct neighbours. Graph built on whole frame; retained components ≥50 px²; image-clipped components excluded."
+            note="Four card scalars use full-site tables. Proximity is not physical/electrical contact; masks and meanings remain expert-unreviewed. Threshold/object-floor and acquisition/size/loading checks are in the graph report."
+        elif kind in ("pore_mask", "bright_mask", "pore_count", "bright_count", "crack_mask", "graphite_mask", "void_span", "columns", "delamination", "crack_orientation"):
             mask = d[phase]
             color = PALETTE[phase]
             if kind in ("pore_count", "bright_count"):
@@ -684,6 +707,7 @@ def kind_for(metric):
     """Map semantic registry kinds and individual ids to faithful illustrations."""
     key=" ".join([metric["id"],metric.get("visual_kind","")]+metric.get("keys",[])).lower()
     visual=metric.get("visual_kind","")
+    if visual == "bright_graph": return "bright_graph"
     supported={"pore_mask","bright_mask","pore_count","bright_count","crack_mask","graphite_mask","pore_size","bright_size","pore_shape","bright_shape",
                "bright_solidity","bright_circularity","pore_orientation","bright_orientation","bright_spacing","depth_profile_pore",
                "depth_profile_bright","fft","correlation","etd_ridges","etd_graphite","etd_curtain","etd_orientation","etd_boundary",

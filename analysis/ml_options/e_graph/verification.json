@@ -1,0 +1,14 @@
+{
+  "experiment": "E26G",
+  "measured_source_hashes_current": true,
+  "saved_full_site_graphs_recomputed": 186,
+  "pairwise_rows_verified": 216,
+  "primary_classifier_decision_notebook_cache_files_unchanged": true,
+  "register_history_prefix_preserved": true,
+  "appended_registry_rows": 1992,
+  "raw_tiffs_excluded": true,
+  "new_files_below_size_limit": true,
+  "report_embedded_images_decoded": 5,
+  "expert_validation": "pending",
+  "unseen_evaluation": "not_run"
+}
