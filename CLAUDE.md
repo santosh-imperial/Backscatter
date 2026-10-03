@@ -25,6 +25,9 @@ analysis_cache/          per-site / per-image / per-particle feature CSVs produc
 analysis/                parallel label-free audit (scripts, findings.md, report.html, assets). Integrity checks, intensity/texture
                          proxies with bootstrap CIs. Complements notebook 01; do not duplicate its checks, cite them.
 docs/problem_and_findings.md       state of knowledge — keep it current
+docs/assumption_register.html      self-contained HTML: every interpretive assumption with an annotated example image and a
+                                   review status; rebuild with `python3 docs/_build_assumption_register.py` when assumptions change
+                                   (ids A1–A15 are referenced from other docs; append, don't renumber)
 ```
 
 ## How notebooks are built and run
@@ -55,7 +58,7 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 6. **Detector label `SE` means `ETD`.** Merge them. Channels are pixel-aligned; BSE masks can be applied to ETD/Inlens directly.
 7. **Trim bright edge bands** (current collector / stitching) before measuring; `bright_bands()` in the build script does this.
 8. **Per-image percentile thresholds make densities constant by construction.** Use one absolute threshold chosen across sites (see ETD ridge threshold `T_STAR`).
-9. **Baseline is unknown.** Keep everything baseline-agnostic: a single config cell chooses the baseline batch and site exclusions.
+9. **Batch 3 is the working reference, not a clean baseline** (confirmed by the problem providers: three supplier batches of one product; Batch 3 is one batch with more samples; the task is to differentiate). Use robust statistics, show Batch 3's own sub-populations, report all pairwise comparisons, and keep the reference selectable in one config cell.
 10. Frame height is a session fingerprint as much as a thickness proxy; do not present it as thickness without caveat.
 
 ## Style for judge-facing material
@@ -78,4 +81,4 @@ Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`
 
 ## Keeping docs current
 
-When a finding changes, update `docs/problem_and_findings.md` (and this file if a rule changes) in the same change as the code. The findings doc is what a teammate or judge reads first.
+When a finding changes, update `docs/problem_and_findings.md` (and this file if a rule changes) in the same change as the code. When an interpretation changes or the organisers answer a question, update the corresponding card in `docs/_build_assumption_register.py` and rebuild the HTML. The findings doc is what a teammate or judge reads first.

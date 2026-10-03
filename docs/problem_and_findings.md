@@ -1,6 +1,6 @@
 # Polaron challenge — problem statement and state of knowledge
 
-_Last updated: 2026-10-03. Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
+_Last updated: 2026-10-03 (baseline status confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
 
 ## 1. The problem
 
@@ -12,7 +12,7 @@ _Last updated: 2026-10-03. Owner: Santosh (narrative, materials review) + Claude
 
 **Judging criteria** (in the organisers' words): quality of extracted material KPIs; accuracy on the new batch; interpretability; honest handling of uncertainty; real-world usability for a QC decision. Raw accuracy alone is explicitly not the target.
 
-**Our framing.** This is not a defect classifier. It is a two-sample comparison: does an incoming batch fall inside the baseline's own site-to-site variation, or outside it? Thresholds are therefore calibrated against the baseline's self-similarity (split-half / leave-one-site-out), not hand-tuned. The verdict must separate "the material changed" from "the microscope or sample preparation changed", because the data contain both.
+**Our framing.** This is not a defect classifier. It is a two-sample comparison: does a batch fall inside the reference batch's own site-to-site variation, or outside it? Thresholds are calibrated against the reference's self-similarity (split-half / leave-one-site-out), not hand-tuned. Because the reference (Batch 3) is itself imperfect and heterogeneous, the system must display the reference's own spread and sub-populations, report all pairwise batch differences, and separate "the material changed" from "the microscope or sample preparation changed", because the data contain both.
 
 ## 2. The data
 
@@ -20,12 +20,12 @@ _Last updated: 2026-10-03. Owner: Santosh (narrative, materials review) + Claude
 |---|---|
 | Location | `Dataset/Batch_{1,2,3}/img_<site>_<detector>.tif` |
 | Sites | Batch 1: 7, Batch 2: 7, Batch 3: 17 (31 total) |
-| Detectors per site | BSE (backscattered electrons, contrast ∝ atomic number), ETD (secondary electrons, topography; labelled `SE` on 4 sites), Inlens (surface-sensitive, charging-dominated) |
+| Detectors per site | BSE (backscattered electrons, contrast ∝ atomic number), ETD (secondary electrons, topography; labelled `SE` on 4 sites — confirmed same detector, 2026-10-03), Inlens (surface-sensitive, charging-dominated) |
 | Geometry | Stitched cross-section strips, ~7000 px wide × 1612–2316 px tall, 8-bit grayscale stored as identical RGB planes, LZW TIFF |
 | Alignment | The three channels of a site are pixel-aligned (phase-correlation shift ≤ 0.2 px) |
 | Metadata | Microscope settings (magnification, voltage, detector gain) were stripped when files were re-saved by `tifffile`. The TIFF resolution tags survived and give a **nominal 25.0 nm/pixel** on every image (24.9992–25.0005 nm/px). This is export metadata, not verified calibration. We report all lengths in pixels and quote µm as "nominal": strip ≈ 175 µm wide, coating ≈ 40–58 µm thick, bright-phase D50 ≈ 150 px ≈ 3.8 µm, crack-like void cutoff 500 px ≈ 12.5 µm. |
 | Material | Porous coating of plate-like graphite with a sparse brighter (higher-Z) particulate phase. Consistent with a silicon / silicon-oxide–graphite anode cross-section after ion polishing. **Chemistry is not confirmed.** |
-| Labels | None. We do not know which batch is the approved baseline, nor which incoming batches are acceptable or defective. |
+| Labels / baseline | Confirmed by the problem providers (2026-10-03): the three folders are three supplier batches of the same nominal product. **Batch 3 is a single batch with more samples and is the closest available reference, but not a clean approved baseline.** There is no clear baseline; the task is to differentiate the batches. No per-batch acceptable / defective labels. |
 
 Current-collector or stitching bands appear at one edge of five images (≤ 56 rows) and are trimmed before measurement. 39 images carry a single differing-colour edge column (export artefact); no colour inside the frame. No duplicate images. Some Inlens images saturate at white over 4–7 % of pixels.
 
@@ -83,28 +83,32 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 
 Cached outputs: `analysis_cache/site_features.csv` (one row per site), `analysis_cache/etd_inlens_features.csv`, `analysis_cache/bright_particles.csv` (one row per bright particle), `analysis_cache/image_quality.csv` (one row per image).
 
+## 4b. Assumption register
+
+Every interpretive assumption, with an annotated example image and a review status, lives in `docs/assumption_register.html` (built by `docs/_build_assumption_register.py`). Reviews are logged on the cards. Status as of 2026-10-03: A3 (bright phase is a distinct composition) confirmed by Santosh; A13 detector-label part (SE = ETD) confirmed; A2 wording corrected (open porosity is the electrolyte pathway of the cell, not "vacuum") and its binder illustration replaced; all other cards unreviewed.
+
 ## 5. Decisions taken
 
 - Deliverable is a Jupyter notebook (judge-readable, reproducible), built from a generator script so it can be regenerated end to end.
-- Baseline is treated as **unknown**; the QC notebook will accept any batch as baseline via one config cell and default to the most self-consistent candidate.
+- **Batch 3 is the working reference** (confirmed closest-to-baseline, 17 sites), used with robust statistics and with its sub-populations (grey-pore group, cracked sites) shown explicitly. The QC notebook still accepts any batch as reference via one config cell, so Batch 1 and Batch 2 can be compared symmetrically.
 - All lengths stay in pixels; the nominal 25 nm/px from export tags may be quoted as "nominal" but not used to assert physical sizes until confirmed.
 - Intensity statistics of any channel are instrument flags, never material KPIs.
-- Batch 3 is kept split into ordinary / grey-pore until the organisers say what it is.
+- Batch 3 is one production batch, so the grey-pore group is intra-batch variation (most likely preparation / session). It stays flagged and is shown as a sub-population inside the reference rather than excluded silently.
 - Acquisition-quality flags are first-class outputs of the QC report, alongside the verdict.
 
 ## 6. Open questions for the organisers
 
-1. Which batch is the approved baseline?
-2. Are the four grey-pore Batch 3 sites and the two low-contrast Batch 1 sites intentional?
-3. Are the three cracked Batch 3 sites known defects?
+1. ~~Which batch is the approved baseline?~~ Answered: none is clean; Batch 3 is the closest reference. Follow-up: are there known differences between the three supplier batches that we should recover?
+2. Are the four grey-pore Batch 3 sites and the two low-contrast Batch 1 sites intentional (preparation / session) or material?
+3. Are the three cracked Batch 3 sites considered acceptable variation within the reference, or defects?
 4. Is the 25 nm/px in the TIFF tags the true pixel size? Image orientation relative to the current collector?
 5. What is the bright phase (Si, SiOx, other)?
 
 ## 7. Plan for the QC notebook (next)
 
-1. Load cached features; one config cell selects the baseline batch and any sites to exclude.
-2. Baseline self-calibration: split-half and leave-one-site-out distributions of every KPI and of a multivariate distance, giving a data-derived null for "normal variation".
-3. Per-batch comparison: effect sizes with bootstrap intervals, KS tests with multiple-testing correction, energy distance / Mahalanobis in standardised KPI space, image-level drift scores.
+1. Load cached features; one config cell selects the reference batch (default Batch 3) and any sites to flag or exclude.
+2. Reference self-characterisation: split-half and leave-one-site-out distributions of every KPI and of a multivariate distance, giving a data-derived null for "normal variation" — reported with the reference's own sub-populations visible, and with robust (median / MAD) and classical versions side by side so the reader sees how much the cracked and grey-pore sites widen the null.
+3. Pairwise batch comparison (1 vs 3, 2 vs 3, 1 vs 2): effect sizes with bootstrap intervals, KS tests with multiple-testing correction, energy distance / Mahalanobis in standardised KPI space, image-level drift scores. The deliverable is differentiation with evidence, not only a pass/fail against Batch 3.
 4. Decision: accept if within baseline self-variation and no large KPI effect; reject if far outside, consistent across sites, and driven by defect-relevant KPIs; investigate otherwise, including when only acquisition flags or confounded KPIs move. Confidence from bootstrap agreement; every verdict lists what would change it.
 5. Explanation: KPI table with baseline range and batch value, top drivers in plain language, example images with detected voids / particles painted, acquisition flags, three-channel agreement.
 6. Dry-run on the known batches; unseen batch is one command.

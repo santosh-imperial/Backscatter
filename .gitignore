@@ -8,3 +8,6 @@ __pycache__/
 
 # os
 .DS_Store
+
+# local tool config
+.claude/
