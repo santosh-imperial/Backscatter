@@ -91,6 +91,107 @@ def test_c2st_rejects_overlapping_site_ids():
         c2st(X[:5], X[5:], ["a"] * 5, ["a"] * 5, list("xyz"), n_perm=2)
 
 
+def _invariance_inputs(shape, rng):
+    """Baseline inputs: patch-level (4–8 rows per site, group ids repeated) or one row per site."""
+    if shape == "patches":
+        Xr, gr = _grouped_data(rng, 6, 4, prefix="r")
+        Xq, gq = _grouped_data(rng, 6, 4, prefix="q")
+    else:
+        Xr, gr = _grouped_data(rng, 7, 4, patches=(1, 1), prefix="r")
+        Xq, gq = _grouped_data(rng, 6, 4, patches=(1, 1), prefix="q")
+    return Xr, Xq, gr, gq
+
+
+def _renamed(gr, gq, rng):
+    """Random 8-char ids whose sort order differs from the originals' (asserted)."""
+    old = list(np.unique(np.r_[gr, gq]))
+    while True:
+        new_id = {g: f"{rng.integers(0, 16**8):08x}" for g in old}
+        if [new_id[g] for g in old] != sorted(new_id.values()):
+            return new_id
+
+
+def _assert_bit_identical(r1, r2, names, site_map):
+    assert r1["auc"] == r2["auc"]
+    assert r1["p"] == r2["p"]
+    assert np.array_equal(r1["auc_null"], r2["auc_null"])
+    assert r1["cv"] == r2["cv"]
+    c1, c2 = r1["coef"].set_index("feature"), r2["coef"].set_index("feature")
+    for col in ("coef", "selection_stability", "mean_abs_shap"):
+        assert np.array_equal(c1.loc[names, col].to_numpy(), c2.loc[names, col].to_numpy()), col
+    # per-site scores carry the caller's ids and agree site by site
+    s1 = r1["per_site_scores"].set_index("site")
+    s2 = r2["per_site_scores"].set_index("site")
+    assert set(s1.index) == set(site_map) and set(s2.index) == set(site_map.values())
+    old = list(site_map)
+    assert np.array_equal(s1.loc[old, "mean_prob"].to_numpy(), s2.loc[[site_map[g] for g in old], "mean_prob"].to_numpy())
+    assert np.array_equal(s1.loc[old, "n_rows"].to_numpy(), s2.loc[[site_map[g] for g in old], "n_rows"].to_numpy())
+
+
+@pytest.mark.parametrize("shape", ["patches", "one_row_per_site"])
+def test_c2st_invariant_to_site_id_renaming(shape):
+    """(1) E23 / D34 open item: identical content under new site ids (sorting differently) gave AUC 0.51 → 0.41 because
+    the grouped folds and the site-label permutation stream followed site-id sort order. Same rows, renamed ids."""
+    rng = np.random.default_rng(9)
+    Xr, Xq, gr, gq = _invariance_inputs(shape, rng)
+    names = list("abcd")
+    r1 = c2st(Xr, Xq, gr, gq, names, n_perm=25, seed=0)
+    new_id = _renamed(gr, gq, rng)
+    r2 = c2st(Xr, Xq, [new_id[g] for g in gr], [new_id[g] for g in gq], names, n_perm=25, seed=0)
+    _assert_bit_identical(r1, r2, names, new_id)
+
+
+@pytest.mark.parametrize("shape", ["patches", "one_row_per_site"])
+def test_c2st_invariant_to_row_order(shape):
+    """(2) Same ids, rows permuted: within each block, and across the two blocks while keeping ref / batch membership
+    (c2st concatenates reference then batch, so 'across' means the rows of each block arrive in an arbitrary order and
+    site rows are no longer contiguous)."""
+    rng = np.random.default_rng(10)
+    Xr, Xq, gr, gq = _invariance_inputs(shape, rng)
+    names = list("abcd")
+    r1 = c2st(Xr, Xq, gr, gq, names, n_perm=25, seed=0)
+    ident = {g: g for g in np.unique(np.r_[gr, gq])}
+    # within-block permutation
+    pr, pq = rng.permutation(len(Xr)), rng.permutation(len(Xq))
+    assert not (np.array_equal(pr, np.arange(len(Xr))) or np.array_equal(pq, np.arange(len(Xq))))
+    r2 = c2st(Xr[pr], Xq[pq], gr[pr], gq[pq], names, n_perm=25, seed=0)
+    _assert_bit_identical(r1, r2, names, ident)
+    # reverse order inside each block (sites become contiguous in the opposite order)
+    r3 = c2st(Xr[::-1], Xq[::-1], gr[::-1], gq[::-1], names, n_perm=25, seed=0)
+    _assert_bit_identical(r1, r3, names, ident)
+    # patches of one site interleaved with other sites' (membership unchanged): sort rows by a random key per row
+    if shape == "patches":
+        kr, kq = rng.random(len(Xr)), rng.random(len(Xq))
+        r4 = c2st(Xr[np.argsort(kr)], Xq[np.argsort(kq)], gr[np.argsort(kr)], gq[np.argsort(kq)], names, n_perm=25, seed=0)
+        _assert_bit_identical(r1, r4, names, ident)
+
+
+@pytest.mark.parametrize("shape", ["patches", "one_row_per_site"])
+def test_c2st_invariant_to_renaming_and_row_order_combined(shape):
+    """(3) Both at once: renamed ids and permuted rows."""
+    rng = np.random.default_rng(11)
+    Xr, Xq, gr, gq = _invariance_inputs(shape, rng)
+    names = list("abcd")
+    r1 = c2st(Xr, Xq, gr, gq, names, n_perm=25, seed=0)
+    new_id = _renamed(gr, gq, rng)
+    pr, pq = rng.permutation(len(Xr)), rng.permutation(len(Xq))
+    r2 = c2st(Xr[pr], Xq[pq], np.array([new_id[g] for g in gr])[pr], np.array([new_id[g] for g in gq])[pq], names, n_perm=25, seed=0)
+    _assert_bit_identical(r1, r2, names, new_id)
+
+
+def test_c2st_is_deterministic_for_fixed_seed_and_changes_with_content():
+    """The same call twice is bit-identical (liblinear is seeded); a genuinely different batch is not a no-op."""
+    rng = np.random.default_rng(12)
+    Xr, Xq, gr, gq = _invariance_inputs("patches", rng)
+    names = list("abcd")
+    r1 = c2st(Xr, Xq, gr, gq, names, n_perm=20, seed=0)
+    r2 = c2st(Xr, Xq, gr, gq, names, n_perm=20, seed=0)
+    assert r1["auc"] == r2["auc"] and np.array_equal(r1["auc_null"], r2["auc_null"])
+    assert np.array_equal(r1["coef"].coef.to_numpy(), r2["coef"].coef.to_numpy())
+    r3 = c2st(Xr, Xq + 0.5, gr, gq, names, n_perm=20, seed=0)
+    assert not np.array_equal(r1["auc_null"], r3["auc_null"]) or r1["auc"] != r3["auc"]
+
+
 def _gauss_sites(rng, n_sites, n_patch, dim, mu, prefix):
     E = np.vstack([mu + rng.normal(0, 1, (n_patch, dim)) for _ in range(n_sites)])
     g = np.repeat([f"{prefix}{i}" for i in range(n_sites)], n_patch)

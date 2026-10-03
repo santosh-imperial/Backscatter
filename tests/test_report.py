@@ -237,3 +237,62 @@ def test_render_report_with_acquisition_views_and_infeasible_mdc(tmp_path):
     assert "not available</b>" in html and "split design" in html
     assert "refuted by image review (closed)" in html and ">refuted<" in html
     assert "Refit per fold" in html and "held fixed" not in html.split("Refit per fold")[1][:400]
+
+
+def test_cli_passes_cache_dir_reviews_and_images(monkeypatch, tmp_path):
+    """The one drop command: --cache-dir reaches build_result (cold-cache rehearsals, E25), --review becomes
+    config['image_reviewed'], --no-images reaches the renderer, and the default cache dir is unchanged."""
+    calls = {}
+
+    def fake_build(ref, bat, config=None, cache_dir="analysis_cache/features", **kw):
+        calls.update(ref=ref, bat=bat, config=config, cache_dir=cache_dir)
+        return {"meta": {}}
+
+    def fake_render(res, out, with_images=True):
+        open(out, "w").write("<html/>"); calls.update(out=out, with_images=with_images); return out
+
+    monkeypatch.setattr(report, "build_result", fake_build)
+    monkeypatch.setattr(report, "render_report", fake_render)
+    monkeypatch.setattr(report, "summary", lambda res: {"verdict": "x", "n": 1})
+    out, summ = str(tmp_path / "qc.html"), str(tmp_path / "qc.json")
+    path = report.main(["Dataset/Batch_3", "_fixtures/Batch_R", out, "--cache-dir", str(tmp_path / "fc"), "--summary", summ,
+                        "--review", "abc:crack_frac=no", "--review", "def:pore_max_d=yes", "--no-images"])
+    assert path == out and calls["out"] == out and calls["with_images"] is False
+    assert calls["cache_dir"] == str(tmp_path / "fc") and calls["ref"] == "Dataset/Batch_3" and calls["bat"] == "_fixtures/Batch_R"
+    assert calls["config"] == {"image_reviewed": {("abc", "crack_frac"): False, ("def", "pore_max_d"): True}}
+    import json
+    assert json.load(open(summ)) == {"verdict": "x", "n": 1}
+    report.main(["Dataset/Batch_3", "_fixtures/Batch_R", str(tmp_path / "qc2.html")])
+    assert calls["cache_dir"] == "analysis_cache/features" and calls["config"] is None and calls["with_images"] is True
+    assert not os.path.exists(str(tmp_path / "qc2.json"))
+
+
+def test_config_hash_accepts_image_reviews_and_is_stable_without_them():
+    """E25 rehearsal: `--review SITE:KPI=yes` crashed in _config_hash (tuple keys are not JSON keys) before any result was
+    assembled, so README step 4 had never run end to end. Reviews must hash; a run without reviews must keep its hash."""
+    base = {**report.DEFAULT_CONFIG, "thresholds_resolved": {"alpha": 0.05}}
+    h0 = report._config_hash(base)
+    assert h0 == report._config_hash({**base, "image_reviewed": None})
+    h1 = report._config_hash({**base, "image_reviewed": {("c20a68de", "crack_frac"): True}})
+    h2 = report._config_hash({**base, "image_reviewed": {("c20a68de", "crack_frac"): False}})
+    assert len(h1) == 12 and h1 != h0 and h1 != h2            # a review is part of the run's configuration
+
+
+def test_summary_is_plain_json_and_carries_the_verdict_contract():
+    """summary() must serialise with the strict JSON encoder (no NaN, no numpy scalars) and expose the fields the drop
+    record needs: verdict, three outcome columns, flags with source, MDC feasibility, local flags with review state, notes."""
+    import json
+    res = synthetic_result()
+    res["mdc"]["crack_frac"] = dict(mdc_mad=np.nan, mdc_abs=np.nan, n_incoming=18, n_sim_used=0, feasible=False, reason="split design", design="n/a")
+    res["check_b"]["flags"] = [dict(site="Xs1", kpi="crack_frac", value=np.float64(2.0), ref_max=1.3, margin_in_mad=2.4, severity_ok=np.bool_(True),
+                                    measurement_reliable=True, measurement_note="ok", image_reviewed=False, review_status="refuted", promotable=True)]
+    s = report.summary(res)
+    txt = json.dumps(s, allow_nan=False)                       # raises on NaN / inf; TypeError on numpy types
+    back = json.loads(txt)
+    assert back["verdict"] == res["verdict"]["verdict"]
+    assert set(back["outcome_columns"]) == {"drift_alert", "localized", "quality_abstention"}
+    assert back["mdc"]["crack_frac"]["feasible"] is False and back["mdc"]["crack_frac"]["mdc_mad"] is None
+    assert back["local_anomaly"]["flags"][0]["review_status"] == "refuted" and back["local_anomaly"]["flags"][0]["value"] == 2.0
+    assert {"site", "acquisition_group"} <= set(back["flags_batch"][0]) and len(back["flags_batch"]) == res["meta"]["n_sites_batch"]
+    assert set(back["usable_n"]) == set(PRIMARY_KPIS) and {"share", "n_runs"} <= set(back["stability"])
+    assert back["meta"]["thresholds_hash"] == res["meta"]["thresholds_hash"] and isinstance(back["notes"], list)

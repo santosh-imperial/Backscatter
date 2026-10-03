@@ -14,3 +14,7 @@ __pycache__/
 
 # regenerable, machine-specific feature cache (hash includes mtimes)
 analysis_cache/features/
+
+# rehearsal fixtures (hard links to raw TIFFs) and scratch outputs (E25 / next_steps task H)
+_fixtures/
+_scratch/

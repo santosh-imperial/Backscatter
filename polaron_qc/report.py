@@ -319,8 +319,18 @@ def material_c2st(ref_sites: pd.DataFrame, batch_sites: pd.DataFrame, n_perm: in
 # ---------------------------------------------------------------------------------------------------------------
 # build_result
 # ---------------------------------------------------------------------------------------------------------------
+def _str_keys(o):
+    """json.dumps refuses non-string dict keys: ``image_reviewed`` is keyed by (site, kpi) tuples, which crashed every
+    ``--review`` run before the result was assembled (found by the E25 rehearsal). Tuple keys become 'site:kpi'."""
+    if isinstance(o, dict):
+        return {(":".join(map(str, k)) if isinstance(k, tuple) else str(k)): _str_keys(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple)):
+        return [_str_keys(v) for v in o]
+    return o
+
+
 def _config_hash(cfg: dict) -> str:
-    return hashlib.sha1(json.dumps(cfg, sort_keys=True, default=str).encode()).hexdigest()[:12]
+    return hashlib.sha1(json.dumps(_str_keys(cfg), sort_keys=True, default=str).encode()).hexdigest()[:12]
 
 
 def _git_describe(root: str) -> str | None:
@@ -1288,6 +1298,64 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
 # ---------------------------------------------------------------------------------------------------------------
 # command line: python -m polaron_qc.report Dataset/Batch_3 Dataset/Batch_1 reports/qc_Batch_1.html
 # ---------------------------------------------------------------------------------------------------------------
+def _plain(o):
+    """Recursively convert a result fragment to plain JSON types (numpy scalars → Python, non-finite → None, tuples → lists,
+    non-string keys → str)."""
+    if isinstance(o, dict):
+        return {str(k): _plain(v) for k, v in o.items()}
+    if isinstance(o, (list, tuple, set)):
+        return [_plain(v) for v in o]
+    if isinstance(o, np.ndarray):
+        return _plain(o.tolist())
+    if isinstance(o, (bool, np.bool_)):
+        return bool(o)
+    if isinstance(o, (int, np.integer)):
+        return int(o)
+    if isinstance(o, (float, np.floating)):
+        return float(o) if np.isfinite(o) else None
+    if o is None or isinstance(o, str):
+        return o
+    return str(o)
+
+
+def summary(result: dict) -> dict:
+    """Machine-readable snapshot of one run (plain JSON types): verdict, reason, the three outcome columns, drivers, what would
+    move it, attenuation availability, stability, abstention reasons, usable / fallback / excluded n per primary KPI, the
+    batch's acquisition flags with their source, the primary comparison rows, MDC feasibility per KPI, the local-anomaly
+    flags with their review state, the in-pipeline classifier, the integration notes and the meta block (hashes, runtime,
+    git describe). Written next to the HTML by ``--summary`` so a drop leaves a diff-able record (E25)."""
+    m, v, b, st = result["meta"], result["verdict"], result["check_b"], result["stability"]
+    fb = result["flags_batch"]
+    flag_cols = [c for c in ("site", "acquisition_group", "grey_pore", "grey_pore_source", "bright_low_contrast",
+                             "bright_low_contrast_source", "raised_black_level", "bse_p1", "cracked_known") if c in fb.columns]
+    cmp = result["compare"]; prim = cmp[cmp.is_primary]
+    cmp_cols = [c for c in ("kpi", "n_ref_usable", "n_batch_usable", "n_ref_fallback", "n_batch_fallback", "n_ref_excluded",
+                            "n_batch_excluded", "shift_mad", "ci_low", "ci_high", "p", "p_holm") if c in cmp.columns]
+    flag_keys = ("site", "kpi", "value", "ref_max", "margin_in_mad", "severity_ok", "measurement_reliable", "measurement_note",
+                 "review_status", "promotable")
+    c2 = result.get("c2st_material")
+    lim = result.get("limits", {})
+    out = dict(
+        meta={k: m.get(k) for k in ("reference", "batch", "n_sites_ref", "n_sites_batch", "runtime_s", "timestamp", "config_hash",
+                                    "thresholds_hash", "git_describe", "feature_version", "provenance", "batch_dir", "reference_dir")},
+        verdict=v["verdict"], reason=v.get("reason"), outcome_columns=v["outcome_columns"], drivers=v.get("drivers", []),
+        what_would_move_it=v.get("what_would_move_it"), attenuation=v.get("attenuation"), escalation=v.get("escalation"),
+        stability={**{k: st.get(k) for k in ("share", "n_runs", "full_verdict", "refit_per_fold", "held_fixed")},
+                   "runs": [dict(left_out=r.get("left_out"), verdict=r.get("verdict"), outcome_columns=r.get("outcome_columns")) for r in st.get("runs", [])]},
+        abstention=result.get("abstention"),
+        usable_n=lim.get("usable_n"), fallback=lim.get("fallback"), excluded=lim.get("excluded"),
+        flags_batch=fb[flag_cols].to_dict("records"),
+        primary=prim[cmp_cols].to_dict("records"),
+        mdc={k: {kk: d.get(kk) for kk in ("mdc_mad", "mdc_abs", "n_incoming", "n_sim_used", "feasible", "reason")} for k, d in result.get("mdc", {}).items()},
+        local_anomaly=dict(flags=[{k: f.get(k) for k in flag_keys} for f in b.get("flags", [])],
+                           n_sites_pending=b.get("n_sites_pending"), n_sites_credible=b.get("n_sites_credible"),
+                           n_sites_refuted=b.get("n_sites_refuted", 0)),
+        c2st_material=None if c2 is None else {k: c2.get(k) for k in ("auc", "p", "n_perm", "cv", "n_sites_ref", "n_sites_batch", "variant", "null_band", "n_dropped_nan")},
+        notes=list(m.get("notes", [])),
+    )
+    return _plain(out)
+
+
 def _parse_reviews(items):
     """--review SITE:KPI=yes|no  →  {(site, kpi): bool}"""
     out = {}
@@ -1300,15 +1368,31 @@ def _parse_reviews(items):
     return out
 
 
-if __name__ == "__main__":
+def main(argv=None) -> str:
+    """CLI: ``python3 -m polaron_qc.report REF_DIR BATCH_DIR [OUT.html] [--review SITE:KPI=yes|no]... [--no-images]
+    [--cache-dir DIR]``. Returns the written report path."""
     import argparse
     ap = argparse.ArgumentParser(description="One incoming batch vs the working reference → self-contained HTML report.")
     ap.add_argument("reference_dir"); ap.add_argument("batch_dir"); ap.add_argument("out", nargs="?")
     ap.add_argument("--review", action="append", default=[], metavar="SITE:KPI=yes|no",
                     help="record a human image review of a routed/pending crop (repeatable); yes = confirmed, no = refuted")
     ap.add_argument("--no-images", action="store_true", help="skip evidence images (faster, smaller file)")
-    args = ap.parse_args()
+    ap.add_argument("--cache-dir", default="analysis_cache/features", metavar="DIR",
+                    help="feature cache directory (default analysis_cache/features); point it at an empty directory to time a cold run")
+    ap.add_argument("--summary", metavar="OUT.json",
+                    help="also write a machine-readable JSON snapshot (verdict, outcome columns, flags, MDC feasibility, notes, hashes)")
+    args = ap.parse_args(argv)
     out = args.out or os.path.join("reports", f"qc_{os.path.basename(os.path.normpath(args.batch_dir))}.html")
     cfg = dict(image_reviewed=_parse_reviews(args.review)) if args.review else None
-    res = build_result(args.reference_dir, args.batch_dir, config=cfg)
-    print("wrote", render_report(res, out, with_images=not args.no_images), f"{os.path.getsize(out) / 1e6:.2f} MB")
+    res = build_result(args.reference_dir, args.batch_dir, config=cfg, cache_dir=args.cache_dir)
+    path = render_report(res, out, with_images=not args.no_images)
+    print("wrote", path, f"{os.path.getsize(out) / 1e6:.2f} MB")
+    if args.summary:
+        with open(args.summary, "w", encoding="utf-8") as fh:
+            json.dump(summary(res), fh, indent=1, ensure_ascii=False)
+        print("wrote", args.summary)
+    return path
+
+
+if __name__ == "__main__":
+    main()
