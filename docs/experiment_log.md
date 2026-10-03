@@ -208,6 +208,7 @@ Conventions: ids `E01…`; every entry states reference, batches, n (usable), st
 ## Part C — Next experiments (queued)
 
 - **E18 · Morphology differentiation — first pass completed** (Part A E18): size/shape summaries, void/bright axial orientations, bright aspect ratio, guarded centroid spacing and image-row gradient summaries are delivered; E24/E25 add width/neighbourhood/context audits. Graphite plate-instance orientation is still deferred: ETD ridge angles and image tensors are not plate axes. Binder segmentation awaits a resolved class, and spacing has no validated agglomeration interpretation. No morphology descriptor is promoted.
+- **Morphology expansion proposed (D40; task K):** a compact prespecified shape-variability/directional phase-association pilot, with nonlinear image-depth structure conditional on coverage. Fixed graph arrangement is task E; texture filtering is optional J. No experiment ID, new measured result or primary driver is created by this planning entry. Definitions/statuses precede extraction; annotation, sensitivity and acquisition/redundancy gates precede interpretation/promotion.
 - **E20 · Existing Inlens per-particle texture normalisation** remains unresolved. E25 completes feasibility for a separate sampled-gradient diagnostic; reduced pooled brightness correlation does not validate the old measurand.
 
 ## Part B — Progress toward the target
@@ -235,7 +236,7 @@ Target: an interpretable, uncertainty-aware QC system that returns accept / inve
 | Honest uncertainty | MDC, permutation nulls, stability | ● | E22: MDC infeasible designs reported as "not available" (D32); LOO refits every input (D30); 96 tests | labelled upper-bound MDC design if the unseen batch is as large as the reference |
 | | acquisition sensitivity views | ● | E22: three views inside the pipeline; `attenuation.available` gates the drift reject (D30) | — |
 | Real-world usability | one-command unseen-batch path | ● | E23: rehearsed on a renamed copy of Batch 1 — 123 s cold, no edits, same verdict; README drop procedure; `--review` for the human gate | — |
-| | assumption register / decision log | ● | A1–A18; decisions through D38; review checklist through C30 | keep current; metadata confirmation is separate from interpretive review |
+| | assumption register / decision log | ● | A1–A18; decisions through D40; review checklist through C30 | keep current; metadata confirmation is separate from interpretive review |
 
 **Known-batch dry run (target: all three verdicts with drivers, stability and reports):** all three pairs run (E17); both incoming batches *consistent within detectable limits*; Batch 1 vs Batch 2 indistinguishable at 7 v 7.
 

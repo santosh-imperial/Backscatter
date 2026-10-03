@@ -52,7 +52,7 @@ What the verdicts mean: *consistent with the working reference (within detectabl
 
 ## Status
 
-Pipeline works on known batches; the drop procedure was rehearsed on a renamed known batch (E23). Both known batches remain consistent within detectable limits. Next: independent measurement review, specimen/process/tolerance metadata, bounded ML audits and a fresh delivery rehearsal after the latest additions.
+Pipeline works on known batches; the drop procedure was rehearsed on a renamed known batch (E23). Both known batches remain consistent within detectable limits. Next: independent measurement review, specimen/process/tolerance metadata, bounded ML audits and a fresh delivery rehearsal after the latest additions; see the next-step plan.
 
 
 ## Battery geometry audit and secondary KPIs
@@ -65,3 +65,6 @@ Reproduce individual known-site audits with `/opt/anaconda3/bin/python3 -m analy
 ## Additional ML methods review
 
 The [specialist assessment](analysis/ml_options/assessment.md) recommends two unrun audits: fixed particle-neighbourhood graph geometry and equal-site frozen-encoder novelty. [Candidate statuses](analysis/ml_options/candidate_register.json) distinguish recommended, optional and deferred methods; [primary sources](analysis/ml_options/sources.json) record retrieval limits. CNN/GNN defect training needs task-valid outcomes and independent material validation; supervised segmentation also needs reviewed phase/instance annotations. This review changes no classifier or verdict inputs.
+
+
+Pick work from the [next-step plan](docs/next_steps.md): priorities, proposed leads, dependencies and concrete handoffs. Tasks remain unclaimed until selected.

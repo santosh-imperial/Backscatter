@@ -115,6 +115,7 @@ What follows from it: (1) the long-void reference sites are not a contradiction 
 
 **Current computed scope (E18/E24/E25):** size-distribution widths; bright circularity, solidity and aspect ratio; void elongation; axial bright/void orientation histograms and alignment; guarded bright-centroid spacing; linear image-row phase-profile slopes; BSE texture scale; local void widths; bright/void neighbourhood and local homogeneity; long-void burden/location. Centroid spacing is not a validated agglomeration index. Image tensors/ETD ridges are not graphite plate-instance orientations, and image-row profiles are not confirmed through-thickness coordinates.
 
+**Explicit next expansion (D40):** [task K](next_steps.md#k-morphology-differences-beyond-defect-counts) proposes shape-distribution variability and directional two-point phase association, with nonlinear image-depth structure conditional on coverage. Task E adds fixed graph arrangement; J is an optional texture comparator. Graphite plate orientation and binder-network segmentation remain validation-gated. New descriptors are proposed, not computed, and remain secondary unless separately validated and promoted. See plan §2.2b and the live metric register/atlas for statuses.
 
 ## 6. Open questions for the organisers
 
@@ -205,3 +206,8 @@ Prioritise deterministic bright-object graph/spatial descriptors and an equal-si
 Fixed Gabor convolution is an optional bounded texture comparator if it adds evidence beyond existing FFT/image tensors. Supervised U-Net measurement improvement needs independent phase/instance annotations and site-held-out KPI-error evaluation. Training a new CNN/GNN defect model, in-house self-supervised encoders or deep reconstruction/density models remains deferred: only batch identity is known, not accept/reject outcomes; there are few independent material units, uncertain specimens, imperfect masks, acquisition confounds and a heterogeneous reference. More nodes/patches do not increase independent graph/site n. These are project-specific priorities, not claims that those architectures can never work with small labelled datasets.
 
 No new model was trained, no architecture advantage/generalisation was measured and no KPI/classifier/verdict input changed. The plan now matches implemented behaviour: embedding novelty remains evidence only; it cannot independently force investigate. New protocols must be fixed before unseen results are viewed. If the unseen batch is used for method selection, it becomes development evidence. Next training gates are reviewed instances/phase labels, specimen/session grouping and task-valid outcome data; graph learning also needs an edge/no-edge ablation against simple geometry.
+
+
+## 14. Next working session (D39)
+
+`docs/next_steps.md` provides selectable unclaimed tasks for independent annotation, specimen/process/tolerance metadata, battery-context review, annotation-based measurement evaluation, two bounded ML audits, explicit morphology expansion (K, D40), notebook/report consistency, a current cold drop rehearsal and the judging narrative. Prioritise measurement validity and delivery; new morphology and ML branches remain experimental. These planning updates change no measurements or verdicts and start no new experiments.

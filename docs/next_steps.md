@@ -1,0 +1,97 @@
+# Next steps and task ownership
+
+Updated 2026-10-03. This is a shared work plan, not an instruction to start every task. All tasks below are unclaimed until someone picks them. Suggested leads reflect the existing team split; Santosh can pick an engineering task too. Record owner, status and the output path here when work starts.
+
+The aim is a QC decision a materials expert can verify: reliable measurements, visible evidence, honest uncertainty and an executable unseen-batch handoff. The provider confirms Batch 3 as a heterogeneous working reference: morphology can distinguish batches even when defect counts do not. Prioritise measurement validity and delivery while testing a compact, explicit morphology expansion.
+
+## What is already done
+
+The baseline extraction, site-level statistics, acquisition checks and decision pipeline work on the known batches. Battery neighbourhood/homogeneity and long-void context have been measured; eight experimental secondary KPIs are in extraction/reports. The morphology atlas and independent annotation pack exist. The ML specialist review supplies two proposed protocols, not trained models. Known-batch report replays and extraction/geometry tests pass; expert mask accuracy and unseen-batch generalisation remain unvalidated.
+
+Start from [current findings](problem_and_findings.md), [battery report](../analysis/battery/output/report.html), [visual atlas](../analysis/morphology/output/metric_atlas.html) and [ML assessment](../analysis/ml_options/assessment.md). Do not repeat the completed broad EDA or literature review as a prerequisite.
+
+## Pick a task
+
+These letters are local plan labels, not external tickets. Priority P0 protects the core deliverable; P1 adds evidence; P2 is conditional on time/data. Effort is relative scope, not a measured completion estimate.
+
+| Pick | Priority / effort | Work package and concrete output | Suggested lead | Dependency / status |
+|---|---|---|---|---|
+| **A** | P0 / medium | Independently annotate the existing phase-mask review pack; export reviewer JSON with uncertain/unmeasurable cases retained. | Santosh / materials reviewer | Ready; unclaimed |
+| **B** | P0 / small | Obtain or explicitly record missing specimen/session, chemistry/process, collector and practical tolerance metadata. Produce an answered/unknown evidence sheet. | Santosh / organiser liaison | Ready; unclaimed |
+| **C** | P0 / medium | Review manufacturing interpretations: long voids versus preparation damage, bottom-band/collector candidate and bright rim fragments. Produce per-site notes, marked locations and clear unmeasurable cases. | Santosh / materials reviewer | Ready for visual review; B strengthens interpretation; unclaimed |
+| **D** | P0 / medium | Evaluate annotated masks against current segmentation and hysteresis; report pixel, object/KPI errors and abstentions, separately for development and held-out sites. | Engineering | Needs exported A annotations; unclaimed |
+| **E** | P1 / medium | Implement the fixed particle-neighbourhood graph audit, Protocol G; deliver visible node/edge overlays, site descriptors, sensitivity and acquisition/redundancy screens. | Engineering | Computation ready; A/C gate material interpretation; unclaimed |
+| **F** | P1 / medium | Implement the balanced frozen-DINO audit, Protocol F; deliver balanced/unbalanced comparisons, nearest-reference crops and resolution/acquisition sensitivity. | Engineering | Existing embeddings available; independent of E; **claimed by Claude (engineering) 2026-10-03, in progress via an isolated-worktree agent; artifact: `analysis/ml_options/f_audit/`** |
+| **G** | P0 / medium | Reconcile generated notebook, reports, metric statuses and assumptions with the current pipeline; produce one coherent judge-facing result. | Engineering + Santosh editorial review | Start now; incorporate D/E/F only when completed and qualified; **coordinating owner Claude (engineering), starts once the E18/K changes are committed; Santosh editorial review after** |
+| **H** | P0 / medium | Repeat the cold unseen-folder rehearsal with current extraction/quality guards; test new IDs, missing/unavailable evidence and the image-review workflow. Record a delivery receipt and reproducible commands. | Engineering | Can run in parallel; finish after final core-code changes; **claimed by Claude (engineering) 2026-10-03, in progress via an isolated-worktree agent (includes resolving the c2st site-id order dependence); artifact: `analysis/rehearsal_h/receipt.md`** |
+| **I** | P0 / small | Build the judging story and manual demo checklist: observed change, trustworthy KPI, image explanation, uncertainty and the next QC action. | Santosh, with engineering support | Start from current reports; finalise after G/H; unclaimed |
+| **J** | P2 / small pilot | Optional fixed Gabor/spatial-texture comparator. Retain only if it adds interpretable evidence beyond existing FFT/tensor/geometry descriptors. | Engineering | After E/F or if their pilot stops early; unclaimed |
+| **K** | P1 / medium | Extend morphology beyond averages: prespecify shape variability and directional phase-association descriptors, with nonlinear image-depth structure as a conditional extension. Deliver definitions, site tables, image explanations and retain/defer findings. | Engineering + Santosh materials review | Ready to scope; A/D gate measurement claims; independent of E/F; unclaimed |
+
+**Suggested division for the first working session:** Santosh picks A and either B or C; engineering prepares D's evaluator, G/H and one of E/F/K. For morphology expansion specifically, start with K's shape variability and E's graph arrangement. E, F and K can be independent branches if capacity permits. Each shared pipeline/register/log change has one coordinating owner to avoid conflicting edits. No assignment or agent dispatch is implied by this table.
+
+## A and D: turn predictions into a measurement benchmark
+
+Open the [annotation page](../analysis/morphology/benchmark/review.html) and its [instructions](../analysis/morphology/benchmark/README.md). Start with the development examples: ordinary `3806gxp0`, low-contrast `4ih2ggld`, grey-pore `71vgq3fw` and long-void `hzumfsms`; then complete the other development cases. Draw on the original lossless reference, with algorithm comparison overlays hidden during annotation. Record void, bright appearance, residual solid and uncertain/ignore regions. These are independent visual references, not chemical mapping.
+
+Export the JSON with reviewer name, notes and measurable status; preserve the manifest identity. Browser local storage alone is not a durable handoff. Partial labels support pixel comparisons on labelled regions only. Fully specified masks are needed for object-size/width errors; poor contrast can remain unmeasurable. A reviewer can complete the existing pack, but held-out annotations/results must remain sealed from anyone tuning the method until development choices are fixed. All sites were previously explored, so this is a measurement holdout, not new-batch validation.
+
+Engineering imports the exported annotations using the existing evaluator rather than regenerating predictions or changing the manifest:
+
+```sh
+/opt/anaconda3/bin/python3 -m analysis.morphology.build_benchmark --annotations /absolute/path/polaron_benchmark_annotations.json
+```
+
+Done means a saved annotation export, separate development/held-out evaluation, usable coverage and abstention counts, plus an explanation of whether errors change relevant KPIs. Choose any error tolerances from the intended measurement/QC use before looking at held-out results. Algorithm agreement is not accuracy. A segmentation change needs new extraction provenance and known-data verification; it is not silently substituted into the frozen release pipeline.
+
+## B and C: clarify the actual battery/QC question
+
+Use [A18 and the other assumption cards](assumption_register.html#A18) and the [battery application review](battery_microstructure_review.md). Record observations separately from hypotheses and supplied metadata.
+
+Ask for specimen IDs and which sites share a specimen; imaging/preparation sessions and section orientation; confirmation of the collector edge; exact Si/SiOx/recipe/binder and coating/calendering information if available; practical KPI tolerances or acceptable/defective outcomes that may be shared. Fresh graphite–Si/SiOx and Batch3's working-reference status are already confirmed and do not need asking again. Unknown is a valid answer.
+
+Review internal versus clipped long voids, possible preparation effects, ambiguous bright rims and a few clearly recognisable graphite plate sections. The bottom band in `epqdaau9` is a collector candidate; full raw context matters because trimming removes it. Existing graphite tensors are image directions, not plate-instance axes. Save site/crop coordinates, reviewer identity and reasoning. Confirming a collector or a visible void does not establish adhesion loss, electrical isolation or later cycling failure.
+
+Done means an answered/unknown metadata sheet and traceable review notes. Apply confirmed/refuted states only to the exact question/KPI reviewed; morphology annotation does not automatically confirm a manufacturing-defect flag. If practical tolerances remain unavailable, the top outcome remains consistent with the working reference within detectable limits; acceptance/equivalence stays unavailable.
+
+## E and F: bounded additional ML evidence
+
+Use the exact proposed settings and stop/go gates in [Protocols G and F](../analysis/ml_options/assessment.md#two-concrete-experiment-protocols). Register precise graph descriptor keys/definitions before extraction. Keep candidate stage in [the ML register](../analysis/ml_options/candidate_register.json), and measured morphology keys/statuses in [the metric register](../analysis/morphology/metric_register.json).
+
+E starts with fixed graphs and four interpretable summaries, with threshold/object-floor/edge coverage sensitivity, node-only size/loading baselines and acquisition controls. A proximity edge is not electrical contact. F uses the existing frozen representation, equal reference-site influence in PCA/memory fitting, fold-local preprocessing and nearest-image explanations. Cached embeddings do not prove material validity. Neither audit trains a defect classifier or changes primary tests/classifier inputs/verdicts.
+
+Each pilot is done when saved site tables, real-image examples, uncertainty/coverage, provenance and an explicit retain/defer finding exist—even if the result is redundant, unstable or confounded. Use one prespecified pilot and one saved all-known-site run if justified; additional rounds require a new development version. Do not select methods or settings by the most attractive known-folder separation. New numerical results belong in the experiment log/registry. Sites remain n; specimen independence is unresolved.
+
+## K: morphology differences beyond defect counts
+
+This workstream complements E's graph geometry and J's optional texture filters. Batch identity, morphological change and manufacturing acceptability are separate questions. Keep Batch 3's full usable distribution and sub-populations visible; the ordinary-only reference is a sensitivity view, not a newly declared clean baseline.
+
+| Morphology family | Already measured | Additional work / status |
+|---|---|---|
+| Size and shape | Bright/pore size summaries and distribution-width ratios; bright circularity, solidity and aspect ratio; pore elongation | **Proposed K pilot:** per-site shape quantiles/spread, to expose irregular or elongated minorities hidden by an average. Fix object scope, area versus count weighting, minimum size and clipped-object handling before extraction. |
+| Orientation | Axial histograms and alignment of elongated bright/void components; image-tensor feasibility checks | Graphite plate-instance orientation is **deferred** until independently reviewed plate axes and section/collector direction exist. Image directions are not graphite alignment. |
+| Spatial arrangement | Boundary-censored bright-centroid nearest-neighbour spacing; local bright dispersion and bright/pore association | **Proposed E:** fixed graph edge lengths, directional arrangement and neighbouring size association. **Proposed K pilot:** directional two-point phase auto/cross-correlations at a fixed set of x/y lags, with phase-loading controls. These describe 2-D arrangement, not physical contact or 3-D transport. |
+| Image-depth structure | Ten-bin phase-fraction profiles, signed/absolute linear slopes, void-width profiles and long-void locations | **Conditional K extension:** nonlinear phase enrichment/depletion or shape/size changes across fixed image-row bins, with coverage gates. Rows are not confirmed through-thickness/collector coordinates. |
+| Texture scale/direction | BSE correlation length/FFT slope; detector/scale image tensors | **Optional J:** a fixed Gabor comparator after redundancy/acquisition checks. Existing Inlens per-particle texture remains confounded. |
+
+Start with a small prespecified panel, not an open feature sweep. Before extraction, write exact keys, formulas, units, weights, lags/bins, coverage/abstention rules and sensitivity settings into a versioned definition sheet and the live metric register. Show each descriptor on actual images, including excluded/clipped regions. Generated inventory/atlas views must label proposed versus computed versus expert-reviewed status separately.
+
+Use current data-derived quality flags, site-level intervals and deletion sensitivity, paired threshold perturbations and acquisition/size/loading/redundancy controls. Components, graph edges and image windows never increase statistical n. Independent A/D labels gate measurement-accuracy claims; computed geometry alone is provisional. A descriptor that is constant, unstable, unmeasurable or explained by an existing summary gets a defer finding rather than another QC score.
+
+Done means the definition sheet, reproducible measured outputs for the selected pilot, image evidence, usable-site/coverage tables, uncertainty and a retain/defer recommendation, with register/atlas/findings/log updates. New descriptors stay secondary and outside classifier/verdict inputs. Promotion requires a separate logged validation decision and practical QC interpretation; nothing is selected using the unseen batch. This plan does not yet compute the proposed K descriptors.
+
+## G, H and I: deliver and preserve the unseen test
+
+G updates notebook **generators**, then rebuilds/executes the notebook and checks outputs against current reports. Audit trust labels, usable counts, threshold sensitivity, unavailable values, expert-review status and battery wording. Some previous notebooks/scoreboard notes predate the secondary additions; reconcile against current code/results. Keep a short primary decision screen, with exploratory work clearly accessible underneath. Santosh reviews whether every conclusion has an image, a limitation and a practical next action.
+
+H exercises the documented [drop procedure](../README.md#unseen-batch--the-drop-procedure-rehearsed-see-experiment-log-e23) using a temporary renamed known-data fixture and a fresh cache. Preserve raw originals and historical caches. The prior rehearsal precedes the latest additions, so verify the current path, including missing-quality abstention, finite/absent secondary values and confirmed/refuted image reviews. Include the known limitation that fold assignment/permutation streams can depend on site IDs; resolve or disclose it on known data before freeze. Compare verdict inputs and primary features, not an assumed requirement that every stochastic classifier p-value be identical. Run checks appropriate to changed code and repeat the delivery rehearsal after the last core change.
+
+Before the real drop, snapshot core config/thresholds, feature/method versions, source hashes and reference inputs. Save the unseen report before any follow-up exploration. Run the existing frozen decision path first; its classifier/acquisition views run inside the pipeline. Optional embedding/graph audits do not become verdict drivers. If the unseen batch arrives while a candidate protocol is unfinished, keep it out of candidate selection/tuning; any use for selection makes it development data. An incoming batch outside supported data/quality conditions should show unavailable evidence or investigation, not forced acceptance.
+
+I prepares a short walkthrough: why acquisition matters; which observed geometries are trustworthy enough to use; what the reference itself contains; the QC verdict and image evidence; what uncertainty/tolerances prevent; what the operator should review or measure next. Show one ordinary case and one reviewed challenging case without claiming a ground-truth defect label that we do not have.
+
+## Keep for later
+
+Trained CNN/GNN defect models, supervised U-Net without independent labels, graphite-alignment automation without instances/direction, binder-network segmentation without resolvable evidence, and 3-D transport/performance predictions need additional data/validation. They are future branches with explicit gates in the ML and morphology registers.
+
+Once someone picks work, update this table with actual ownership, status and artifact path. Completion requires the specified output and limitations, not merely code running. This planning pass launches no new experiment, annotation or implementation task. Pre-presentation checks applied: C04/C05/C06/C13/C14/C16–C18/C21/C27–C30.

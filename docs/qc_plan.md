@@ -39,6 +39,16 @@ One cell: `REFERENCE = "Batch_3"`, `COMPARE = ["Batch_1", "Batch_2"]` (+ unseen 
 ### 2.2 Feature extraction
 Calls the shared module. Produces per-site KPI table, per-image quality flags, per-particle table, 512-px patch table (patch-level KPIs for drift maps and local-anomaly checks), and patch embeddings. Cached by content hash of the folder.
 
+### 2.2b Morphology differentiation beyond defect counts (D40)
+
+The provider's Batch 3 guidance makes morphology an explicit comparison workstream. Batch 3 is a heterogeneous working reference, not a verified defect-free baseline. Report changes in size, shape, orientation, arrangement and image-depth structure alongside the separate localized-defect path; a morphology difference alone does not establish manufacturing unacceptability.
+
+**Already computed:** the E18 morphology screen includes size-distribution widths, bright circularity/solidity/aspect ratio, void elongation, bright/void axial orientations, centroid spacing, linear phase-profile slopes and BSE texture scale. E24 adds local void width and segmentation sensitivity; E25 adds neighbourhood/homogeneity and long-void context, including eight experimental secondary scalars in extraction/reports. Computation and expert measurement validation remain separate statuses.
+
+**Next expansion:** [task K](next_steps.md#k-morphology-differences-beyond-defect-counts) proposes shape-distribution variability and directional two-point phase association, with nonlinear image-depth structure conditional on coverage; task E proposes fixed object-graph arrangement. Task J's texture filters are optional. Graphite plate orientation requires reviewed instances and known section/collector direction; binder-network segmentation remains deferred without a resolved class. Existing image tensors/ETD ridges are not plate-axis measurements.
+
+Fix a compact panel's definitions, weights, object exclusions, scales and abstention rules before extraction. Require image evidence, usable site counts, threshold sensitivity, acquisition and size/loading controls, redundancy checks and independent annotation-based measurement review. Maintain proposed/computed/reviewed/QC-role statuses in the live register and visual atlas. New morphology remains secondary; the five primary KPIs and frozen decision path retain their current roles. A new primary driver requires a separate logged validation decision, never selection on the unseen result.
+
 ### 2.3 Reference characterisation ("how much does the reference constrain?")
 For each KPI on Batch 3:
 - distribution plot with the grey-pore and cracked sub-populations coloured;
