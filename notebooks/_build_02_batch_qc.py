@@ -318,6 +318,36 @@ The [visual morphology atlas](../analysis/morphology/output/metric_atlas.html) t
 
 Sites remain the statistical units; windows, graph nodes and pixels do not add independent samples. Batch 3 remains the heterogeneous working reference. These known-data audits establish neither acceptance/equivalence nor unseen-batch generalisation.""")
 
+md("""## 12 · Sample identification — three separate answers per sample (D49P, E31, D50)
+
+The provider's clarification: Batch 3 is the supplier-promised baseline; Batches 1 and 2 arrived later and **do** differ, showing the kinds of variation to detect; judging is by categorising held-back samples and by saying whether an unknown batch is inside or outside the promised distribution. The frozen five-KPI verdict above answers a different question (*did the material move beyond what this reference and n can detect*) and does not headline this deliverable. `polaron_qc.categorise` keeps three answers apart:
+
+| output | question | what it is — and is not |
+|---|---|---|
+| **site categorisation** | does this sample resemble Batch 1, 2 or 3? | 3-class **model probabilities** (not posteriors: calibration assessed and failed, top bin 0.83 vs observed 0.67); three feature families reported side by side — morphology-only, acquisition-only, combined (pre-registered primary). The primary separates above the site-label null, **on texture and session statistics; morphology alone is at chance** → a *batch fingerprint*, not a material classification. |
+| **baseline OOD assessment** | is it outside Batch 3's promised distribution? | k-NN robust-z distance to all 17 Batch 3 sites, reference percentiles by leave-one-site-out (rank floor 1/18); built separately from the classifier — a 3-class model must pick a known batch even for an unfamiliar sample, so a high Batch 3 probability never establishes membership. Never a probability of defect. |
+| **QC interpretation** | what changed, how reliable, what action follows? | §7 verdict + §8 reports (image evidence, next QC action); `docs/batch_signatures.md` for what differs per batch. |
+
+Feature selection, imputation and scaling run inside every leave-one-site-out fold and inside every permutation; the primary family was fixed before the first run (`analysis/categoriser/findings.md` §1, commit 691990e). Sites are n (7 / 7 / 17); the intervals are wide. Read the OOD column and the acquisition flags before the argmax (checklist C32).""")
+code(r"""from polaron_qc import categorise as CAT
+t0 = time.time()
+CAT_OUT = os.path.join(ROOT, "analysis", "categoriser", "output")
+CATR = CAT.run([os.path.join(DATA, CONFIG["reference"])] + [os.path.join(DATA, b) for b in CONFIG["compare"] if b in ("Batch_1", "Batch_2")], cache_dir=FCACHE, out_dir=CAT_OUT, n_perm=200, seed=CONFIG["seed"], verbose=False)
+print(f"categoriser LOO + OOD in {time.time()-t0:.0f} s → {os.path.relpath(CAT_OUT, ROOT)}")
+summ = pd.read_csv(os.path.join(CAT_OUT, "categoriser_summary.csv"))
+print("\nSite categorisation — leave-one-site-out on the 31 known sites (balanced accuracy; chance 1/3; majority-class accuracy 0.55):")
+display(summ[["family", "primary", "n_features", "accuracy", "accuracy_ci95", "balanced_accuracy", "recall_Batch_1", "recall_Batch_2", "recall_Batch_3", "perm_p", "brier", "brier_prior", "ece"]].round(3))
+print("confusion of the pre-registered primary (rows = true batch, columns = argmax of the model probabilities):")
+display(pd.read_csv(os.path.join(CAT_OUT, "confusion_combined.csv"), index_col=0))
+print("\nBaseline OOD — percentile of each site's k-NN robust-z distance within the Batch 3 leave-one-site-out reference (floor 1/18 = 5.6 %):")
+ood = pd.read_csv(os.path.join(CAT_OUT, "ood_batch_summary.csv"))
+display(ood[["variant", "batch", "n_sites", "pct_min", "pct_median", "pct_max", "n_exceed_ref_max", "label"]].round(1))
+st = pd.read_csv(os.path.join(CAT_OUT, "site_table.csv"))
+cols = ["batch", "site", "acquisition_group", "argmax__combined", "mp_Batch_1__combined", "mp_Batch_2__combined", "mp_Batch_3__combined", "argmax__morph"] + [c for c in st.columns if c.startswith("ood_pct") and c.endswith("__morph")][:1] + [c for c in st.columns if c.startswith("ood_exceed") and c.endswith("__morph")][:1]
+print("\nper-site hand-off (model probabilities of the primary; morphology-only argmax; OOD percentile of the primary morphology variant) — compared batches:")
+display(st[st.batch.isin(CONFIG["compare"])][[c for c in cols if c in st.columns]].round(2).reset_index(drop=True))
+print("Reading: resemblance (argmax) and baseline membership (OOD percentile) are different questions and can disagree; model probabilities are not calibrated; a sample from an unseen session will be placed away from all three known batches by the fingerprint and still receive an argmax — the OOD column and the flags come first.")""")
+
 nb["cells"] = cells
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
 out = __file__.replace("_build_02_batch_qc.py", "02_batch_qc.ipynb")

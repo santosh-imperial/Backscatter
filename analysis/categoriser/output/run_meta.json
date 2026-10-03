@@ -1,8 +1,8 @@
 {
  "known_dirs": [
-  "Dataset/Batch_3",
-  "Dataset/Batch_1",
-  "Dataset/Batch_2"
+  "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_3",
+  "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_1",
+  "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_2"
  ],
  "score_dir": null,
  "ref_batch": "Batch_3",
@@ -170,7 +170,7 @@
   "morph_texture": [],
   "acq": []
  },
- "wall_s": 156.44942712783813,
+ "wall_s": 30.57433009147644,
  "results": {
   "morph": {
    "features": [
