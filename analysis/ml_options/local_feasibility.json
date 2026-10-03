@@ -1,0 +1,35 @@
+{
+  "purpose": "Read-only local feasibility and effective ML-code provenance for methods assessment; no training, feature extraction or QC changes.",
+  "date": "2026-10-03",
+  "python": "/opt/anaconda3/bin/python3",
+  "packages_present": {
+    "torch": true,
+    "torchvision": true,
+    "torch_geometric": true,
+    "kymatio": false,
+    "sklearn": true,
+    "skimage": true,
+    "timm": false
+  },
+  "cached_encoder": "dinov2_vits14_pretrain.pth exists in torch hub checkpoints",
+  "resnet_checkpoint_found_in_standard_cache": false,
+  "input_source_sha256": {
+    "polaron_qc/ml.py": "4874ffb38cf9ba665d64cfa5fd34d591a622b2c09fabc550892cfbe0d9bd1089",
+    "polaron_qc/decision.py": "abfa03c596a07caebcdaec1a8577879dfd993fca233f48aeab3d22638b69f6a0",
+    "polaron_qc/report.py": "46a43bc33eaf473ac21d364a4e5c8c2afbf0b5186f3415df9e8de9c715ab1437",
+    "docs/qc_plan.md": "54a7739da30a76ccaa20ad5a7719c64a0cd50c62445ca691ed6b3ba68e08b2df",
+    "analysis_cache/ml/run_summary.json": "869ee3d7e0044609b6a2dd6976935c01a21731170cca3d88e57d87dfbf1a6a95"
+  },
+  "limitations": [
+    "Package discovery is not an import/runtime/training test.",
+    "Checkpoint presence is not evidence of representation accuracy.",
+    "No new generalisation or battery performance measurement."
+  ],
+  "read_scope": "Package/source observations at initial inspection; docs/qc_plan.md was subsequently reconciled to existing evidence-only behaviour under D38.",
+  "final_effective_code_sha256": {
+    "polaron_qc/ml.py": "0af4b11d539eb26f7817d6252a1cac39307474a66d3be0bbfe3ed30d21dc0382",
+    "polaron_qc/decision.py": "abfa03c596a07caebcdaec1a8577879dfd993fca233f48aeab3d22638b69f6a0",
+    "polaron_qc/report.py": "46a43bc33eaf473ac21d364a4e5c8c2afbf0b5186f3415df9e8de9c715ab1437"
+  },
+  "ml_docstring_reconciliation_executable_ast_unchanged": true
+}

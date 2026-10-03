@@ -1,0 +1,166 @@
+{
+  "review_date": "2026-10-03",
+  "purpose": "Primary-source and official-documentation support for a bounded ML methods assessment; proposed experiments only, no training or new performance measurements.",
+  "assessment": "analysis/ml_options/assessment.md",
+  "local_feasibility": "analysis/ml_options/local_feasibility.json",
+  "scope": {
+    "confirmed_material": "Fresh graphite–Si/SiOx, confirmed directly by Santosh on 2026-10-03; exact chemistry and pixelwise labels remain unknown.",
+    "known_labels": "Provider-confirmed supplier-batch membership is known. Acceptable/defective outcomes and independent phase/instance truth are absent.",
+    "statistical_unit": "Site; physical specimen independence remains unconfirmed. Patches, graph nodes and windows do not increase material sample n.",
+    "status": "Methods recommendation only. No adopted extraction, new model results, production edits or primary-KPI promotion.",
+    "retrieval_limits": "Abstract-only sources support the stated architecture/design motivation only. Benchmark performance and implementation details were not extrapolated to SEM electrodes. Direct publisher/author/official sources were used, not secondary tutorials. A blocked PatchCore full-paper retrieval was replaced with its author abstract and official implementation documentation."
+  },
+  "local_inputs_inspected": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "docs/problem_and_findings.md",
+    "docs/qc_plan.md",
+    "docs/decision_log.md",
+    "polaron_qc/ml.py",
+    "polaron_qc/report.py",
+    "polaron_qc/decision.py",
+    "analysis_cache/ml/run_summary.json",
+    "analysis_cache/ml/c2st_material.json",
+    "analysis_cache/ml/novelty_correlates.csv",
+    "analysis_cache/ml/novelty_correlates_ordinary_sites.csv",
+    "analysis_cache/ml/novelty_per_site.csv",
+    "analysis/battery/output/neighbourhood_findings.md",
+    "analysis/battery/output/neighbourhood_sites.csv",
+    "analysis/battery/output/neighbourhood_components.csv",
+    "analysis/battery/output/neighbourhood_summary.csv",
+    "analysis/battery/output/neighbourhood_overlay_Batch_2_3806gxp0.png"
+  ],
+  "sources": [
+    {
+      "id": "ML-S01",
+      "title": "DINOv2: Learning Robust Visual Features without Supervision",
+      "authors": "Oquab et al.",
+      "year": 2023,
+      "url": "https://arxiv.org/html/2304.07193v2",
+      "abstract_url": "https://arxiv.org/abs/2304.07193",
+      "primary_source_type": "Original research paper, author preprint",
+      "retrieval_scope": "Abstract and accessible full-text sections 7.1–7.3, including frozen-feature downstream evaluations.",
+      "supports": "Frozen pretrained visual features can be evaluated with lightweight/nonparametric downstream methods without fine-tuning the backbone.",
+      "limit": "Published natural-image/transfer benchmarks do not validate electrode morphology sensitivity or SEM acquisition invariance. Current cached tile CLS features are a project representation choice."
+    },
+    {
+      "id": "ML-S02",
+      "title": "Towards Total Recall in Industrial Anomaly Detection",
+      "authors": "Roth et al.",
+      "year": 2022,
+      "url": "https://arxiv.org/abs/2106.08265",
+      "implementation_url": "https://github.com/amazon-science/patchcore-inspection",
+      "primary_source_type": "Original research author abstract and authors' official implementation",
+      "retrieval_scope": "Author abstract plus official README quick guide and Training PatchCore sections. Publisher HTML returned 403; full PDF and attempted HTML were unavailable in this retrieval.",
+      "supports": "PatchCore uses a representative memory of nominal pretrained patch features; official implementation uses locally aggregated CNN features and coreset sampling.",
+      "limit": "No transfer of MVTec accuracy or nominal-training assumptions. Proposed DINO tile CLS balancing is an adaptation, not PatchCore reproduction, calibrated defect detection or a verified clean memory bank."
+    },
+    {
+      "id": "ML-S03",
+      "title": "Graph neural networks for an accurate and interpretable prediction of the properties of polycrystalline materials",
+      "authors": "Dai, Demirel, Liang and Hu",
+      "year": 2021,
+      "url": "https://www.nature.com/articles/s41524-021-00574-w",
+      "primary_source_type": "Original research paper, corrected publisher full text",
+      "retrieval_scope": "Full Results and Methods text; graph construction, simulated 3-D dataset, supervised target and evaluation design inspected.",
+      "supports": "A microstructure GNN can represent physical grains/adjacency with grain attributes and supervised simulated property targets.",
+      "limit": "The material and supervision are simulated polycrystal magnetostriction, not 2-D electrode QC. No published accuracy, dataset-size sufficiency or computation speed is transferred. Image proximity edges are not physical grain/contact adjacency."
+    },
+    {
+      "id": "ML-S04",
+      "title": "Author Correction: Graph neural networks for an accurate and interpretable prediction of the properties of polycrystalline materials",
+      "authors": "Dai, Demirel, Liang and Hu",
+      "year": 2022,
+      "url": "https://www.nature.com/articles/s41524-022-00804-9",
+      "primary_source_type": "Authors' publisher correction",
+      "retrieval_scope": "Full correction text.",
+      "supports": "The original code omitted message passing; the corrected implementation changed prediction and attribution figures/results.",
+      "limit": "Our no-edge/node-summary ablation recommendation is a methodological inference, not an empirical result on this project or a claim that message passing never helps."
+    },
+    {
+      "id": "ML-S05",
+      "title": "skimage.filters.gabor and gabor_kernel, scikit-image 0.23.2",
+      "authors": "scikit-image maintainers",
+      "year": 2024,
+      "url": "https://scikit-image.org/docs/0.23.x/api/skimage.filters.html#skimage.filters.gabor",
+      "primary_source_type": "Official library documentation",
+      "retrieval_scope": "gabor/gabor_kernel definitions, parameter units, boundary convention and response arrays.",
+      "supports": "A Gabor filter is a fixed Gaussian-modulated sinusoidal convolution with frequency/orientation parameters and real/imaginary responses.",
+      "limit": "Chosen wavelengths/directions and energy summaries are proposed project definitions, not validated graphite-plate orientation or acquisition-invariant measurements."
+    },
+    {
+      "id": "ML-S06",
+      "title": "Invariant Scattering Convolution Networks",
+      "authors": "Bruna and Mallat",
+      "year": 2012,
+      "url": "https://arxiv.org/abs/1203.1513",
+      "primary_source_type": "Original research author preprint",
+      "retrieval_scope": "Author abstract only; preprint submitted 2012.",
+      "supports": "Fixed wavelet convolutions, modulus and averaging yield a translation-invariant, deformation-stable representation with higher-order texture information.",
+      "limit": "No claim of SEM contrast/charging invariance or electrode accuracy. Scattering is deferred; no dependency installed or numerical representation extracted."
+    },
+    {
+      "id": "ML-S07",
+      "title": "U-Net: Convolutional Networks for Biomedical Image Segmentation",
+      "authors": "Ronneberger, Fischer and Brox",
+      "year": 2015,
+      "url": "https://arxiv.org/abs/1505.04597",
+      "official_author_url": "https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/",
+      "primary_source_type": "Original research author abstract and official lab publication/software page",
+      "retrieval_scope": "Author abstract and official lab page; annotated EM use and architecture motivation verified.",
+      "supports": "U-Net combines context and spatial localisation with augmentation for supervised segmentation; it was evaluated on annotated neuronal EM images.",
+      "limit": "No universal minimum label count or transfer of biomedical segmentation accuracy to graphite–Si/SiOx. Existing project masks must be independently reviewed before this experiment."
+    },
+    {
+      "id": "ML-S08",
+      "title": "High throughput quantitative metallography for complex microstructures using deep learning: A case study in ultrahigh carbon steel",
+      "authors": "DeCost, Francis and Holm",
+      "year": 2019,
+      "url": "https://www.nist.gov/publications/high-throughput-quantitative-metallography-complex-microstructures-using-deep-learning",
+      "doi": "10.1017/S1431927618015635",
+      "primary_source_type": "Authors' official NIST publication record and abstract",
+      "retrieval_scope": "Official abstract; task, annotated dataset and derived distributions inspected. Linked full PDF not used for detailed performance claims.",
+      "supports": "Annotated material-micrograph CNN segmentation can support interpretable particle-size and denuded-zone width distributions.",
+      "limit": "Steel microconstituents are not electrode phases; no weights, label requirements or measurement accuracy is transferred."
+    },
+    {
+      "id": "ML-S09",
+      "title": "Vision Transformers Need Registers",
+      "authors": "Darcet et al.",
+      "year": 2023,
+      "url": "https://arxiv.org/abs/2309.16588",
+      "primary_source_type": "Original research author preprint",
+      "retrieval_scope": "Author abstract; revised 2024 version metadata checked.",
+      "supports": "High-norm token artifacts can occur in ViT feature maps, including low-information backgrounds; registers address the reported artifact.",
+      "limit": "Not a measurement of artifacts in these current CLS embeddings or a reason to replace the cached model. Dense token maps require separate extraction and validation."
+    },
+    {
+      "id": "ML-S10",
+      "title": "OneClassSVM documentation",
+      "authors": "scikit-learn maintainers",
+      "year": 2026,
+      "url": "https://scikit-learn.org/stable/modules/generated/sklearn.svm.OneClassSVM.html",
+      "primary_source_type": "Official library documentation",
+      "retrieval_scope": "Class purpose and nu parameter definition. Live docs identify version 1.9.1; local project uses sklearn 1.4. No version migration or runtime result claimed.",
+      "supports": "nu is an upper bound on training-error fraction and lower bound on support-vector fraction, not a calibrated QC false-alarm probability.",
+      "limit": "Library availability and parameter definitions do not support target-data performance or model calibration."
+    },
+    {
+      "id": "ML-S11",
+      "title": "Testing for Outliers with Conformal p-values",
+      "authors": "Bates, Candès, Lei, Romano and Sesia",
+      "year": 2023,
+      "url": "https://arxiv.org/html/2104.08279v3",
+      "abstract_url": "https://arxiv.org/abs/2104.08279",
+      "doi": "10.1214/22-AOS2244",
+      "primary_source_type": "Original research author preprint of Annals of Statistics paper",
+      "retrieval_scope": "Full-text introduction, train/calibration separation and marginal rank construction; rank lower bound also verified in proof text.",
+      "supports": "Outlier conformal calibration requires the specified reference/test distribution assumptions and fitting/calibration separation; ordinary nonrandomised ranks have minimum 1/(n_cal+1).",
+      "limit": "The arithmetic resolution example is not project calibration. Current heterogeneous reference, unknown specimen independence and reference-LOO novelty percentiles are not demonstrated conformal guarantees."
+    }
+  ],
+  "pre_presentation_checks_applied": [
+    "C01", "C02", "C03", "C04", "C05", "C06", "C07", "C09", "C10", "C13", "C14", "C16", "C17", "C21", "C22", "C28", "C29", "C30"
+  ],
+  "handoff": "Parent owns shared plan, logs and candidate/metric register integration. New protocols remain unrun and excluded from primary/ML decision inputs until separately reviewed."
+}

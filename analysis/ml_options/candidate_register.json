@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "updated": "2026-10-03",
+  "purpose": "ML method feasibility inventory; recommendations are not implemented metrics or performance claims. Existing primary/ML/decision families remain frozen.",
+  "data_contract": "Batch identity is known; acceptable/defective outcome labels, independent phase/instance truth and specimen independence are unavailable. Sites remain n.",
+  "candidates": [
+    {
+      "id": "fixed_object_graph",
+      "label": "Fixed bright-object graph / spatial descriptors",
+      "status": "recommended_not_run",
+      "reason": "Measures arrangement beyond per-object sizes without fitting neural weights.",
+      "gate": "Expert component/crop review; deterministic topology and object-floor sensitivity; site statistics; loading/size and acquisition controls; no electrical-connectivity interpretation.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "equal_site_frozen_novelty",
+      "label": "Equal-site frozen-encoder novelty audit",
+      "status": "recommended_not_run",
+      "reason": "Reuses current cached DINOv2 representations; audits unequal patch contributions and nuisance sensitivity.",
+      "gate": "Equal site influence in fitting/memory and evaluation; fold-local PCA; nearest-reference evidence; acquisition-only and geometry baselines; abstention for unavailable quality.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "fixed_gabor",
+      "label": "Fixed convolution / Gabor texture comparator",
+      "status": "optional_not_run",
+      "reason": "Simple, interpretable filtering may expose directional texture without training a CNN.",
+      "gate": "Bounded prespecified bank; redundancy with existing FFT/tensors; acquisition perturbations; no graphite-plate or transport claim.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "cnn_batch_or_defect",
+      "label": "Train a CNN classifier",
+      "status": "deferred",
+      "reason": "Batch membership can support two-sample tests, but is not a defect label; neural complexity has no demonstrated advantage on these sites.",
+      "gate": "More independent specimens and task-valid labels; grouped validation with specimen/session controls; frozen evaluation protocol.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "gnn_learned",
+      "label": "Train a GNN",
+      "status": "deferred",
+      "reason": "Many nodes do not create more independent graphs; current object identity and edge meaning are unvalidated.",
+      "gate": "Validated nodes/edges and task labels; sufficient independent graphs; ablation must beat deterministic graph and node-only baselines.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "unet_segmentation",
+      "label": "Supervised CNN / U-Net phase-instance segmentation",
+      "status": "deferred_pending_annotations",
+      "reason": "Can target measurement quality after the independent ROI benchmark is annotated.",
+      "gate": "Independent phase/instance labels, uncertain pixels and abstentions; held-out sites/specimens; report KPI error as well as segmentation overlap.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "inhouse_self_supervision",
+      "label": "Train a self-supervised image/graph encoder",
+      "status": "deferred",
+      "reason": "No quality labels required for pretraining, but correlated known-site images and nuisance-preserving augmentations can encode acquisition.",
+      "gate": "External independent microscopy evidence or stronger known-data validation; scientifically valid augmentations; controls and fixed unseen protocol.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    },
+    {
+      "id": "deep_one_class_density",
+      "label": "Deep reconstruction / one-class density methods",
+      "status": "deferred",
+      "reason": "Working reference contains anomalies; reconstruction/density scores need clean calibration and interpretable controls.",
+      "gate": "Reviewed reference scope, independent calibration sites, low-dimensional/simple baseline, honest finite-sample and exchangeability limits.",
+      "review_status": "unreviewed_by_materials_expert",
+      "qc_role": "excluded_from_verdict",
+      "validation_state": "no_new_empirical_validation",
+      "evidence_path": "analysis/ml_options/assessment.md"
+    }
+  ],
+  "guardrails": [
+    "No current model training or new numerical performance measurements.",
+    "No change to primary KPIs, material classifier inputs, thresholds or verdicts.",
+    "All reference-dependent preprocessing/model selection inside site/specimen folds and permutations.",
+    "Do not tune on unseen data and still call it independent validation.",
+    "Agreement between methods on the same images is not independent confirmation."
+  ]
+}
