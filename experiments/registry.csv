@@ -36928,3 +36928,6 @@ E32,2026-10-03,e20_shift_mad,Batch_3,Batch_2,inlens_texture_d_lbp,robust_shift,1
 E32,2026-10-03,e20_loo_r2_acquisition,known-data,all31,inlens_texture_d_lbp,r2,,31,0.025,R2,
 E32,2026-10-03,e20_perturb_gamma_delta_over_gap,known-data,4 sites,inlens_texture_d_lbp,max_abs,,4,0.54,gap,"gamma 0.75 on 9luzk4jm; re-quantisation of a stretched image"
 E32,2026-10-03,e20_integrity_sites_matching_cache,known-data,all31,inlens_particle_texture,count,,31,31,count,"recomputed cur median, particle count, th_lo, th_hi equal cache"
+E33,2026-10-03,test_drop_assignment,known-3-batches,Hackathon-Polaron-test,combined,argmax model probability,31,1,Batch_1,batch,sample 3e122cbj; p 0.765; morph Batch_1; acq Batch_1; OOD pct 100.0; frozen before truth sha 0bb526bffdfe2cf9
+E33,2026-10-03,test_drop_assignment,known-3-batches,Hackathon-Polaron-test,combined,argmax model probability,31,1,Batch_2,batch,sample fn0mhxef; p 0.451; morph Batch_2; acq Batch_1; OOD pct 17.6; frozen before truth sha 0bb526bffdfe2cf9
+E33,2026-10-03,test_drop_assignment,known-3-batches,Hackathon-Polaron-test,combined,argmax model probability,31,1,Batch_3,batch,sample xrv9xvzb; p 0.742; morph Batch_3; acq Batch_3; OOD pct 17.6; frozen before truth sha 0bb526bffdfe2cf9
