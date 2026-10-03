@@ -35,6 +35,11 @@ SOFT_FLAGS = {"grey_pore"}
 # shows up in the per-site drift score and in Check A, never in Check B.
 LOCAL_KPIS = ["crack_frac", "crack_count_per_Mpx", "pore_max_d", "bright_max_d",
               "patch_crack_area_frac_max", "patch_pore_max_d_max", "etd_crack_density_particles"]
+# Only these can PROMOTE a flag to pending/credible (D29). Calibration against the i.i.d. null (7 batch vs 10 ordinary
+# reference, Gaussian): P(at least one pending flag) at a 2.0-MAD margin ≈ 4 % per KPI, ≈ 8 % for two KPIs, ≈ 15 % for four;
+# on real 5-v-5 splits of the ordinary reference the rate stays high (heavy tails), so promotion is restricted to the two
+# physically consequential void KPIs and the rest are reported as secondary local flags that never drive a verdict.
+LOCAL_KPIS_PROMOTE = ["crack_frac", "pore_max_d"]
 
 
 @dataclass
@@ -44,7 +49,7 @@ class Thresholds:
     min_effect_mad: float = 1.0         # a primary KPI "carries" drift only if |robust shift| >= this (in reference MADs)
     consistency_share: float = 0.5      # share of usable batch sites beyond the ordinary-reference range, in the shift direction
     min_usable_sites: int = 5           # below this, Check A abstains for that KPI; below for all primary KPIs → quality abstention
-    severity_margin_mad: float = 1.0    # Check B: margin beyond ordinary-reference max, in MADs of per-site maxima
+    severity_margin_mad: float = 2.0    # Check B: margin beyond ordinary-reference max, in MADs of ordinary per-site values (D29; calibrated on the i.i.d. null)
     strong_attenuation: float = 0.5     # if the multivariate shift drops by more than this share under stratified/adjusted views → investigate, not reject
     reject_min_credible_sites: int = 2  # Check B alone can reject only with ≥ this many credible sites …
     reject_min_severity_mad: float = 2.0  # … each beyond the reference max by ≥ this many MADs
@@ -148,8 +153,9 @@ def check_b(local_tables: dict[str, pd.DataFrame], batch_sites: pd.DataFrame, im
                        severity_ok=bool(r.margin_in_mad >= th.severity_margin_mad), measurement_reliable=not unreliable,
                        measurement_note="fallback threshold (grey-pore site)" if soft else ("unreliable (low-contrast site)" if unreliable else "ok"),
                        image_reviewed=None if image_reviewed is None else bool(image_reviewed.get((site, k), False)))
+            rec["promotable"] = k in LOCAL_KPIS_PROMOTE
             flags.append(rec)
-            if rec["severity_ok"] and rec["measurement_reliable"]:
+            if rec["promotable"] and rec["severity_ok"] and rec["measurement_reliable"]:
                 (credible if rec["image_reviewed"] else pending).append(rec)
     return dict(flags=flags, credible=credible, credible_pending_review=pending, descriptive_flags=descriptive,
                 n_sites_flagged=len({f["site"] for f in flags}), n_sites_credible=len({f["site"] for f in credible}),

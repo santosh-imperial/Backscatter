@@ -114,6 +114,7 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Provenance:** developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived.
 - **Alternatives:** tuning on Batch 1/2 verdicts (rejected — no labels, would make the unseen batch the only test of a fitted rule); α = 0.10 for more power (rejected — would raise the drift-alert rate on a heterogeneous reference).
 - **Reverses if:** organisers supply tolerances (then "accept" via equivalence test replaces "consistent") or the reference-split diagnostics show the drift-alert rate far from α.
+- **Superseded in part by:** D29 (severity margin 1.0 → 2.0 MAD; promotion restricted to crack_frac and pore_max_d).
 
 ### D23 · 2026-10-03 · MDC simulation draws without replacement; verdict statistic is Hodges–Lehmann; MDC on the full usable reference
 - **Decision:** `stats.mdc` draws the pseudo-batch from the reference *without* replacement (an exact random split); the permutation statistic for verdict p-values is `hl_shift` (Hodges–Lehmann median of pairwise differences), with median-difference / reference-MAD kept as the reported effect size; MDC is computed on the full usable reference (17 sites), never on the 10 ordinary sites.
@@ -147,6 +148,13 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Caught by:** report build agent (end-to-end assembly). Lesson → C25.
 - **Reverses if:** organisers define per-site tolerances for batch-mean KPIs.
 
+### D29 · 2026-10-03 · Localized path calibrated: 2.0-MAD severity margin, promotion only on crack_frac and pore_max_d
+- **Decision:** `Thresholds.severity_margin_mad` = 2.0 (was 1.0) and only `LOCAL_KPIS_PROMOTE = [crack_frac, pore_max_d]` can turn an exceedance flag into *pending review / credible*; the other extreme-semantics KPIs (crack count, bright_max_d, patch maxima, intra-particle crack density) are still flagged and shown but never drive a verdict. The measured false-alarm rate of the localized path is printed in the notebook self-test next to the rule.
+- **Why (calibration, not tuning on verdicts):** under a Gaussian i.i.d. null with 7 incoming vs 10 ordinary reference sites, P(≥ 1 pending flag) at a 1.0-MAD margin is 13.5 % per KPI and 42 % across four KPIs; at 2.0 MAD it is 4.0 % per KPI, ≈ 8 % for two and 15 % for four. On real 5-v-5 splits of the ten ordinary reference sites the pending rate was 83 % at 1.0 MAD and still 57 % at 2.5 MAD across five KPIs (heavy-tailed KPIs, five-site MADs). The notebook's first self-test showed 60 % pending on ordinary-only splits — unusable as a review trigger. The three known cracked sites keep margins 5.8 / 5.4 / 2.6 MAD on crack_frac and remain credible; a synthetic 2× crack fraction on Batch 2 gives one site at 3.4 MAD (caught), 1.5× gives 0.6 MAD (missed, as the MDC predicts).
+- **Caught by:** the notebook's ordinary-only reference-split diagnostic (C10, C19). Lesson → C26.
+- **Provenance:** calibrated on null simulations and reference splits only, before the unseen batch; thresholds hash changes accordingly.
+- **Open:** even at 2 MAD on two KPIs the expected review rate on a clean batch is ≈ 8 % Gaussian and higher with heavy tails. Whether that review load is acceptable is a QC-usability question for Santosh / the organisers; the alternative is to require two sites or two KPIs to agree.
+
 ---
 
 ## Part B — Pre-presentation review checklist
@@ -176,6 +184,7 @@ Run this before presenting a plan, a result, a figure or a verdict. Each item na
 - [ ] **C22 — A derived index that is undefined or constant on all real sites is not reported, even with caveats.** State the underlying fact once. (D25)
 - [ ] **C23 — Covariate adjustment on a heterogeneous reference can manufacture signal.** Check covariate–KPI correlations on the ordinary subset vs the full reference; show at least two covariate sets; read negative attenuation as "not explained away", never as material evidence. (D26)
 - [ ] **C25 — Run the decision logic end to end on real data before trusting it.** Unit tests on synthetic components passed while `None` counted as corroboration and a batch-mean KPI triggered the localized path; only the integrated run showed it. Also check every "missing input" default (None, NaN) against the conservative direction. (D28)
+- [ ] **C26 — Every alert rule gets its false-alarm rate measured two ways before it ships:** on an i.i.d. null and on splits of the homogeneous part of the real reference. Count KPIs: k rules at rate r give ≈ k·r alarms. (D29)
 - [ ] **C24 — Prose written from a figure must be re-checked against a thresholded number.** "Rises" / "drops" claims need a stated |z| or effect cut-off that the data actually cross. (D27)
 
 **Language and provenance**

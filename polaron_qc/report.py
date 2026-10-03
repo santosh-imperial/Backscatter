@@ -485,8 +485,12 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
     log(f"{batch} vs {reference}: {len(sites_batch)} vs {len(sites_ref)} sites; ordinary reference = {len(ordinary)}")
 
     # 2. compare / energy / local / decision -------------------------------------------------------------
+    # the material-only classifier (if cached) is read FIRST so that Check A(iv) can use it (D24/D28); it is a
+    # pre-computed site-level run, so the same dict is reused inside the jackknife (the classifier is not refit per LOO)
+    ml = _read_ml(ml_dir, batch, reference, notes)
+    c2st_for_decision = ml["c2st_material"]
     t0 = time.time()
-    full = _run_pipeline(sites_ref, sites_batch, ordinary, cfg, th, primary, c2st=None, kpis=kpis)
+    full = _run_pipeline(sites_ref, sites_batch, ordinary, cfg, th, primary, c2st=c2st_for_decision, kpis=kpis)
     log(f"compare+energy+decision in {time.time() - t0:.0f}s → {full['verdict']['verdict']}")
     compare = full["compare"]
     nan_ci = compare[compare.is_primary & compare.ci_low.isna()].kpi.tolist()
@@ -530,7 +534,7 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
 
     def _rerun(kept):
         sub = sites_batch[sites_batch.site.isin(kept)].reset_index(drop=True)
-        r = _run_pipeline(sites_ref, sub, ordinary, cfg, th, primary, c2st=None, n_boot=cfg["jackknife_n_boot"],
+        r = _run_pipeline(sites_ref, sub, ordinary, cfg, th, primary, c2st=c2st_for_decision, n_boot=cfg["jackknife_n_boot"],
                           energy_n_mc=cfg["jackknife_energy_n_mc"], kpis=primary, local_extra=False)
         return r["verdict"]
 
@@ -543,7 +547,6 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
     log(f"jackknife {len(runs)} runs in {time.time() - t0:.0f}s → stability share {share:.2f}")
 
     # 7. ml + physics caches ------------------------------------------------------------------------------
-    ml = _read_ml(ml_dir, batch, reference, notes)
     phys = _read_physics(physics_csv, sites_ref, sites_batch, compare, full["verdict"]["drivers"], primary, notes)
 
     # 8. limits -------------------------------------------------------------------------------------------

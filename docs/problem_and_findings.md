@@ -25,7 +25,7 @@ _Last updated: 2026-10-03 (baseline status confirmed). Owner: Santosh (narrative
 | Alignment | The three channels of a site are pixel-aligned (phase-correlation shift ≤ 0.2 px) |
 | Metadata | Microscope settings (magnification, voltage, detector gain) were stripped when files were re-saved by `tifffile`. The TIFF resolution tags survived and give a **nominal 25.0 nm/pixel** on every image (24.9992–25.0005 nm/px). This is export metadata, not verified calibration. We report all lengths in pixels and quote µm as "nominal": strip ≈ 175 µm wide, coating ≈ 40–58 µm thick, bright-phase D50 ≈ 150 px ≈ 3.8 µm, crack-like void cutoff 500 px ≈ 12.5 µm. |
 | Material | Porous coating of plate-like graphite with a sparse brighter (higher-Z) particulate phase. Consistent with a silicon / silicon-oxide–graphite anode cross-section after ion polishing. **Chemistry is not confirmed.** |
-| Labels / baseline | Confirmed by the problem providers (2026-10-03): the three folders are three supplier batches of the same nominal product. **Batch 3 is a single batch with more samples and is the closest available reference, but not a clean approved baseline.** There is no clear baseline; the task is to differentiate the batches. No per-batch acceptable / defective labels. |
+| Labels / baseline | Confirmed by the problem providers (2026-10-03): the three folders are three supplier batches of the same nominal product. **Batch 3 is the reference dataset** (hence more images); the provider adds that *reference does not necessarily mean no defects* and that *it is not just the presence of defects that defines the batches — there are many complex morphology features to examine*. No per-batch acceptable / defective labels. Implication: differentiation must weigh morphology (shape, orientation, arrangement, size-distribution shape, through-thickness structure), not only defect KPIs. |
 
 Current-collector or stitching bands appear at one edge of five images (≤ 56 rows) and are trimmed before measurement. 39 images carry a single differing-colour edge column (export artefact); no colour inside the frame. No duplicate images. Some Inlens images saturate at white over 4–7 % of pixels.
 
@@ -106,6 +106,12 @@ Every interpretive assumption, with an annotated example image and a review stat
 - Intensity statistics of any channel are instrument flags, never material KPIs.
 - Batch 3 is one production batch, so the grey-pore group is intra-batch variation (most likely preparation / session). It stays flagged and is shown as a sub-population inside the reference rather than excluded silently.
 - Acquisition-quality flags are first-class outputs of the QC report, alongside the verdict.
+
+## 5b. Provider guidance received (2026-10-03)
+
+> "batch 3 is the reference dataset (it should have more images). Note that reference doesn't necessarily mean no defects, and it's not just the presence of defects that define the batches — there's a lot of complex morphology features to examine!"
+
+What follows from it: (1) the cracked reference sites are not a contradiction — the reference may carry defects, so the localized path stays separate and the reference's own anomalies stay visible; (2) the five primary KPIs are defect- and loading-centred; the batches may differ in morphology that those do not capture. Candidate morphology descriptors already computed: pore elongation and size distribution, additive circularity / solidity / D10–D90 shape, texture correlation length, through-thickness profiles, plate-orientation anisotropy. Candidates not yet computed: pore and plate orientation distributions, additive aspect ratio, additive nearest-neighbour spacing / agglomeration index, through-thickness gradient slopes, pore-size-distribution width. See the experiment log Part C.
 
 ## 6. Open questions for the organisers
 

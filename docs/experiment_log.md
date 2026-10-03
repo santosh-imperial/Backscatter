@@ -123,7 +123,21 @@ Conventions: ids `E01…`; every entry states reference, batches, n (usable), st
 - **Reading:** on the five primary KPIs neither known batch is distinguishable from the reference at the sensitivity this reference allows; every shift is below its MDC. The report says exactly that, with the MDC next to it. Whether this is "right" cannot be judged without labels or tolerances; what can be judged is that the known cracked reference sites are recovered by the localized path (E11) and that the one Batch 1–3 separation the classifier finds is acquisition (E06).
 - **Changed:** D28; report sections → sources table in the workflow diagram; Part B scoreboard.
 
+### E17 · 2026-10-03 · Notebook 02 end to end; localized-path calibration (D29)
+- **Verdicts** (thresholds hash 3bd4e04ec7d6): Batch 1 and Batch 2 both *consistent with the working reference (within detectable limits)*; stability 1.00 (7/7) each; Check A(iv) now evaluated (material-only classifier p 0.46 / 0.26 → not corroborating). Batch 1 vs Batch 2 (7 v 7): no primary KPI below p 0.19; energy distance p 0.73.
+- **Reference-split diagnostics (60 splits, 7 v 10 of all 17):** drift-alert rate 0.050 ± 0.055 (α 0.05); localized pending/credible on 78 % of splits — a 7-of-17 draw contains a known cracked site with probability 82 %, so this measures reference heterogeneity, not false alarms. **Ordinary-only splits (5 v 5 of the 10 ordinary sites):** drift alerts 0.033; localized pending/credible **0.50** even after D29 (five-site MADs, heavy tails).
+- **Production-design estimate** (clean 7-site batch vs the fixed 10-site ordinary reference, lognormal fitted to the ordinary values): P(≥ 1 site beyond max + 2 MAD) = **0.18 for crack_frac**, 0.015 for pore_max_d (margin 1.0: 0.28 / 0.09; 3.0: 0.11 / 0.003). The real ordinary maximum sits only at the 92nd percentile of the crack_frac fit — the tail is long.
+- **Synthetic shifts on Batch 2:** crack_frac ×2 → localized pending (one site 3.4 MAD; drift path blind because the full-reference MAD is inflated by the cracked sites), ×1.5 → missed (0.6 MAD); pore_frac ×2 → drift (Holm p < 0.001); bright_frac ×1.5 → drift.
+- **Heterogeneity check:** ordinary-10 vs full-17 → consistent (energy p 0.99); cracked-3 vs ordinary-10 → localized flags 5.8 / 5.4 / 2.6 MAD on crack_frac (plus quality abstention for n = 3).
+- **Reading:** the drift path is calibrated; the localized path recovers the known cracked sites but carries a review load of roughly one clean batch in six on crack_frac alone at a 2-MAD margin. That is a usability trade-off, not a statistics bug, and it is now printed in the notebook. **Changed:** D29, C26.
+
 ---
+
+## Part C — Next experiments (queued)
+
+- **E18 · Morphology differentiation** (prompted by the provider's note that batches differ in "complex morphology features", not just defects): (a) descriptive multivariate comparison on *all* material KPIs, not only the primary five; (b) per-KPI effect sizes for the morphology family already computed — pore elongation, pore size-distribution width (d90/d50), additive circularity / solidity / D90/D10, texture correlation length, through-thickness profile slopes, plate-orientation anisotropy; (c) new descriptors: pore and plate orientation distributions (from ETD ridge angles and pore major-axis angles), additive aspect ratio, additive nearest-neighbour spacing and a Clark–Evans agglomeration index, binder-network area fraction if a fourth class proves separable. Report as secondary / exploratory until the small-sample discipline is re-applied (any promotion to primary is a logged decision).
+- **E19 · Review-load decision for the localized path**: expected pending-flag rate per clean batch at margins 2.0 / 2.5 / 3.0 and with a two-KPI or two-site agreement rule; pick with Santosh / organisers.
+- **E20 · Inlens local-contrast normalisation**: does the texture KPI's acquisition confound shrink?
 
 ## Part B — Progress toward the target
 
@@ -135,17 +149,17 @@ Target: an interpretable, uncertainty-aware QC system that returns accept / inve
 | | ETD / Inlens KPIs | ◑ | E04 (null), E03 (confounded) | Inlens local-contrast normalisation untried |
 | | per-site threshold band | ◑ | E15: all 31 sites; pore_frac band ≈ 33 % | gate physics wording; print beside pore shifts |
 | Accuracy on the new batch | comparison engine | ◕ | E16 end to end; one command per batch (`python -m polaron_qc.report ref batch out`) | notebook 02 sections 3–9 |
-| | localized path | ◑ | E11 recovers the 3 cracked sites | image-review step is manual |
+| | localized path | ◕ | E17: recovers cracked sites; false-alarm ≈ 0.18 (crack_frac, 2 MAD, lognormal) | review load decision (Santosh / organisers) |
 | | classifier corroboration | ◕ | E16: material-only run cached and read by Check A(iv) | run inside the pipeline for the unseen batch (currently a cached pre-run) |
 | | novelty catch-all | ◑ | E07 tracks acquisition | exploratory; renderer for novelty map |
 | Interpretability | decision layer | ● | E16: both known batches; 14 tests; D28 fixes from the end-to-end run | image-review loop is manual |
 | | physics reading | ◑ | E05, E13; caveats mandatory | gate on threshold band; wording review by Santosh |
 | | per-batch HTML report | ● | reports/qc_Batch_{1,2}.html, 0.4 MB, 10 sections, MDC on first screen | acquisition block to wire; novelty map margins |
-| Honest uncertainty | MDC, permutation nulls, stability | ◑ | E08, E09 | reference-split diagnostics on full pipeline |
+| Honest uncertainty | MDC, permutation nulls, stability | ● | E17: split diagnostics (all-17 and ordinary-only), MDC on first screen, stability | — |
 | | acquisition sensitivity views | ◑ | E15: adjustment amplifies; two covariate sets shown | wire into decision/report |
-| Real-world usability | one-command unseen-batch path | ☐ | — | notebook 02 + README demo path |
+| Real-world usability | one-command unseen-batch path | ◕ | notebook 02 runs end to end (36 cells, ~6 min); `python -m polaron_qc.report` per batch | README demo section; ML pre-run for a new batch |
 | | assumption register / decision log | ● | 15 cards; D01–D25; C01–C22 | keep current |
 
-**Known-batch dry run (target: all three verdicts with drivers, stability and reports):** Batch 1 and Batch 2 vs Batch 3 run end to end (E16); Batch 1 vs Batch 2 not yet.
+**Known-batch dry run (target: all three verdicts with drivers, stability and reports):** all three pairs run (E17); both incoming batches *consistent within detectable limits*; Batch 1 vs Batch 2 indistinguishable at 7 v 7.
 
 **Unseen batch:** not yet available.

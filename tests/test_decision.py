@@ -56,10 +56,10 @@ def test_flag_without_severity_stays_consistent_but_is_reported():
 def test_localized_pending_review_then_credible():
     ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
     a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
-    b = check_b(local_tables([("crack_frac", "B_s1", 1.8)]), bat)             # severity ok, no review yet
+    b = check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat)             # severity ok (≥ 2 MAD), no review yet
     assert b["n_sites_pending"] == 1 and b["n_sites_credible"] == 0
     v = decide(a, b, quality_abstention(bat, a)); assert v["verdict"] == INVESTIGATE_LOCAL and "pending" in v["reason"]
-    b2 = check_b(local_tables([("crack_frac", "B_s1", 1.8)]), bat, image_reviewed={("B_s1", "crack_frac"): True})
+    b2 = check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat, image_reviewed={("B_s1", "crack_frac"): True})
     assert b2["n_sites_credible"] == 1
     v2 = decide(a, b2, quality_abstention(bat, a)); assert v2["verdict"] == INVESTIGATE_LOCAL and v2["outcome_columns"]["localized"] == "credible"
 
@@ -101,6 +101,22 @@ def test_grey_pore_is_soft_flag():
     ref = sites(17, "R"); bat = sites(7, "B", flags={"grey_pore": [2]}); mask = pd.Series([True] * 17)
     b = check_b(local_tables([("pore_max_d", "B_s2", 2.0)]), bat)
     assert b["n_sites_pending"] == 1 and "fallback" in b["flags"][0]["measurement_note"]
+
+
+def test_non_promotable_local_kpi_stays_a_flag():
+    ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
+    a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    b = check_b(local_tables([("bright_max_d", "B_s1", 4.0)]), bat)
+    assert b["n_sites_flagged"] == 1 and b["n_sites_pending"] == 0 and b["flags"][0]["promotable"] is False
+    assert decide(a, b, quality_abstention(bat, a))["verdict"] == CONSISTENT
+
+
+def test_margin_below_two_mad_is_not_promoted():
+    ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
+    a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    b = check_b(local_tables([("crack_frac", "B_s1", 1.6)]), bat)
+    assert b["n_sites_flagged"] == 1 and b["n_sites_pending"] == 0
+    assert decide(a, b, quality_abstention(bat, a))["verdict"] == CONSISTENT
 
 
 def test_drift_not_carried_by_primary_is_investigate():

@@ -54,3 +54,10 @@ E16,2026-10-03,verdict,Batch_3,Batch_1,primary5,decision D22/D28,17,7,consistent
 E16,2026-10-03,verdict,Batch_3,Batch_2,primary5,decision D22/D28,17,7,consistent,verdict,stability 1.00
 E16,2026-10-03,c2st_auc,Batch_3,Batch_1,material_only_all_sites,grouped-CV L1 LR,17,7,0.513,auc,p 0.458 n_perm 200
 E16,2026-10-03,c2st_auc,Batch_3,Batch_2,material_only_all_sites,grouped-CV L1 LR,17,7,0.613,auc,p 0.264 n_perm 200
+E17,2026-10-03,split_drift_alert_rate,Batch_3,,primary5,7v10 of 17 sites,17,7,0.050,rate,60 splits
+E17,2026-10-03,split_localized_pending_rate,Batch_3,,crack_frac+pore_max_d,7v10 of 17,17,7,0.783,rate,heterogeneity (cracked in draw 82%)
+E17,2026-10-03,split_localized_pending_rate_ordinary,Batch_3,,crack_frac+pore_max_d,5v5 of 10 ordinary,10,5,0.500,rate,after D29
+E17,2026-10-03,localized_false_alarm_lognormal,Batch_3,,crack_frac,7 vs fixed 10 ordinary margin 2.0,10,7,0.176,rate,lognormal fit
+E17,2026-10-03,localized_false_alarm_lognormal,Batch_3,,pore_max_d,7 vs fixed 10 ordinary margin 2.0,10,7,0.015,rate,lognormal fit
+E17,2026-10-03,synthetic_crack_x2_verdict,Batch_3,Batch_2,crack_frac,x2.0,17,7,investigate_localized,verdict,max margin 3.4 MAD
+E17,2026-10-03,energy_p,Batch_1,Batch_2,primary5,7v7,5,7,0.728,p,
