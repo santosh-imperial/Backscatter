@@ -20,6 +20,7 @@ Inputs are plain arrays / DataFrames so the functions do not depend on the patch
 from __future__ import annotations
 
 import glob
+import hashlib
 import json
 import os
 import re
@@ -86,6 +87,41 @@ def _site_table(y: np.ndarray, groups: np.ndarray):
     return sites, site_y, idx
 
 
+def _canonical_order(X: np.ndarray, y: np.ndarray, groups: np.ndarray, decimals: int = 10):
+    """Content-based canonical row order and integer site codes, independent of site ids and of input row order.
+
+    Rows are sorted inside each site by their rounded feature vector (ties: the full vector). Each site then gets the key
+    (sha1 of its rounded, row-sorted block, the block's exact bytes, its label) and sites are sorted by that key. Returns
+    ``(order, codes, names)``: ``X[order]`` is the canonical row order, ``codes`` the canonical integer site id
+    (0 … n_sites−1 in canonical order) of each row *of the reordered array*, ``names[i]`` the caller's id of canonical
+    site i. Two calls with identical content give identical outputs whatever the site ids or row order, so grouped CV
+    folds and the site-label permutation stream cannot change when sites are relabelled (E23 / D34 open item). Sites with
+    identical content and label are exchangeable, so their relative order cannot affect any result. Raises if a site
+    carries two labels (site ids must be disjoint between reference and batch)."""
+    names, inv = np.unique(np.asarray(groups), return_inverse=True)
+    X = np.asarray(X, float); y = np.asarray(y)
+    Xr = np.round(X, decimals) + 0.0                       # +0.0 maps -0.0 to 0.0 so the bytes are canonical
+    d = X.shape[1]
+    within = np.empty(len(X), int)
+    keys = []
+    for i, name in enumerate(names):
+        rows = np.flatnonzero(inv == i)
+        labels = np.unique(y[rows])
+        if len(labels) != 1:
+            raise ValueError(f"site {name!r} appears in both reference and batch; site ids must be disjoint")
+        blk, blk_r = X[rows], Xr[rows]
+        cols = [blk_r[:, j] for j in range(d)] + [blk[:, j] for j in range(d)]
+        o = np.lexsort(cols[::-1]) if d else np.arange(len(rows))   # primary key = rounded column 0, …, then exact values
+        within[rows[o]] = np.arange(len(rows))
+        keys.append((hashlib.sha1(np.ascontiguousarray(blk_r[o]).tobytes()).hexdigest(),
+                     np.ascontiguousarray(blk[o]).tobytes(), int(labels[0])))
+    site_rank = np.empty(len(names), int)
+    site_rank[sorted(range(len(names)), key=keys.__getitem__)] = np.arange(len(names))
+    codes_all = site_rank[inv]
+    order = np.lexsort((within, codes_all))
+    return order, codes_all[order], names[np.argsort(site_rank)]
+
+
 def _make_cv(site_y: np.ndarray, cv, seed: int):
     """'auto': StratifiedGroupKFold with min(5, smallest class site count) folds when both classes have >= 3
     sites, else LeaveOneGroupOut. An int forces that many stratified group folds; 'logo' forces leave-one-site-out."""
@@ -97,9 +133,11 @@ def _make_cv(site_y: np.ndarray, cv, seed: int):
     return StratifiedGroupKFold(n_splits=k, shuffle=True, random_state=seed), f"StratifiedGroupKFold({k})"
 
 
-def _lr_pipeline(C: float) -> Pipeline:
+def _lr_pipeline(C: float, seed: int = 0) -> Pipeline:
+    # liblinear shuffles its active set with its own RNG; without random_state sklearn seeds it from the global RNG and the
+    # coefficients differ run to run at the 1e-5 level — seeded so the result depends on content and seed only
     return Pipeline([("scale", StandardScaler()),
-                     ("lr", LogisticRegression(penalty="l1", solver="liblinear", C=C, max_iter=1000))])
+                     ("lr", LogisticRegression(penalty="l1", solver="liblinear", C=C, max_iter=1000, random_state=seed))])
 
 
 def _grouped_cv(X, y, groups, C, seed, cv="auto", class_balance=True):
@@ -116,7 +154,7 @@ def _grouped_cv(X, y, groups, C, seed, cv="auto", class_balance=True):
             selected.append(np.zeros(X.shape[1], bool))
             continue
         w = _site_weights(groups[tr], ytr, class_balance)
-        pipe = _lr_pipeline(C)
+        pipe = _lr_pipeline(C, seed)
         pipe.fit(X[tr], ytr, lr__sample_weight=w)
         oof[te] = pipe.predict_proba(X[te])[:, 1]
         selected.append(pipe["lr"].coef_[0] != 0)
@@ -136,6 +174,9 @@ def c2st(X_ref, X_batch, groups_ref, groups_batch, feature_names: Sequence[str],
     SITE count (sklearn's row-level "balanced" would count patches, which breaks plan §2.0 rule 6). Out-of-fold
     probabilities are averaged per site and the AUC is computed over sites. The null permutes labels at the SITE
     level and repeats the whole CV procedure; p = (b + 1) / (n_perm + 1), one-sided (AUC >= observed), Monte Carlo.
+    Before anything runs, rows and sites are put in a canonical content-based order (:func:`_canonical_order`), so the
+    result is bit-identical for identical content whatever the site ids or input row order; ``per_site_scores`` reports
+    the caller's site ids.
 
     Returns dict(auc, auc_null, null_band, p, n_perm, p_method, coef, per_site_scores, cv, n_sites_ref,
     n_sites_batch, n_rows). ``coef`` is a refit on all data for reporting only (coef, sign, selected,
@@ -152,6 +193,11 @@ def c2st(X_ref, X_batch, groups_ref, groups_batch, feature_names: Sequence[str],
     cb = class_weight == "balanced"
     rng = np.random.default_rng(seed)
 
+    # canonical content-based order: folds, the permutation stream and the solver see the same arrays whatever the
+    # site ids or row order of the input (E23 found AUC 0.51 → 0.41 on identical images under new ids)
+    order, groups, site_names = _canonical_order(X, y, groups)
+    X, y = X[order], y[order]
+
     obs = _grouped_cv(X, y, groups, C, seed, cv, cb)
     sites, site_y, idx = obs["sites"], obs["site_y"], obs["site_idx"]
 
@@ -167,7 +213,7 @@ def c2st(X_ref, X_batch, groups_ref, groups_batch, feature_names: Sequence[str],
 
     # refit on everything, reporting only
     w_all = _site_weights(groups, y, cb)
-    pipe = _lr_pipeline(C).fit(X, y, lr__sample_weight=w_all)
+    pipe = _lr_pipeline(C, seed).fit(X, y, lr__sample_weight=w_all)
     coef = pipe["lr"].coef_[0]
     Z = pipe["scale"].transform(X)
     zc = Z - np.average(Z, axis=0, weights=w_all)
@@ -179,8 +225,8 @@ def c2st(X_ref, X_batch, groups_ref, groups_batch, feature_names: Sequence[str],
                             "mean_abs_shap": mean_abs_shap})
     coef_df = coef_df.reindex(coef_df.mean_abs_shap.abs().sort_values(ascending=False).index).reset_index(drop=True)
     n_rows = np.bincount(idx)
-    per_site = pd.DataFrame({"site": sites, "label": np.where(site_y == 1, "batch", "reference"),
-                             "n_rows": n_rows, "mean_prob": obs["site_prob"]})
+    per_site = pd.DataFrame({"site": site_names[sites], "label": np.where(site_y == 1, "batch", "reference"),
+                             "n_rows": n_rows, "mean_prob": obs["site_prob"]}).sort_values("site", kind="stable").reset_index(drop=True)
     return dict(auc=obs["auc"], auc_null=auc_null,
                 null_band=tuple(np.percentile(auc_null, [2.5, 97.5])), p=float(p), n_perm=int(n_perm),
                 p_method=f"Monte Carlo site-label permutation, {n_perm} resamples, p = (b+1)/(n+1), one-sided",

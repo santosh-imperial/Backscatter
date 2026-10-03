@@ -212,6 +212,18 @@ def test_quality_abstention_column():
     assert v["outcome_columns"]["quality_abstention"] and v["outcome_columns"]["drift_alert"] is False and v["verdict"].startswith("investigate")
 
 
+def test_small_batch_abstention_wording_quotes_the_reason():
+    """E25 rehearsal (Batch_S, 3 sites): the 'what would move it' line used to rewrite 'only 3 sites' into 'at least 3 sites',
+    contradicting the (< 5) rule it quoted. It must carry the recorded reasons verbatim."""
+    ref = sites(17, "R"); bat = sites(3, "B"); mask = pd.Series([True] * 17)
+    a = check_a(compare_table(n_batch=3), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    q = quality_abstention(bat, a)
+    assert q["reasons"][0] == "only 3 sites in batch (< 5)"
+    v = decide(a, check_b(local_tables([]), bat), q)
+    assert v["reason"].startswith("quality abstention: only 3 sites in batch (< 5)")
+    assert "only 3 sites in batch (< 5)" in v["what_would_move_it"] and "at least 3" not in v["what_would_move_it"]
+
+
 def test_usable_n_abstains_per_kpi():
     ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
     cmp = compare_table(); cmp.loc[cmp.kpi == "bright_frac", "n_batch_usable"] = 4

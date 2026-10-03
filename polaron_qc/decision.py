@@ -306,7 +306,8 @@ def what_would_move(verdict: str, a: dict, b: dict, abst: dict, att: dict, th: T
         return "would become 'investigate' if any primary KPI crossed α or any site showed a credible localized anomaly"
     if verdict == INVESTIGATE_DRIFT:
         if abst["abstain"]:
-            return "would become decidable with " + "; ".join(abst["reasons"]).replace("only", "at least") + " resolved"
+            # E25: the former 'only' → 'at least' rewrite produced "with at least 3 sites in batch (< 5)"; quote the reasons as recorded
+            return "would become decidable once resolved: " + "; ".join(abst["reasons"])
         missing = []
         if not a["ii_carried_by_primary"]: missing.append("a primary KPI crossing α with |shift| ≥ %.1f MAD" % th.min_effect_mad)
         if a["ii_carried_by_primary"] and not a["iii_consistent"]: missing.append("≥ %.0f %% of sites beyond the ordinary-reference range" % (100 * th.consistency_share))
