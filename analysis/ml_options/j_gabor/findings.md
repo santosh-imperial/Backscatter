@@ -146,4 +146,3 @@ unchanged.
 Eight mathematical convention/invariance tests pass. They do not validate
 material identity or independent segmentation/defect accuracy.
 Review: C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30.
-
