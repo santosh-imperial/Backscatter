@@ -1,0 +1,20 @@
+{
+  "experiment": "E30K",
+  "n_sites_verified": 31,
+  "saved_site_modes_verified": 124,
+  "saved_pair_count_rows_recomputed": 1116,
+  "bootstrap_and_deletion_comparison_rows_reproduced": 252,
+  "prespecified_raw_nominal_sites_replayed": 4,
+  "report_images_decoded": 5,
+  "appended_registry_rows": 3277,
+  "original_registry_prefix_preserved": true,
+  "prior_metrics_methods_preserved": true,
+  "primary_classifier_decision_notebook_cache_report_sources_unchanged": true,
+  "current_source_input_hashes_match": true,
+  "shape_cache_scope": "Declared warm reuse of E26G; four raw nominal binding checks",
+  "phase_measurement": "Fresh whole-frame raster pair counts",
+  "expert_validation": "pending",
+  "specimen_independence": "unknown",
+  "unseen_validation": "not_run",
+  "qc_role": "excluded_from_all_verdict_inputs"
+}

@@ -415,6 +415,17 @@ if os.path.exists(gabor_image):
         buf = io.BytesIO();im.save(buf,"JPEG",quality=85,optimize=True)
         gabor_card["figures"].append(("data:image/jpeg;base64,"+base64.b64encode(buf.getvalue()).decode(),"E28J measured quarter-frame BSE window and fixed Gabor response maps. Gold bounds the valid interior; maps describe appearance, not particles or defects. Source coordinates and sampled-site coverage are in the J report."))
 
+# E30K extends A16 while keeping expert review separate from computation.
+k_card = next(c for c in CARDS if c["id"] == "A16")
+k_card["why"] += " E30K adds count-weighted bright shape distributions and two fixed finite-frame x/y phase-correlation contrasts. Clipped-object exclusion, phase-specific quality flags, pair-domain marginals and threshold/floor sensitivity are explicit. Component/pixel counts are coverage, not independent units; image axes are not confirmed collector directions. Geometry/phase and application validity remain unreviewed and all QC use deferred."
+k_image = os.path.join(ROOT,"analysis","morphology","k_pilot","overlay_Batch_2_3806gxp0.png")
+if os.path.exists(k_image):
+    with Image.open(k_image) as im:
+        im = im.convert("RGB")
+        if im.width > 1500: im = im.resize((1500,int(im.height*1500/im.width)),Image.LANCZOS)
+        buf = io.BytesIO();im.save(buf,"JPEG",quality=85,optimize=True)
+        k_card["figures"].append(("data:image/jpeg;base64,"+base64.b64encode(buf.getvalue()).decode(),"E30K fixed central BSE reference with eligible bright-object bounds, full-frame count-weighted shape histograms and x/y phase-correlation bars. Masks and axes remain expert-unreviewed; pair counts describe coverage."))
+
 # ----------------------------------------------------------------------------- HTML
 def esc(t): return html.escape(t)
 css = """

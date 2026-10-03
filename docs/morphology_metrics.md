@@ -7,7 +7,7 @@ Generated from `analysis/morphology/metric_register.json`. Edit that JSON to mai
 
 **Implementation, evidence, expert review and QC role are separate fields.** Computed does not mean expert-validated. Only the existing five primary KPIs carry verdicts. All new methods were developed on known batches; none has unseen-batch validation. Sites remain the statistical units, with specimen independence unresolved.
 
-Updated 2026-10-03; 81 entries (ten-bin profiles and conditional fraction families list every underlying key). Implementation: computed 77, deferred 3, implemented 1.
+Updated 2026-10-03; 88 entries (ten-bin profiles and conditional fraction families list every underlying key). Implementation: computed 84, deferred 3, implemented 1.
 
 | Metric / exact keys | Units | Implementation | Evidence | Expert review | QC role | Experiment | Next check |
 |---|---|---|---|---|---|---|---|
@@ -92,6 +92,13 @@ Updated 2026-10-03; 81 entries (ten-bin profiles and conditional fraction famili
 | Gabor coarse energy share — `gabor_coarse_energy_share` | fraction | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
 | Gabor axial strength — `gabor_axial_strength` | 0–1 | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
 | Gabor horizontal wavevector balance — `gabor_horizontal_wavevector_balance` | −1–1 | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
+| Bright aspect count iqr — `bright_aspect_count_iqr` | ratio | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright solidity count q10 — `bright_solidity_count_q10` | 0–1 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright circularity count iqr — `bright_circularity_count_iqr` | dimensionless | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright autocorr xy contrast 64px — `bright_autocorr_xy_contrast_64px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright autocorr xy contrast 256px — `bright_autocorr_xy_contrast_256px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright pore crosscorr xy contrast 64px — `bright_pore_crosscorr_xy_contrast_64px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright pore crosscorr xy contrast 256px — `bright_pore_crosscorr_xy_contrast_256px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
 
 ## Methods and benchmark status
 
@@ -108,6 +115,8 @@ Updated 2026-10-03; 81 entries (ten-bin profiles and conditional fraction famili
 | Graphite orientation feasibility / image tensors | computed | plate_instances_unvalidated | Fixed matched patches, BSE/ETD/Inlens, two scales and support-mask sensitivity. Values are directional image texture only. Residual-solid connected regions are not graphite instances; manual plate labels/collector direction gate a material KPI. |
 | Fixed bright-centroid 3-NN graph audit | computed | known_site_geometry_expert_pending | Fixed 3-NN union on retained bright centroids; four site descriptors, threshold/floor coverage, acquisition and node/loading controls. Proximity is not contact; expert review pending. |
 | Fixed Gabor texture bank | computed | appearance_review_only_material_deferred | Twelve fixed filters on four quarter-frame BSE windows; three sampled-site summaries, resolution/gamma/affine and FFT/geometry/tensor controls. No learned CNN. |
+| Count-weighted bright shape distributions | computed | exploratory_geometry_material_use_deferred | Fixed aspect/circularity spread and solidity lower tail; cached E26G geometry with coverage and raw replay guards; no new particle identities. |
+| Finite-frame directional phase correlation | computed | exploratory_geometry_material_use_deferred | Two fixed x/y lags; paired finite-domain binary correlations with threshold and loading controls; no contact/transport interpretation. |
 
 ## Battery hypothesis checks
 

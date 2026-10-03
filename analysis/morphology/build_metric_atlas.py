@@ -62,7 +62,8 @@ TABLE_PATHS = [OUT / "morphology_sites.csv", ROOT / "analysis_cache/site_feature
                ROOT / "analysis/battery/output/void_sites.csv",
                ROOT / "analysis/battery/output/void_threshold_envelopes.csv",
                ROOT / "analysis/ml_options/e_graph/sites.csv",
-               ROOT / "analysis/ml_options/j_gabor/sites.csv"]
+               ROOT / "analysis/ml_options/j_gabor/sites.csv",
+               ROOT / "analysis/morphology/k_pilot/sites.csv"]
 
 
 def digest(path):
@@ -396,9 +397,28 @@ class Atlas:
         note = "Card scalars summarise four sampled windows, not the entire frame. Site coverage, contrast/resolution, acquisition and FFT/geometry/tensor controls are in the J audit. Expert validation is pending."
         return self.save("gabor_texture",fig,d,crop,legend,"gabor_texture",note)
 
+    def render_k_morphology(self):
+        """Fixed image reference and full-site shape/phase summaries from E30K."""
+        d = self.load("bright")
+        source = ROOT / "analysis/morphology/k_pilot"
+        manifest_path = source / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        example = next(c for c in manifest["crops"] if (c["batch"],c["site"]) == (d["batch"],d["site"]))
+        crop = {k: example[k] for k in ("x","y_raw","y_trimmed","width","height")}
+        path = source / example["image"]
+        fig,ax = plt.subplots(figsize=(15,8.2))
+        ax.imshow(plt.imread(path)); ax.set_axis_off()
+        for p in (path,manifest_path):
+            self.input_hashes[str(p.relative_to(ROOT))] = digest(p)
+        legend = "Fixed central BSE crop; bright cyan, void red, eligible bright-object bounds gold. Histograms and x/y correlation bars use the full trimmed frame. Red dashed lines mark prespecified quantiles; arrows show image-axis lags, not collector coordinates."
+        note = "Scalars use full-site saved K tables. Shape quantiles count components equally; raster phase correlations use finite signed-lag pair domains and their own marginals. Components/pixels are coverage, not n. All material/QC interpretation and expert validation are deferred."
+        return self.save("k_morphology",fig,d,crop,legend,"k_morphology",note)
+
     def render(self, kind):
         if kind in self.assets:
             return kind
+        if kind == "k_morphology":
+            return self.render_k_morphology()
         if kind == "gabor_texture":
             return self.render_gabor()
         if kind.startswith("battery_") or kind in ("void_internal_context", "void_coverage", "void_width_depth", "void_crack_width_depth", "void_width_depth_both"):
@@ -740,6 +760,7 @@ def kind_for(metric):
     """Map semantic registry kinds and individual ids to faithful illustrations."""
     key=" ".join([metric["id"],metric.get("visual_kind","")]+metric.get("keys",[])).lower()
     visual=metric.get("visual_kind","")
+    if visual == "k_morphology":return "k_morphology"
     if visual == "gabor_texture":return "gabor_texture"
     if visual == "bright_graph": return "bright_graph"
     supported={"pore_mask","bright_mask","pore_count","bright_count","crack_mask","graphite_mask","pore_size","bright_size","pore_shape","bright_shape",
