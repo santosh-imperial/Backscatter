@@ -1,0 +1,7 @@
+batch,panel,nominal_p,global_axis_swap_p,query_only_swap_p,query_only_interpretation
+Batch_1,primary5,0.3137254901960784,0.3137254901960784,0.3137254901960784,"unsupported section-orientation shift, not a material control"
+Batch_1,morphology3,0.2061157796451914,0.2061157796451914,0.3077731092436975,"unsupported section-orientation shift, not a material control"
+Batch_1,extended8,0.25630252100840334,0.25630252100840334,0.27789449112978526,"unsupported section-orientation shift, not a material control"
+Batch_2,primary5,0.0732,0.0732,0.0732,"unsupported section-orientation shift, not a material control"
+Batch_2,morphology3,0.7592,0.7592,0.8266,"unsupported section-orientation shift, not a material control"
+Batch_2,extended8,0.1522,0.1522,0.156,"unsupported section-orientation shift, not a material control"

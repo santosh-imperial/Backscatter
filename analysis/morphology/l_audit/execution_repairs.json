@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-03T21:43:31.602171+00:00",
+  "old_run_sha256": "1602a4c8127fae35440f6e2427c25b691405a97d097927914119d1200dbfb0aa",
+  "new_run_sha256": "f72683b61d4b7eb8c2b5970d005a9a1c5f2a1077c614f0340780cc83b0314f80",
+  "exact_replacement": {
+    "old": "radio.transform.eq(r.transform)",
+    "new": "radio['transform'].eq(r.transform)"
+  },
+  "numeric_protocol_changed": false,
+  "results_before_failure_preserved": true
+}

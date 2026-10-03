@@ -1,0 +1,4 @@
+kpi,n_Batch_1,n_Batch_2,n_Batch_3,coverage_pass,threshold_floor_pass,radiometric_pass,radiometric_source_cases,radiometric_valid_cases,acquisition_loo_r2,acquisition_pass,geometry_loading_loo_r2,redundancy_warning,added_detection_pass,axis_gate_pass,candidate_gate_pass,joint_model_gate_pass,recommendation,unresolved_gates,expert_masks,unseen_validation
+bright_aspect_aw,5,7,17,True,True,False,9,6,-0.4638478905315162,True,0.028947479416656652,False,True,True,False,False,defer automatic OOD input,radiometric,unreviewed,not run
+bright_alignment_strength,5,7,17,True,True,False,9,6,0.0038259465129920622,True,-0.7177356002414768,False,True,True,False,False,defer automatic OOD input,radiometric,unreviewed,not run
+bright_pore_crosscorr_xy_contrast_256px,5,7,13,True,True,False,6,4,-0.2422371957489391,True,-0.47818851234393844,False,True,False,False,False,defer automatic OOD input,radiometric;axis_metadata,unreviewed,not run

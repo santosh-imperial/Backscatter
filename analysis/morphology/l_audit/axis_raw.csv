@@ -1,0 +1,13 @@
+batch,site,kpi,nominal,transposed,expected,absolute_error,scope
+Batch_1,4ih2ggld,bright_aspect_aw,2.2276404320430077,2.2276404320430085,2.2276404320430077,8.881784197001252e-16,"same trimmed ROI, swapped image axes"
+Batch_1,4ih2ggld,bright_alignment_strength,0.1273548641707872,0.1273548641707872,0.1273548641707872,0.0,"same trimmed ROI, swapped image axes"
+Batch_1,4ih2ggld,bright_pore_crosscorr_xy_contrast_256px,0.0092313697851206,-0.009231369785120697,-0.0092313697851206,9.71445146547012e-17,"same trimmed ROI, swapped image axes"
+Batch_2,3806gxp0,bright_aspect_aw,1.6564883344433996,1.6564883344433994,1.6564883344433996,2.220446049250313e-16,"same trimmed ROI, swapped image axes"
+Batch_2,3806gxp0,bright_alignment_strength,0.28415187467265857,0.28415187467265857,0.28415187467265857,0.0,"same trimmed ROI, swapped image axes"
+Batch_2,3806gxp0,bright_pore_crosscorr_xy_contrast_256px,0.0223653899207748,-0.022365389920774865,-0.0223653899207748,6.591949208711867e-17,"same trimmed ROI, swapped image axes"
+Batch_3,71vgq3fw,bright_aspect_aw,2.0493075871901207,2.0493075871901216,2.0493075871901207,8.881784197001252e-16,"same trimmed ROI, swapped image axes"
+Batch_3,71vgq3fw,bright_alignment_strength,0.07984515844749662,0.07984515844749658,0.07984515844749662,4.163336342344337e-17,"same trimmed ROI, swapped image axes"
+Batch_3,71vgq3fw,bright_pore_crosscorr_xy_contrast_256px,0.0037682003602047,-0.0037682003602047803,-0.0037682003602047,8.023096076392733e-17,"same trimmed ROI, swapped image axes"
+Batch_3,hzumfsms,bright_aspect_aw,1.9878283540833506,1.987828354083351,1.9878283540833506,4.440892098500626e-16,"same trimmed ROI, swapped image axes"
+Batch_3,hzumfsms,bright_alignment_strength,0.17125280315315888,0.17125280315315886,0.17125280315315888,2.7755575615628914e-17,"same trimmed ROI, swapped image axes"
+Batch_3,hzumfsms,bright_pore_crosscorr_xy_contrast_256px,-0.0113909009274641,0.011390900927464111,0.0113909009274641,1.214306433183765e-17,"same trimmed ROI, swapped image axes"

@@ -1,0 +1,7 @@
+kpi,family,n_sites,loo_r2,alpha,n_covariates,interpretation
+bright_aspect_aw,acquisition,29,-0.4638478905315162,1.0,6,association screen; not causal attribution or independence proof
+bright_aspect_aw,geometry_loading,29,0.028947479416656652,1.0,8,association screen; not causal attribution or independence proof
+bright_alignment_strength,acquisition,29,0.0038259465129920622,1.0,6,association screen; not causal attribution or independence proof
+bright_alignment_strength,geometry_loading,29,-0.7177356002414768,1.0,8,association screen; not causal attribution or independence proof
+bright_pore_crosscorr_xy_contrast_256px,acquisition,25,-0.2422371957489391,1.0,6,association screen; not causal attribution or independence proof
+bright_pore_crosscorr_xy_contrast_256px,geometry_loading,25,-0.47818851234393844,1.0,8,association screen; not causal attribution or independence proof

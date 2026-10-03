@@ -2,7 +2,7 @@
   "schema_version": 1,
   "updated": "2026-10-03",
   "purpose": "ML method feasibility inventory; recommendations are not implemented metrics or performance claims. Existing primary/ML/decision families remain frozen.",
-  "data_contract": "Batch identity is known; acceptable/defective outcome labels, independent phase/instance truth and specimen independence are unavailable. Sites remain n.",
+  "data_contract": "D49P: Batch 3 is the supplier's promised distribution; Batches 1/2 are subsequent variation examples, neither explicitly better nor worse. Batch identity is known and usable for development discrimination; per-site OOD, held-back, manufacturing-outcome and independent phase/instance labels and specimen independence are unavailable. Sites remain n. A morphology OOD extension is planned in docs/qc_plan.md section 1.1; existing candidate roles and measured qualifications are unchanged. Missing battery-harm labels is not a universal OOD gate.",
   "candidates": [
     {
       "id": "fixed_object_graph",

@@ -89,6 +89,7 @@ def render(data):
         '',
         '[Visual metric atlas](../analysis/morphology/output/metric_atlas.html) · [Expert annotation pack](../analysis/morphology/benchmark/review.html) · [E18 morphology results](../analysis/morphology/output/report.html)',
         '[Battery application review](battery_microstructure_review.md): fresh graphite–Si/SiOx material is human-confirmed; mechanism hypotheses remain separate from measurement validation and verdict roles.',
+        '[Provider clarification and planned OOD extension](qc_plan.md): Batch 3 is the supplier\'s promised distribution. Missing battery-harm labels is not a universal gate for distribution features. Current metric roles below are unchanged; the bounded extension is planned, not activated (D49P).',
         '',
         '**Implementation, evidence, expert review and QC role are separate fields.** Computed does not mean expert-validated. Only the existing five primary KPIs carry verdicts. All new methods were developed on known batches; none has unseen-batch validation. Sites remain the statistical units, with specimen independence unresolved.',
         '',
@@ -99,7 +100,9 @@ def render(data):
     ]
     for m in data['metrics']:
         next_check=m['review_notes'] or ('Expert measurement review' if m['review_status']=='unreviewed' else 'See review notes and history')
-        if m['evidence_status']=='confounded':next_check='E20: normalisation + acquisition sensitivity'
+        if m['evidence_status']=='confounded':
+            next_check=('E32: no qualifying normalisation; expert crop review and independent acquisition controls'
+                        if 'E32' in m['experiments'] else 'Normalisation + acquisition sensitivity; independent review')
         if m['implementation_status'] in ('proposed','deferred','implemented'):next_check='Independent measurement/model validation before numeric use'
         if m['evidence_status'] in ('undefined_on_current_data','constant_on_current_data'):next_check='No per-site discrimination available; do not promote'
         text.append('| '+' | '.join(clean(x) for x in [m['label']+' — '+', '.join('`'+k+'`' for k in m['keys']),m['units'],m['implementation_status'],m['evidence_status'],m['review_status'],m['qc_role'],', '.join(m['experiments']),next_check])+' |')

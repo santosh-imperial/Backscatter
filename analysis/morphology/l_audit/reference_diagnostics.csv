@@ -1,0 +1,9 @@
+query_n,n_ref,policy,n_allocations,n_alerts,alert_fraction,n_abstained,interpretation
+5,8,primary5,1287,64,0.04972804972804973,0,"overlapping exact internal ranks, not independent external false-alert trials"
+5,8,extended8,1287,64,0.04972804972804973,0,"overlapping exact internal ranks, not independent external false-alert trials"
+5,8,holm_union,1287,60,0.046620046620046623,0,"overlapping exact internal ranks, not independent external false-alert trials"
+5,8,naive_or,1287,121,0.09401709401709402,0,"overlapping exact internal ranks, not independent external false-alert trials"
+7,6,primary5,1716,85,0.049533799533799536,0,"overlapping exact internal ranks, not independent external false-alert trials"
+7,6,extended8,1716,85,0.049533799533799536,0,"overlapping exact internal ranks, not independent external false-alert trials"
+7,6,holm_union,1716,84,0.04895104895104895,0,"overlapping exact internal ranks, not independent external false-alert trials"
+7,6,naive_or,1716,165,0.09615384615384616,0,"overlapping exact internal ranks, not independent external false-alert trials"

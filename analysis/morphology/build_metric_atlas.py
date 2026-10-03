@@ -923,6 +923,9 @@ def main():
         else:
             premise="Fresh graphite–Si/SiOx electrodes, confirmed by Santosh."
         material_context=f'<p><strong>Confirmed material premise:</strong> {esc(premise)} The image masks still do not distinguish Si from SiOx, resolve binder/carbon black, validate 3-D geometry, or measure cycling history, transport or battery performance. Battery implications on cards are hypotheses for expert review, with <a href="../../../docs/battery_microstructure_review.md">battery check definitions</a>.</p>'
+    baseline=register.get("supplier_baseline_confirmation")
+    if baseline:
+        material_context+=f'<p><strong>Confirmed supplier baseline:</strong> {esc(baseline["statement"])} <a href="../../../docs/qc_plan.md">D49P morphology OOD extension</a> is planned, not activated; current roles and expert-review states below are unchanged. Distribution evidence does not require proof of battery harm, but still needs measurement, acquisition and alert validation.</p>'
     assert metrics and len({m["id"] for m in metrics})==len(metrics)
     atlas=Atlas(); cards=[];coverage=[]
     for i,m in enumerate(metrics,1):

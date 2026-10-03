@@ -2,6 +2,8 @@
 
 Rendered by GitHub and most Markdown viewers (Mermaid). Boxes are modules or notebook sections; edges carry the tables named in the contracts below. Dashed edges are inputs that are not data (configuration, reviews, organiser answers). Numbers in brackets refer to `docs/qc_plan.md` sections.
 
+**Provider clarification / planned extension (D49P):** Batch 3 is the supplier's promised morphology distribution. The diagram below describes the existing executed five-primary-KPI/defect-risk pipeline, not the proposed OOD comparator in `qc_plan.md` §1.1. That extension would add a bounded shape/alignment/phase-association panel and a separate distribution-conformance output, with acquisition/coverage abstention. Use the full measurable reference; the diagram's ordinary-reference local-defect branch must not define OOD membership. No new executable interface or verdict input is added by this planning update.
+
 The parallel morphology measurement workflow is documented in
 `analysis/morphology/benchmark/README.md` (E24). Its live status source is
 `analysis/morphology/metric_register.json`, rendered into `docs/morphology_metrics.md`

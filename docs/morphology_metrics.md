@@ -4,6 +4,7 @@ Generated from `analysis/morphology/metric_register.json`. Edit that JSON to mai
 
 [Visual metric atlas](../analysis/morphology/output/metric_atlas.html) · [Expert annotation pack](../analysis/morphology/benchmark/review.html) · [E18 morphology results](../analysis/morphology/output/report.html)
 [Battery application review](battery_microstructure_review.md): fresh graphite–Si/SiOx material is human-confirmed; mechanism hypotheses remain separate from measurement validation and verdict roles.
+[Provider clarification and planned OOD extension](qc_plan.md): Batch 3 is the supplier's promised distribution. Missing battery-harm labels is not a universal gate for distribution features. Current metric roles below are unchanged; the bounded extension is planned, not activated (D49P).
 
 **Implementation, evidence, expert review and QC role are separate fields.** Computed does not mean expert-validated. Only the existing five primary KPIs carry verdicts. All new methods were developed on known batches; none has unseen-batch validation. Sites remain the statistical units, with specimen independence unresolved.
 
@@ -28,13 +29,13 @@ Updated 2026-10-03; 88 entries (ten-bin profiles and conditional fraction famili
 | Crack-like void density — `crack_count_per_Mpx` | components / Mpx | computed | expert_review_pending | unreviewed | secondary_exploratory | E01, E18 | Expert measurement review |
 | Bright-particle circularity — `bright_circ` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E01, E18 | Expert measurement review |
 | Bright-particle solidity — `bright_solidity` | fraction | computed | expert_review_pending | unreviewed | secondary_exploratory | E01, E18 | Expert measurement review |
-| Bright-particle aspect ratio — `bright_aspect_aw` | ratio | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
+| Bright-particle aspect ratio — `bright_aspect_aw` | ratio | computed | expert_review_pending | unreviewed | secondary_exploratory | E18, E31L | Expert measurement review |
 | Void size-distribution width — `pore_width_d90_d50` | ratio | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Void horizontal alignment — `pore_horizontal_alignment` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Void axial alignment strength — `pore_alignment_strength` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Bright-particle size-distribution width — `bright_width_d90_d10` | ratio | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Bright-particle horizontal alignment — `bright_horizontal_alignment` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
-| Bright-particle axial alignment strength — `bright_alignment_strength` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
+| Bright-particle axial alignment strength — `bright_alignment_strength` | dimensionless | computed | expert_review_pending | unreviewed | secondary_exploratory | E18, E31L | Expert measurement review |
 | Bright-centroid nearest-neighbour distance — `bright_nn_mean_px` | px | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Centroid spacing / uniform-point comparator — `bright_nn_csr_ratio` | ratio | computed | expert_review_pending | unreviewed | secondary_exploratory | E18 | Expert measurement review |
 | Void depth profile — `profile_pore_0`, `profile_pore_1`, `profile_pore_2`, `profile_pore_3`, `profile_pore_4`, `profile_pore_5`, `profile_pore_6`, `profile_pore_7`, `profile_pore_8`, `profile_pore_9` | fraction per bin | computed | expert_review_pending | unreviewed | secondary_exploratory | E01, E18 | Expert measurement review |
@@ -50,9 +51,9 @@ Updated 2026-10-03; 88 entries (ten-bin profiles and conditional fraction famili
 | ETD curtaining fraction — `etd_curtain_frac` | fraction | computed | diagnostic_only | unreviewed | acquisition_diagnostic | E04 | Expert measurement review |
 | ETD ridge anisotropy — `etd_curtain_anisotropy` | ratio | computed | diagnostic_only | unreviewed | acquisition_diagnostic | E04 | Expert measurement review |
 | ETD boundary sharpness — `etd_boundary_sharpness` | ratio | computed | diagnostic_only | unreviewed | acquisition_diagnostic | E04 | Expert measurement review |
-| Inlens particle texture — `inlens_particle_texture` | ratio | computed | confounded | unreviewed | excluded_from_verdict | E03, E20 | E20: normalisation + acquisition sensitivity |
-| Inlens particle texture P90 — `inlens_particle_texture_p90` | ratio | computed | confounded | unreviewed | excluded_from_verdict | E03, E20 | E20: normalisation + acquisition sensitivity |
-| Inlens speckled-particle fraction — `inlens_speckled_particle_frac` | fraction | computed | confounded | unreviewed | excluded_from_verdict | E03, E20 | E20: normalisation + acquisition sensitivity |
+| Inlens particle texture — `inlens_particle_texture` | ratio | computed | confounded | unreviewed | excluded_from_verdict | E03, E20, E32 | E32: no qualifying normalisation; expert crop review and independent acquisition controls |
+| Inlens particle texture P90 — `inlens_particle_texture_p90` | ratio | computed | confounded | unreviewed | excluded_from_verdict | E03, E20, E32 | E32: no qualifying normalisation; expert crop review and independent acquisition controls |
+| Inlens speckled-particle fraction — `inlens_speckled_particle_frac` | fraction | computed | confounded | unreviewed | excluded_from_verdict | E03, E20, E32 | E32: no qualifying normalisation; expert crop review and independent acquisition controls |
 | Longest void major axis — `longest_void_px` | px | computed | expert_review_pending | unreviewed | descriptive_only | E05, E13 | Expert measurement review |
 | Longest void / image height — `longest_void_over_thickness` | ratio | computed | expert_review_pending | unreviewed | descriptive_only | E05, E13 | Expert measurement review |
 | Columns intersecting long voids — `columns_interrupted_frac` | fraction | computed | expert_review_pending | unreviewed | descriptive_only | E05, E13 | Expert measurement review |
@@ -98,7 +99,7 @@ Updated 2026-10-03; 88 entries (ten-bin profiles and conditional fraction famili
 | Bright autocorr xy contrast 64px — `bright_autocorr_xy_contrast_64px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
 | Bright autocorr xy contrast 256px — `bright_autocorr_xy_contrast_256px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
 | Bright pore crosscorr xy contrast 64px — `bright_pore_crosscorr_xy_contrast_64px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
-| Bright pore crosscorr xy contrast 256px — `bright_pore_crosscorr_xy_contrast_256px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
+| Bright pore crosscorr xy contrast 256px — `bright_pore_crosscorr_xy_contrast_256px` | −2–2 | computed | math_and_source_checks_material_use_deferred | unreviewed | secondary_exploratory | E30K, E31L | E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. |
 
 ## Methods and benchmark status
 
@@ -117,6 +118,8 @@ Updated 2026-10-03; 88 entries (ten-bin profiles and conditional fraction famili
 | Fixed Gabor texture bank | computed | appearance_review_only_material_deferred | Twelve fixed filters on four quarter-frame BSE windows; three sampled-site summaries, resolution/gamma/affine and FFT/geometry/tensor controls. No learned CNN. |
 | Count-weighted bright shape distributions | computed | exploratory_geometry_material_use_deferred | Fixed aspect/circularity spread and solidity lower tail; cached E26G geometry with coverage and raw replay guards; no new particle identities. |
 | Finite-frame directional phase correlation | computed | exploratory_geometry_material_use_deferred | Two fixed x/y lags; paired finite-domain binary correlations with threshold and loading controls; no contact/transport interpretation. |
+| Registered morphology OOD promotion audit | computed | known_site_and_engineering_controls_automatic_use_deferred | Equal-weight primary/morphology energy panels, allocation-local reference fits, joint Holm alert control, quality/movement/axis gates and descriptive 3NN explanations. Gaussian controls are not defect truth; no live promotion. |
+| Actual per-particle Inlens normalisation audit (E20) | computed | no_qualifying_variant_confounded_origin | Completed E20 on 31 sites; none of four primary variants qualifies. CV: offset-sensitive; per-particle SD/IQR: near-constant shape index; local-z sigma64: acquisition-linked; uniform LBP non-uniform fraction: noise-sensitive. Sigma32 and LBP entropy are sensitivity checks, not selectable winners. Original texture remains confounded. Expert particle-crop review and independent acquisition controls remain. See analysis/e20_inlens/findings.md; E25 is a different gradient measurand. |
 
 ## Battery hypothesis checks
 

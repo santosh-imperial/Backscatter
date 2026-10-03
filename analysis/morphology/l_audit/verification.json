@@ -1,0 +1,11 @@
+{
+  "experiment": "E31L",
+  "status": "passed",
+  "verified_utc": "2026-10-03T21:53:20.974717+00:00",
+  "verifier_sha256": "0bc1cb2f58c792da95b879f010b4a09604cc9e508d9ef265cbb44ac44f257a9f",
+  "checks": "PASS: protocol/source/raw hashes; all 31 nominal replays; 124 modes; 12 phase replays; 12 raw axes; 12 radiometric copies; shared coverage/long-void retention; known tests; subminimum abstention; 3003 exact allocations; 400 IID and 960 power trials; gains/scores/contributions; report; science code/tests/original caches preserved by L (concurrent notebook/report delivery excluded on main).",
+  "L_K_tests_passed": 22,
+  "new_L_tests_passed": 11,
+  "scope": "main additive science-source guard; concurrent Claude notebook/report regeneration excluded and preserved; original isolated verification retained",
+  "test_warning": "pandas future dtype warning in nonfinite fixture"
+}

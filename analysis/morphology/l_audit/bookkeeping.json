@@ -1,0 +1,24 @@
+{
+  "experiment": "E31L",
+  "registry_prefix_sha256": "f5924c2662d16bfb13459ed70c9740abc4e32ec181667464c9c75f50730d0201",
+  "registry_prefix_bytes": 7599421,
+  "appended_numeric_fields": 11127,
+  "counts": {
+    "sites_replayed": 31,
+    "site_modes": 124,
+    "phase_raw_replays": 12,
+    "axis_raw_rows": 12,
+    "radiometric_copies": 12,
+    "reference_allocations": 3003,
+    "iid_independent_trials": 400,
+    "feature_space_trials": 960,
+    "new_L_tests_passed": 11,
+    "L_K_tests_passed": 22,
+    "inventory_metrics": 88,
+    "inventory_methods": 14,
+    "numerical_registry_fields": 11127
+  },
+  "prior_metric_histories_preserved": true,
+  "prior_methods_preserved": true,
+  "manual_reviews_and_roles_preserved": true
+}

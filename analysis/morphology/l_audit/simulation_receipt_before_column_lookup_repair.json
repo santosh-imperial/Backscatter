@@ -1,0 +1,16 @@
+{
+  "codehash": {
+    "methods.py": "ec8cc6943afceaee8c10fd2c76a677023486fa89f04e6e86de1897c34bd0683e",
+    "run_audit.py": "1602a4c8127fae35440f6e2427c25b691405a97d097927914119d1200dbfb0aa",
+    "protocol.json": "b72357ccdbd499cec038e3789753017378feb4490e9194096049e8a25afa7370"
+  },
+  "outputs": {
+    "iid_trials.csv": "929678913a428d13ce536844a17cb429c3fac7163e6bb23dffa8b6e38476383e",
+    "power_trials.csv": "726abaa7eed78e48b1031534933fd6219c9a44592093997bc9f3e6bf0e2413b9",
+    "iid_summary.csv": "172108b9deb836b1daa13fe8d254ffdb0936381152307f74b40f8131d35f4b7d",
+    "power_summary.csv": "bad8597c4a07a33665e8a51fa45692bbf5f3afda7f6bf1e2f8bc7d3ba2600003",
+    "paired_gains.csv": "b599b62b356d69c186ce4bc5f63e27c9a26dd22d4d327df1e8f7c2cb041bac17"
+  },
+  "completed_utc": "2026-10-03T21:42:57.633446+00:00",
+  "n_mc": 499
+}

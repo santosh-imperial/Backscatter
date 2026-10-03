@@ -1,0 +1,10 @@
+{
+  "experiment": "E31L",
+  "version": "E31L.1",
+  "registered_utc": "2026-10-03T21:30:38.109562+00:00",
+  "protocol_sha256": "b72357ccdbd499cec038e3789753017378feb4490e9194096049e8a25afa7370",
+  "new_results_exist": false,
+  "development_data_previously_inspected": true,
+  "source_of_target": "Human-authorized task L and D49P provider clarification in parent workspace",
+  "base_commit": "87ecee3"
+}
