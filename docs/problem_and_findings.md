@@ -159,7 +159,7 @@ Every mask-derived descriptor has a perturbation envelope, every inferential cal
 
 ## 10. Morphology metric inventory and measurement validation (E24, 2026-10-03)
 
-The canonical inventory `analysis/morphology/metric_register.json` now tracks 78 metric entries plus ten methods (including E25 and E26G additions). Ten-bin profiles and conditional fraction families list all underlying keys. Implementation, evidence, expert review and QC role are distinct statuses. Generated views are `docs/morphology_metrics.md` and `analysis/morphology/output/metric_atlas.html`; the atlas shows real SEM markup/image-derived graphs, full-site values, source coordinates and limitations. Deferred, confounded, conditional and undefined quantities are visible without invented scalars.
+The canonical inventory `analysis/morphology/metric_register.json` now tracks 81 metric entries plus eleven methods (including E25, E26G and E28J additions). Ten-bin profiles and conditional fraction families list all underlying keys. Implementation, evidence, expert review and QC role are distinct statuses. Generated views are `docs/morphology_metrics.md` and `analysis/morphology/output/metric_atlas.html`; the atlas shows real SEM markup/image-derived graphs, full-frame or explicitly sampled-site values, source coordinates and limitations. Deferred, confounded, conditional and undefined quantities are visible without invented scalars.
 
 An independent expert annotation page at `analysis/morphology/benchmark/review.html` contains eleven purposive crops from distinct known sites: six for development, five held out for method checks. It covers ordinary, low-contrast, grey-pore, long-void and trimmed-band cases. Manual polygons are separate from predictions; unreviewed crops are not scored, uncertain pixels are ignored and unmeasurable images can abstain. There are currently zero expert-reviewed reference masks and no segmentation-accuracy estimate. The held-out-site split is not unseen-batch validation, and crops do not increase material sample count.
 
@@ -242,3 +242,47 @@ results support exploratory review and deferral, not equivalence or acceptance.
 
 G integration should reconcile additive register/log changes with parallel
 H/F/E18 work; see the graph `handoff.md`. Independent expert review remains open.
+
+
+## 16. Fixed Gabor texture pilot (task J / E28J / D43J)
+
+Retain the response maps for exploratory BSE appearance review. Defer all
+three summaries as material/QC drivers. No evidence here establishes useful
+information beyond existing geometry or acquisition variables.
+
+The all-known Batch 1−Batch 3 coarse-energy-share difference is
+-0.01691, site-bootstrap 95% [-0.03304, -0.00590]
+at n = 7/17 sites. In the quality-matched view it is
+-0.01384 [-0.03049, +0.00730], n = 5/13.
+All nine nominal quality-matched intervals include zero. Filtering changes
+both the population and sample size; this does not prove the difference was
+an acquisition artifact or that the batches are equivalent. These are
+correlated exploratory contrasts, with no multiplicity-adjusted test.
+
+Nominal versus full-resolution ranks have Spearman rho
+0.987–0.994; median
+absolute descriptor movement is 0.038–0.047
+of the pooled between-site IQR. Gamma changes move some sites more; complete
+paired values and maxima are in `sensitivity_summary.csv`. The non-clipping
+affine control agrees to numerical precision, as expected by construction.
+This is not evidence that real contrast loss or preparation is corrected.
+
+All twelve acquisition and FFT/geometry/tensor site-LOO ridge R² results are
+negative. That means these prespecified linear controls predict poorly at
+this n; it does not establish new information or acquisition invariance.
+Strong within-batch correlations remain in the correlation table, with
+small group counts and different sampled versus full-frame measurands.
+
+Valid convolution interiors cover only 2.53–3.63%
+of each trimmed frame. Four windows are coverage, not independent samples;
+spatial representativeness and specimen independence remain unvalidated.
+Wavevectors are normal to image stripes, not graphite plate-instance axes.
+Expert phase validity, battery mechanisms, manufacturing outcomes and
+unseen generalisation remain open. Primary/classifier/verdict inputs are
+unchanged.
+
+Eight mathematical convention/invariance tests pass. They do not validate
+material identity or independent segmentation/defect accuracy.
+Review: C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30.
+
+Artifacts: `analysis/ml_options/j_gabor/report.html`, `review.md`, frozen `protocol.json`, source manifest and complete site/window/sensitivity/control tables. The combined main inventory includes these three computed, expert-unreviewed secondary descriptors and one fixed-filter method, preserving E/F/G/H. Measurement provenance remains the original frozen pilot; integration does not rerun or tune it.

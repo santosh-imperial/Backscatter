@@ -77,3 +77,6 @@ graph_edge_length_median_px,Graph edge length median px,Fixed graph geometry / E
 graph_edge_length_iqr_ratio,Graph edge length iqr ratio,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
 graph_edge_axial_strength,Graph edge axial strength,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
 graph_log_area_assortativity,Graph log area assortativity,Fixed graph geometry / E26G,computed,known_site_geometry_tests_passed_expert_pending,unreviewed,secondary_exploratory
+gabor_coarse_energy_share,Gabor coarse energy share,BSE image texture,computed,math_tests_passed_material_use_deferred,unreviewed,secondary_exploratory
+gabor_axial_strength,Gabor axial strength,BSE image texture,computed,math_tests_passed_material_use_deferred,unreviewed,secondary_exploratory
+gabor_horizontal_wavevector_balance,Gabor horizontal wavevector balance,BSE image texture,computed,math_tests_passed_material_use_deferred,unreviewed,secondary_exploratory

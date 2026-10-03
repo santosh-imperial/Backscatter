@@ -7,7 +7,7 @@ Generated from `analysis/morphology/metric_register.json`. Edit that JSON to mai
 
 **Implementation, evidence, expert review and QC role are separate fields.** Computed does not mean expert-validated. Only the existing five primary KPIs carry verdicts. All new methods were developed on known batches; none has unseen-batch validation. Sites remain the statistical units, with specimen independence unresolved.
 
-Updated 2026-10-03; 78 entries (ten-bin profiles and conditional fraction families list every underlying key). Implementation: computed 74, deferred 3, implemented 1.
+Updated 2026-10-03; 81 entries (ten-bin profiles and conditional fraction families list every underlying key). Implementation: computed 77, deferred 3, implemented 1.
 
 | Metric / exact keys | Units | Implementation | Evidence | Expert review | QC role | Experiment | Next check |
 |---|---|---|---|---|---|---|---|
@@ -89,6 +89,9 @@ Updated 2026-10-03; 78 entries (ten-bin profiles and conditional fraction famili
 | Graph edge length iqr ratio — `graph_edge_length_iqr_ratio` | ratio | computed | known_site_geometry_tests_passed_expert_pending | unreviewed | secondary_exploratory | E26G | Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion. |
 | Graph edge axial strength — `graph_edge_axial_strength` | 0–1 | computed | known_site_geometry_tests_passed_expert_pending | unreviewed | secondary_exploratory | E26G | Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion. |
 | Graph log area assortativity — `graph_log_area_assortativity` | −1–1 | computed | known_site_geometry_tests_passed_expert_pending | unreviewed | secondary_exploratory | E26G | Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion. |
+| Gabor coarse energy share — `gabor_coarse_energy_share` | fraction | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
+| Gabor axial strength — `gabor_axial_strength` | 0–1 | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
+| Gabor horizontal wavevector balance — `gabor_horizontal_wavevector_balance` | −1–1 | computed | math_tests_passed_material_use_deferred | unreviewed | secondary_exploratory | E28J | Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved. |
 
 ## Methods and benchmark status
 
@@ -104,6 +107,7 @@ Updated 2026-10-03; 78 entries (ten-bin profiles and conditional fraction famili
 | Long-void image location and width-depth audit | computed | geometry_tests_passed_expert_pending | All31 nominal/paired long geometry; nominal width-depth all31 and sensitivity11. Collector absent/unconfirmed; no interfacial adhesion inference. |
 | Graphite orientation feasibility / image tensors | computed | plate_instances_unvalidated | Fixed matched patches, BSE/ETD/Inlens, two scales and support-mask sensitivity. Values are directional image texture only. Residual-solid connected regions are not graphite instances; manual plate labels/collector direction gate a material KPI. |
 | Fixed bright-centroid 3-NN graph audit | computed | known_site_geometry_expert_pending | Fixed 3-NN union on retained bright centroids; four site descriptors, threshold/floor coverage, acquisition and node/loading controls. Proximity is not contact; expert review pending. |
+| Fixed Gabor texture bank | computed | appearance_review_only_material_deferred | Twelve fixed filters on four quarter-frame BSE windows; three sampled-site summaries, resolution/gamma/affine and FFT/geometry/tensor controls. No learned CNN. |
 
 ## Battery hypothesis checks
 

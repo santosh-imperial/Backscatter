@@ -61,7 +61,8 @@ TABLE_PATHS = [OUT / "morphology_sites.csv", ROOT / "analysis_cache/site_feature
                ROOT / "analysis/battery/output/neighbourhood_sites.csv",
                ROOT / "analysis/battery/output/void_sites.csv",
                ROOT / "analysis/battery/output/void_threshold_envelopes.csv",
-               ROOT / "analysis/ml_options/e_graph/sites.csv"]
+               ROOT / "analysis/ml_options/e_graph/sites.csv",
+               ROOT / "analysis/ml_options/j_gabor/sites.csv"]
 
 
 def digest(path):
@@ -365,9 +366,41 @@ class Atlas:
                     note += " Zero adjacency follows from separated bright/pore thresholds plus smoothing/opening; it cannot establish electrical contact or particle isolation."
         return self.save(kind, fig, d, crop, legend, kind, note)
 
+    def render_gabor(self):
+        """Saved four-window site summary; display one measured valid interior."""
+        d = self.load("bright")
+        source = ROOT / "analysis/ml_options/j_gabor"
+        manifest_path = source / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        crop = next(c for c in manifest["crops"] if (c["batch"], c["site"]) == (d["batch"], d["site"]))
+        crop = {k: crop[k] for k in ("x", "y_raw", "y_trimmed", "width", "height")}
+        y, x = crop["y_trimmed"], crop["x"]
+        image = d["bse"][y:y+512, x:x+512]
+        map_path = source / f'maps_{d["batch"]}_{d["site"]}.npz'
+        energy_path = source / "window_energies.csv"
+        maps = np.load(map_path)
+        powers = pd.read_csv(energy_path)
+        powers = powers[(powers.batch == d["batch"]) & (powers.site == d["site"]) & (powers["mode"] == "nominal")]
+        pooled = powers.groupby("period_px").mean_power.mean()
+        fig, axs = plt.subplots(1, 3, figsize=(12.6, 4.4))
+        self.image(axs[0], image, "Measured quarter-frame BSE window")
+        axs[0].add_patch(Rectangle((96,96),320,320,fill=False,color="#ffc65b",lw=1.4))
+        axs[1].imshow(np.log1p(maps["coarse_power"]), cmap="magma", extent=(96,416,416,96))
+        axs[1].set(xlim=(0,512),ylim=(512,0),title="64px energy · valid interior only")
+        axs[1].set_xticks([]);axs[1].set_yticks([])
+        axs[2].bar([str(int(p)) for p in pooled.index], pooled/pooled.sum(), color="#648acc")
+        axs[2].set(xlabel="Fixed modulation period (px)",ylabel="Filter-energy share",title="Four-window site energy profile")
+        for p in (map_path,energy_path,manifest_path):
+            self.input_hashes[str(p.relative_to(ROOT))] = digest(p)
+        legend = "Gold square: valid interior after 96px border removal. Middle: coarse Gabor image response, not a particle/defect mask. Bars pool four fixed windows equally; wavevectors are normal to stripes, not graphite plate axes."
+        note = "Card scalars summarise four sampled windows, not the entire frame. Site coverage, contrast/resolution, acquisition and FFT/geometry/tensor controls are in the J audit. Expert validation is pending."
+        return self.save("gabor_texture",fig,d,crop,legend,"gabor_texture",note)
+
     def render(self, kind):
         if kind in self.assets:
             return kind
+        if kind == "gabor_texture":
+            return self.render_gabor()
         if kind.startswith("battery_") or kind in ("void_internal_context", "void_coverage", "void_width_depth", "void_crack_width_depth", "void_width_depth_both"):
             return self.render_battery(kind)
         phase = "pore" if "pore" in kind or kind in ("local_width", "crack_local_width", "tortuosity", "percolation") else "bright"
@@ -707,6 +740,7 @@ def kind_for(metric):
     """Map semantic registry kinds and individual ids to faithful illustrations."""
     key=" ".join([metric["id"],metric.get("visual_kind","")]+metric.get("keys",[])).lower()
     visual=metric.get("visual_kind","")
+    if visual == "gabor_texture":return "gabor_texture"
     if visual == "bright_graph": return "bright_graph"
     supported={"pore_mask","bright_mask","pore_count","bright_count","crack_mask","graphite_mask","pore_size","bright_size","pore_shape","bright_shape",
                "bright_solidity","bright_circularity","pore_orientation","bright_orientation","bright_spacing","depth_profile_pore",
@@ -822,13 +856,14 @@ def card(metric, asset, atlas, index):
         heading="Battery implication / hypothesis"+(" · "+checks if checks else "")
         battery_paragraph=f'<p class="battery-hypothesis"><strong>{heading}</strong><br>{esc(metric.get("battery_implication","Interpretation pending materials review."))} <a href="../../../docs/battery_microstructure_review.md">Battery review and check definitions</a>.</p>'
     display_note=asset["note"]
+    saved_heading = "Saved site summary (four sampled windows)" if asset["kind"] == "gabor_texture" else "Saved full-site example"
     if metric["id"]=="saltykov_unfolded_size_distribution":
         display_note="Figure shows observed 2-D input sizes only. No cached unfolded 3-D distribution or scalar is asserted in this atlas."
     body=f'''<article class="metric-card" id="{esc(metric["id"])}" data-family="{esc(metric.get("family","Other"))}" data-role="{esc(role)}" data-status="{esc(status)}" data-evidence="{esc(evidence)}" data-search="{esc(search.lower())}">
 <div class="card-head"><span class="ordinal">{index:02d}</span><div><p class="eyebrow">{esc(metric.get("family","Other"))} · {esc(metric.get("channels",[]))}</p><h2>{esc(metric["label"])}</h2><code class="metric-id">{esc(metric["id"])}</code></div><a class="anchor" href="#{esc(metric["id"])}" aria-label="Link to this metric">#</a></div>
 <div class="badges"><span class="badge role">{esc(role)}</span><span class="badge">Implementation: {esc(status)}</span><span class="badge evidence">Evidence: {esc(evidence)}</span><span class="badge">Expert review: {esc(metric.get("review_status","unreviewed"))}</span></div>
 <figure><img data-asset="{esc(asset["kind"])}" alt="{esc(metric["label"])}: {esc(asset["legend"])}" width="1764" height="616"><figcaption><strong>{esc(batch)} / {esc(site)}</strong> · {esc(asset["channel"])} · {esc(crop)}<br>{esc(flags)}. Selected for illustration, not an independent validation example.</figcaption></figure>
-<div class="card-grid"><div><h3>What is measured <span>{esc(metric.get("units",""))}</span></h3><p>{esc(metric.get("definition","Definition pending."))}</p><p class="interpretation">{esc(metric.get("interpretation",""))}</p>{battery_paragraph}<h3>Saved full-site example <span>{esc(batch)} / {esc(site)}</span></h3><div class="values">{value_html}</div><p class="small">{esc(display_note)}</p></div><div><h3>Interpretation limits</h3><ul>{details}</ul><p class="legend">{esc(asset["legend"])}</p><details><summary>Evidence and provenance · {esc(metric.get("experiments",[]))}</summary><div class="links">{"".join(links)}</div><p class="small">The register is the status source. Rebuild this report after changing its entries. Source TIFF hashes are embedded in the report payload.</p></details></div></div></article>'''
+<div class="card-grid"><div><h3>What is measured <span>{esc(metric.get("units",""))}</span></h3><p>{esc(metric.get("definition","Definition pending."))}</p><p class="interpretation">{esc(metric.get("interpretation",""))}</p>{battery_paragraph}<h3>{esc(saved_heading)} <span>{esc(batch)} / {esc(site)}</span></h3><div class="values">{value_html}</div><p class="small">{esc(display_note)}</p></div><div><h3>Interpretation limits</h3><ul>{details}</ul><p class="legend">{esc(asset["legend"])}</p><details><summary>Evidence and provenance · {esc(metric.get("experiments",[]))}</summary><div class="links">{"".join(links)}</div><p class="small">The register is the status source. Rebuild this report after changing its entries. Source TIFF hashes are embedded in the report payload.</p></details></div></div></article>'''
     return body,dict(id=metric["id"],asset=asset["kind"],values=values,batch=batch,site=site,pending=pending,crop=coords)
 
 

@@ -68,3 +68,6 @@ The [specialist assessment](analysis/ml_options/assessment.md) recommends two un
 
 
 Pick work from the [next-step plan](docs/next_steps.md): priorities, proposed leads, dependencies and concrete handoffs. Tasks remain unclaimed until selected.
+
+
+The combined [morphology atlas](analysis/morphology/output/metric_atlas.html) includes the [fixed Gabor appearance audit](analysis/ml_options/j_gabor/report.html) (E28J). Its three sampled-window descriptors remain exploratory, expert-unreviewed and excluded from verdicts; read the [qualification](analysis/ml_options/j_gabor/review.md) before interpreting differences. Graph (E26G) and balanced frozen-encoder (E27) evidence remain available alongside it.

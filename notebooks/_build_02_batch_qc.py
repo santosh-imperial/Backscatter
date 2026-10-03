@@ -306,6 +306,17 @@ md("""## 10 · Unseen batch
 Add the folder name to `CONFIG["compare"]` and re-run all; `FROZEN_HASH` is already set (D34) and must not change — the hash deliberately excludes the compare list, so adding a folder passes the §0 assert while any change to α, statistic, KPI lists, thresholds or the reference fails it. The batch gets its own report in `reports/`. Everything the verdict needs runs inside `build_result` on the new folder: feature extraction, data-derived acquisition flags (grey pore from the batch's own BSE black level, low contrast from the features), the comparison, the material-only classifier for Check A(iv), the three acquisition views and the leave-one-site-out stability. Only the exploratory evidence is cached: for the DINOv2 novelty map and the flag-inclusive classifier run `python3 -m polaron_qc.ml` first, otherwise those two blocks say "not available" and nothing else changes. If the new batch has as many usable sites as the reference (≥ n_ref − 2), the MDC is reported as "not available" for the split-reference design; the comparison and verdict still run.""")
 code(r'''print("configuration hash:", cfg_hash, "| frozen:", FROZEN_HASH)''')
 
+md("""## 11 · Exploratory morphology and representation evidence
+
+The [visual morphology atlas](../analysis/morphology/output/metric_atlas.html) tracks definitions, implementation, evidence, expert review and QC role separately, with real SEM markup and source coordinates. These audits extend the review evidence; they do not change this notebook's frozen primary KPIs, classifier inputs or decisions.
+
+- [Fixed bright-object graph audit, E26G](../analysis/ml_options/e_graph/report.html): arrangement descriptors with threshold/object-floor sensitivity; proximity edges are not electrical contact. Material/QC use is deferred.
+- [Balanced frozen-encoder audit, E27](../analysis/ml_options/f_audit/findings.md): nearest-reference retrieval and acquisition/resolution sensitivity. Retained for review; material interpretation stopped.
+- [Fixed Gabor appearance audit, E28J](../analysis/ml_options/j_gabor/report.html): three summaries of four fixed BSE windows, with contrast/resolution and existing-descriptor controls. [Read the qualification](../analysis/ml_options/j_gabor/review.md); spatial representativeness and material/QC use remain unvalidated/deferred.
+- [Independent annotation review pack](../analysis/morphology/benchmark/review.html): materials review is still needed before mask accuracy or physical phase claims.
+
+Sites remain the statistical units; windows, graph nodes and pixels do not add independent samples. Batch 3 remains the heterogeneous working reference. These known-data audits establish neither acceptance/equivalence nor unseen-batch generalisation.""")
+
 nb["cells"] = cells
 nb.metadata["kernelspec"] = {"name": "python3", "display_name": "Python 3", "language": "python"}
 out = __file__.replace("_build_02_batch_qc.py", "02_batch_qc.ipynb")

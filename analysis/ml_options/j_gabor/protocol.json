@@ -1,0 +1,86 @@
+{
+  "experiment": "E28J",
+  "version": "E28J.1",
+  "task": "J",
+  "date": "2026-10-03",
+  "stage": "prespecified_before_new_outputs",
+  "keys": [
+    "gabor_coarse_energy_share",
+    "gabor_axial_strength",
+    "gabor_horizontal_wavevector_balance"
+  ],
+  "definitions": {
+    "gabor_coarse_energy_share": {
+      "units": "fraction",
+      "definition": "Sum of mean squared complex filter responses at period 64 px / sum across periods 16,32,64 px and four wavevector directions, pooled equally across four fixed windows."
+    },
+    "gabor_axial_strength": {
+      "units": "0\u20131",
+      "definition": "Absolute energy-weighted mean exp(2j theta) across four wavevector directions, all three periods and four fixed windows. Direction is the modulation wavevector, normal to a stripe."
+    },
+    "gabor_horizontal_wavevector_balance": {
+      "units": "\u22121\u20131",
+      "definition": "Energy-weighted mean cos(2 theta) across all periods/windows; positive means horizontal wavevectors (vertical stripes), not horizontal graphite plates."
+    }
+  },
+  "windows": {
+    "count": 4,
+    "size_px": 512,
+    "centres": "x,y in quarter and three-quarter trimmed frame",
+    "minimum_frame_side_px": 1024,
+    "aggregation": "equal window mean power before energy ratios",
+    "invalid_window": "any missing/nonfinite/insufficient contrast window abstains entire site"
+  },
+  "periods_px": [
+    16,
+    32,
+    64
+  ],
+  "wavevector_angles_deg": [
+    0,
+    45,
+    90,
+    135
+  ],
+  "sigma_over_period": 0.5,
+  "kernel": "Complex Gaussian modulated harmonic; fixed square support \u00b1ceil(3sigma); finite-support mean removed, unit complex-L2 norm.",
+  "normalisation": "Nominal 2x2 area averaging; each window mean-zero/unit-SD, sigma<=1e-6 on 0-1 scale abstains; no percentile thresholds or feature normalisation by batch.",
+  "common_valid_border_raw_px": 96,
+  "modes": [
+    "nominal",
+    "full_resolution",
+    "gamma_075",
+    "gamma_125",
+    "affine"
+  ],
+  "sensitivities": "All31 known sites: full resolution, gamma0.75/1.25 and non-clipping affine0.1+0.7x; retained raw periods and same windows.",
+  "views": [
+    "all_known",
+    "quality_matched",
+    "ordinary_reference"
+  ],
+  "quality": "No phase mask. All-known retains observed acquisition subgroups; matched excludes known low-bright-contrast and grey-pore, unknown flags abstain; ordinary additionally excludes known long-void reference examples without assuming clean material.",
+  "controls": "Separate alpha1 ridge: acquisition6 versus FFT/geometry/tensor11; whole-site LOO, fold-local median imputation/scaling; within-batch/ordinary-reference correlations. No residual or classifier promoted.",
+  "interval": "4000 percentile site-bootstrap draws; seed20261003; site-median differences, deletion ranges; unknown specimen independence.",
+  "example_sites": [
+    [
+      "Batch_2",
+      "3806gxp0"
+    ],
+    [
+      "Batch_1",
+      "4ih2ggld"
+    ],
+    [
+      "Batch_3",
+      "71vgq3fw"
+    ],
+    [
+      "Batch_3",
+      "hzumfsms"
+    ]
+  ],
+  "example_window": 0,
+  "scope": "Already explored known batches only; windows/pixels are coverage, not n; wavevector is normal to stripes, not plate axes.",
+  "stop_go": "Retain exploratory maps for review; independent expert/spatial repeatability and nuisance/redundancy checks gate material use. No scale or mode chosen by attractive separation; no neural/outcome training or new QC decision driver."
+}

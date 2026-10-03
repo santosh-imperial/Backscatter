@@ -1,0 +1,32 @@
+{
+  "base_commit": "a05860f2352cb696d36eb51d9ce82c4235aa2ee5",
+  "purpose": "Re-execute current H-fixed pipeline with additive exploratory-evidence Markdown",
+  "wall_seconds": 249.79,
+  "cells": 37,
+  "code_cells": 19,
+  "error_cells": 0,
+  "frozen_hash": "99d2bbcae6f3",
+  "thresholds_hash": "b4f4da2e357c",
+  "new_measurement_or_parameter_tuning": false,
+  "unseen_evaluation": false,
+  "notebook_sha256": "0b4ebd300b3cd382dc34512c9738930b2b0db235fd551e083ea8d67f8ce0451b",
+  "notebook_images_decoded": 2,
+  "primary_kpi_tables_unchanged_from_integration_base": true,
+  "known_reports": {
+    "Batch_1": {
+      "primary_kpi_table_unchanged": true,
+      "verdict": "consistent with working reference (within detectable limits)",
+      "images_decoded": 4,
+      "sha256": "f19596a7f800d989bf6af398e8e2be3d2e5e6be95d6de9bcc751531410a63551"
+    },
+    "Batch_2": {
+      "primary_kpi_table_unchanged": true,
+      "verdict": "consistent with working reference (within detectable limits)",
+      "images_decoded": 4,
+      "sha256": "fe3c6b2ecf776993166d1c48be0c6ba58db0f0e35542994900b90c7cb376dd2e"
+    }
+  },
+  "notebook_code_cells_preserved": true,
+  "configuration_and_threshold_asserts_passed": true,
+  "delivery_checks_not_independent_material_accuracy": true
+}

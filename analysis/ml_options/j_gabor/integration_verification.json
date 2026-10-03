@@ -1,0 +1,23 @@
+{
+  "experiment": "E28J",
+  "measured_source_hashes_current": true,
+  "saved_variant_summaries_recomputed": 155,
+  "saved_window_energies": 7440,
+  "pairwise_rows_verified": 135,
+  "raw_window_replays": 2,
+  "report_images_decoded": 5,
+  "report_qualification_once": true,
+  "registry_history_prefix_preserved": true,
+  "appended_measurement_registry_rows": 1710,
+  "appended_delivery_verification_rows": 7,
+  "measurement_base_commit": "76cbe53",
+  "verification_base_commit": "a05860f2352cb696d36eb51d9ce82c4235aa2ee5",
+  "primary_classifier_decision_historical_cache_files_unchanged": true,
+  "notebook_code_cells_unchanged": true,
+  "existing_metric_method_candidate_records_preserved": true,
+  "raw_tiffs_excluded": true,
+  "new_files_under_size_limit": true,
+  "expert_material_validity": "pending",
+  "spatial_representativeness": "unvalidated",
+  "unseen_evaluation": "not_run"
+}

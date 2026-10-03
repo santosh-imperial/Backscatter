@@ -404,6 +404,17 @@ add("A18", "Neighbourhood, local homogeneity and internal long-void geometry are
     "Threshold fragments or residual-solid transition bands were mistaken for physical neighbourhoods; clipped-cavity exclusions hid visible area; window variation reflected loading/section placement; image direction was mistaken for collector direction; or correlated sites were treated as independent specimens.",
     "Independently review phase boundaries, ambiguous fragments, graphite plate instances and the collector candidate. Can these observed geometries be reproduced across sections from identified specimens? Application claims need matched recipe/process and contact, adhesion, wetting or electrochemical evidence.")
 
+# E28J extends image-texture observability on A16 without confirming review.
+gabor_card = next(c for c in CARDS if c["id"] == "A16")
+gabor_card["why"] += " E28J adds three fixed-Gabor sampled BSE appearance summaries and contrast/resolution/FFT-geometry-tensor controls. Four windows cover only a small portion of a frame; wavevectors are normal to stripes, not plate axes. Negative nuisance predictability does not prove invariance. All material/QC use and independent expert/spatial validation remain deferred."
+gabor_image = os.path.join(ROOT,"analysis","ml_options","j_gabor","overlay_Batch_2_3806gxp0.png")
+if os.path.exists(gabor_image):
+    with Image.open(gabor_image) as im:
+        im = im.convert("RGB")
+        if im.width > 1500: im = im.resize((1500,int(im.height*1500/im.width)),Image.LANCZOS)
+        buf = io.BytesIO();im.save(buf,"JPEG",quality=85,optimize=True)
+        gabor_card["figures"].append(("data:image/jpeg;base64,"+base64.b64encode(buf.getvalue()).decode(),"E28J measured quarter-frame BSE window and fixed Gabor response maps. Gold bounds the valid interior; maps describe appearance, not particles or defects. Source coordinates and sampled-site coverage are in the J report."))
+
 # ----------------------------------------------------------------------------- HTML
 def esc(t): return html.escape(t)
 css = """

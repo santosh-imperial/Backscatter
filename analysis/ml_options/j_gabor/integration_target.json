@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-03",
+  "g_baseline_commit": "a6292be3cb2f0ae14880f7cd53bb8378b6e49cda",
+  "target_main_commit": "a05860f2352cb696d36eb51d9ce82c4235aa2ee5",
+  "original_audit_base_commit": "76cbe53",
+  "reused_extractor_metadata_hashes_match": {
+    "polaron_qc/features.py": true,
+    "analysis/battery/output/neighbourhood_sites.csv": true,
+    "analysis/battery/output/orientation_sites.csv": true
+  },
+  "scope": "Original target compatibility check retained; J is now integrated additively as uncommitted main edits. Frozen extraction/protocol and measured provenance are preserved.",
+  "integration": {
+    "status": "additive_main_edits_uncommitted",
+    "base_commit": "a05860f2352cb696d36eb51d9ce82c4235aa2ee5",
+    "measurement_repeated": false,
+    "original_pilot_receipt_preserved": true,
+    "current_receipt": "analysis/ml_options/j_gabor/integration_verification.json",
+    "combined_metric_entries": 81,
+    "combined_methods": 11
+  }
+}

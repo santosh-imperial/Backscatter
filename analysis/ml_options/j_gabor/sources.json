@@ -1,0 +1,16 @@
+{
+  "retrieval_date": "2026-10-03",
+  "scope": "Primary source for Gabor formulation and fixed filtering, not material validation.",
+  "sources": [
+    {
+      "title": "scikit-image 0.23.2 Gabor filter API",
+      "url": "https://scikit-image.org/docs/0.23.x/api/skimage.filters.html#skimage.filters.gabor_kernel",
+      "usage": "Gaussian-modulated complex harmonic, inverse-period frequency and wavevector convention; square support, DC removal and L2 normalisation are our explicit frozen choices."
+    },
+    {
+      "title": "scikit-image 0.23.2 Gabor texture examples",
+      "url": "https://scikit-image.org/docs/0.23.x/auto_examples/features_detection/plot_gabor.html",
+      "usage": "Fixed filter bank as image texture representation; no dataset-specific accuracy inferred."
+    }
+  ]
+}

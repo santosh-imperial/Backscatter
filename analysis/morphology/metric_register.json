@@ -3747,6 +3747,153 @@
           "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
         }
       ]
+    },
+    {
+      "id": "gabor_coarse_energy_share",
+      "label": "Gabor coarse energy share",
+      "family": "BSE image texture",
+      "keys": [
+        "gabor_coarse_energy_share"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "fraction",
+      "definition": "Sum of mean squared complex filter responses at period 64 px / sum across periods 16,32,64 px and four wavevector directions, pooled equally across four fixed windows.",
+      "interpretation": "Sampled BSE appearance at fixed image periods/directions, not phase identity or an application mechanism.",
+      "implementation_status": "computed",
+      "evidence_status": "math_tests_passed_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; no unseen-batch validation.",
+        "Four fixed windows sample part of each frame; spatial representativeness is unvalidated.",
+        "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
+        "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
+        "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
+        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/j_gabor/protocol.json",
+        "analysis/ml_options/j_gabor/sites.csv",
+        "analysis/ml_options/j_gabor/review.md",
+        "analysis/ml_options/j_gabor/report.html"
+      ],
+      "experiments": [
+        "E28J"
+      ],
+      "visual_kind": "gabor_texture",
+      "review_status": "unreviewed",
+      "review_notes": "Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Task J exact definitions fixed before new measurements; E28J.1."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E28J: single fixed all-known-site run, five modes; eight mathematical tests. Computation is distinct from expert validation; no QC promotion."
+        }
+      ]
+    },
+    {
+      "id": "gabor_axial_strength",
+      "label": "Gabor axial strength",
+      "family": "BSE image texture",
+      "keys": [
+        "gabor_axial_strength"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "0–1",
+      "definition": "Absolute energy-weighted mean exp(2j theta) across four wavevector directions, all three periods and four fixed windows. Direction is the modulation wavevector, normal to a stripe.",
+      "interpretation": "Sampled BSE appearance at fixed image periods/directions, not phase identity or an application mechanism.",
+      "implementation_status": "computed",
+      "evidence_status": "math_tests_passed_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; no unseen-batch validation.",
+        "Four fixed windows sample part of each frame; spatial representativeness is unvalidated.",
+        "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
+        "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
+        "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
+        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/j_gabor/protocol.json",
+        "analysis/ml_options/j_gabor/sites.csv",
+        "analysis/ml_options/j_gabor/review.md",
+        "analysis/ml_options/j_gabor/report.html"
+      ],
+      "experiments": [
+        "E28J"
+      ],
+      "visual_kind": "gabor_texture",
+      "review_status": "unreviewed",
+      "review_notes": "Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Task J exact definitions fixed before new measurements; E28J.1."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E28J: single fixed all-known-site run, five modes; eight mathematical tests. Computation is distinct from expert validation; no QC promotion."
+        }
+      ]
+    },
+    {
+      "id": "gabor_horizontal_wavevector_balance",
+      "label": "Gabor horizontal wavevector balance",
+      "family": "BSE image texture",
+      "keys": [
+        "gabor_horizontal_wavevector_balance"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "−1–1",
+      "definition": "Energy-weighted mean cos(2 theta) across all periods/windows; positive means horizontal wavevectors (vertical stripes), not horizontal graphite plates.",
+      "interpretation": "Sampled BSE appearance at fixed image periods/directions, not phase identity or an application mechanism.",
+      "implementation_status": "computed",
+      "evidence_status": "math_tests_passed_material_use_deferred",
+      "qc_role": "secondary_exploratory",
+      "limitations": [
+        "Pixels are uncalibrated export coordinates; no unseen-batch validation.",
+        "Four fixed windows sample part of each frame; spatial representativeness is unvalidated.",
+        "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
+        "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
+        "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
+        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+      ],
+      "evidence_paths": [
+        "analysis/ml_options/j_gabor/protocol.json",
+        "analysis/ml_options/j_gabor/sites.csv",
+        "analysis/ml_options/j_gabor/review.md",
+        "analysis/ml_options/j_gabor/report.html"
+      ],
+      "experiments": [
+        "E28J"
+      ],
+      "visual_kind": "gabor_texture",
+      "review_status": "unreviewed",
+      "review_notes": "Known-site pilot complete; keep maps for appearance review. Defer material/QC use: spatial representativeness, expert identity, acquisition and incremental value unresolved.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "Task J exact definitions fixed before new measurements; E28J.1."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E28J: single fixed all-known-site run, five modes; eight mathematical tests. Computation is distinct from expert validation; no QC promotion."
+        }
+      ]
     }
   ],
   "methods": [
@@ -3876,6 +4023,25 @@
         }
       ],
       "description": "Fixed 3-NN union on retained bright centroids; four site descriptors, threshold/floor coverage, acquisition and node/loading controls. Proximity is not contact; expert review pending."
+    },
+    {
+      "id": "fixed_gabor_bank",
+      "label": "Fixed Gabor texture bank",
+      "implementation_status": "computed",
+      "evidence_status": "appearance_review_only_material_deferred",
+      "description": "Twelve fixed filters on four quarter-frame BSE windows; three sampled-site summaries, resolution/gamma/affine and FFT/geometry/tensor controls. No learned CNN.",
+      "history": [
+        {
+          "date": "2026-10-03",
+          "status": "proposed",
+          "reason": "E28J.1 fixed before outputs."
+        },
+        {
+          "date": "2026-10-03",
+          "status": "computed",
+          "reason": "E28J complete: retained maps for review; all material/QC use deferred."
+        }
+      ]
     }
   ],
   "material_confirmation": {

@@ -282,6 +282,18 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 
 ---
 
+### D43J · 2026-10-03 · Retain the fixed Gabor maps for appearance review; defer material use
+- **Decision:** task J / E28J completes a single frozen twelve-filter, four-window BSE pilot with three exact secondary descriptors. Keep response maps as visual appearance references, while material/QC use remains deferred. No primary/classifier/verdict input or neural model changes.
+- **Why / alternatives:** the unfiltered coarse-energy B1 contrast has an interval excluding zero, while all nominal quality-matched intervals include zero with fewer sites. Resolution/gamma sensitivity, within-batch correlations and limited sampled coverage qualify interpretation. Negative acquisition/FFT/geometry/tensor LOO predictability does not establish independence or invariance. An expanded filter sweep, classifier or automatic promotion is deferred.
+- **Provenance / validation:** fixed definitions precede new outputs; known batches were already explored. Raw BSE/source/metadata hashes remain unchanged. Eight mathematical convention tests pass. Source/energy/table/atlas checks accompany delivery; expert and specimen/spatial repeatability remain open. E28J/D43J suffixes avoid parallel experiment-number collisions.
+- **Review applied:** C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30. Wavevectors are normal to stripes, not plate axes; image energy is not particle size, phase loading, transport or defect accuracy. No equivalence or unseen generalisation claim.
+
+### D46J · 2026-10-03 · Integrate J additively and preserve the H-fixed release path
+- **Decision:** integrate E28J onto committed main `a05860f`, add three sampled-appearance entries and one method, rebuild the combined atlas/assumptions, and link E/F/J evidence through generated notebook 02. Original pilot measurements/receipts remain historical; the integration receipt uses the actual main baseline. No production code, primary/classifier list, frozen setting or threshold changes. Integration edits remain uncommitted.
+- **Why / alternatives:** replace stale duplicated task statuses with traceable current artifacts while preserving E/F/G/H. Copying older whole registers/notebooks would discard newer work; rerunning or expanding the filter bank would change the pilot scope without establishing validity. Both are unnecessary because measured input hashes still match.
+- **Validation:** E29J records 24 passing targeted tests, the verified 81-entry atlas, 37-cell/19-code-cell notebook execution with zero errors, and regenerated known-batch reports with unchanged primary KPI tables and verdicts. Numeric/raw/source/append-only checks pass; all prior metric/method histories and non-J candidate entries are preserved. Configuration and threshold hashes remain `99d2bbcae6f3` / `b4f4da2e357c`.
+- **Review applied / remaining gates:** C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C31. H's rehearsal remains applicable because production/operator steps are unchanged. Material/QC use of J remains deferred, all new metrics expert-unreviewed; spatial/phase validity, specimen independence and unseen generalisation remain unresolved. G's engineering artifacts are refreshed; Santosh editorial review is still pending.
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.
