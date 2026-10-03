@@ -11,6 +11,7 @@ All lengths in pixels; NM_PER_PX is nominal (TIFF tag, unverified) and only used
 """
 NM_PER_PX = 25.0
 BATCH_COLORS = {"Batch_1": "#2a78d6", "Batch_2": "#eb6834", "Batch_3": "#1baf7a", "Batch_3 (grey-pore group)": "#eda100"}
+UNSEEN_COLOR = "#6f42c1"   # any batch folder not in BATCH_COLORS (the unseen batch); never index BATCH_COLORS[b] directly — use .get(b, UNSEEN_COLOR) (E23)
 LOW_CONTRAST_SITES = ["4ih2ggld", "5n1q8atc"]
 GREY_PORE_SITES = ["71vgq3fw", "kbdh4tri", "tuy3zymq", "x7u69zsw"]
 CRACKED_SITES = ["hzumfsms", "0grcilhi", "ufdvpb81"]

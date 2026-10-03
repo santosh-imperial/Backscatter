@@ -2,6 +2,15 @@
 
 Rendered by GitHub and most Markdown viewers (Mermaid). Boxes are modules or notebook sections; edges carry the tables named in the contracts below. Dashed edges are inputs that are not data (configuration, reviews, organiser answers). Numbers in brackets refer to `docs/qc_plan.md` sections.
 
+The parallel morphology measurement workflow is documented in
+`analysis/morphology/benchmark/README.md` (E24). Its live status source is
+`analysis/morphology/metric_register.json`, rendered into `docs/morphology_metrics.md`
+and `analysis/morphology/output/metric_atlas.html`. Read-only BSE inputs and cached
+site thresholds produce candidate masks, width/hysteresis/connectivity tables and
+an independent annotation pack. Explicit human annotations feed a separate error
+evaluation; unreviewed predictions never serve as reference labels. This workflow
+does not feed new descriptors into the frozen primary decision family.
+
 ```mermaid
 flowchart TD
   %% ---------------- inputs
@@ -118,10 +127,10 @@ flowchart TD
 
   %% ---------------- decision
   subgraph DEC["Decision  [2.7]  (polaron_qc.decision)"]
-    DA["Check A — batch-wide drift (primary KPIs)<br/>(i) beyond null · (ii) carried by primary · (iii) consistent across sites · (iv) material-only classifier p &lt; α"]
-    DB["Check B — localized defect<br/>flag → <b>credible</b> only with severity margin + reliable measurement<br/>(low-contrast hard, grey-pore soft, inside ±5-level band) + image review"]
+    DA["Check A — batch-wide drift (primary KPIs)<br/>(i) beyond null · (ii) carried by primary · (iii) consistent across sites · (iv) material-only classifier p &lt; α (run in-pipeline)<br/>(v) acquisition views <b>available</b> and not strongly attenuating — missing views withhold a reject"]
+    DB["Check B — localized defect<br/>flag → <b>credible</b> only with severity margin + reliable measurement<br/>(low-contrast hard, grey-pore soft, inside ±5-level band) + image review<br/>review states: unreviewed → pending · confirmed → credible · refuted → closed<br/>tiered (D33): 1 site in [2, 3) MAD → routed to review, verdict unchanged; ≥ 3 MAD or 2 sites / 2 KPIs → investigate"]
     V{{"Verdict<br/>consistent within detectable limits ·<br/>investigate: drift · investigate: localized ·<br/>reject (provisional)"}}
-    S["Decision stability (leave-one-site-out)<br/>what would move it · usable n · 3 outcome columns"]
+    S["Decision stability (leave-one-site-out)<br/>every input refit per fold (classifier + acquisition views included)<br/>what would move it · usable n · 3 outcome columns"]
     DA --> V
     DB --> V
     V --> S
@@ -134,7 +143,7 @@ flowchart TD
   C4 --> DB
   M2 -.->|"flag only; forces investigate only if no trusted KPI moves"| DB
   P4b -.-> DB
-  ACQ -.->|"attenuation dict (negative = not explained away)"| V
+  ACQ -.->|"attenuation {stratified, adjusted, available} (negative = not explained away; not available → reject withheld)"| V
   A2 -.-> DA
   R2 -.-> V
   P4a -.-> DA
@@ -182,7 +191,7 @@ flowchart TD
   %% ---------------- human-in-the-loop
   HUMAN["Image review by a person<br/>(crop from E2 → confirm / refute)"]
   E2 --> HUMAN
-  HUMAN -.->|"image_reviewed{(site,kpi): bool}"| DB
+  HUMAN -.->|"image_reviewed{(site,kpi): True / False}; key absent = unreviewed"| DB
 
   %% ---------------- governance
   LOG["docs/decision_log.md<br/>Part A decisions · Part B checklist · Part C open items"]
@@ -203,20 +212,20 @@ flowchart TD
 | features → ml, report (and, via per-site aggregation, stats local check) | `patches` | batch, site, patch_id, **y0, x0 in trimmed-frame px**, pore_frac, bright_frac, bright_count, crack_area_frac, pore_max_d (whole component touching patch), corr_len_px, graphite_mode_local, bright_low_contrast, grey_pore |
 | features → report (on demand) | `segment()`, `ridge_maps()`, `multichannel_features(return_maps=True)` | masks and maps for painting evidence |
 | acquisition → decision (Check B reliability), physics wording, report | `threshold_bands` → `analysis_cache/acquisition_sites.csv` | pore_frac / bright_frac under th ± 5 levels for every site (`*_band_rel`); `physics.threshold_sensitivity` is a duplicate to retire |
-| acquisition → stats, decision, report | `derive_flags` | contrast_stretched_bse/any, raised_black_level, bright_low_contrast, grey_pore (+ grey_pore_source), cracked_known (reference-only), band_rows, acquisition_group, bse_p1/p50/std, bright_sep, etd_curtain_frac, etd_boundary_sharpness |
-| acquisition → decision, report | `three_views` | {unadjusted, stratified, adjusted}: compare table + energy dict each (adjusted keeps `p_perm_fixed_residuals` beside the refit p), n kept/dropped, covariate R² per KPI, attenuation dict |
+| acquisition → stats, decision, report | `derive_flags` | contrast_stretched_bse/any, raised_black_level, bright_low_contrast, grey_pore (+ grey_pore_source), cracked_known (reference-only), band_rows, acquisition_group, bse_p1/p50/std, bright_sep, etd_curtain_frac, etd_boundary_sharpness. **`report.derive_flags` delegates here; `report.apply_derived_flags` writes grey_pore / bright_low_contrast / raised_black_level back into `sites` before any statistic runs** (E21), and `stats.usable_n` ORs the boolean columns with the lists |
+| acquisition → decision, report | `three_views` | {unadjusted, stratified, adjusted}: compare table + energy dict each (adjusted keeps `p_perm_fixed_residuals` beside the refit p), n kept/dropped, covariate R² per KPI, attenuation {stratified, adjusted, **available**}. Computed inside `report._run_pipeline` for the full run **and every jackknife fold**; a failure yields `{error}` and `att=None` → drift reject withheld |
 | acquisition → report | `three_channel_agreement` | per-site robust z (3 intensity, 3 texture), intensity/texture disagreement, pattern label |
 | stats → decision | `compare_kpis` tidy table | kpi, n_ref_usable, n_batch_usable, n_ref_fallback, n_batch_fallback, n_*_excluded, ref_median, batch_median, ref_mad, shift_mad, ci_low, ci_high, cliffs_delta, p_perm, p_method, n_perm, min_p_attainable, p_holm, p_reported, is_primary, direction (CI excludes 0), flag_alpha — statistic chosen in CFG (`hl_shift` recommended); plus energy-distance dict {statistic, p, n_perm, n_dropped}, `per_site_drift` table (distance, LOO percentile, per-site z, top_driver), `local_exceedance` tables per KPI {site, value, ref_max, exceeds, margin_in_mad, credible_severity} + `iid_flag_probability` |
-| stats → decision, report | `mdc(x_ref, n_incoming=usable batch n)` **separate call per KPI × batch** | mdc_mad, mdc_abs, power_curve, design string ("7 v remaining, without replacement") — computed on the full usable reference (17), never on the 10 ordinary sites |
+| stats → decision, report | `mdc(x_ref, n_incoming=usable batch n)` **separate call per KPI × batch** | mdc_mad, mdc_abs, power_curve, design string ("7 v remaining, without replacement"), **feasible, reason** — computed on the full usable reference (17), never on the 10 ordinary sites. n_incoming > n_ref − 3 (equal or larger batches) → feasible=False, NaN, no exception; report prints "not available" and the comparison still runs (E21) |
 | decision → stats (callbacks) | `jackknife(fn, site_ids)`, `reference_split_diagnostics(…, pipeline_fn)` | fn / pipeline_fn re-run CMP + DEC on the reduced site set |
 | stats consumes | `sites` only | stats never reads `images` or `patches`; callers aggregate patch extremes to per-site maxima and derive flags from `images` |
-| ml → decision | `c2st` dict | auc, auc_null (array), p (Monte Carlo, n stated), cv scheme, coef table (feature, coef, sign, selected, selection_stability, mean_abs_shap), per_site_scores — run **twice**: material KPIs only (drives A iv) and flag-inclusive (evidence) |
+| ml → decision | `c2st` dict | auc, auc_null (array), p (Monte Carlo, n stated), cv scheme, coef table (feature, coef, sign, selected, selection_stability, mean_abs_shap), per_site_scores — run **twice**: material KPIs only (drives A iv; **executed inside `report.build_result` via `report.material_c2st` on the site tables and refit per jackknife fold**, D30) and flag-inclusive (evidence, cached pre-run) |
 | ml → decision | `novelty` dict | per_site (novelty_median, novelty_p90, pct_median, exceeds_ref_loo_max), ref_loo distribution — exploratory, flag only |
 | ml → report | per-patch novelty with original-image y0/x0, nearest reference patches, correlates table (novelty vs KPIs and acquisition stats) |
 | physics → stats, decision | `CONSEQUENCE_WEIGHTS`, `weights_vector()`, `CONSEQUENCE_RATIONALE`, `KPI_LABELS` | ordinal weight per KPI |
 | physics → decision (reliability), report | `threshold_sensitivity`, `sanity_checks` | ±5-level bands; fractions sum; porosity note (dataset-level) |
 | physics → report | readings | statement + caveats + claims_not_made per reading (DataFrames carry them in `.attrs` — read immediately) |
-| decision → report | `verdict` dict | verdict, reason, outcome_columns {drift_alert, localized ∈ none/flag/pending_review/credible, quality_abstention}, drivers, attenuation, what_would_move_it, thresholds_hash, provenance |
+| decision → report | `verdict` dict | verdict, reason, outcome_columns {drift_alert, localized ∈ none/flag/**review_routed**/pending_review/credible, quality_abstention}, drivers, attenuation {stratified, adjusted, available}, **escalation** {escalate, by_single_site, by_site_agreement, by_kpi_agreement, max_pending_margin_mad, rule}, what_would_move_it, thresholds_hash, provenance. `check_b` adds `refuted`, `n_sites_refuted`, per-flag `review_status`. Tiered rule D33: review_routed = one site in [2, 3) MAD, verdict unchanged |
 | (owner to assign) | `KPI_TRUST` dict | trust level per KPI from the findings-doc catalogue (high / medium / flag / confounded / diagnostic) — needed by E3; proposed home `polaron_qc/__init__.py` |
 
 ## Report sections → sources (added after the first end-to-end run)
@@ -228,7 +237,7 @@ flowchart TD
 | Drivers + physics reading | DA.per_kpi (shift, consistency share, n beyond) + PHY.qualitative_statement, gated on A5 threshold band |
 | Evidence images | F2 masks via `segment()` (**trimmed frame**) + MLCACHE per-patch novelty (**original frame**) + C3 most/least typical site + DB flags (crops) |
 | Local-anomaly table | C4 tables + DB.flags (measurement note, review status) + `iid_flag_probability` + DB.descriptive_flags (batch-mean outliers) |
-| ML corroboration | MLCACHE: `c2st_material.json` (drives A iv) + `c2st_results.json` flag-inclusive (evidence) + novelty per-site/correlates |
+| ML corroboration | in-pipeline material-only c2st (drives A iv) + MLCACHE: `c2st_material.json` as `material_cached` comparison, `c2st_results.json` flag-inclusive (evidence), novelty per-site/correlates |
 | Acquisition | A0 flags table + ACQ three views + A4 agreement |
 | Physics sanity | PCACHE + ACACHE bands + dataset-level porosity note |
 | Secondary KPIs | C1 rows with is_primary = False, uncorrected, labelled descriptive |
@@ -244,7 +253,11 @@ flowchart TD
 7. **MDC simulation must draw without replacement.** The with-replacement design in the first plan draft rejected 11 % at zero shift. MDC uses the full usable reference (17 sites); on the 10 ordinary sites it is undefined for n = 7.
 8. **Exact median-difference tests are too discrete at 7 v 17** (56 attainable values, 21 % of null p-values exactly 1; bright_d50 MDC 3.75 MAD vs 2.5 with Hodges–Lehmann). Use `hl_shift` for the verdict test; keep median/MAD as the reported effect size.
 9. **Covariate adjustment on this reference amplifies the shift** (attenuation −1.4 / −3.0): covariates fitted on the heterogeneous reference encode its sub-populations. Read negative attenuation as "not explained away"; always show the 7-covariate ridge variant beside the 3-covariate OLS; fixed-residual p-values are anti-conservative (0.002 vs 0.021) — only in-loop refit counts.
-10. **`stats.compare_kpis` ignores a per-site `grey_pore` column.** Pass `flags={"grey_pore": sites}` from `derive_flags` so an unseen batch's data-derived grey-pore sites are counted as fallback.
+10. **`stats.compare_kpis` ignored a per-site `grey_pore` column** (fixed E21: `usable_n` now ORs the boolean column with the list; `report.apply_derived_flags` writes the derived flags into `sites` first). Still pass `flags=` when calling stats on tables that carry no flag columns.
+13. **A missing acquisition view is not "no attenuation".** `decide(att=None)` once allowed a drift reject whose reason claimed the shift was not attenuated (E21). Now `attenuation.available` must be True for a Check A reject; the views run inside the pipeline. Any new verdict input must define its missing-value behaviour in the conservative direction (C25, C27).
+14. **MDC is undefined when the incoming batch is as large as the reference.** The split design raised for n_in > n_ref and returned ∞ with zero simulations at n_in = n_ref (E21). It now returns feasible=False / NaN with a reason; the report prints "not available" and nothing else stops.
+15. **Image review has three states.** An explicit `False` used to be read as "not reviewed" and kept the investigation pending forever (E21). unreviewed → pending, confirmed → credible, refuted → closed (flag still listed).
+16. **Leave-one-site-out held the classifier fixed** at its full-sample value, so "stability" was conditional on that evidence (E21). The material classifier and the acquisition views are now refit in every fold; `stability.refit_per_fold` / `held_fixed` state exactly what was re-run.
 11. **Localized flags on batch-mean KPIs are not local defects.** Check B reads only `decision.LOCAL_KPIS`; `None` for the classifier never counts as corroboration (D28).
 12. **Caches:** features cache is machine-specific (mtimes in hash) → git-ignored; ml embeddings are portable → committed; physics_sites.csv committed.
 

@@ -267,3 +267,30 @@ def test_compare_kpis_real_cache(cache):
     assert set(out.n_perm[is_bright]) == {S.math.comb(22, 5)} and set(out.n_perm[~is_bright]) == {346104}
     for c in ["shift_mad", "ci_low", "ci_high", "cliffs_delta", "p_perm"]:
         assert out[c].notna().all()
+
+
+def test_mdc_infeasible_designs_are_reported_not_raised():
+    """E21 P2: incoming >= reference (or too few remaining) → feasible=False, NaN, no exception; feasible otherwise."""
+    r = np.random.default_rng(3).normal(size=17)
+    for n_in in (18, 17, 15):            # 17 - 3 = 14 is the largest feasible draw
+        m = S.mdc(r, n_in, n_sim=3, shifts=[0, 1], test={"n_mc": 19})
+        assert m["feasible"] is False and np.isnan(m["mdc_mad"]) and m["n_sim_used"] == 0
+        assert "split design" in m["reason"] and "not available" in m["design"]
+        assert len(m["power_curve"]) == 2 and m["power_curve"]["power"].isna().all()
+    ok = S.mdc(r, 14, n_sim=3, shifts=[0, 4], test={"n_mc": 19})
+    assert ok["feasible"] is True and ok["reason"] is None and ok["n_sim_used"] == 3 and ok["mean_n_remaining"] == 3
+    eq = S.mdc(np.arange(7, dtype=float), 7, n_sim=2, shifts=[0], test={"n_mc": 9})
+    assert eq["feasible"] is False and not np.isinf(eq["mdc_mad"])
+    z = S.mdc(np.ones(17), 7, n_sim=2, shifts=[0], test={"n_mc": 9})
+    assert z["feasible"] is False and "MAD" in z["reason"]
+
+
+def test_usable_n_honours_grey_pore_column_for_fallback():
+    """E21 P1: an unseen batch's data-derived grey_pore column counts as fallback, like the list."""
+    df = pd.DataFrame(dict(site=[f"new{i}" for i in range(5)], pore_frac=np.linspace(0.1, 0.2, 5), bright_frac=0.05,
+                           grey_pore=[True, True, False, False, True], bright_low_contrast=[False, True, False, False, False]))
+    u = S.usable_n(df, "pore_frac")
+    assert u["n_usable"] == 5 and u["n_fallback"] == 3 and sorted(u["fallback_sites"]) == ["new0", "new1", "new4"]
+    assert S.usable_n(df, "bright_frac")["n_excluded"] == 1
+    u2 = S.usable_n(df, "pore_frac", flags={"grey_pore": ["new2"]})
+    assert u2["n_fallback"] == 4

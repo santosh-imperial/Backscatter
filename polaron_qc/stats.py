@@ -484,9 +484,16 @@ def mdc(x_ref, n_incoming: int, alpha: float = 0.05, power: float = 0.80, n_sim:
     for all shifts, so the power curve is nearly monotone by construction and the grid
     search is stable; the raw curve is returned, together with its running maximum.
 
+    Feasibility: the split design needs at least `min_remaining` reference sites left after
+    drawing `n_incoming`, so it is undefined when n_incoming > n_ref - min_remaining (equal or
+    larger incoming batches included). Then the function returns feasible=False, mdc_mad=NaN,
+    n_sim_used=0 and a `reason`, and raises nothing: the comparison itself still runs at those
+    n; only this sensitivity estimate is unavailable (E21). Zero reference MAD is the other
+    infeasible case.
+
     Returns dict(mdc_mad, mdc_abs, power_curve (DataFrame: shift, power, power_monotone,
     n_sim), ref_mad, n_ref, n_incoming, mean_n_remaining, alpha, target_power, test,
-    n_sim_used, elapsed_s, design).
+    n_sim_used, elapsed_s, design, feasible, reason).
     """
     t0 = time.perf_counter()
     r = _as1d(x_ref)
@@ -497,6 +504,22 @@ def mdc(x_ref, n_incoming: int, alpha: float = 0.05, power: float = 0.80, n_sim:
     kw.update(test or {})
     fn, name, vectorised = _resolve_statistic(kw["statistic"])
     n_mc, alternative = int(kw["n_mc"]), kw["alternative"]
+    n_draw_max = n_r - min_remaining
+    reason = None
+    if n_incoming < 1:
+        reason = "no incoming sites"
+    elif not replace and n_incoming > n_draw_max:
+        reason = (f"split design needs >= {min_remaining} remaining reference sites: n_incoming = {n_incoming} > "
+                  f"n_ref - {min_remaining} = {n_draw_max}")
+    elif not (m > 0):
+        reason = "reference MAD is zero (or NaN)"
+    if reason is not None:
+        curve = pd.DataFrame(dict(shift=shifts, power=np.nan, power_monotone=np.nan, n_sim=0))
+        return dict(mdc_mad=float("nan"), mdc_abs=float("nan"), power_curve=curve, ref_mad=m, n_ref=int(n_r),
+                    n_incoming=int(n_incoming), mean_n_remaining=float("nan"), alpha=alpha, target_power=power,
+                    test=dict(kw, statistic=name), n_sim_used=0, elapsed_s=time.perf_counter() - t0,
+                    feasible=False, reason=reason,
+                    design=f"not available for the split-reference simulation design: {reason}")
     rng = np.random.default_rng(seed)
     rejections = np.zeros(len(shifts))
     n_used, n_rem_total = 0, 0
@@ -531,7 +554,7 @@ def mdc(x_ref, n_incoming: int, alpha: float = 0.05, power: float = 0.80, n_sim:
     return dict(mdc_mad=mdc_mad, mdc_abs=mdc_mad * m, power_curve=curve, ref_mad=m, n_ref=int(n_r),
                 n_incoming=int(n_incoming), mean_n_remaining=(n_rem_total / n_used if n_used else np.nan),
                 alpha=alpha, target_power=power, test=dict(kw, statistic=name), n_sim_used=int(n_used),
-                elapsed_s=time.perf_counter() - t0,
+                elapsed_s=time.perf_counter() - t0, feasible=bool(n_used > 0), reason=None if n_used else "no usable simulations",
                 design=(f"{n_incoming} sites drawn {'with' if replace else 'without'} replacement from {n_r} reference sites vs the remaining "
                         f"(mean {n_rem_total / max(n_used, 1):.1f}) reference sites; Monte Carlo permutation "
                         f"({name}, {alternative}, n_mc={n_mc}); conservative relative to {n_incoming}-vs-{n_r}."))
@@ -670,7 +693,8 @@ def usable_n(df: pd.DataFrame, kpi: str, flags: dict | None = None, site_col: st
     A site is usable when its value is not NaN and it is not excluded by the flag relevant
     to the KPI (`flag_rule`). `flags` maps flag name -> list of site ids (default
     DEFAULT_FLAGS). A boolean `bright_low_contrast` column in `df`, if present, is OR-ed
-    with the list so an unseen batch's own flags count.
+    with the list so an unseen batch's own flags count; likewise a boolean `grey_pore` column
+    for the fallback count.
 
     Returns dict(kpi, n_sites, n_nonnan, n_usable, n_excluded, n_fallback, usable_sites,
     excluded_sites, fallback_sites, excluded_by, fallback_by).
@@ -687,6 +711,8 @@ def usable_n(df: pd.DataFrame, kpi: str, flags: dict | None = None, site_col: st
             excluded |= df[flag].fillna(False).astype(bool).to_numpy()
     elif mode == "fallback":
         fallback = sites.isin([str(s) for s in flags.get(flag, [])]).to_numpy()
+        if flag in df.columns:   # an unseen batch's data-derived grey_pore column counts too (E21)
+            fallback |= df[flag].fillna(False).astype(bool).to_numpy()
     usable = nonnan & ~excluded
     return dict(kpi=kpi, n_sites=int(len(df)), n_nonnan=int(nonnan.sum()), n_usable=int(usable.sum()),
                 n_excluded=int((excluded & nonnan).sum()), n_fallback=int((fallback & usable).sum()),

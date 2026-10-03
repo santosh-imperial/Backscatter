@@ -19,10 +19,12 @@ sites_ref       DataFrame, features.extract_batch(...)["sites"] of the reference
 sites_batch     DataFrame, same for the incoming batch
 images_ref, images_batch   DataFrame, features ``images`` tables (raw per-image statistics)
 patches_batch   DataFrame, features ``patches`` table of the batch (y0, x0 in the TRIMMED frame)
-flags_ref, flags_batch     DataFrame, PROVISIONAL per-site acquisition flags derived here (the acquisition module
-                 will own this): site, contrast_stretched_bse, contrast_stretched_any, bse_p1, raised_black_level,
-                 bright_low_contrast, grey_pore, cracked, band_top, band_bottom, acquisition_group
-ordinary_ref_sites   list of reference site ids = reference minus GREY_PORE_SITES minus CRACKED_SITES
+flags_ref, flags_batch     DataFrame, polaron_qc.acquisition.derive_flags (DATA-DERIVED: grey_pore = BSE p1 > 10 or known
+                 reference list; bright_low_contrast from features; cracked_known = reference-only list) + H, cracked alias.
+                 The derived grey_pore / bright_low_contrast / raised_black_level columns are written back into
+                 sites_ref / sites_batch before any statistic runs, so an unseen batch's own flags reach usable n,
+                 Check B reliability and the quality abstention (E21).
+ordinary_ref_sites   list of reference site ids with acquisition_group == 'ordinary' (not grey-pore, low-contrast or cracked)
 compare         DataFrame, stats.compare_kpis tidy table (statistic hl_shift) over all trusted KPIs present;
                  Holm on the five primary KPIs; grey-pore sites kept as fallback
 energy          dict, stats.energy_distance_test on the primary KPIs (consequence-weighted; low-contrast sites'
@@ -32,9 +34,13 @@ drift           DataFrame, stats.per_site_drift on the primary KPIs (reference s
 local           {kpi: stats.local_exceedance dict (table, ref_max, ref_mad, iid_flag_probability, ...)} against the
                  ORDINARY reference sites; keys = primary KPIs + 'bright_max_d' (descriptive) +
                  'patch_crack_area_frac', 'patch_pore_max_d' (per-site maxima of patch KPIs; descriptive, trimmed frame)
-check_a, check_b, abstention, verdict   dicts from polaron_qc.decision (image_reviewed=None → 'pending_review')
-stability       {share, n_runs, full_verdict, runs: [{left_out, verdict, outcome_columns}], method}
-c2st_material   dict or None (not in the ml cache yet: the cached runs include etd_boundary_sharpness)
+check_a, check_b, abstention, verdict   dicts from polaron_qc.decision (image_reviewed=None → 'pending_review'; verdict.attenuation
+                 carries the stratified/adjusted shares and 'available'; a drift reject is withheld when not available)
+stability       {share, n_runs, full_verdict, runs: [{left_out, verdict, outcome_columns}], method, refit_per_fold, held_fixed}
+                 every verdict input is refit per leave-one-site-out fold (compare, energy, local, material classifier,
+                 acquisition views); nothing from the full sample is held fixed
+c2st_material   dict: material-only classifier (MATERIAL_KPIS) run IN THE PIPELINE on the site tables (variant
+                 'material_all_sites_in_pipeline'); a cached material run, if any, is kept under c2st_extra['material_cached']
 c2st_flag_inclusive   dict {auc, null_band, p, n_perm, p_method, cv, n_sites_ref, n_sites_batch, coef: DataFrame,
                  per_site_scores: DataFrame, kpis, variant} or None
 c2st_extra      {variant_tag: same dict} for other cached variants of this pair (e.g. without_low_contrast) or {}
@@ -44,7 +50,8 @@ novelty         {per_site: DataFrame (this batch), ref_loo: DataFrame, per_patch
 physics         {sites: DataFrame (physics_sites.csv rows of both batches), statements: {kpi: {statement, gated,
                  band_available, band_abs, delta_abs, note}}, weights: {kpi: int}, rationale: {kpi: str},
                  labels: {kpi: str}, sanity: DataFrame (physics.sanity_checks on the batch), fraction_connected_note}
-acquisition     None (placeholder for polaron_qc.acquisition: {unadjusted, stratified, adjusted} views)
+acquisition     polaron_qc.acquisition.three_views dict {unadjusted, stratified, adjusted, attenuation, note} computed on the
+                 primary KPIs, or {error: repr} when the views failed (then verdict.attenuation.available is False)
 limits          {usable_n: {kpi: (n_ref, n_batch)}, specimen_independence: str, reference_heterogeneity: {...},
                  mdc_range_mad: (lo, hi), scale: str, notes: [str]}
 KPI_TRUST       the trust dict used (copied in so the report is self-describing)
@@ -78,11 +85,12 @@ from PIL import Image  # noqa: E402
 from scipy import ndimage as ndi  # noqa: E402
 from skimage.measure import label, regionprops_table  # noqa: E402
 
-from . import BATCH_COLORS, CRACKED_SITES, GREY_PORE_SITES, LOW_CONTRAST_SITES, NM_PER_PX, PRIMARY_KPIS  # noqa: E402
-from . import decision, physics, stats  # noqa: E402
+from . import BATCH_COLORS, CRACKED_SITES, GREY_PORE_SITES, LOW_CONTRAST_SITES, MATERIAL_KPIS, NM_PER_PX, PRIMARY_KPIS, UNSEEN_COLOR  # noqa: E402
+from . import acquisition, decision, ml, physics, stats  # noqa: E402
 
 __all__ = ["KPI_TRUST", "TRUSTED_KPIS", "build_result", "render_report", "paint_crack_voids", "outline_bright",
-           "novelty_overlay", "crack_void_mask", "fig_to_b64", "array_to_b64", "derive_flags", "DEFAULT_CONFIG"]
+           "novelty_overlay", "crack_void_mask", "fig_to_b64", "array_to_b64", "derive_flags", "apply_derived_flags",
+           "material_c2st", "DEFAULT_CONFIG"]
 
 # ---------------------------------------------------------------------------------------------------------------
 # constants
@@ -121,6 +129,12 @@ _OUTLINE_RGB = (255, 209, 102)  # #ffd166 (annotation colour of the assumption r
 DEFAULT_CONFIG = dict(
     alpha=0.05, power=0.80, seed=0, statistic="hl_shift", n_boot=2000, n_mc=20_000, energy_n_mc=5000,
     mdc_n_sim=400, mdc_n_mc=999, jackknife_n_boot=500, jackknife_energy_n_mc=2000,
+    # material-only classifier (Check A iv) is run inside the pipeline on the site tables (D30); n_perm per run
+    c2st_in_pipeline=True, c2st_n_perm=200, jackknife_c2st_n_perm=100,
+    # acquisition sensitivity views (stratified / adjusted) inside the pipeline; Monte Carlo sizes for the full run and per fold
+    acquisition_views=True, acq_n_mc=5000, jackknife_acq_n_mc=1000,
+    # human image review of routed / pending crops: {(site, kpi): True (confirmed) | False (refuted)}; absent = unreviewed (D32)
+    image_reviewed=None,
     primary=list(PRIMARY_KPIS), thresholds={}, stretch_frac=0.2, black_level_p1=10, patch=512,
     provenance=decision.Thresholds().provenance,
 )
@@ -241,34 +255,65 @@ def _crop(img: np.ndarray, cy: int, cx: int, h: int, w: int):
 # provisional acquisition flags (the acquisition module will own this)
 # ---------------------------------------------------------------------------------------------------------------
 def derive_flags(sites: pd.DataFrame, images: pd.DataFrame, stretch_frac: float = 0.2, black_level_p1: float = 10) -> pd.DataFrame:
-    """PROVISIONAL per-site acquisition flags from the features tables (workflow.md contract row features → stats:
-    contrast_stretched = empty_bin_frac > 0.2, raised_black_level = BSE p1 > 10), plus the site-level flags.
-    One row per site. Replace with polaron_qc.acquisition when it lands."""
-    bse = images[images.det == "BSE"].set_index("site")
-    anyd = images.groupby("site").empty_bin_frac.max()
-    rows = []
-    for _, r in sites.iterrows():
-        s = r.site
-        b = bse.loc[s] if s in bse.index else None
-        lc = bool(r.get("bright_low_contrast", False)) or s in LOW_CONTRAST_SITES
-        gp = bool(r.get("grey_pore", False)) or s in GREY_PORE_SITES
-        cr = s in CRACKED_SITES
-        rows.append(dict(
-            batch=r.batch, site=s,
-            contrast_stretched_bse=bool(b is not None and b.empty_bin_frac > stretch_frac),
-            contrast_stretched_any=bool(anyd.get(s, 0) > stretch_frac),
-            bse_empty_bin_frac=float(b.empty_bin_frac) if b is not None else np.nan,
-            bse_p1=float(b.p1) if b is not None else np.nan,
-            raised_black_level=bool(b is not None and b.p1 > black_level_p1),
-            bright_low_contrast=lc, grey_pore=gp, cracked=cr,
-            bright_sep=float(r.get("bright_sep", np.nan)),
-            band_top=int(b.band_top) if b is not None else 0, band_bottom=int(b.band_bottom) if b is not None else 0,
-            H=int(r.H) if "H" in r else (int(b.H) if b is not None else -1),
-            acquisition_group="low_contrast" if lc else ("grey_pore" if gp else ("cracked" if cr else "ordinary")),
-        ))
-    out = pd.DataFrame(rows)
-    out.attrs["status"] = "provisional (derived in polaron_qc.report; polaron_qc.acquisition will own these flags)"
+    """Per-site acquisition flags, DATA-DERIVED by :func:`polaron_qc.acquisition.derive_flags` (one row per site).
+
+    grey_pore = BSE p1 > RAISED_BLACK_LEVEL_P1 OR membership of the known reference list (on Batches 1–3 the data rule
+    reproduces the list exactly; on an unseen batch only the data rule acts); bright_low_contrast from the features table;
+    cracked_known = reference-only list (never data-derived: cracking is the material signal). Adds ``H`` (frame height)
+    and a ``cracked`` alias. ``stretch_frac`` / ``black_level_p1`` are accepted for config compatibility: the operative
+    thresholds live in polaron_qc.acquisition and a mismatch is recorded in ``attrs['config_mismatch']`` (E21 fix for the
+    former known-ID rule that left unseen grey-pore sites unflagged)."""
+    out = acquisition.derive_flags(sites, images)
+    s = out.site.astype(str)
+    if "H" in sites.columns:
+        out["H"] = s.map(sites.set_index(sites.site.astype(str))["H"]).fillna(-1).astype(int).to_numpy()
+    elif "H" in images.columns:
+        bse = images[acquisition._norm_det(images.det) == "BSE"]
+        out["H"] = s.map(bse.set_index(bse.site.astype(str))["H"]).fillna(-1).astype(int).to_numpy()
+    else:
+        out["H"] = -1
+    out["cracked"] = out["cracked_known"].astype(bool)
+    out.attrs["status"] = ("data-derived (polaron_qc.acquisition.derive_flags): grey pore = raised BSE black level or known reference list; "
+                           "low contrast from features; cracked = known reference list only")
+    mism = []
+    if abs(float(stretch_frac) - acquisition.STRETCH_EMPTY_BIN_FRAC) > 1e-9: mism.append(f"stretch_frac {stretch_frac} ≠ {acquisition.STRETCH_EMPTY_BIN_FRAC}")
+    if abs(float(black_level_p1) - acquisition.RAISED_BLACK_LEVEL_P1) > 1e-9: mism.append(f"black_level_p1 {black_level_p1} ≠ {acquisition.RAISED_BLACK_LEVEL_P1}")
+    out.attrs["config_mismatch"] = mism
     return out
+
+
+FLAG_COLUMNS_PROPAGATED = ("grey_pore", "bright_low_contrast", "raised_black_level")
+
+
+def apply_derived_flags(sites: pd.DataFrame, flags: pd.DataFrame) -> pd.DataFrame:
+    """Write the derived per-site flags back into a site table (OR-ed with any existing boolean column) and add
+    ``acquisition_group``. This is what makes an unseen batch's grey-pore / low-contrast sites reach stats.usable_n,
+    decision.check_b (measurement reliability) and decision.quality_abstention (E21)."""
+    f = flags.copy(); f["site"] = f["site"].astype(str); f = f.drop_duplicates("site").set_index("site")
+    out = sites.copy(); s = out["site"].astype(str)
+    for col in FLAG_COLUMNS_PROPAGATED:
+        prev = out[col].fillna(False).astype(bool).to_numpy() if col in out.columns else np.zeros(len(out), bool)
+        new = s.map(f[col]).fillna(False).astype(bool).to_numpy() if col in f.columns else np.zeros(len(out), bool)
+        out[col] = prev | new
+    out["acquisition_group"] = s.map(f["acquisition_group"]).fillna("ordinary").to_numpy() if "acquisition_group" in f.columns else "ordinary"
+    return out
+
+
+def material_c2st(ref_sites: pd.DataFrame, batch_sites: pd.DataFrame, n_perm: int = 200, seed: int = 0,
+                  kpis=MATERIAL_KPIS, variant: str = "material_all_sites_in_pipeline") -> dict:
+    """Material-only classifier two-sample test (ml.c2st, L1 logistic, grouped CV, site-level permutation null) run on
+    the site tables inside the pipeline, so Check A(iv) does not depend on a cached pre-run for an unseen batch (D30).
+    Rows with a NaN on any material KPI are dropped and counted. Returns the dict shape the renderer expects."""
+    kp = [k for k in kpis if k in ref_sites.columns and k in batch_sites.columns]
+    R, B = ref_sites[kp].astype(float), batch_sites[kp].astype(float)
+    ok_r, ok_b = R.notna().all(axis=1).to_numpy(), B.notna().all(axis=1).to_numpy()
+    r = ml.c2st(R[ok_r].to_numpy(), B[ok_b].to_numpy(), ref_sites.site[ok_r].astype(str), batch_sites.site[ok_b].astype(str),
+                kp, n_perm=n_perm, seed=seed)
+    return dict(auc=float(r["auc"]), null_band=[float(x) for x in r["null_band"]], p=float(r["p"]), n_perm=int(r["n_perm"]),
+                p_method=str(r.get("p_method", "Monte Carlo site-label permutation")) + " (in-pipeline)", cv=str(r.get("cv")),
+                n_sites_ref=int(ok_r.sum()), n_sites_batch=int(ok_b.sum()), coef=r["coef"], per_site_scores=r["per_site_scores"],
+                kpis=kp, variant=variant, key=f"{batch_sites.batch.iloc[0]}_vs_{ref_sites.batch.iloc[0]}_{variant}", flag_inclusive=False,
+                n_dropped_nan=(int((~ok_r).sum()), int((~ok_b).sum())))
 
 
 # ---------------------------------------------------------------------------------------------------------------
@@ -301,9 +346,24 @@ def _primary_matrix(df: pd.DataFrame, kpis) -> pd.DataFrame:
     return df.set_index("site")[list(kpis)].astype(float)
 
 
+def _acquisition_views(ref_sites, batch_sites, primary, flags_all, cfg, n_boot, n_mc):
+    """acquisition.three_views on the primary KPIs; returns (views_or_error_dict, attenuation_or_None)."""
+    try:
+        fl = dict(grey_pore=flags_all.site[flags_all.grey_pore.astype(bool)].astype(str).tolist(),
+                  bright_low_contrast=flags_all.site[flags_all.bright_low_contrast.astype(bool)].astype(str).tolist())
+        tv = acquisition.three_views(ref_sites, batch_sites, list(primary), flags_all, statistic=cfg["statistic"], seed=cfg["seed"],
+                                     primary=list(primary), alpha=cfg["alpha"], n_boot=n_boot, flags=fl,
+                                     n_mc_adjusted=n_mc, n_mc_energy=n_mc, weights=physics.weights_vector(primary))
+        return tv, tv.get("attenuation")
+    except Exception as ex:  # a failed sensitivity view must not abort the report; the verdict then withholds a drift reject
+        return dict(error=repr(ex)), None
+
+
 def _run_pipeline(ref_sites, batch_sites, ordinary_sites, cfg, th, primary, c2st=None, n_boot=None, energy_n_mc=None,
-                  kpis=None, local_extra=True):
-    """compare → energy → local → check A/B → abstention → verdict. Used for the full run and inside the jackknife."""
+                  kpis=None, local_extra=True, flags_all=None, acq_n_boot=None, acq_n_mc=None):
+    """compare → energy → local → acquisition views → check A/B → abstention → verdict.
+    Used for the full run and inside the jackknife. ``flags_all`` (derived flags of reference + batch) switches the
+    acquisition views on; without them ``att=None`` and decision.decide withholds a drift reject (E21)."""
     kpis = list(kpis) if kpis is not None else list(primary)
     compare = stats.compare_kpis(ref_sites, batch_sites, kpis=kpis, primary=primary, seed=cfg["seed"],
                                  n_boot=cfg["n_boot"] if n_boot is None else n_boot, n_mc=cfg["n_mc"], alpha=cfg["alpha"],
@@ -319,12 +379,17 @@ def _run_pipeline(ref_sites, batch_sites, ordinary_sites, cfg, th, primary, c2st
         rv = stats.usable_values(ref_sites[ord_mask.values], k)
         bv = stats.usable_values(batch_sites, k)
         local[k] = stats.local_exceedance(rv, bv, margin_mad=th.severity_margin_mad)
+    acq, att = (None, None)
+    if flags_all is not None and cfg.get("acquisition_views", True):
+        acq, att = _acquisition_views(ref_sites, batch_sites, primary, flags_all, cfg,
+                                      n_boot=cfg["n_boot"] if acq_n_boot is None else acq_n_boot,
+                                      n_mc=cfg["acq_n_mc"] if acq_n_mc is None else acq_n_mc)
     a = decision.check_a(compare, energy, ref_sites, batch_sites, ord_mask, c2st=c2st, th=th, primary=primary)
-    b = decision.check_b({k: v["table"] for k, v in local.items()}, batch_sites, image_reviewed=None, th=th, primary=primary)
+    b = decision.check_b({k: v["table"] for k, v in local.items()}, batch_sites, image_reviewed=cfg.get("image_reviewed"), th=th, primary=primary)
     abst = decision.quality_abstention(batch_sites, a, th)
-    verdict = decision.decide(a, b, abst, att=None, th=th)
+    verdict = decision.decide(a, b, abst, att=att, th=th)
     return dict(compare=compare, energy=energy, local=local, check_a=a, check_b=b, abstention=abst, verdict=verdict,
-                X_ref=Xr, X_batch=Xb, weights=w)
+                X_ref=Xr, X_batch=Xb, weights=w, acquisition=acq)
 
 
 def _read_ml(ml_dir, batch, reference, notes):
@@ -378,7 +443,7 @@ def _read_ml(ml_dir, batch, reference, notes):
                 out["c2st_extra"][f"material_{variant}"] = d
     if os.path.exists(p) or os.path.exists(pm):
         if out["c2st_material"] is None:
-            notes.append("ml cache: no material-only c2st run for this pair; Check A(iv) ran with c2st=None (reject via Check A is then impossible)")
+            notes.append("ml cache: no cached material-only c2st for this pair (the in-pipeline run drives Check A(iv) when c2st_in_pipeline is on)")
     else:
         notes.append(f"ml cache: {p} not found; c2st sections empty")
     ps, pp, pc = (os.path.join(ml_dir, f) for f in ("novelty_per_site.csv", "novelty_per_patch.csv", "novelty_correlates.csv"))
@@ -477,7 +542,20 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
         df["site"] = df["site"].astype(str)
     flags_ref = derive_flags(sites_ref, ref_t["images"], cfg["stretch_frac"], cfg["black_level_p1"])
     flags_batch = derive_flags(sites_batch, bat_t["images"], cfg["stretch_frac"], cfg["black_level_p1"])
-    ordinary = [s for s in sites_ref.site if s not in GREY_PORE_SITES and s not in CRACKED_SITES]
+    for fl in (flags_ref, flags_batch):
+        for mm in fl.attrs.get("config_mismatch", []):
+            notes.append(f"flag threshold in config differs from the operative polaron_qc.acquisition constant: {mm}")
+    # data-derived flags are written back into the site tables BEFORE any statistic runs (E21): usable n, Check B
+    # reliability and the quality abstention all read these columns
+    sites_ref, sites_batch = apply_derived_flags(sites_ref, flags_ref), apply_derived_flags(sites_batch, flags_batch)
+    flags_all = pd.concat([flags_ref, flags_batch], ignore_index=True)
+    ordinary = flags_ref.site[flags_ref.acquisition_group == "ordinary"].astype(str).tolist()
+    new_gp = flags_batch.site[flags_batch.grey_pore.astype(bool) & ~flags_batch.site.isin(GREY_PORE_SITES)].tolist()
+    if new_gp:
+        notes.append(f"grey-pore flag derived from the data (raised BSE black level) on batch sites {new_gp}: pore KPIs on fallback threshold there")
+    new_lc = flags_batch.site[flags_batch.bright_low_contrast.astype(bool) & ~flags_batch.site.isin(LOW_CONTRAST_SITES)].tolist()
+    if new_lc:
+        notes.append(f"low bright-phase contrast derived from the data on batch sites {new_lc}: bright-phase KPIs excluded there")
     kpis = [k for k in TRUSTED_KPIS if k in sites_batch.columns and k in sites_ref.columns]
     missing = [k for k in TRUSTED_KPIS if k not in kpis]
     if missing:
@@ -485,13 +563,30 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
     log(f"{batch} vs {reference}: {len(sites_batch)} vs {len(sites_ref)} sites; ordinary reference = {len(ordinary)}")
 
     # 2. compare / energy / local / decision -------------------------------------------------------------
-    # the material-only classifier (if cached) is read FIRST so that Check A(iv) can use it (D24/D28); it is a
-    # pre-computed site-level run, so the same dict is reused inside the jackknife (the classifier is not refit per LOO)
-    ml = _read_ml(ml_dir, batch, reference, notes)
-    c2st_for_decision = ml["c2st_material"]
+    # ML caches (flag-inclusive classifier, novelty) are read first; the material-only classifier that drives Check A(iv)
+    # is run HERE on the site tables (D30), so an unseen batch needs no pre-run; a cached material run is kept as 'material_cached'
+    mlr = _read_ml(ml_dir, batch, reference, notes)
+    if mlr["c2st_material"] is not None:
+        mlr["c2st_extra"]["material_cached"] = mlr["c2st_material"]
+    c2st_for_decision = None
+    if cfg.get("c2st_in_pipeline", True):
+        t0 = time.time()
+        try:
+            c2st_for_decision = material_c2st(sites_ref, sites_batch, n_perm=cfg["c2st_n_perm"], seed=cfg["seed"])
+            log(f"material-only c2st in {time.time() - t0:.0f}s: AUC {c2st_for_decision['auc']:.2f}, p = {c2st_for_decision['p']:.3f}")
+        except Exception as ex:
+            notes.append(f"in-pipeline material c2st failed ({ex!r}); Check A(iv) ran with the cached run if any, else None")
+            c2st_for_decision = mlr["c2st_material"]
+    else:
+        c2st_for_decision = mlr["c2st_material"]
+    mlr["c2st_material"] = c2st_for_decision
     t0 = time.time()
-    full = _run_pipeline(sites_ref, sites_batch, ordinary, cfg, th, primary, c2st=c2st_for_decision, kpis=kpis)
-    log(f"compare+energy+decision in {time.time() - t0:.0f}s → {full['verdict']['verdict']}")
+    full = _run_pipeline(sites_ref, sites_batch, ordinary, cfg, th, primary, c2st=c2st_for_decision, kpis=kpis, flags_all=flags_all)
+    att = full["verdict"]["attenuation"]
+    if isinstance(full.get("acquisition"), dict) and full["acquisition"].get("error"):
+        notes.append(f"acquisition views failed: {full['acquisition']['error']} — drift reject withheld (verdict.attenuation.available = False)")
+    log(f"compare+energy+acquisition+decision in {time.time() - t0:.0f}s → {full['verdict']['verdict']} "
+        f"(attenuation stratified {att['stratified']:+.2f}, adjusted {att['adjusted']:+.2f}, available {att['available']})")
     compare = full["compare"]
     nan_ci = compare[compare.is_primary & compare.ci_low.isna()].kpi.tolist()
     if nan_ci:
@@ -514,8 +609,11 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
         xr = stats.usable_values(sites_ref, k).to_numpy()
         mdc[k] = stats.mdc(xr, n_incoming=n_in, alpha=cfg["alpha"], power=cfg["power"], n_sim=cfg["mdc_n_sim"],
                            test=dict(statistic=cfg["statistic"], n_mc=cfg["mdc_n_mc"]), seed=cfg["seed"])
+    infeasible = [k for k, v in mdc.items() if not v.get("feasible", True)]
+    if infeasible:
+        notes.append(f"MDC not available for {infeasible}: {mdc[infeasible[0]]['reason']} (the comparison itself still ran at these n)")
     log(f"MDC ({cfg['mdc_n_sim']} sims × 5 KPIs) in {time.time() - t0:.0f}s: " +
-        ", ".join(f"{k} {v['mdc_mad']:.2f}" for k, v in mdc.items()))
+        ", ".join(f"{k} {v['mdc_mad']:.2f}" if v.get("feasible", True) else f"{k} n/a" for k, v in mdc.items()))
 
     # 5. patch-level local evidence (per-site maxima of patch KPIs; TRIMMED frame) -------------------------
     local = dict(full["local"])
@@ -532,18 +630,34 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
     # 6. stability by leave-one-site-out --------------------------------------------------------------------
     t0 = time.time()
 
+    refit_c2st = cfg.get("c2st_in_pipeline", True) and c2st_for_decision is not None and c2st_for_decision.get("variant", "").endswith("in_pipeline")
+
     def _rerun(kept):
         sub = sites_batch[sites_batch.site.isin(kept)].reset_index(drop=True)
-        r = _run_pipeline(sites_ref, sub, ordinary, cfg, th, primary, c2st=c2st_for_decision, n_boot=cfg["jackknife_n_boot"],
-                          energy_n_mc=cfg["jackknife_energy_n_mc"], kpis=primary, local_extra=False)
+        c2 = c2st_for_decision
+        if refit_c2st:   # every verdict input is refit per fold; nothing from the full sample is held fixed (E21)
+            try:
+                c2 = material_c2st(sites_ref, sub, n_perm=cfg["jackknife_c2st_n_perm"], seed=cfg["seed"])
+            except Exception as ex:
+                c2 = None; notes.append(f"jackknife fold without {sorted(set(sites_batch.site) - set(kept))}: material c2st failed ({ex!r}); c2st=None in that fold")
+        r = _run_pipeline(sites_ref, sub, ordinary, cfg, th, primary, c2st=c2, n_boot=cfg["jackknife_n_boot"],
+                          energy_n_mc=cfg["jackknife_energy_n_mc"], kpis=primary, local_extra=False, flags_all=flags_all,
+                          acq_n_boot=cfg["jackknife_n_boot"], acq_n_mc=cfg["jackknife_acq_n_mc"])
         return r["verdict"]
 
     runs = stats.jackknife(_rerun, sites_batch.site.tolist())
     share = stats.stability_share(runs, full["verdict"], key="verdict")
+    refit = ["compare (permutation + bootstrap)", "energy distance", "local exceedance", "check A/B", "quality abstention"]
+    held = []
+    (refit if refit_c2st else held).append("material-only classifier" + ("" if refit_c2st else " (cached full-sample run)"))
+    (refit if cfg.get("acquisition_views", True) else held).append("acquisition views / attenuation" + ("" if cfg.get("acquisition_views", True) else " (not computed)"))
     stability = dict(share=share, n_runs=len(runs), full_verdict=full["verdict"]["verdict"],
                      runs=[dict(left_out=r["left_out"], verdict=r["result"]["verdict"], outcome_columns=r["result"]["outcome_columns"]) for r in runs],
-                     method=f"leave-one-site-out re-run of compare → energy → check A/B → decide ({len(runs)} re-verdicts; "
-                            f"n_boot={cfg['jackknife_n_boot']}, energy n_mc={cfg['jackknife_energy_n_mc']}); share of runs returning the full-sample verdict")
+                     refit_per_fold=refit, held_fixed=held,
+                     method=f"leave-one-site-out re-run of the whole verdict pipeline ({len(runs)} re-verdicts; n_boot={cfg['jackknife_n_boot']}, "
+                            f"energy n_mc={cfg['jackknife_energy_n_mc']}, c2st n_perm={cfg['jackknife_c2st_n_perm']}, acquisition n_mc={cfg['jackknife_acq_n_mc']}); "
+                            f"refit per fold: {', '.join(refit)}" + (f"; held fixed: {', '.join(held)}" if held else "; nothing held fixed")
+                            + "; share of runs returning the full-sample verdict")
     log(f"jackknife {len(runs)} runs in {time.time() - t0:.0f}s → stability share {share:.2f}")
 
     # 7. ml + physics caches ------------------------------------------------------------------------------
@@ -557,8 +671,10 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
         excluded={r.kpi: (int(r.n_ref_excluded), int(r.n_batch_excluded)) for r in prim.itertuples()},
         fallback={r.kpi: (int(r.n_ref_fallback), int(r.n_batch_fallback)) for r in prim.itertuples()},
         specimen_independence="unconfirmed — whether the sites of a batch come from distinct specimens has been asked of the organisers; n counts sites",
-        reference_heterogeneity=dict(grey_pore=[s for s in sites_ref.site if s in GREY_PORE_SITES],
-                                     cracked=[s for s in sites_ref.site if s in CRACKED_SITES], ordinary_n=len(ordinary)),
+        reference_heterogeneity=dict(grey_pore=flags_ref.site[flags_ref.grey_pore.astype(bool)].tolist(),
+                                     low_contrast=flags_ref.site[flags_ref.bright_low_contrast.astype(bool)].tolist(),
+                                     cracked=flags_ref.site[flags_ref.cracked_known.astype(bool)].tolist(), ordinary_n=len(ordinary),
+                                     source="data-derived flags (acquisition.derive_flags); cracked = known reference list"),
         mdc_range_mad=(float(min(mdcs)), float(max(mdcs))) if mdcs else (np.nan, np.nan),
         scale="2-D sections, 25 nm/px nominal (TIFF export tag, unverified), chemistry of the bright phase unconfirmed",
         seven_v_seven="not applicable" if len(sites_ref) != len(sites_batch) else
@@ -580,8 +696,8 @@ def build_result(reference_batch_dir: str, batch_dir: str, config: dict | None =
                 patches_batch=pb, flags_ref=flags_ref, flags_batch=flags_batch, ordinary_ref_sites=ordinary,
                 compare=compare, energy=full["energy"], mdc=mdc, drift=drift, local=local,
                 check_a=full["check_a"], check_b=full["check_b"], abstention=full["abstention"], verdict=full["verdict"],
-                stability=stability, c2st_material=ml["c2st_material"], c2st_flag_inclusive=ml["c2st_flag_inclusive"],
-                c2st_extra=ml["c2st_extra"], novelty=ml["novelty"], physics=phys, acquisition=None, limits=limits,
+                stability=stability, c2st_material=mlr["c2st_material"], c2st_flag_inclusive=mlr["c2st_flag_inclusive"],
+                c2st_extra=mlr["c2st_extra"], novelty=mlr["novelty"], physics=phys, acquisition=full.get("acquisition"), limits=limits,
                 KPI_TRUST=dict(KPI_TRUST))
 
 
@@ -631,8 +747,9 @@ def _pct_change(ref_med, bat_med) -> str:
     return f"{100 * (bat_med - ref_med) / abs(ref_med):+.0f} %".replace("-", "−")
 
 
-def _ref_stats_without_anomalous(sites_ref: pd.DataFrame, kpi: str) -> tuple[float, float, int]:
-    v = stats.usable_values(sites_ref[~sites_ref.site.isin(GREY_PORE_SITES + CRACKED_SITES)], kpi).to_numpy()
+def _ref_stats_without_anomalous(sites_ref: pd.DataFrame, kpi: str, ordinary=None) -> tuple[float, float, int]:
+    keep = sites_ref.site.astype(str).isin([str(s) for s in ordinary]) if ordinary is not None else ~sites_ref.site.isin(GREY_PORE_SITES + CRACKED_SITES)
+    v = stats.usable_values(sites_ref[keep], kpi).to_numpy()
     return (float(np.median(v)), float(stats.mad(v)), int(len(v))) if len(v) else (np.nan, np.nan, 0)
 
 
@@ -803,16 +920,19 @@ def _primary_strip_plot(res: dict) -> str:
     """Five panels, one y-axis each: reference sites (grey-pore orange, cracked marked), batch sites, medians as bars."""
     primary = res["meta"]["primary_kpis"]; ref, bat = res["sites_ref"], res["sites_batch"]
     rb, bb = res["meta"]["reference"], res["meta"]["batch"]
-    cr, cb = PALETTE.get(rb, "#1baf7a"), PALETTE.get(bb, "#2a78d6")
+    cr, cb = PALETTE.get(rb, UNSEEN_COLOR), PALETTE.get(bb, UNSEEN_COLOR)
+    fr = res.get("flags_ref")
+    gp_sites = set(fr.site[fr.grey_pore.astype(bool)].astype(str)) if fr is not None and "grey_pore" in fr else set(GREY_PORE_SITES)
+    cr_sites = set(fr.site[fr.cracked.astype(bool)].astype(str)) if fr is not None and "cracked" in fr else set(CRACKED_SITES)
     fig, axes = plt.subplots(1, len(primary), figsize=(11, 3.3))
     rng = np.random.default_rng(0)
     for ax, k in zip(np.atleast_1d(axes), primary):
         rv = stats.usable_values(ref, k); bv = stats.usable_values(bat, k)
         excl_b = set(stats.usable_n(bat, k)["excluded_sites"])
         for s, v in rv.items():
-            c = PALETTE["grey_pore"] if s in GREY_PORE_SITES else cr
+            c = PALETTE["grey_pore"] if s in gp_sites else cr
             ax.scatter(0 + rng.uniform(-0.12, 0.12), v, s=26, color=c, edgecolor="none", alpha=0.9, zorder=3)
-            if s in CRACKED_SITES:
+            if s in cr_sites:
                 ax.scatter(0, v, s=70, facecolor="none", edgecolor=cr, linewidth=1.0, zorder=2)
         for s, v in bv.items():
             ax.scatter(1 + rng.uniform(-0.12, 0.12), v, s=26, color=cb, edgecolor="none", alpha=0.9, zorder=3)
@@ -870,18 +990,21 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     parts = []
 
     # ---- 1. verdict card ------------------------------------------------------------------------------------
-    loc_word = {"none": "none", "flag": "evidence flag only", "pending_review": "pending image review", "credible": "credible"}.get(oc["localized"], oc["localized"])
+    loc_word = {"none": "none", "flag": "evidence flag only", "review_routed": "routed to image review (verdict unchanged)",
+                "pending_review": "pending image review", "credible": "credible"}.get(oc["localized"], oc["localized"])
     cols = (f'<div class="cols"><div class="col"><div class="k">Drift alert</div><div class="v">{"yes" if oc["drift_alert"] else "no"}</div>'
             f'<div class="note">energy distance on {len(primary)} primary KPIs: p = {_p(a["energy_p"])} (Monte Carlo, {result["energy"].get("n_perm", 0)} permutations)</div></div>'
             f'<div class="col"><div class="k">Localized anomaly</div><div class="v">{_e(loc_word)}</div>'
-            f'<div class="note">{b["n_sites_flagged"]} site(s) flagged · {b["n_sites_pending"]} pending review · {b["n_sites_credible"]} credible</div></div>'
+            f'<div class="note">{b["n_sites_flagged"]} site(s) flagged · {b["n_sites_pending"]} pending review · {b.get("n_sites_refuted", 0)} refuted · {b["n_sites_credible"]} credible'
+            + (f' · escalation rule: {_e(v["escalation"]["rule"])}' if v.get("escalation") else "") + '</div></div>'
             f'<div class="col"><div class="k">Quality abstention</div><div class="v">{"yes" if oc["quality_abstention"] else "no"}</div>'
             f'<div class="note">{_e("; ".join(abst["reasons"])) if abst["reasons"] else "no abstention reason"}</div></div></div>')
     drivers = ", ".join(v["drivers"]) if v["drivers"] else "none (no primary KPI meets Holm p &lt; α with |shift| ≥ 1 MAD)"
     jk = "".join(f'<span class="chip {"ok" if r["verdict"] == st["full_verdict"] else "warn"}">− {_e(r["left_out"])}: {_e(r["verdict"].split(" (")[0])}</span>' for r in st["runs"])
     body = (f'<p class="vtext">{_e(v["verdict"])}</p><p class="reason">{_e(v["reason"])}</p>{cols}'
             f'<p><b>Decision stability</b> (leave-one-site-out): {st["share"]:.2f} — {int(round(st["share"] * st["n_runs"]))} of {st["n_runs"]} re-verdicts returned the same verdict. '
-            f'<span class="note">This is a stability share, not a probability of being right.</span></p><p>{jk}</p>'
+            f'<span class="note">This is a stability share, not a probability of being right. Refit per fold: {_e(", ".join(st.get("refit_per_fold", []) or ["see method"]))}'
+            + (f'; held fixed: {_e(", ".join(st["held_fixed"]))} — stability is conditional on those inputs' if st.get("held_fixed") else "") + '.</span></p><p>{jk}</p>'
             f'<p><b>Drivers:</b> {drivers}. <b>Usable n:</b> ' + "; ".join(f"{k} {nr}/{nb}" for k, (nr, nb) in result["limits"]["usable_n"].items()) + " (reference/batch sites after quality flags).</p>"
             f'<p><b>What would move it:</b> {_e(v["what_would_move_it"])}.</p>'
             f'<p class="note">Thresholds hash <code>{_e(v["thresholds_hash"])}</code> · {_e(v["provenance"])}. '
@@ -892,7 +1015,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     rows = []
     for k in primary:
         r = cmp_i.loc[k]
-        med_o, mad_o, n_o = _ref_stats_without_anomalous(sites_ref, k)
+        med_o, mad_o, n_o = _ref_stats_without_anomalous(sites_ref, k, result.get("ordinary_ref_sites"))
         md = mdc.get(k, {})
         rows.append([f"<b>{_e(k)}</b><br><span class='note'>{_e(lab(k))}</span>",
                      f"{_f(r.ref_median, 4)} ± {_f(r.ref_mad, 4)}<br><span class='note'>w/o anomalous: {_f(med_o, 4)} ± {_f(mad_o, 4)} (n = {n_o})</span>",
@@ -900,11 +1023,12 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
                      f"{_f(r.ci_low, 2)} to {_f(r.ci_high, 2)}<br><span class='note'>bootstrap over sites, approx.</span>",
                      f"{_p(r.p_perm)}<br><span class='note'>{_e(r.p_method)}, {int(r.n_perm):,} ({_e(m['config']['statistic'])})</span>",
                      f"<b>{_p(r.p_holm)}</b>", f"{int(r.n_ref_usable)} / {int(r.n_batch_usable)}<br><span class='note'>excl. {int(r.n_ref_excluded)}/{int(r.n_batch_excluded)} · fallback {int(r.n_ref_fallback)}/{int(r.n_batch_fallback)}</span>",
-                     f"<b>{_f(md.get('mdc_mad'), 2)} MAD</b><br><span class='note'>= {_f(md.get('mdc_abs'), 4)} {_kpi_unit(k)}; n = {md.get('n_incoming', '—')} v remaining</span>",
+                     (f"<b>{_f(md.get('mdc_mad'), 2)} MAD</b><br><span class='note'>= {_f(md.get('mdc_abs'), 4)} {_kpi_unit(k)}; n = {md.get('n_incoming', '—')} v remaining</span>"
+                      if md.get("feasible", True) else f"<b>not available</b><br><span class='note'>{_e(md.get('reason', 'simulation design infeasible'))}</span>"),
                      str(weights.get(k, "—")), _e(trust.get(k, "—"))])
     hdr = ["KPI", f"{_e(ref)} median ± MAD", f"{_e(bat)} median", "robust shift", "≈ 95 % CI", "permutation p", "Holm p", "usable n ref / batch",
            "MDC at 80 % power", "weight", "trust"]
-    md0 = next(iter(mdc.values()), {})
+    md0 = next((v for v in mdc.values() if v.get("feasible", True)), next(iter(mdc.values()), {}))
     body = (f'<p class="note">Robust shift = (batch median − reference median) / reference MAD (MAD × 1.4826). Permutation test statistic: Hodges–Lehmann shift, site labels, '
             f'exact enumeration where affordable. Holm correction across the five primary KPIs only. MDC = smallest shift detected 80 % of the time at α = {m["config"]["alpha"]} by simulation '
             f'({md0.get("n_sim_used", "—")} draws; {_e(md0.get("design", ""))}). A "consistent" verdict never means a shift smaller than the MDC was ruled out.</p>'
@@ -968,10 +1092,11 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     # ---- 5. local-anomaly table -------------------------------------------------------------------------------
     rows = []
     for f_ in b["flags"]:
-        status = "credible" if f_ in b.get("credible", []) else ("pending review" if f_ in b.get("credible_pending_review", []) else "evidence flag only")
+        status = ("credible" if f_ in b.get("credible", []) else "pending review" if f_ in b.get("credible_pending_review", [])
+                  else "refuted by image review (closed)" if f_ in b.get("refuted", []) else "evidence flag only")
         rows.append([_e(f_["site"]), _e(f_["kpi"]), _f(f_["value"], 4), _f(f_["ref_max"], 4), _f(f_["margin_in_mad"], 2, signed=True),
                      "yes" if f_["severity_ok"] else "no", _e(f_["measurement_note"]),
-                     "not reviewed" if f_["image_reviewed"] is None else ("confirmed" if f_["image_reviewed"] else "not confirmed"), status])
+                     "not reviewed" if f_["image_reviewed"] is None else ("confirmed" if f_["image_reviewed"] else "refuted"), status])
     extra_rows = []
     for k, L in result["local"].items():
         if k in primary:
@@ -1026,19 +1151,36 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
 
     # ---- 7. acquisition ---------------------------------------------------------------------------------------
     fb = result["flags_batch"]
+    def _bands(r):
+        if hasattr(r, "band_rows"): return str(int(r.band_rows))
+        return f"{getattr(r, 'band_top', '—')} / {getattr(r, 'band_bottom', '—')}"
     rows = [[_e(r.site), _e(r.acquisition_group), "yes" if r.contrast_stretched_bse else "no", "yes" if r.contrast_stretched_any else "no",
              f"{_f(r.bse_p1, 0)}{' ▲' if r.raised_black_level else ''}", "yes" if r.bright_low_contrast else "no", _f(r.bright_sep, 0),
-             "yes" if r.grey_pore else "no", f"{r.band_top} / {r.band_bottom}", r.H] for r in fb.itertuples()]
-    body = (f'<p class="note">{_e(fb.attrs.get("status", "provisional"))}. Rules: contrast stretched = empty histogram bins &gt; {m["config"]["stretch_frac"]:.0%} of the 1–99 % range; '
-            f'raised black level = BSE p1 &gt; {m["config"]["black_level_p1"]}; low bright-phase contrast = bright mode unresolved or &lt; 45 levels above graphite; bands = bright edge rows trimmed before measuring.</p>'
-            + _table(rows, ["site", "group", "stretched (BSE)", "stretched (any ch.)", "BSE p1", "low contrast", "bright sep (levels)", "grey pore", "bands top / bottom", "H (px)"])
+             "yes" if r.grey_pore else "no", _bands(r), getattr(r, "H", "—")] for r in fb.itertuples()]
+    body = (f'<p class="note">{_e(fb.attrs.get("status", "data-derived"))}. Rules: contrast stretched = empty histogram bins &gt; {acquisition.STRETCH_EMPTY_BIN_FRAC:.0%} of the 1–99 % range; '
+            f'raised black level = BSE p1 &gt; {acquisition.RAISED_BLACK_LEVEL_P1:g} (→ grey pore: pore KPIs on fallback threshold); low bright-phase contrast = bright mode unresolved or &lt; 45 levels above graphite '
+            f'(→ bright-phase KPIs excluded from n); bands = bright edge rows trimmed before measuring. These flags are derived from the batch\'s own images and written into the site table before any statistic runs.</p>'
+            + _table(rows, ["site", "group", "stretched (BSE)", "stretched (any ch.)", "BSE p1", "low contrast", "bright sep (levels)", "grey pore", "band rows", "H (px)"])
             + '<h3>Sensitivity to acquisition adjustment (unadjusted / stratified / adjusted)</h3>')
     acq = result.get("acquisition")
-    if acq:
-        rows = [[_e(k), _f(d.get("statistic"), 3), _p(d.get("p")), _e(d.get("n_sites", "—")), _e(d.get("note", ""))] for k, d in acq.items() if isinstance(d, dict)]
-        body += _table(rows, ["view", "energy statistic", "p", "sites", "note"]) + '<p class="note">Attenuation under the stratified / adjusted views is a sensitivity analysis, not a causal attribution.</p>'
+    v_att = (v.get("attenuation") or {})
+    if isinstance(acq, dict) and "unadjusted" in acq:
+        def _row(name, view, ekey):
+            d = acq.get(view) or {}; e = d.get(ekey) if isinstance(d, dict) else None
+            n = f"{d.get('n_ref_kept', d.get('n_ref', '—'))} / {d.get('n_batch_kept', d.get('n_batch', '—'))}"
+            return [name, _f(e.get("statistic"), 3) if e else "—", _p(e.get("p")) if e else "—", n, _e(d.get("reason", "") or "")]
+        rows = [_row("unadjusted", "unadjusted", "energy"), _row("stratified (ordinary acquisition groups on both sides)", "stratified", "energy"),
+                _row("adjusted (KPIs residualised on acquisition covariates; regression refit inside every permutation)", "adjusted", "energy_adjusted")]
+        thr = m["config"]["thresholds_resolved"].get("strong_attenuation", "—")
+        body += (_table(rows, ["view", "energy statistic", "p", "sites ref / batch", "note"])
+                 + f'<p><b>Attenuation</b> of the energy statistic: stratified {_f(v_att.get("stratified"), 2, signed=True)}, adjusted {_f(v_att.get("adjusted"), 2, signed=True)} '
+                 f'(share by which the statistic drops; negative = amplified, read as "not explained away"; &gt; {thr} would withhold a reject). '
+                 f'{"Views available: a drift reject is permitted by this check." if v_att.get("available") else "No view produced a finite share: a drift reject is withheld."} '
+                 f'<span class="note">{_e(acq.get("note", ""))}</span></p>')
+    elif isinstance(acq, dict) and acq.get("error"):
+        body += f'<p class="ph">acquisition views failed in this run ({_e(acq["error"])}); a drift reject is withheld without them (verdict.attenuation.available = False).</p>'
     else:
-        body += '<p class="ph">not yet available — polaron_qc.acquisition is being built; this block renders from result["acquisition"] when present (three views: unadjusted, stratified by acquisition group, residualised on the acquisition variables; no causal percentage is claimed).</p>'
+        body += '<p class="ph">not available in this run (acquisition views were not computed); a drift reject is withheld without them. Three views are expected: unadjusted, stratified by acquisition group, residualised on the acquisition variables; no causal percentage is claimed.</p>'
     parts.append(_sec("acq", "Acquisition flags", body))
 
     # ---- 8. physics sanity ------------------------------------------------------------------------------------
@@ -1114,9 +1256,27 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
 # ---------------------------------------------------------------------------------------------------------------
 # command line: python -m polaron_qc.report Dataset/Batch_3 Dataset/Batch_1 reports/qc_Batch_1.html
 # ---------------------------------------------------------------------------------------------------------------
+def _parse_reviews(items):
+    """--review SITE:KPI=yes|no  →  {(site, kpi): bool}"""
+    out = {}
+    for it in items:
+        key, _, val = it.partition("=")
+        site, _, kpi = key.partition(":")
+        if not (site and kpi and val.lower() in ("yes", "no", "true", "false", "confirmed", "refuted")):
+            raise SystemExit(f"bad --review {it!r}; expected SITE:KPI=yes|no")
+        out[(site, kpi)] = val.lower() in ("yes", "true", "confirmed")
+    return out
+
+
 if __name__ == "__main__":
-    import sys
-    ref_dir, bat_dir = sys.argv[1], sys.argv[2]
-    out = sys.argv[3] if len(sys.argv) > 3 else os.path.join("reports", f"qc_{os.path.basename(os.path.normpath(bat_dir))}.html")
-    res = build_result(ref_dir, bat_dir)
-    print("wrote", render_report(res, out), f"{os.path.getsize(out) / 1e6:.2f} MB")
+    import argparse
+    ap = argparse.ArgumentParser(description="One incoming batch vs the working reference → self-contained HTML report.")
+    ap.add_argument("reference_dir"); ap.add_argument("batch_dir"); ap.add_argument("out", nargs="?")
+    ap.add_argument("--review", action="append", default=[], metavar="SITE:KPI=yes|no",
+                    help="record a human image review of a routed/pending crop (repeatable); yes = confirmed, no = refuted")
+    ap.add_argument("--no-images", action="store_true", help="skip evidence images (faster, smaller file)")
+    args = ap.parse_args()
+    out = args.out or os.path.join("reports", f"qc_{os.path.basename(os.path.normpath(args.batch_dir))}.html")
+    cfg = dict(image_reviewed=_parse_reviews(args.review)) if args.review else None
+    res = build_result(args.reference_dir, args.batch_dir, config=cfg)
+    print("wrote", render_report(res, out, with_images=not args.no_images), f"{os.path.getsize(out) / 1e6:.2f} MB")

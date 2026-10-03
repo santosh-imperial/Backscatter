@@ -1,0 +1,7 @@
+case,crack_frac,pore_max_d,flips tiered(2.5) single-site,flips tiered(3.0) single-site,single@2 (current)
+cracked ref site 0grcilhi,5.7617724518519715,0.468391988493386,True,True,True
+cracked ref site hzumfsms,5.389063372776057,2.7200556711530797,True,True,True
+cracked ref site ufdvpb81,2.569292477192296,0.5749978164717429,True,False,True
+Batch_2 crack_frac x1.5 (max site),0.5779727029484538,-2.049610851346427,False,False,False
+Batch_2 crack_frac x2.0 (max site),3.413172327840313,-2.049610851346427,True,True,True
+Batch_2 crack_frac x3.0 (max site),9.083571577624033,-2.049610851346427,True,True,True

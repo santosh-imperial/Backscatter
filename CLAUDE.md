@@ -66,6 +66,7 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 8. **Per-image percentile thresholds make densities constant by construction.** Use one absolute threshold chosen across sites (see ETD ridge threshold `T_STAR`).
 9. **Batch 3 is the working reference, not a clean baseline** (confirmed by the problem providers: three supplier batches of one product; Batch 3 is one batch with more samples; the task is to differentiate). Use robust statistics, show Batch 3's own sub-populations, report all pairwise comparisons, and keep the reference selectable in one config cell.
 10. Frame height is a session fingerprint as much as a thickness proxy; do not present it as thickness without caveat.
+11. **Fresh graphite–Si/SiOx electrode is confirmed by Santosh (2026-10-03).** Interpret features as as-manufactured structure and possible susceptibility during formation/later cycling, never evidence of cycling-induced damage, SEI or lithium plating. Exact Si versus SiOx chemistry, recipe, binder identity and pixelwise chemical labels remain unspecified. A bright threshold fragment is not automatically a Si/SiOx particle; residual-solid adjacency is not electrical contact. See `docs/battery_microstructure_review.md` for the hypothesis checks and wording audit.
 
 ## Style for judge-facing material
 
@@ -73,13 +74,14 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 - Every verdict must list its drivers, its decision stability (not "confidence" or "probability correct"), the acquisition flags, and what would move it. "Consistent with the working reference, within detectable limits" is the top outcome; never write "accept" unless an equivalence test against agreed tolerances has been run. Batch-wide drift and localized defects are separate decision paths.
 - Small-sample discipline (docs/qc_plan.md §2.0): five primary KPIs (observed 2-D measurements, not stereological estimates) carry verdicts; usable site counts after flags, not folder counts; site-level permutation tests with all reference-dependent fitting inside the loop; jackknife stability; patches never count as n; exceeding the reference maximum is an evidence flag, not a defect call; provenance wording is "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived".
 - Physics statements are qualitative and relative (direction of change), never performance percentages; 2-D tortuosity is a section index, not a 3-D bound.
+- Missing verdict inputs default to the conservative side, never to "no evidence against": no classifier run → no Check A reject; no acquisition view (`attenuation.available` False) → no drift reject; MDC infeasible → "not available", never ∞; image review has three states (unreviewed = pending, confirmed = credible, refuted = closed). Localized rule is tiered (D33): one site between 2 and 3 MAD beyond the ordinary max is routed to review without changing the verdict; 3 MAD, two sites, both promotable KPIs or a confirmed review flip it to investigate. Acquisition flags come from the batch's own images (`acquisition.derive_flags`) and are written into the site tables before any statistic runs; the constant site lists are a cross-check for the reference only.
 - Show the evidence on the image (painted voids, particle outlines) when a KPI drives a decision.
 - State uncertainty in numbers (bootstrap intervals, n sites), not adjectives.
 - If a feature looks too good, test it for an acquisition confound before reporting it.
 
 ## Plots
 
-Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`, Batch 3 grey-pore group `#eda100`, low-contrast marker `#e34948` ring. One y-axis per plot, legend whenever ≥ 2 series, bar = median in strip plots.
+Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`, Batch 3 grey-pore group `#eda100`, low-contrast marker `#e34948` ring, any other (unseen) batch `UNSEEN_COLOR` `#6f42c1`. Never index `BATCH_COLORS[b]`; use `.get(b, UNSEEN_COLOR)` (an unknown folder name crashed the notebook in the drop rehearsal, E23). One y-axis per plot, legend whenever ≥ 2 series, bar = median in strip plots.
 
 ## Git
 
@@ -94,3 +96,10 @@ Run the checklist in `docs/decision_log.md` Part B against the plan, result, fig
 ## Keeping docs current
 
 When a finding changes, update `docs/problem_and_findings.md` (and this file if a rule changes) in the same change as the code. When an interpretation changes or the organisers answer a question, update the corresponding card in `docs/_build_assumption_register.py` and rebuild the HTML. The findings doc is what a teammate or judge reads first.
+
+Morphology experiments also have a live inventory: `analysis/morphology/metric_register.json`.
+When adding a metric or changing its status, update its definition, evidence, review
+and history there, then regenerate `docs/morphology_metrics.md` and
+`analysis/morphology/output/metric_atlas.html`. Implementation, expert validation
+and QC role are separate. Benchmark predictions cannot stand in for human labels;
+unreviewed or uncertain regions never count as ground-truth accuracy evidence.

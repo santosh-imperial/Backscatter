@@ -1,6 +1,6 @@
 # Polaron challenge — problem statement and state of knowledge
 
-_Last updated: 2026-10-03 (baseline status confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
+_Last updated: 2026-10-03 (reference status and fresh graphite–Si/SiOx material confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
 
 ## 1. The problem
 
@@ -24,7 +24,7 @@ _Last updated: 2026-10-03 (baseline status confirmed). Owner: Santosh (narrative
 | Geometry | Stitched cross-section strips, ~7000 px wide × 1612–2316 px tall, 8-bit grayscale stored as identical RGB planes, LZW TIFF |
 | Alignment | The three channels of a site are pixel-aligned (phase-correlation shift ≤ 0.2 px) |
 | Metadata | Microscope settings (magnification, voltage, detector gain) were stripped when files were re-saved by `tifffile`. The TIFF resolution tags survived and give a **nominal 25.0 nm/pixel** on every image (24.9992–25.0005 nm/px). This is export metadata, not verified calibration. We report all lengths in pixels and quote µm as "nominal": strip ≈ 175 µm wide, coating ≈ 40–58 µm thick, bright-phase D50 ≈ 150 px ≈ 3.8 µm, crack-like void cutoff 500 px ≈ 12.5 µm. |
-| Material | Porous coating of plate-like graphite with a sparse brighter (higher-Z) particulate phase. Consistent with a silicon / silicon-oxide–graphite anode cross-section after ion polishing. **Chemistry is not confirmed.** |
+| Material | **Fresh, uncycled graphite–Si/SiOx electrode, confirmed by Santosh (2026-10-03).** Porous coating with plate-like graphite and a sparse brighter particulate additive. Exact Si versus SiOx chemistry, formulation fractions, binder identity and pixelwise chemical mapping are unspecified. Material-family confirmation does not validate every thresholded bright fragment or the inferred section/collector orientation. |
 | Labels / baseline | Confirmed by the problem providers (2026-10-03): the three folders are three supplier batches of the same nominal product. **Batch 3 is the reference dataset** (hence more images); the provider adds that *reference does not necessarily mean no defects* and that *it is not just the presence of defects that defines the batches — there are many complex morphology features to examine*. No per-batch acceptable / defective labels. Implication: differentiation must weigh morphology (shape, orientation, arrangement, size-distribution shape, through-thickness structure), not only defect KPIs. |
 
 Current-collector or stitching bands appear at one edge of five images (≤ 56 rows) and are trimmed before measurement. 39 images carry a single differing-colour edge column (export artefact); no colour inside the frame. No duplicate images. Some Inlens images saturate at white over 4–7 % of pixels.
@@ -49,7 +49,7 @@ The full analysis, with figures, is `notebooks/01_dataset_analysis.ipynb`. Headl
 
 - Where acquisition is normal, phase fractions are stable: bright-phase area fraction 0.04–0.08 (median ≈ 0.055) in every group, bright-phase D50 ≈ 140–165 px, pore fraction 0.06–0.14. Formulation loading does not differ between batches on this evidence.
 - **The one clear material anomaly is cracking.** Three Batch 3 sites (`hzumfsms`, `0grcilhi`, `ufdvpb81`) contain long delamination-style voids running along the coating: crack-like void fraction 0.048–0.062 versus a median of 0.015–0.022 elsewhere; largest pore ⌀ 450–600 px versus ≈ 250–300 px.
-- The additive particles are **intact** everywhere: ETD dark-ridge density inside bright-particle interiors (curtaining-corrected) is 0.02–0.5 % in every group.
+- ETD dark-ridge density inside bright-particle interiors (curtaining-corrected) is 0.02–0.5 % in every group. This is low detected ridge coverage in fresh material; it does not establish that every particle is intact or electrically connected. Unresolved, filled or orientation-filtered cracks can be missed.
 - Batch 2 has the lowest and tightest pore fraction (0.075 ± 0.008) and the fewest crack-like voids. Ordinary Batch 3 sites have a slightly longer texture correlation length (22 vs 18–19 px). Both differences are small relative to within-batch spread.
 - No through-thickness gradient in pore or bright-phase fraction in any group.
 
@@ -75,7 +75,7 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 | `bright_d10/d50/d90`, `bright_circ`, `bright_solidity` | BSE | additive particle size distribution and shape | high when `bright_low_contrast` is False |
 | `profile_pore_k`, `profile_bright_k` (k = 0..9) | BSE | through-thickness gradients | medium (orientation vs current collector unknown) |
 | `fft_slope`, `corr_len_px` | BSE | scale-free texture descriptors | medium |
-| `etd_crack_density_particles` | ETD in BSE mask | intra-particle cracking of the additive | high; null on this data |
+| `etd_crack_density_particles` | ETD in BSE mask | detected ridge coverage inside additive-mask interiors; candidate crack appearance | measurement/interpretation review pending; no intact-particle fraction |
 | `etd_crack_density_graphite`, `etd_curtain_frac`, `etd_curtain_anisotropy`, `etd_boundary_sharpness` | ETD | sample-preparation / focus flags | flags, not material KPIs |
 | `inlens_particle_texture`, `inlens_speckled_particle_frac` | Inlens in BSE mask | speckled vs smooth particle interiors | **confounded**; needs local-contrast normalisation |
 | `bright_sep`, `bright_low_contrast`, `pore_mode_resolved`, `graphite_mode`, `th_lo`, `th_hi` | BSE | segmentation quality | diagnostic |
@@ -96,7 +96,7 @@ Adjustment **amplifies** rather than attenuates: the covariates, fitted on a het
 
 ## 4b. Assumption register
 
-Every interpretive assumption, with an annotated example image and a review status, lives in `docs/assumption_register.html` (built by `docs/_build_assumption_register.py`). Reviews are logged on the cards. Status as of 2026-10-03: A3 (bright phase is a distinct composition) confirmed by Santosh; A13 detector-label part (SE = ETD) confirmed; A2 wording corrected (open porosity is the electrolyte pathway of the cell, not "vacuum") and its binder illustration replaced; all other cards unreviewed.
+Every interpretive assumption, with an example image and a review log, lives in `docs/assumption_register.html` (built by `docs/_build_assumption_register.py`). Status as of 2026-10-03: A3 (bright phase is a distinct composition) confirmed by Santosh; A13 detector-label part (SE = ETD) confirmed; A15 reference status confirmed by the providers via Santosh; A17 fresh graphite–Si/SiOx material confirmed by Santosh. A2 now uses that material premise, while binder identification and pixelwise phase assignments still need review. A10 states low detected ridge coverage rather than particle intactness. Browser review selections are separate from these persistent logs; confirmation of metadata does not confirm every interpretation on a related card.
 
 ## 5. Decisions taken
 
@@ -129,3 +129,48 @@ What follows from it: (1) the cracked reference sites are not a contradiction �
 4. Decision: accept if within baseline self-variation and no large KPI effect; reject if far outside, consistent across sites, and driven by defect-relevant KPIs; investigate otherwise, including when only acquisition flags or confounded KPIs move. Confidence from bootstrap agreement; every verdict lists what would change it.
 5. Explanation: KPI table with baseline range and batch value, top drivers in plain language, example images with detected voids / particles painted, acquisition flags, three-channel agreement.
 6. Dry-run on the known batches; unseen batch is one command.
+
+## 8. Implementation review status (2026-10-03, E21)
+
+The `polaron_qc` modules implement site-level comparisons, separate drift/localized paths and conservative verdict wording, and the existing suite passes (89 tests). Four integration/boundary behaviours remain open, reproduced in `analysis/qc_review/reproduce_integration.py`:
+
+- The report passes no acquisition attenuation into `decision.decide`. Missing views can still support a drift reject whose explanation says adjustment did not attenuate the shift.
+- The report's provisional grey-pore flag uses known IDs rather than the available acquisition module's data rule. Its derived flag tables are not propagated into the site tables used for decisions. `stats.usable_n` also ignores a grey-pore boolean column when counting fallback sites.
+- An explicit negative human image review remains pending, so it cannot close the localized investigation as the report's wording promises.
+- MDC sampling fails when the incoming usable count exceeds the reference count; equal counts leave no reference sites for simulation and return infinity with no usable simulations. This is a limitation of the split-reference design, not evidence of infinite detectable change.
+
+Decision stability currently reruns the statistical decision while holding cached full-sample classifier evidence fixed; it is conditional on that evidence. The classifier still needs a separate pre-run for a new batch. These are implementation findings, not revisions to the observed material KPIs or claims about unseen-batch accuracy. See the experiment log E21 and decision-log open items for the review evidence and proposed corrections.
+
+**Status after E22 (same day):** all four behaviours are fixed with regression tests (D30–D32): the acquisition views run inside the pipeline and a drift reject is withheld when none is available; flags are data-derived and written into the site tables before any statistic (five unseen grey-pore sites now flagged 5/5, counted as fallback, and triggering the quality abstention); image review has confirmed / refuted / unreviewed states; MDC reports "not available" instead of raising or returning ∞. The material-only classifier runs inside `build_result` and is refit in every leave-one-site-out fold, so stability is no longer conditional on a cached run and the unseen batch needs no ML pre-run for its verdict. Known-batch verdicts, stability shares and numbers are unchanged (E22).
+
+## 9. Morphology differentiation first pass (E18, 2026-10-03)
+
+The independent report `analysis/morphology/output/report.html` expands the comparison to the existing material panel and 16 morphology descriptors: size-distribution widths, particle/void shapes, axial orientations, bright-centroid arrangement, image-depth gradients and BSE texture. It reports every batch pair, with quality-matched and ordinary-reference sensitivity views. Quality-matched site counts are 5 / 7 / 13 for Batches 1 / 2 / 3; Batch 3's three known cracked sites remain in that view. The ordinary Batch 3 reference has 10 sites.
+
+The expanded panels do not demonstrate robust batch separation at these counts. Quality-matched morphology energy p-values are 0.669 (B1 vs B3), 0.350 (B2 vs B3) and 0.486 (B2 vs B1); no descriptor survives the broad exploratory multiplicity screen. This does not establish that the materials are identical or acceptable.
+
+Bright-particle alignment is more horizontal in Batch 2 descriptively (+0.141 vs quality-matched B3). Its direction survives ±5-level threshold perturbations, but its approximate site-bootstrap interval [−0.034, +0.293] includes zero. The largest standardised difference, centroid spacing between B1 and B2, is sensitive to thresholding and minimum component size. Image overlays reveal small bright fragments near rims; excluding them largely removes the B1–B2 spacing difference. Centroid spacing therefore remains an unvalidated geometric comparator, not a validated agglomeration or defect KPI.
+
+Every mask-derived descriptor has a perturbation envelope, every inferential calculation counts sites, and acquisition checks include within-batch correlations and a held-out-site acquisition-only model. Negative predictability does not prove freedom from acquisition effects. New assumption A16 records the interpretation limits. No primary KPI or QC threshold changes; ETD plate orientation and binder-network segmentation await measurement validation. See E18 and D33 for method and evidence.
+
+## 10. Morphology metric inventory and measurement validation (E24, 2026-10-03)
+
+The canonical inventory `analysis/morphology/metric_register.json` tracks 61 metric entries plus six candidate methods. Ten-bin profiles and conditional fraction families list all underlying keys. Implementation, evidence, expert review and QC role are distinct statuses. Generated views are `docs/morphology_metrics.md` and `analysis/morphology/output/metric_atlas.html`; the atlas shows real SEM markup/image-derived graphs, full-site values, source coordinates and limitations. Deferred, confounded, conditional and undefined quantities are visible without invented scalars.
+
+An independent expert annotation page at `analysis/morphology/benchmark/review.html` contains eleven purposive crops from distinct known sites: six for development, five held out for method checks. It covers ordinary, low-contrast, grey-pore, long-void and trimmed-band cases. Manual polygons are separate from predictions; unreviewed crops are not scored, uncertain pixels are ignored and unmeasurable images can abstain. There are currently zero expert-reviewed reference masks and no segmentation-accuracy estimate. The held-out-site split is not unseen-batch validation, and crops do not increase material sample count.
+
+Local width is estimated as twice distance-to-solid along a deterministic medial axis of retained, non-edge-clipped voids, pooling centreline samples approximately by length. Across the 31 nominal sites, median site D50 is 8.944 px and P90 29.732 px. The median relative ±5-level D50 band is 0.0308, reaching 0.3675 at one site. These are method sensitivities, not confidence intervals or 3-D pore-throat estimates. Entire large edge-connected cavities are excluded, so this metric does not describe every visible crack-like feature.
+
+The bright hysteresis candidate changes a median 0.0534 of baseline bright-mask area across all sites (maximum 0.2019). Its median old/new IoU is 0.9493, which measures algorithm agreement, not accuracy. Low-contrast image overlays still contain bright rim fragments; no demonstrated correction or restored composition contrast is claimed. Connectivity changes object definitions slightly and remains a sensitivity audit.
+
+Sixteen geometry/benchmark tests and artifact contracts pass. Manual annotation and KPI-error evaluation remain the next step. A16/D35 record interpretation and review limits. This experiment is independent of production QC and does not add a primary verdict driver. The live register is the maintenance entry point for future morphology experiments.
+
+## 11. Battery application hypotheses and confirmed material state (D36, 2026-10-03)
+
+Santosh directly confirmed **fresh, uncycled graphite–Si/SiOx electrode**. This changes the interpretation scope: observations describe manufacturing/preparation structure and possible susceptibility during formation/later cycling. They are not evidence of prior cycling damage, electrochemical SEI or lithium plating. Exact Si versus SiOx, recipe/binder, pixelwise chemical labels, collector orientation and specimen independence remain unspecified.
+
+The specialist research memo `docs/battery_microstructure_review.md` ties six proposed checks to inspected real images and primary-source mechanisms, with retrieval limits in `analysis/battery/sources.json`. The strongest next checks are local additive/void/residual-solid neighbourhoods (B01) and reviewed long-void/confirmed-collector context (B02). Graphite plate orientation (B03), local additive homogeneity (B04), void-width/depth structure (B05) and fresh-particle fracture appearances (B06) remain application hypotheses requiring measurement review. The existing metric register and visual atlas now link these checks without adding measurements, primary KPIs or release thresholds.
+
+Physics wording is tightened in the plan and assumption cards: more visible pore area or larger void sections are not inherently better transport; coarser bright sections alone do not determine lithiation time or total expansion load; residual-solid adjacency is not electrical contact; low ridge coverage is not an intact-particle fraction. Representative spatial sampling is required for conditional volume fractions; plate alignment alone does not invalidate phase-area estimation. The memo records the corresponding production `physics.py` wording fixes as pending, so regenerated QC reports are not yet claimed to satisfy the revised wording contract.
+
+Prioritise independent phase-boundary annotations and a small reviewed neighbourhood/interface set before new extraction. Application validation would need matched recipe/process information plus adhesion/contact, wetting, formation/impedance or cycling evidence. No numerical performance, unseen-batch accuracy or new batch-separation claim follows from the literature review.

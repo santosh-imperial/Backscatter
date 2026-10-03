@@ -23,6 +23,33 @@ cd notebooks && jupyter nbconvert --to notebook --execute --inplace --ExecutePre
 
 Requires Python 3.12 with numpy, scipy, scikit-image, scikit-learn, pandas, matplotlib, statsmodels, tifffile, jupyter.
 
+## QC on a batch — one command
+
+```bash
+python3 -m polaron_qc.report Dataset/Batch_3 Dataset/Batch_2 reports/qc_Batch_2.html
+```
+
+Batch 3 is the working reference (confirmed by the organisers; it is a single batch with more samples, not a clean baseline). The command extracts features from the raw TIFFs (≈ 1 min per 7-site batch, cached afterwards), derives the acquisition flags from the batch's own images, runs the site-level comparison (Hodges–Lehmann shift, exact site permutations, Holm over the five primary KPIs, energy distance), the material-only classifier, the three acquisition sensitivity views, the localized-defect check, the decision and the leave-one-site-out stability, and writes one self-contained HTML. ≈ 70 s with a warm feature cache, ≈ 2 min cold. The executed notebook [`notebooks/02_batch_qc.ipynb`](notebooks/02_batch_qc.ipynb) runs the same pipeline for every compared batch with the reference characterisation, self-tests and the decision table around it.
+
+## Unseen batch — the drop procedure (rehearsed, see experiment log E23)
+
+1. Put the folder at `Dataset/<name>/img_<site>_<BSE|ETD|Inlens>.tif` (`SE` is accepted as `ETD`). Nothing else is edited: no site lists, no thresholds.
+2. Run the one command above with `Dataset/<name>`; open `reports/qc_<name>.html`. First screen: verdict, the three outcome columns (drift alert / localized / quality abstention), decision stability, drivers, usable n, what would move it, thresholds hash and provenance. Second screen: the five primary KPIs with the minimum detectable change at this batch's n.
+3. Check the **Acquisition flags** table: the grey-pore (raised BSE black level) and low-contrast flags are derived from the new images and were applied before any statistic ran. If more than half the sites carry a flag the verdict is a quality abstention, by design.
+4. If the **Local-anomaly** table shows a site "routed to image review" or "pending review", look at the painted crop in **Evidence images** and record the review:
+   ```bash
+   python3 -m polaron_qc.report Dataset/Batch_3 Dataset/<name> reports/qc_<name>.html --review <site>:crack_frac=yes
+   ```
+   (`=no` refutes and closes the flag; the verdict is recomputed with that state.)
+5. For the notebook: add `<name>` to `CONFIG["compare"]` in `notebooks/_build_02_batch_qc.py` and leave `FROZEN_HASH` as it is (the hash excludes the compare list on purpose), then
+   ```bash
+   python3 notebooks/_build_02_batch_qc.py && cd notebooks && PYDEVD_DISABLE_FILE_VALIDATION=1 jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=2400 02_batch_qc.ipynb
+   ```
+   The §0 assert fails if any threshold or configuration changed after the freeze.
+6. Optional, exploratory only: `python3 -m polaron_qc.ml` adds the DINOv2 novelty map and the flag-inclusive classifier for the new batch. Nothing in the verdict depends on it.
+
+What the verdicts mean: *consistent with the working reference (within detectable limits)* is the top outcome and never "accept" (no equivalence test against agreed tolerances exists); *investigate — batch-wide drift* and *investigate — localized anomaly* are separate paths; *reject (provisional)* needs every Check A gate including an available, non-attenuating acquisition view, or two confirmed localized sites. Thresholds were developed on Batches 1–3 and frozen before the unseen batch arrived (hash printed on every report).
+
 ## Status
 
-Dataset analysis complete. Next: QC notebook (baseline self-calibration, per-batch comparison, decision logic, explanation report). Baseline batch and labels are not yet known; see open questions in the findings doc.
+Pipeline complete and rehearsed on a renamed copy of a known batch (E23). Both known batches: consistent within detectable limits. Open: morphology descriptors (E18, in `analysis/morphology/`), Inlens local-contrast normalisation (E20).

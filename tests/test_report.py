@@ -90,7 +90,7 @@ def test_render_report_synthetic(tmp_path):
     card = re.search(r'<section class="card verdict[^"]*".*?</section>', html, re.S).group(0).lower()
     assert "accept" not in card
     # placeholders for missing optional blocks are rendered, not crashes
-    assert "not yet available" in low           # acquisition sensitivity block
+    assert "not available in this run" in low   # acquisition sensitivity block placeholder (reject withheld without it)
     assert "Evidence images not rendered" in html  # no raw images in the synthetic result
 
 
@@ -173,8 +173,67 @@ def test_derive_flags_rules():
     images = pd.DataFrame([dict(batch="Batch_Y", site=sites.site[0], det="BSE", H=2000, mean=80, p1=15, p50=80, p99=200, std=30, gray_levels=120, empty_bin_frac=0.3, band_top=20, band_bottom=0),
                            dict(batch="Batch_Y", site=sites.site[1], det="BSE", H=2000, mean=80, p1=2, p50=80, p99=200, std=30, gray_levels=250, empty_bin_frac=0.05, band_top=0, band_bottom=0),
                            dict(batch="Batch_Y", site=sites.site[1], det="Inlens", H=2000, mean=80, p1=2, p50=80, p99=200, std=30, gray_levels=90, empty_bin_frac=0.6, band_top=0, band_bottom=0)])
-    f = report.derive_flags(sites, images).set_index("site")
+    fl = report.derive_flags(sites, images)
+    f = fl.set_index("site")
     s0, s1 = sites.site[0], sites.site[1]
-    assert f.loc[s0, "contrast_stretched_bse"] and f.loc[s0, "raised_black_level"] and f.loc[s0, "band_top"] == 20
+    assert f.loc[s0, "contrast_stretched_bse"] and f.loc[s0, "raised_black_level"] and f.loc[s0, "band_rows"] == 20
     assert not f.loc[s1, "contrast_stretched_bse"] and f.loc[s1, "contrast_stretched_any"] and not f.loc[s1, "raised_black_level"]
-    assert "provisional" in f.attrs["status"]
+    assert "acquisition" in fl.attrs["status"] and fl.attrs["config_mismatch"] == []
+    # E21 P1: the grey-pore flag is data-derived on NEW site ids (raised black level), not a known-ID lookup
+    assert bool(f.loc[s0, "grey_pore"]) and f.loc[s0, "grey_pore_source"] == "data" and f.loc[s0, "acquisition_group"] == "grey_pore"
+    assert not f.loc[s1, "grey_pore"] and f.loc[s1, "acquisition_group"] == "ordinary"
+    assert (f["H"] == 2000).all() and not f["cracked"].any()
+
+
+def test_apply_derived_flags_reaches_stats_and_decision():
+    """E21 P1 end to end on synthetic tables: five new sites with BSE p1 = 24 → grey_pore on all five → fallback count,
+    Check B reliability note and quality abstention all see it."""
+    from polaron_qc import stats, decision
+    sites = _sites(5, "Batch_U")
+    images = pd.DataFrame([dict(batch="Batch_U", site=s, det=d, H=1800, p1=24 if d == "BSE" else 0, p50=100, std=20, empty_bin_frac=0.0, band_top=0, band_bottom=0)
+                           for s in sites.site for d in ("BSE", "ETD", "Inlens")])
+    flags = report.derive_flags(sites, images)
+    assert int(flags.grey_pore.sum()) == 5 and int(flags.raised_black_level.sum()) == 5
+    merged = report.apply_derived_flags(sites, flags)
+    assert merged.grey_pore.all() and (merged.acquisition_group == "grey_pore").all()
+    assert stats.usable_n(merged, "pore_frac")["n_fallback"] == 5 and stats.usable_n(merged, "pore_frac")["n_usable"] == 5
+    assert decision.quality_abstention(merged, {"all_usable": True})["abstain"] is True
+    tab = pd.DataFrame([dict(site=merged.site[0], value=2.0, ref_max=1.3, exceeds=True, margin_in_mad=2.4)])
+    b = decision.check_b({"crack_frac": tab}, merged)
+    assert b["flags"][0]["measurement_note"].startswith("fallback") and b["n_sites_pending"] == 1   # soft flag: still pending
+    # existing True values are kept (OR), never cleared
+    sites2 = sites.copy(); sites2.loc[0, "bright_low_contrast"] = True
+    assert report.apply_derived_flags(sites2, flags).bright_low_contrast.tolist() == [True, False, False, False, False]
+
+
+def test_material_c2st_in_pipeline_shape():
+    from polaron_qc import MATERIAL_KPIS
+    rng2 = np.random.default_rng(5)
+    def tbl(n, batch):
+        df = pd.DataFrame({k: rng2.normal(1.0, 0.1, n) for k in MATERIAL_KPIS}); df.insert(0, "site", [f"{batch}_{i}" for i in range(n)]); df.insert(0, "batch", batch)
+        return df
+    ref, bat = tbl(12, "R"), tbl(6, "B"); bat.loc[0, "pore_d50"] = np.nan
+    d = report.material_c2st(ref, bat, n_perm=20, seed=0)
+    assert d["kpis"] == list(MATERIAL_KPIS) and d["n_sites_ref"] == 12 and d["n_sites_batch"] == 5 and d["n_dropped_nan"] == (0, 1)
+    assert 0 <= d["p"] <= 1 and d["variant"].endswith("in_pipeline") and "in-pipeline" in d["p_method"] and d["flag_inclusive"] is False
+    assert list(d["coef"].columns[:2]) == ["feature", "coef"]
+
+
+def test_render_report_with_acquisition_views_and_infeasible_mdc(tmp_path):
+    res = synthetic_result()
+    e = dict(statistic=0.2, p=0.3)
+    res["acquisition"] = dict(unadjusted=dict(compare=None, energy=e), stratified=dict(energy=dict(statistic=0.15, p=0.4), n_ref_kept=10, n_batch_kept=7),
+                              adjusted=dict(energy_adjusted=dict(statistic=0.3, p=0.2), n_ref=17, n_batch=7),
+                              attenuation=dict(stratified=0.25, adjusted=-0.5, available=True), note="sensitivity analysis")
+    res["verdict"]["attenuation"] = dict(stratified=0.25, adjusted=-0.5, available=True)
+    res["mdc"]["crack_frac"] = dict(mdc_mad=np.nan, mdc_abs=np.nan, n_incoming=18, n_sim_used=0, feasible=False,
+                                     reason="split design needs >= 3 remaining reference sites: n_incoming = 18 > n_ref - 3 = 14", design="not available")
+    res["check_b"]["flags"] = [dict(site="Xs1", kpi="crack_frac", value=2.0, ref_max=1.3, margin_in_mad=2.4, severity_ok=True, measurement_reliable=True,
+                                    measurement_note="ok", image_reviewed=False, review_status="refuted", promotable=True)]
+    res["check_b"]["refuted"] = list(res["check_b"]["flags"])
+    res["stability"]["refit_per_fold"] = ["compare", "material-only classifier", "acquisition views / attenuation"]; res["stability"]["held_fixed"] = []
+    html = open(report.render_report(res, str(tmp_path / "qc.html")), encoding="utf-8").read()
+    assert "Attenuation" in html and "+0.25" in html and "−0.50" in html and "drift reject is permitted" in html
+    assert "not available</b>" in html and "split design" in html
+    assert "refuted by image review (closed)" in html and ">refuted<" in html
+    assert "Refit per fold" in html and "held fixed" not in html.split("Refit per fold")[1][:400]

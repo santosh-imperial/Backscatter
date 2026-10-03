@@ -30,8 +30,9 @@ import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
 ROOT = os.path.abspath(os.path.join(os.getcwd(), "..")) if os.path.basename(os.getcwd()) == "notebooks" else os.getcwd()
 sys.path.insert(0, ROOT)
-from polaron_qc import (NM_PER_PX, BATCH_COLORS, LOW_CONTRAST_SITES, GREY_PORE_SITES, CRACKED_SITES, PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST)
-from polaron_qc import features as FE, stats as ST, decision as DE, physics as PH
+from polaron_qc import (NM_PER_PX, BATCH_COLORS, UNSEEN_COLOR, LOW_CONTRAST_SITES, GREY_PORE_SITES, CRACKED_SITES, PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST)
+from polaron_qc import features as FE, stats as ST, decision as DE, physics as PH, report as RP, acquisition as AC
+%matplotlib inline
 pd.set_option("display.width", 220); pd.set_option("display.max_columns", 60)
 plt.rcParams.update({"figure.dpi": 100, "axes.spines.top": False, "axes.spines.right": False, "axes.grid": True, "grid.alpha": .25, "legend.frameon": False})
 
@@ -47,8 +48,10 @@ CONFIG = dict(
     thresholds = DE.Thresholds(),                 # decision thresholds (D22)
     provenance = "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived",
 )
-FROZEN_HASH = None   # set to the printed value once frozen; the assert below then guards the unseen-batch run
-cfg_hash = hashlib.sha1(json.dumps({k: (v if not hasattr(v, "hash") else v.hash()) for k, v in CONFIG.items()}, sort_keys=True, default=str).encode()).hexdigest()[:12]
+FROZEN_HASH = "99d2bbcae6f3"   # frozen 2026-10-03 after the drop rehearsal (D34, E23); the assert below guards the unseen-batch run
+# the hash covers every methodological choice (reference, α, power, statistic, KPI lists, flags handling, thresholds) but NOT the
+# list of compared folders, so the unseen batch can be added to CONFIG["compare"] without touching anything that is frozen
+cfg_hash = hashlib.sha1(json.dumps({k: (v if not hasattr(v, "hash") else v.hash()) for k, v in CONFIG.items() if k != "compare"}, sort_keys=True, default=str).encode()).hexdigest()[:12]
 print("configuration hash:", cfg_hash, "| thresholds hash:", CONFIG["thresholds"].hash())
 if FROZEN_HASH is not None:
     assert cfg_hash == FROZEN_HASH, f"configuration changed after freeze ({cfg_hash} != {FROZEN_HASH})"
@@ -62,12 +65,15 @@ BATCHES = {b: FE.extract_batch(os.path.join(DATA, b), cache_dir=FCACHE, verbose=
 print({b: {k: v.shape for k, v in t.items()} for b, t in BATCHES.items()}, f"\n{time.time()-t0:.0f} s")
 
 def sites_of(b):
-    s = BATCHES[b]["sites"].copy()
-    s["grey_pore"] = s.site.isin(CONFIG["known_anomalous"]["grey_pore"]) | s.get("grey_pore", False)
-    s["cracked_known"] = s.site.isin(CONFIG["known_anomalous"]["cracked"])
+    """Site table with the DATA-DERIVED acquisition flags written in (same call path as build_result, D31): grey_pore from the
+    batch's own BSE black level (the known list is only a cross-check on the reference), low contrast from the features."""
+    t = BATCHES[b]; s = t["sites"].copy(); s["site"] = s.site.astype(str)
+    s = RP.apply_derived_flags(s, RP.derive_flags(s, t["images"]))
+    s["cracked_known"] = s.site.isin(CONFIG["known_anomalous"]["cracked"])      # reference-only label, never data-derived
     s["low_contrast"] = s.bright_low_contrast.astype(bool)
     return s
-REF = sites_of(CONFIG["reference"]); ORD_MASK = ~(REF.grey_pore | REF.cracked_known)
+REF = sites_of(CONFIG["reference"]); ORD_MASK = (REF.acquisition_group == "ordinary").to_numpy()
+assert set(REF.site[REF.grey_pore]) == set(CONFIG["known_anomalous"]["grey_pore"]), "data-derived grey-pore flags differ from the known reference list"
 print(f"reference {CONFIG['reference']}: {len(REF)} sites, {int(ORD_MASK.sum())} ordinary, {int(REF.grey_pore.sum())} grey-pore, {int(REF.cracked_known.sum())} cracked, {int(REF.low_contrast.sum())} low-contrast")
 display(REF[["site"] + CONFIG["primary_kpis"] + ["low_contrast", "grey_pore", "cracked_known"]].round(4))''')
 
@@ -103,10 +109,13 @@ for k in prim:
         m = ST.mdc(x, n_in, alpha=CONFIG["alpha"], power=CONFIG["power"], test=dict(statistic=CONFIG["statistic"], n_mc=999), seed=CONFIG["seed"])
         rows.append(dict(kpi=k, batch=b, n_incoming=n_in, ref_median_all=np.median(x), ref_mad_all=ST.mad(x),
                          ref_median_ordinary=np.median(ref_ord[k]), ref_mad_ordinary=ST.mad(ref_ord[k]),
-                         mdc_mad=m["mdc_mad"], mdc_abs=m.get("mdc_abs", m["mdc_mad"] * ST.mad(x)), design=m.get("design", "")))
+                         mdc_mad=m["mdc_mad"], mdc_abs=m.get("mdc_abs", m["mdc_mad"] * ST.mad(x)), feasible=m.get("feasible", True), design=m.get("design", "")))
 MDC = pd.DataFrame(rows)
 display(MDC.round(4))
-print("Reading: an absolute MDC larger than the reference median (e.g. crack_frac) means only a batch that more than doubles that KPI could register as batch-wide drift; the localized path (§3) exists for exactly this case.")''')
+if not MDC.feasible.all():
+    print("MDC not available for:", MDC[~MDC.feasible][["kpi", "batch", "n_incoming", "design"]].to_string(index=False))
+print("Reading: an absolute MDC larger than the reference median (e.g. crack_frac) means only a batch that more than doubles that KPI could register as batch-wide drift; the localized path (§3) exists for exactly this case.")
+print("Design limit: the split-reference simulation needs ≥ 3 reference sites left after drawing n_incoming, so for an incoming batch with n ≥ n_ref − 2 usable sites the MDC is reported as 'not available' (the comparison itself still runs; E21).")''')
 
 md("""### 2b · Reference-split diagnostics (internal)
 
@@ -147,10 +156,10 @@ for ax, (b, res) in zip(np.atleast_1d(axes), RESULTS.items()):
     d = res["drift"]
     ref_d = d[d.group == "reference"]; bat_d = d[d.group == "batch"]
     is_grey = ref_d.site.isin(GREY_PORE_SITES); is_cr = ref_d.site.isin(CRACKED_SITES)
-    ax.scatter(np.zeros(len(ref_d)) + np.random.default_rng(0).uniform(-.1, .1, len(ref_d)), ref_d.distance, s=26, color=BATCH_COLORS[CONFIG["reference"]], alpha=.7, label="reference (LOO)")
+    ax.scatter(np.zeros(len(ref_d)) + np.random.default_rng(0).uniform(-.1, .1, len(ref_d)), ref_d.distance, s=26, color=BATCH_COLORS.get(CONFIG["reference"], UNSEEN_COLOR), alpha=.7, label="reference (LOO)")
     ax.scatter(np.zeros(is_grey.sum()) + .18, ref_d[is_grey].distance, s=70, facecolors="none", edgecolors=BATCH_COLORS["Batch_3 (grey-pore group)"], label="grey-pore")
     ax.scatter(np.zeros(is_cr.sum()) - .18, ref_d[is_cr].distance, s=70, facecolors="none", edgecolors="#e34948", label="cracked")
-    ax.scatter(np.ones(len(bat_d)) + np.random.default_rng(1).uniform(-.1, .1, len(bat_d)), bat_d.distance, s=30, color=BATCH_COLORS[b], label=b)
+    ax.scatter(np.ones(len(bat_d)) + np.random.default_rng(1).uniform(-.1, .1, len(bat_d)), bat_d.distance, s=30, color=BATCH_COLORS.get(b, UNSEEN_COLOR), label=b)
     for _, r in bat_d.iterrows(): ax.annotate(r.site, (1, r.distance), fontsize=7, xytext=(6, 0), textcoords="offset points")
     ax.axhline(np.percentile(ref_d.distance, 95), color="#888", ls="--", lw=.8); ax.set_xticks([0, 1]); ax.set_xticklabels([CONFIG["reference"], b]); ax.set_title(f"{b}: per-site drift (dashed = reference 95th pct)")
 np.atleast_1d(axes)[0].set_ylabel("robust distance (primary KPIs)"); np.atleast_1d(axes)[0].legend(fontsize=8); plt.tight_layout(); plt.show()
@@ -179,10 +188,10 @@ print(f"energy distance Batch_1 (n={len(X1.dropna())}) vs Batch_2 (n={len(X2.dro
 
 md("""## 4 · ML corroboration (never the sole driver)
 
-Two members. A grouped-cross-validated L1 logistic regression on **material KPIs only** (sites are the groups and carry equal weight; the null is a site-level label permutation) drives Check A(iv); the same classifier with the acquisition flag `etd_boundary_sharpness` included is shown as acquisition evidence because that one flag carries the whole Batch 1 vs Batch 3 separation (E06). DINOv2 patch-embedding novelty is exploratory: on this data it tracks acquisition variables (E07) and can only raise an evidence flag.""")
+Two members. A grouped-cross-validated L1 logistic regression on **material KPIs only** (sites are the groups and carry equal weight; the null is a site-level label permutation) drives Check A(iv). Since D30 it is **run inside `build_result` on the site tables** (and refit in every leave-one-site-out fold), so an unseen batch needs no pre-computed ML cache for Check A(iv); the cached material run, where present, is kept beside it as `material_cached` for comparison. The same classifier with the acquisition flag `etd_boundary_sharpness` included is shown as acquisition evidence because that one flag carries the whole Batch 1 vs Batch 3 separation (E06). DINOv2 patch-embedding novelty is exploratory: on this data it tracks acquisition variables (E07) and can only raise an evidence flag.""")
 code(r'''rows = []
 for b, res in RESULTS.items():
-    for lab, d in [("material only (drives A iv)", res["c2st_material"]), ("flag-inclusive (acquisition evidence)", res["c2st_flag_inclusive"])]:
+    for lab, d in [("material only, in-pipeline (drives A iv)", res["c2st_material"]), ("material only, cached pre-run (comparison)", res["c2st_extra"].get("material_cached")), ("flag-inclusive (acquisition evidence)", res["c2st_flag_inclusive"])]:
         if d: rows.append(dict(batch=b, run=lab, auc=d["auc"], null_lo=(d.get("null_band") or [np.nan, np.nan])[0], null_hi=(d.get("null_band") or [np.nan, np.nan])[1], p=d["p"], n_perm=d.get("n_perm"), selected=", ".join(d["coef"][d["coef"].selected].feature.tolist()) if "selected" in d["coef"] else ""))
 display(pd.DataFrame(rows).round(3))
 for b, res in RESULTS.items():
@@ -195,23 +204,25 @@ for b, res in RESULTS.items():
 
 md("""## 5 · Sensitivity to acquisition adjustment
 
-Three views of each comparison: unadjusted; stratified to ordinary acquisition groups on both sides; adjusted by residualising every KPI on three a-priori acquisition covariates (bright-phase separation, BSE black level, ETD boundary sharpness) with the regression re-fitted inside every permutation. This is a sensitivity analysis, not attribution. On this reference the adjustment **amplifies** the shift because the covariates encode Batch 3's own sub-populations (D26); negative attenuation is read as "not explained away", nothing more. Alongside: the three-channel agreement pattern per site.""")
-code(r'''ACQ = {}
-flags_all = AC.derive_flags(pd.concat([REF] + [sites_of(b) for b in CONFIG["compare"]]), pd.concat([BATCHES[x]["images"] for x in [CONFIG["reference"]] + CONFIG["compare"]]))
+Three views of each comparison: unadjusted; stratified to ordinary acquisition groups on both sides; adjusted by residualising every KPI on three a-priori acquisition covariates (bright-phase separation, BSE black level, ETD boundary sharpness) with the regression re-fitted inside every permutation. This is a sensitivity analysis, not attribution. On this reference the adjustment **amplifies** the shift because the covariates encode Batch 3's own sub-populations (D26); negative attenuation is read as "not explained away", nothing more. Since D30 the three views are computed **inside `build_result`** and their attenuation enters the verdict: a drift reject is withheld when no view is available (E21). Alongside: the three-channel agreement pattern per site.""")
+code(r'''ACQ = {b: RESULTS[b]["acquisition"] for b in CONFIG["compare"]}
+flags_all = pd.concat([RESULTS[b]["flags_ref"] for b in CONFIG["compare"]][:1] + [RESULTS[b]["flags_batch"] for b in CONFIG["compare"]], ignore_index=True)
 for b in CONFIG["compare"]:
-    t0 = time.time()
-    tv = AC.three_views(REF, sites_of(b), CONFIG["primary_kpis"], flags_all, statistic=CONFIG["statistic"], seed=CONFIG["seed"], flags={"grey_pore": flags_all.site[flags_all.grey_pore].tolist()})
-    ACQ[b] = tv
+    tv = ACQ[b]
+    if not (isinstance(tv, dict) and "unadjusted" in tv):
+        print(f"\n### {b}: acquisition views not available ({tv}); drift reject withheld"); continue
     rows = []
     for view in ["unadjusted", "stratified", "adjusted"]:
         e = (tv[view].get("energy") if view != "adjusted" else tv[view].get("energy_adjusted")) if tv.get(view) else None
         rows.append(dict(view=view, energy=None if not e else round(e["statistic"], 3), p=None if not e else round(e["p"], 3), n_ref=tv[view].get("n_ref_kept", tv[view].get("n_ref")), n_batch=tv[view].get("n_batch_kept", tv[view].get("n_batch")), note=tv[view].get("reason", "")))
-    print(f"\n### {b}: three views ({time.time()-t0:.0f} s) — attenuation {tv['attenuation']}")
+    att = RESULTS[b]["verdict"]["attenuation"]
+    print(f"\n### {b}: three views (from build_result) — attenuation stratified {att['stratified']:+.2f}, adjusted {att['adjusted']:+.2f}, available = {att['available']}")
     display(pd.DataFrame(rows))
 agree = AC.three_channel_agreement(pd.concat([REF] + [sites_of(b) for b in CONFIG["compare"]]), pd.concat([BATCHES[x]["images"] for x in [CONFIG["reference"]] + CONFIG["compare"]]))
 print("three-channel agreement — sites with a pattern other than 'none':")
 display(agree[agree.pattern != "none"][[c for c in ["batch", "site", "pattern", "intensity_disagreement", "texture_disagreement"] if c in agree]].round(2))
-RESULTS = {b: {**RESULTS[b], "acquisition": ACQ[b]} for b in RESULTS}''')
+print("\nData-derived flags written into the site tables before any statistic ran (grey pore = raised BSE black level; low contrast from features):")
+display(flags_all[["batch", "site", "acquisition_group", "grey_pore", "grey_pore_source", "bright_low_contrast", "raised_black_level", "bse_p1"]].sort_values(["batch", "acquisition_group"]).reset_index(drop=True))''')
 
 md("""## 6 · Physics reading (qualitative, relative) and measurement sanity
 
@@ -229,14 +240,16 @@ for b, res in RESULTS.items():
 
 md("""## 7 · Decision
 
-Two checks, one verdict, three outcome columns. **Check A** (batch-wide drift on primary KPIs): beyond the reference null · carried by a primary KPI (Holm p < α and |shift| ≥ 1 MAD) · consistent across usable sites · corroborated by the material-only classifier. **Check B** (localized): credible exceedance on an extreme-semantics KPI. **Quality abstention** is its own column, never counted as an alarm. **Decision stability** is the share of leave-one-site-out re-runs returning the same verdict — not a probability of being right. Every verdict states what would move it.""")
+Two checks, one verdict, three outcome columns. **Check A** (batch-wide drift on primary KPIs): beyond the reference null · carried by a primary KPI (Holm p < α and |shift| ≥ 1 MAD) · consistent across usable sites · corroborated by the material-only classifier · **not strongly attenuated under the acquisition views, which must be available** (a missing view withholds a reject rather than counting as "not attenuated"; E21). **Check B** (localized): credible exceedance on an extreme-semantics KPI; a human image review has three states — unreviewed (pending), confirmed (credible), refuted (closed). **Tiered rule (D33, calibrated in E19):** one site between 2 and 3 MAD beyond the ordinary-reference max is *routed to image review* with its crop but leaves the batch verdict unchanged; the verdict flips to *investigate — localized* when a site reaches 3 MAD, when two sites or both promotable KPIs exceed 2 MAD, or when a reviewer confirms a routed crop. **Quality abstention** is its own column, never counted as an alarm. **Decision stability** is the share of leave-one-site-out re-runs returning the same verdict, with every input (classifier and acquisition views included) refit per fold — not a probability of being right. Every verdict states what would move it.""")
 code(r'''rows = []
 for b, res in RESULTS.items():
     v = res["verdict"]; a = res["check_a"]; st_ = res["stability"]
     rows.append(dict(batch=b, verdict=v["verdict"], drift_alert=v["outcome_columns"]["drift_alert"], localized=v["outcome_columns"]["localized"], quality_abstention=v["outcome_columns"]["quality_abstention"],
                      A_i_beyond_null=a["i_beyond_null"], A_ii_carried=a["ii_carried_by_primary"], A_iii_consistent=a["iii_consistent"], A_iv_classifier=a["iv_classifier_corroborates"],
+                     A_v_acq_views_available=v["attenuation"]["available"], attenuation_stratified=round(v["attenuation"]["stratified"], 2), attenuation_adjusted=round(v["attenuation"]["adjusted"], 2),
                      stability=f"{st_['share']:.2f} ({int(round(st_['share']*st_['n_runs']))}/{st_['n_runs']})", thresholds_hash=v["thresholds_hash"]))
 display(pd.DataFrame(rows).T)
+print("stability — refit per fold:", RESULTS[CONFIG["compare"][0]]["stability"]["refit_per_fold"], "| held fixed:", RESULTS[CONFIG["compare"][0]]["stability"]["held_fixed"] or "nothing")
 for b, res in RESULTS.items():
     print(f"\n{b}: {res['verdict']['verdict']}\n  reason: {res['verdict']['reason']}\n  what would move it: {res['verdict']['what_would_move_it']}")
     if res["abstention"]["reasons"]: print("  abstention reasons:", res["abstention"]["reasons"])''')
@@ -257,7 +270,7 @@ def pipeline_fn(ref_part, pseudo):
     r = RP._run_pipeline(ref_part, pseudo, [s for s in ord_sites if s in set(ref_part.site)], {**RP.DEFAULT_CONFIG, **RP_CONFIG}, th, CONFIG["primary_kpis"], c2st=None, n_boot=300, energy_n_mc=1000, local_extra=False)
     oc = r["verdict"]["outcome_columns"]; return dict(verdict=r["verdict"]["verdict"], drift_alert=oc["drift_alert"], localized=oc["localized"], abstention=oc["quality_abstention"], energy_p=r["energy"]["p"])
 t0 = time.time(); SPLIT_DIAG = ST.reference_split_diagnostics(REF, CONFIG["primary_kpis"], n_incoming=7, pipeline_fn=pipeline_fn, n_splits=60, seed=CONFIG["seed"]); print(f"{len(SPLIT_DIAG)} splits in {time.time()-t0:.0f} s")
-summary = dict(drift_alert_rate=SPLIT_DIAG.drift_alert.mean(), localized_flag_rate=(SPLIT_DIAG.localized != "none").mean(), localized_pending_or_credible_rate=SPLIT_DIAG.localized.isin(["pending_review", "credible"]).mean(), abstention_rate=SPLIT_DIAG.abstention.mean())
+summary = dict(drift_alert_rate=SPLIT_DIAG.drift_alert.mean(), localized_flag_rate=(SPLIT_DIAG.localized != "none").mean(), localized_routed_to_review_rate=(SPLIT_DIAG.localized == "review_routed").mean(), localized_pending_or_credible_rate=SPLIT_DIAG.localized.isin(["pending_review", "credible"]).mean(), abstention_rate=SPLIT_DIAG.abstention.mean())
 display(pd.Series(summary).round(3).to_frame("rate"))
 n = len(SPLIT_DIAG); p_hat = summary["drift_alert_rate"]; print(f"drift-alert rate {p_hat:.3f} ± {1.96*np.sqrt(p_hat*(1-p_hat)/n):.3f} (95 % binomial) vs α = {CONFIG['alpha']} — diagnostic only")
 from math import comb
@@ -268,8 +281,8 @@ def pipeline_fn_ord(ref_part, pseudo):
     r = RP._run_pipeline(ref_part, pseudo, ref_part.site.tolist(), {**RP.DEFAULT_CONFIG, **RP_CONFIG}, th, CONFIG["primary_kpis"], c2st=None, n_boot=300, energy_n_mc=1000, local_extra=False)
     oc = r["verdict"]["outcome_columns"]; return dict(verdict=r["verdict"]["verdict"], drift_alert=oc["drift_alert"], localized=oc["localized"], abstention=oc["quality_abstention"])
 SPLIT_ORD = ST.reference_split_diagnostics(REF_ORD, CONFIG["primary_kpis"], n_incoming=5, pipeline_fn=pipeline_fn_ord, n_splits=60, seed=CONFIG["seed"])
-s_ord = dict(drift_alert_rate=SPLIT_ORD.drift_alert.mean(), localized_flag_rate=(SPLIT_ORD.localized != "none").mean(), localized_pending_or_credible_rate=SPLIT_ORD.localized.isin(["pending_review", "credible"]).mean(), abstention_rate=SPLIT_ORD.abstention.mean())
-print("\nordinary-only reference splits (5 vs 5 of the 10 ordinary sites; i.i.d. single-KPI flag probability 5/10 = 50 %):")
+s_ord = dict(drift_alert_rate=SPLIT_ORD.drift_alert.mean(), localized_flag_rate=(SPLIT_ORD.localized != "none").mean(), localized_routed_to_review_rate=(SPLIT_ORD.localized == "review_routed").mean(), localized_pending_or_credible_rate=SPLIT_ORD.localized.isin(["pending_review", "credible"]).mean(), abstention_rate=SPLIT_ORD.abstention.mean())
+print("\nordinary-only reference splits (5 vs 5 of the 10 ordinary sites; i.i.d. single-KPI flag probability 5/10 = 50 %). 'routed to review' = one site between 2 and 3 MAD, verdict unchanged (tiered rule, D33); 'pending or credible' = verdict flipped to investigate — localized:")
 display(pd.Series(s_ord).round(3).to_frame("rate"))''')
 code(r'''# synthetic shifts on a copy of Batch_2: scale one primary KPI, re-run compare → decision (no classifier → ceiling is 'investigate — drift')
 rows = []
@@ -290,7 +303,7 @@ print("cracked-3 vs ordinary-10:", r2["verdict"]["verdict"], "| localized:", r2[
 
 md("""## 10 · Unseen batch
 
-Add the folder name to `CONFIG["compare"]`, set `FROZEN_HASH` to the configuration hash printed in §0, re-run all. The batch gets its own report in `reports/`. The ML caches are pre-computed for Batches 1–3 only; for a new batch run `python3 -m polaron_qc.ml` (embeddings + classifier) before this notebook, or the ML section reports "not available" and Check A(iv) cannot corroborate (which caps the verdict at *investigate*).""")
+Add the folder name to `CONFIG["compare"]` and re-run all; `FROZEN_HASH` is already set (D34) and must not change — the hash deliberately excludes the compare list, so adding a folder passes the §0 assert while any change to α, statistic, KPI lists, thresholds or the reference fails it. The batch gets its own report in `reports/`. Everything the verdict needs runs inside `build_result` on the new folder: feature extraction, data-derived acquisition flags (grey pore from the batch's own BSE black level, low contrast from the features), the comparison, the material-only classifier for Check A(iv), the three acquisition views and the leave-one-site-out stability. Only the exploratory evidence is cached: for the DINOv2 novelty map and the flag-inclusive classifier run `python3 -m polaron_qc.ml` first, otherwise those two blocks say "not available" and nothing else changes. If the new batch has as many usable sites as the reference (≥ n_ref − 2), the MDC is reported as "not available" for the split-reference design; the comparison and verdict still run.""")
 code(r'''print("configuration hash:", cfg_hash, "| frozen:", FROZEN_HASH)''')
 
 nb["cells"] = cells

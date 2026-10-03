@@ -54,14 +54,27 @@ def test_flag_without_severity_stays_consistent_but_is_reported():
 
 
 def test_localized_pending_review_then_credible():
+    """Tiered rule (D33): one site between 2 and 3 MAD is routed to review without flipping the verdict; 3 MAD, two sites,
+    two KPIs or a confirmed review flip it."""
     ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
     a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
     b = check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat)             # severity ok (≥ 2 MAD), no review yet
     assert b["n_sites_pending"] == 1 and b["n_sites_credible"] == 0
-    v = decide(a, b, quality_abstention(bat, a)); assert v["verdict"] == INVESTIGATE_LOCAL and "pending" in v["reason"]
+    v = decide(a, b, quality_abstention(bat, a))
+    assert v["verdict"] == CONSISTENT and v["outcome_columns"]["localized"] == "review_routed" and "routed to image review" in v["reason"]
+    assert v["escalation"]["escalate"] is False and "confirms the routed crop" in v["what_would_move_it"]
+    v3 = decide(a, check_b(local_tables([("crack_frac", "B_s1", 3.0)]), bat), quality_abstention(bat, a))       # single site at the escalation margin
+    assert v3["verdict"] == INVESTIGATE_LOCAL and v3["escalation"]["by_single_site"] and "pending" in v3["reason"]
+    v4 = decide(a, check_b(local_tables([("crack_frac", "B_s1", 2.4), ("crack_frac", "B_s4", 2.1)]), bat), quality_abstention(bat, a))   # two sites
+    assert v4["verdict"] == INVESTIGATE_LOCAL and v4["escalation"]["by_site_agreement"]
+    v5 = decide(a, check_b(local_tables([("crack_frac", "B_s1", 2.4), ("pore_max_d", "B_s1", 2.1)]), bat), quality_abstention(bat, a))   # two KPIs, same site
+    assert v5["verdict"] == INVESTIGATE_LOCAL and v5["escalation"]["by_kpi_agreement"]
     b2 = check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat, image_reviewed={("B_s1", "crack_frac"): True})
     assert b2["n_sites_credible"] == 1
     v2 = decide(a, b2, quality_abstention(bat, a)); assert v2["verdict"] == INVESTIGATE_LOCAL and v2["outcome_columns"]["localized"] == "credible"
+    # a refuted routed crop closes it; abstention with a routed (non-escalated) flag still reads as drift-type abstention
+    b3 = check_b(local_tables([("crack_frac", "B_s1", 2.4)]), bat, image_reviewed={("B_s1", "crack_frac"): False})
+    assert decide(a, b3, quality_abstention(bat, a))["outcome_columns"]["localized"] == "flag"
 
 
 def test_localized_unreliable_measurement_is_only_a_flag():
@@ -131,12 +144,55 @@ def test_reject_path_and_attenuation_downgrade():
     cmp = compare_table(p_holm={"crack_frac": 0.004}, shift={"crack_frac": 3.2})
     a = check_a(cmp, dict(statistic=0.9, p=0.002), ref, bat, mask, c2st=dict(auc=0.9, p=0.01))
     assert a["drivers"] == ["crack_frac"] and a["iii_consistent"] and a["iv_classifier_corroborates"]
-    v = decide(a, check_b(local_tables([]), bat), quality_abstention(bat, a))
-    assert v["verdict"] == REJECT and v["thresholds_hash"] == Thresholds().hash()
+    att_ok = attenuation(dict(statistic=0.9), dict(statistic=0.8), dict(statistic=1.2))
+    assert att_ok["available"] and att_ok["adjusted"] < 0            # amplified = "not explained away"
+    v = decide(a, check_b(local_tables([]), bat), quality_abstention(bat, a), att_ok)
+    assert v["verdict"] == REJECT and v["thresholds_hash"] == Thresholds().hash() and "stratified +0.11" in v["reason"]
     att = attenuation(dict(statistic=0.9), dict(statistic=0.3), dict(statistic=0.8))
     assert att["stratified"] == pytest.approx(1 - 0.3 / 0.9)
     v2 = decide(a, check_b(local_tables([]), bat), quality_abstention(bat, a), att)
     assert v2["verdict"] == INVESTIGATE_DRIFT and "attenuates" in v2["reason"]
+
+
+def test_reject_withheld_without_acquisition_views():
+    """E21 P1: att=None (views not computed) must not read as 'not attenuated'."""
+    ref = sites(17, "R"); bat = sites(7, "B", shift={"crack_frac": 1.0}); mask = pd.Series([True] * 17)
+    cmp = compare_table(p_holm={"crack_frac": 0.004}, shift={"crack_frac": 3.2})
+    a = check_a(cmp, dict(statistic=0.9, p=0.002), ref, bat, mask, c2st=dict(auc=0.9, p=0.01))
+    b = check_b(local_tables([]), bat); q = quality_abstention(bat, a)
+    for att in (None, {}, dict(stratified=np.nan, adjusted=np.nan), dict(stratified=None, adjusted=None)):
+        v = decide(a, b, q, att)
+        assert v["verdict"] == INVESTIGATE_DRIFT, att
+        assert "acquisition sensitivity views" in v["reason"] and "reject withheld" in v["reason"]
+        assert v["attenuation"]["available"] is False and "acquisition sensitivity views" in v["what_would_move_it"]
+    # one finite view is enough to decide; the bool 'available' key must never be read as a share
+    v = decide(a, b, q, dict(stratified=np.nan, adjusted=-0.4, available=True))
+    assert v["verdict"] == REJECT and v["attenuation"]["available"] is True
+    # a localized reject does not need the views
+    flags = [("crack_frac", "B_s1", 2.5), ("crack_frac", "B_s3", 2.2)]
+    b2 = check_b(local_tables(flags), bat, image_reviewed={("B_s1", "crack_frac"): True, ("B_s3", "crack_frac"): True})
+    a0 = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    assert decide(a0, b2, quality_abstention(bat, a0), None)["verdict"] == REJECT
+
+
+def test_refuted_image_review_closes_investigation():
+    """E21 P2: confirmed / refuted / unreviewed are three states; an explicit False closes the pending flag."""
+    ref = sites(17, "R"); bat = sites(7, "B"); mask = pd.Series([True] * 17)
+    a = check_a(compare_table(), dict(statistic=0.1, p=0.6), ref, bat, mask)
+    tabs = local_tables([("crack_frac", "B_s1", 2.4), ("pore_max_d", "B_s2", 2.1)])
+    b_un = check_b(tabs, bat)                                                    # dict None → both unreviewed
+    assert b_un["n_sites_pending"] == 2 and all(f["review_status"] == "unreviewed" for f in b_un["flags"])
+    assert decide(a, b_un, quality_abstention(bat, a))["verdict"] == INVESTIGATE_LOCAL      # two sites / two KPIs → escalates
+    b_part = check_b(tabs, bat, image_reviewed={("B_s1", "crack_frac"): False})  # one refuted, the other still unreviewed
+    assert b_part["n_sites_refuted"] == 1 and b_part["n_sites_pending"] == 1 and b_part["n_sites_credible"] == 0
+    assert {f["site"]: f["review_status"] for f in b_part["flags"]} == {"B_s1": "refuted", "B_s2": "unreviewed"}
+    assert decide(a, b_part, quality_abstention(bat, a))["outcome_columns"]["localized"] == "review_routed"   # one 2.1-MAD site left → routed, not flipped
+    b_all = check_b(tabs, bat, image_reviewed={("B_s1", "crack_frac"): False, ("B_s2", "pore_max_d"): False})
+    assert b_all["n_sites_refuted"] == 2 and b_all["n_sites_pending"] == 0 and b_all["n_sites_flagged"] == 2
+    v = decide(a, b_all, quality_abstention(bat, a))
+    assert v["verdict"] == CONSISTENT and v["outcome_columns"]["localized"] == "flag" and "2 refuted by image review" in v["reason"]
+    b_mix = check_b(tabs, bat, image_reviewed={("B_s1", "crack_frac"): True, ("B_s2", "pore_max_d"): False})
+    assert b_mix["n_sites_credible"] == 1 and b_mix["n_sites_refuted"] == 1 and b_mix["n_sites_pending"] == 0
 
 
 def test_reject_from_localized_alone():
