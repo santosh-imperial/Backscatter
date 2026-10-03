@@ -25,6 +25,9 @@ analysis_cache/          per-site / per-image / per-particle feature CSVs produc
 analysis/                parallel label-free audit (scripts, findings.md, report.html, assets). Integrity checks, intensity/texture
                          proxies with bootstrap CIs. Complements notebook 01; do not duplicate its checks, cite them.
 docs/problem_and_findings.md       state of knowledge — keep it current
+docs/qc_plan.md                    agreed plan for the QC notebook (components, methods, decision logic, checkpoints)
+docs/decision_log.md               Part A: every consequential decision with rationale; Part B: pre-presentation review
+                                   checklist built from reviewer catches; Part C: open items. Append, never delete.
 docs/assumption_register.html      self-contained HTML: every interpretive assumption with an annotated example image and a
                                    review status; rebuild with `python3 docs/_build_assumption_register.py` when assumptions change
                                    (ids A1–A15 are referenced from other docs; append, don't renumber)
@@ -64,7 +67,9 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 ## Style for judge-facing material
 
 - Every KPI gets a one-line materials interpretation and a trust level.
-- Every verdict must list its drivers, its confidence, the acquisition flags, and what would change it.
+- Every verdict must list its drivers, its decision stability (not "confidence" or "probability correct"), the acquisition flags, and what would move it. "Consistent with the working reference, within detectable limits" is the top outcome; never write "accept" unless an equivalence test against agreed tolerances has been run. Batch-wide drift and localized defects are separate decision paths.
+- Small-sample discipline (docs/qc_plan.md §2.0): five primary KPIs (observed 2-D measurements, not stereological estimates) carry verdicts; usable site counts after flags, not folder counts; site-level permutation tests with all reference-dependent fitting inside the loop; jackknife stability; patches never count as n; exceeding the reference maximum is an evidence flag, not a defect call; provenance wording is "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived".
+- Physics statements are qualitative and relative (direction of change), never performance percentages; 2-D tortuosity is a section index, not a 3-D bound.
 - Show the evidence on the image (painted voids, particle outlines) when a KPI drives a decision.
 - State uncertainty in numbers (bootstrap intervals, n sites), not adjectives.
 - If a feature looks too good, test it for an acquisition confound before reporting it.
@@ -78,6 +83,10 @@ Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`
 - `Dataset/` is ignored. Do not add raw TIFFs or any file over ~20 MB.
 - Executed notebooks are committed (judges read them). Keep `.ipynb` and its `_build_*.py` in sync in the same commit.
 - Commit only when asked. Commit messages end with the attribution line required by the session.
+
+## Before presenting anything
+
+Run the checklist in `docs/decision_log.md` Part B against the plan, result, figure or verdict you are about to present, and say which items you checked. When you take a consequential decision, append it to Part A with rationale and alternatives. When a reviewer catches something the checklist did not cover, add a checklist item in the same change.
 
 ## Keeping docs current
 

@@ -7,6 +7,8 @@ Hackathon project: detect when a supplier's electrode material has changed, from
 - **Per-site features:** `analysis_cache/`
 - **Parallel label-free audit** (integrity, intensity/texture proxies, HTML report): `analysis/` — see `analysis/findings.md`
 - **Assumption register** (annotated example images, one card per assumption, reviewable and exportable): [`docs/assumption_register.html`](docs/assumption_register.html), built by `docs/_build_assumption_register.py`
+- **QC notebook plan:** [`docs/qc_plan.md`](docs/qc_plan.md)
+- **Decision log and review checklist:** [`docs/decision_log.md`](docs/decision_log.md)
 - **Agent / contributor guidance:** [`CLAUDE.md`](CLAUDE.md)
 
 ## Quick start
