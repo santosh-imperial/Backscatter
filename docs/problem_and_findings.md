@@ -1,6 +1,6 @@
 # Polaron challenge — problem statement and state of knowledge
 
-_Last updated: 2026-10-03 (reference status and fresh graphite–Si/SiOx material confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
+_Last updated: 2026-10-03 (supplier-promised baseline and in/out-of-distribution target clarified; fresh graphite–Si/SiOx material confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
 
 ## 1. The problem
 
@@ -12,7 +12,24 @@ _Last updated: 2026-10-03 (reference status and fresh graphite–Si/SiOx materia
 
 **Judging criteria** (in the organisers' words): quality of extracted material KPIs; accuracy on the new batch; interpretability; honest handling of uncertainty; real-world usability for a QC decision. Raw accuracy alone is explicitly not the target.
 
-**Our framing.** This is not a defect classifier. It is a two-sample comparison: does a batch fall inside the reference batch's own site-to-site variation, or outside it? Thresholds are calibrated against the reference's self-similarity (split-half / leave-one-site-out), not hand-tuned. Because the reference (Batch 3) is itself imperfect and heterogeneous, the system must display the reference's own spread and sub-populations, report all pairwise batch differences, and separate "the material changed" from "the microscope or sample preparation changed", because the data contain both.
+**Provider clarification (via Santosh, 2026-10-03).** Batch 3 is the supplier's promised baseline. Batches 1 and 2 arrived subsequently and illustrate variation the model should detect; they are not explicitly better or worse. The challenge target is to identify differences and categorise held-back samples as in or out of the promised distribution. Batch membership is usable development information; manufacturing-performance and acceptable/defective labels remain unavailable.
+
+**Evaluation clarification and first drop (D53).** The organiser now requires a batch assignment for every
+sample, even when very uncertain, with confidence and feature explanations. The goal remains “different from
+the baseline, and in what way”; correct assignment to the known batches measures the “in what way” part.
+`Hackathon-Polaron-test` has arrived with three aligned detector sets; true labels are pending tomorrow's
+feedback. E33 preserves the original combined categoriser's forced bet and explicitly qualified model scores; morphology
+distance from Batch 3 and QC action remain distinct. Preserve first predictions before feedback, with no tuning
+on this drop. Do not treat the potentially mixed test folder as a single manufacturing batch.
+
+**Current judged model / execution freeze (D52/D54S, E34/E35S).** Future submissions use the saved v2
+morphology-plus-acquisition-sensitive-appearance primary, with no frame-height or explicit session-statistic
+inputs. Texture origin remains unresolved. [The version-bound workflow](../analysis/submission_v2/README.md)
+requires the declared family and matching reliability evidence, with no comparator fallback and no overwrite
+of original E33/v1 predictions. V2 was revised after first-drop inspection, before truth, and declared before
+final evaluation. Feedback is evaluated against saved bets before any further model revision.
+
+**Our framing.** Compare incoming material with the full measurable Batch 3 distribution, including its morphological heterogeneity. A change in either direction, in spread, tails, alignment or spatial arrangement can matter even when phase loading or defect burden is unchanged or lower. Do not redefine the promise as an ordinary-only or defect-free subset. Quality exclusions must be feature-specific and disclosed, with acquisition and material interpretations separated. The current five-primary-KPI decision path is an executed baseline; the standalone morphology OOD development audit in `qc_plan.md` §1.1 is completed as E31L, while live promotion is deferred and genuine unseen validation is unavailable. Distribution departure can support an investigation or a provisional conformance hold without a demonstrated battery-harm mechanism. Statistical non-detection is not proof of equivalence or a production release authorisation.
 
 ## 2. The data
 
@@ -301,3 +318,30 @@ The [visual report](../analysis/morphology/k_pilot/report.html) shows fixed cent
 The two nominal matched findings need different qualifications. The solidity lower tail loses its interval exclusion under threshold/object-floor changes and is partly predictable from existing geometry/loading. The 256 px bright/void direction contrast retains the same direction and interval exclusion across the fixed ±5 threshold and ordinary-reference sensitivities; the floor duplicate is identical by construction. This is a candidate arrangement observation for independent review, not a validated material difference or failure mode. Read `analysis/morphology/k_pilot/review.md` before interpreting the nominal table.
 
 Exact keys, fixed definitions, original registration, source/raw hashes, verification receipt and all measured values are in `analysis/morphology/k_pilot/`. Review: C01–C07/C09/C11/C13/C14/C16/C17/C21–C23/C28–C30.
+
+## Morphology OOD audit completed (L audit / E31L / D51L)
+
+The standalone [E31L report](../analysis/morphology/l_audit/report.html) evaluates the bounded D49P morphology panel while Claude handles the L1–L4 sample deliverables. All 31 nominal primary/shape replays agree with saved measurements. Threshold ±5 and floor100 gates pass for aspect, axial strength and the 256 px phase-association contrast; fixed acquisition/redundancy screens do not fail their gates, but weak predictability is not material-origin proof.
+
+Automatic OOD input is deferred by specific unresolved gates, not missing battery-harm labels. Valid brightness-control pairs move little (maximum 0.0294/0.00745/0.3733 reference MAD), but transformed quality flags remove coverage: 6/9 aspect/alignment and 4/6 association source-eligible pairs remain measurable. This quality-policy sensitivity also affects existing bright KPIs. Directional association additionally needs section/collector orientation. Retain these measured descriptors/explanations; register any revised quality policy or shadow model separately.
+
+Shared nominal primary5 and extended8 omnibus tests do not establish departure for B1/B2; B1 association has a +0.01894 median shift (approximate site interval +0.00548 to +0.03235; eight-feature-adjusted HL p≈0.099). This is descriptive batch-signature evidence, not proof of sameness or a forced OOD label. The common usable reference has 13 B3 sites including all three long-void sites, with 5/7 B1/B2; quality losses and deletion abstention remain visible.
+
+The combined rule matters: naive OR fires on 10%/11% of IID null trials, Holm union on 4%/6%. The seven-query union interval’s upper limit 0.10193 narrowly misses the prespecified≤0.10 gate; it does not demonstrate the true rate exceeds 10%. Abstract candidate-only controls show positive added detection, not manufacturing accuracy. All 3,003 overlapping internal reference allocations are diagnostic ranks, not independent external false-alert trials. Site distances/LOO percentiles are descriptive and uncalibrated. Twenty-two L/K convention tests and artifact checks pass; no live verdict input or genuine unseen validation was added. [Handoff](../analysis/morphology/l_audit/handoff.md).
+
+## Merged L1–L4 interpretation review (E33R / D52R)
+
+The merged sample deliverables and E20 audit are complete. The primary categoriser demonstrates a known-site
+batch fingerprint; its uncalibrated probabilities are separate from morphology distance and the frozen QC
+action. E20 has no qualifying normalised variant, and original texture remains confounded. The metric inventory
+tracks the four primary variants and two sensitivity checks as a completed method, preserving scalar KPI roles
+and expert-review states.
+
+OOD percentiles are descriptive reference ranks; legacy `ood_rank_p_*` values are tail ranks, not calibrated
+p-values or false-alert guarantees. The 1/18 floor is rank resolution. Reference scores use 16-site fits while
+queries use all 17, so the earlier IID exceedance-probability interpretation is withdrawn. No Batch 2 site
+exceeds the observed primary reference maximum; that does not establish membership or equivalence. Overlapping
+LOO fits also make the binomial accuracy interval descriptive rather than an exact generalisation interval.
+Read [the merged review](merged_qc_review.md) for the rationale and remaining organiser clarification,
+three crop reviews, final integrated rehearsal and judging walkthrough. Numerical scores and frozen inputs
+are unchanged by this interpretation correction.

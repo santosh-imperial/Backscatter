@@ -1,6 +1,6 @@
 # QC notebook plan (`02_batch_qc.ipynb`)
 
-_Drafted 2026-10-03 after the dataset analysis; revised the same day after external review (see §6). Status: agreed and implemented in `polaron_qc` (notebook 02, per-batch reports, 174 tests); where this plan and the code differ, the code is what ran and the difference is noted inline or in `analysis/g_reconcile/audit.md`._
+_Drafted 2026-10-03 after the dataset analysis; revised the same day after external review (see §6). Status: the existing five-primary-KPI path is implemented in `polaron_qc`; §1.1 has a completed standalone morphology OOD audit (E31L) following the provider's clarification; its live feature promotion remains deferred. Where this plan and the code differ, the code is what ran and the difference is noted inline or in `analysis/g_reconcile/audit.md`._
 
 ## 1. What we are producing
 
@@ -18,9 +18,38 @@ Design constraints carried over from the analysis: Batch 3 is the working refere
 - *"Different from the reference" and "acceptable" are different questions.* A null result from a weak test is not acceptance. Until practical tolerances exist, the best outcome we can state is **"consistent with the working reference, within what this test can detect"**, with the detectable change written next to it. Any release recommendation is provisional.
 - *Batch-wide drift and localized defects are separate decision paths.* A single severe delamination-like void must trigger investigation even when the batch median does not move.
 
+### 1.1 Supplier baseline and morphology OOD extension (D49P; E31L audit complete)
+
+The provider now explicitly defines Batch 3 as what the supplier promised, with Batches 1 and 2 as subsequent variations, neither necessarily better nor worse. The challenge target is **in/out-of-distribution relative to Batch 3**, with an explanation of the morphology difference. A manufacturing-defect or battery-performance label is not required to develop this comparator. This clarification does not establish that every incoming site is OOD, supply the held-back labels, or resolve acquisition confounds.
+
+**Reference contract.** Keep all measurable Batch 3 sites and its morphological sub-populations in the promised distribution. Known long-void sites are not removed merely because they appear defective. Feature-specific quality exclusions remain necessary and must disclose the unsupported part of the promise. The ordinary-only view is sensitivity/context. The existing localized-defect rule compares against an ordinary subset; it is a separate risk review, not an OOD-membership definition.
+
+**Recommended bounded development panel.** Compare the executed baseline with one extension adding `bright_aspect_aw` (2-D shape), `bright_alignment_strength` (axial concentration, not graphite alignment), and `bright_pore_crosscorr_xy_contrast_256px` (image-axis spatial association). These are candidates, not promoted inputs. Keep the current five observed geometry/loading/void KPIs as a comparator. Fix formulas, weights, exclusions and coverage before the new run; do not search more lags or select features solely for known-folder p-values. K's directional metric needs explicit section/orientation and phase-quality sensitivity; if unsupported, report its abstention rather than substitute a better-looking descriptor.
+
+**Model and evaluation contract.** Use a simple interpretable site-level distribution comparator first; investigate both directions, spread/tail changes and changes in the proportion of reference morphology modes. Keep fitted scaling, preprocessing and any feature selection inside held-out-site/specimen evaluations and permutations. Batch identity can benchmark known-batch discrimination, but is not a defect label or a guarantee that a particular held-back sample is OOD. Site CV after prior inspection is internal development evidence, not independent new-batch validation. Do not optimise merely to make Batches 1/2 different.
+
+**Promotion evidence.** Report measurement perturbations, acquisition-only shortcuts, reference-split alerts and abstentions, the combined alert rate across baseline and morphology tests, deletion sensitivity, and added detection in controlled morphology tests. Controls are engineering checks, not real defect truth. Independent annotations quantify measurement error; demonstrated battery harm is required only for harm claims, not as a universal gate for distribution comparison. Apply the same measurement uncertainty to existing and new mask KPIs. Do not infer validity from a known difference surviving a few perturbations.
+
+**Decision output.** Propose a separate conformance result: OOD evidence relative to the promise; no OOD detected at the tested resolution; or indeterminate because of quality/coverage/acquisition. Attach the changed features, site evidence and uncertainty. The statistical rule and its error tradeoff must be fixed and checked before an OOD-based provisional hold is activated; no reviewed crack or harmful mechanism is inherently required. A production acceptance claim still requires an agreed release policy. The current verdict inputs and reports remain the executed baseline until a separately logged implementation/promotion decision, new version/hash, end-to-end verification and final H rehearsal. Freeze before the unseen batch is inspected.
+
+
+**E31L status (D51L).** The registered standalone [L audit](../analysis/morphology/l_audit/report.html) is complete, distinct from Claude’s L1–L4 sample deliverables. Candidate movement/acquisition/abstract-detection gates pass; incomplete transformed quality coverage blocks automatic input, and association lacks section orientation. The combined-rule precision gate narrowly remains unmet. Valid feature values are stable in measured brightness controls; missing pairs are not stability evidence. See [the handoff](../analysis/morphology/l_audit/handoff.md). No release/classifier/verdict input changes, tolerance claim or genuine unseen validation was added.
+
+**Merged delivery review (E33R/D52R).** L1–L4 are integrated; E20 completed with no qualifying normalisation.
+The categoriser is a known-site batch fingerprint. Baseline distances/LOO percentiles and legacy tail ranks
+remain descriptive, without calibrated membership or false-alert guarantees. The 1/18 floor is rank resolution,
+not calibration; reference and query fits differ in size. See [the review and remaining drop checks](merged_qc_review.md).
+
+**Evaluation clarification / first organiser drop (D53/E33/E34R).** Every sample must receive a batch bet,
+even when uncertain, with model scores and feature explanations. Correct batch identification measures
+"different from baseline, and in what way." The [frozen drop delivery](../analysis/organiser_drop_01/README.md)
+preserves first predictions and a known-only model snapshot, with training-site deletion sensitivity and image
+evidence. A test folder can mix source batches; do not pool it into a manufacturing-batch QC decision.
+Baseline ranks and material/quality context remain separate from the required identification bet.
+
 ## 2. Notebook sections
 
-### 2.0 Small-sample discipline (governs everything below)
+### 2.0 Small-sample discipline (current executed baseline; §1.1 defines extension gates)
 Effective sample sizes: 7 sites (Batch 1), 7 (Batch 2), 17 (Batch 3), of which 10 are "ordinary" once the grey-pore and cracked sites are set aside. Patches multiply pixels, not evidence. Rules:
 
 1. **Primary KPI set, at most five, kept closest to validated measurements**: crack-like void fraction, largest void (2-D equivalent diameter), macro-pore area fraction, bright-phase area fraction, bright-phase 2-D area-weighted D50. Stereological estimates (volume fractions, unfolded 3-D sizes) are **secondary** until their assumptions are checked. Only the primary five carry the verdict and are multiplicity-corrected as a family. All other KPIs are secondary: reported with effect sizes and intervals, descriptive, never corrected into silence and never driving a verdict on their own. For every KPI the report states the **usable site count after quality flags** (e.g. bright-phase KPIs on Batch 1 rest on 5 reliable sites, not 7), and the usable count — not the folder count — enters every test and MDC.
@@ -173,3 +202,14 @@ One cell: add the folder to `COMPARE`, run all. Produces its HTML report and app
 
 ### 6.x · 2026-10-03 · Tiered localized rule and drop rehearsal (D33, D34; E19, E23)
 The localized path's single-site trigger at 2 MAD (D29) fired on ≈ 18 % of clean batches (E19). Agreed with Santosh: a single site between 2 and 3 MAD is routed to image review with its crop and does not change the batch verdict; the verdict flips on one site ≥ 3 MAD, two sites or both promotable KPIs ≥ 2 MAD, or a confirmed review (≈ 11 % flips + 7 % routed on a clean batch under the parametric design). The unseen-batch drop was rehearsed on a renamed copy of Batch 1 (E23) and the procedure is in the README; configuration frozen (FROZEN_HASH).
+
+
+### D54S delivery guard for final sample identification
+
+Use `analysis/submission_v2/README.md` (E35S): the D52 morphology-plus-acquisition-sensitive-appearance
+primary is saved as fitted known-only models, with matching reliability evidence and source/data hashes.
+Scoring uses the preserved package snapshot; composition requires explicit version/family and matching
+score columns, without fallback to an acquisition/combined comparator. Fresh output directories preserve
+E33/v1. Texture remains confounded and no production QC thresholds are changed. V2 was revised after the
+first drop was inspected and before truth; it is declared before final evaluation, not preregistered before
+this first drop. Record label feedback separately before considering a new version.

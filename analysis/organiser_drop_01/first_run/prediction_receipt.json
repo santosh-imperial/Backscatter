@@ -1,0 +1,23 @@
+{
+  "started_utc": "2026-10-03T22:26:32.984877+00:00",
+  "completed_utc": "2026-10-03T22:27:36.133931+00:00",
+  "elapsed_s": 63.148519792128354,
+  "input_directory": "/Users/santoshkumarsaravanan/Documents/Polaron/Hackathon-Polaron-test",
+  "source_snapshot_sha256": "3a2fb1b8dcfaf2161c3655891519aa270dfe5a76fe22bedfe787b100b19c436c",
+  "model_sha256": "511e3dc9b1cd9284cad62c6e36bb8e50196b09dbbbb97786b8f38b999a926de9",
+  "scorer_sha256": "1ed470f1cced9b308e7a972d355dd25d5b9bbab44922c71e5f524f728410c01f",
+  "n_sites": 3,
+  "n_images": 9,
+  "training_only": true,
+  "first_drop_labels_pending": true,
+  "no_test_fitting_or_model_selection": true,
+  "bet_rule": "existing E31 combined argmax; no post-drop overrides",
+  "output_sha256": {
+    "explanations.json": "56a825a54f70f9f8881bf4de2c91399fd15638331ed4e2c1846e34f4844266ea",
+    "features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+    "site_table.csv": "6ad15b5bb42c5c41b8ce44f355480ad6c2ba2c0df2214e77f409f7ee2ec07317",
+    "submission_images.csv": "5237deeea8573b6427903c2dfe74616169636294b5c9a79b3ee3f91fc0611309",
+    "submission_sites.csv": "2860fe45c07688c7b1d0aa83210fa78a13a922231489421393c7dc794e2f6c29"
+  }
+}

@@ -84,6 +84,9 @@ REVIEW = {  # persistent review log, appended by hand when feedback arrives (dat
     "A4":  ["2026-10-03 · wording of 'vacuum' changed following the A2 comment.", "2026-10-03 · with A15 confirmed, the four grey-pore sites belong to the same production batch as the other 13 Batch 3 sites, which strengthens the preparation / session interpretation over a material one — but does not prove it."],
 }
 
+REVIEW["A15"].append("2026-10-03 · challenge provider via Santosh: Batch 3 is the supplier's promised baseline; Batches 1 and 2 arrived subsequently and show variation, neither explicitly better nor worse. Judging targets differences and held-back in/out-of-distribution categorisation. This supersedes the earlier 'no clear baseline' wording; it does not supply defect labels, held-back labels, specimen independence or phase truth. D49P plans a morphology OOD extension; current verdict inputs are unchanged.")
+REVIEW["A15"].append("2026-10-03 · evaluation clarification via Santosh (D53): always assign every sample to a batch, ideally with confidence and explanation, even if very unconfident. The goal is 'different from the baseline, and in what way'; correct assignment to the other batches measures the 'in what way' part. The first organiser test folder has arrived; truth is pending. Forced identification is separate from conformance/release, and model probabilities remain uncalibrated.")
+
 def add(id_, title, confidence, figures, think, why, used_for, wrong_if, ask):
     CARDS.append(dict(id=id_, title=title, confidence=confidence, figures=figures, think=think, why=why, used_for=used_for, wrong_if=wrong_if, ask=ask))
     print("built", id_, flush=True)
@@ -337,13 +340,13 @@ add("A14", "Each site is an independent sample of its batch (a different locatio
     "Several sites were taken from the same electrode piece — then within-batch spread is understated and 'investigate' should be the default more often.",
     "How many physical specimens per batch, and how many strips per specimen? Are site IDs random?")
 
-add("A15", "Batch_1/2/3 are three supplier batches of the same nominal product. Batch 3 is a single batch with more samples and is the closest thing to a baseline, but not a perfect one; there is no clean approved baseline and the task is to differentiate the batches.", "confirmed",
+add("A15", "Batch 3 is the supplier's promised baseline. Batches 1 and 2 illustrate later variation, neither explicitly better nor worse. Evaluation requires a batch bet for every sample, with confidence and explanations of how it differs from baseline.", "confirmed",
     [],
-    "Batch 3 (17 sites) is used as the working reference. Its internal variation — the grey-pore group (A4) and the three cracked sites (A8) — is part of the reference, so the QC logic must show the reference's own heterogeneity rather than assume it is clean, and must report how Batch 1 and Batch 2 differ from Batch 3 and from each other.",
+    "Batch 3's measurable internal morphology, including long-void sites, defines the promise. Disclose feature-specific acquisition exclusions and coverage; ordinary-only comparisons are sensitivity views. Differences in either direction or in spread/spatial arrangement can matter without a harmful battery mechanism.",
     "Stated by the problem providers (relayed 2026-10-03).",
-    "The calibration null is built from Batch 3 with robust statistics (median / MAD, leave-one-site-out) and with its sub-populations shown explicitly; every pairwise batch comparison is reported, not only incoming-vs-reference.",
+    "Forced known-batch identification (D53), with qualified model scores and separate descriptive baseline morphology distance. Batch identity measures differentiation, not battery harm, equivalence or a production release decision. Preserve first-drop predictions before feedback.",
     "Batch 3's heterogeneity were larger than the between-batch differences we are asked to detect — then the honest output is 'the reference does not constrain this KPI' rather than a verdict.",
-    "Is the within-Batch-3 variation (grey-pore sites, cracked sites) representative of what an acceptable batch may contain? Are there any known differences between the three supplier batches we should be able to recover?")
+    "Which sites share specimens or preparation sessions, and are test sites from new sessions? How are scores/explanations assessed? Production release tolerances remain unspecified.")
 
 # ----------------------------------------------------------------------------- A16 exploratory morphology geometry
 morph_evidence = os.path.join(ROOT, "analysis", "morphology", "output", "geometry_examples.png")

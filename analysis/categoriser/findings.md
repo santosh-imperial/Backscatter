@@ -171,6 +171,13 @@ Recorded after the run; §1.1–§1.6 above are unchanged from commit 691990e.
 
 **Known-site cost (E34, same LOO procedure):** balanced accuracy 0.608 vs 0.664 for v1, accuracy 0.677 unchanged, permutation p 0.005; without the Inlens features as well 0.616 / 0.645; morphology alone 0.347 (p 0.16). The E33 predictions file stays frozen as produced by v1.
 
+**Execution freeze / presentation qualification (E35S/D54S):** v2 was revised after first-drop inspection,
+before truth, and declared before final evaluation; §1.8 is not registration before the first drop.
+The `material` family includes acquisition-sensitive appearance, whose material origin remains unresolved.
+The version-bound scorer/composer at `analysis/submission_v2/` preserves known-only fitted models and the
+matching v2 reliability evidence, requires the declared primary without fallback, and preserves E33/v1.
+Use that workflow for final evaluation. Label feedback is evaluated against saved bets before any new version.
+
 ## 2. Setup and provenance
 
 * Branch `worktree-agent-a861a0e9f8558250c` from main 87ecee3. Pre-registration (§1) committed as 691990e before

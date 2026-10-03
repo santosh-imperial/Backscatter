@@ -1,0 +1,21 @@
+{
+  "created_utc": "2026-10-03T23:10:48.826826+00:00",
+  "model_version": "categoriser-v2-D52",
+  "primary_family": "material",
+  "model_sha256": "0b6d14e030910f9a01bdd4c7cc3105033ba75481354c6a7422d6aaab69e97dba",
+  "scored_receipt_sha256": "1c3a226664d42d9ecf048c60a5ea8491d9f8d9dbf75d287b675fe51551232e1d",
+  "scored_directory": "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/submission_v2/verification_replay/scored",
+  "snapshot_path": "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/submission_v2/freeze/snapshot.json",
+  "source_snapshot_sha256": "f11e25dc9d5261de87e01216689010f9ecb65b5be2ff633e95dfd50f5cb96386",
+  "n_sites": 3,
+  "n_images": 9,
+  "confidence": "uncalibrated model scores",
+  "output_sha256": {
+    "categoriser_summary.csv": "0df8e24989e4543a2c24310cc4dd29a0607e351a33f9fa08093823224e2fb81f",
+    "driver_contrasts.csv": "16d159627bfa10b241773bae82dba63c032b80b3ca9edd84ab7e365f4c6e830f",
+    "predictions.csv": "bcab6f3c0421d25a0f3d95e1bd03d7ad1b43d322a75a787a59cebe6aac7d1ba0",
+    "predictions_images.csv": "c5a00581d2a34d8b43675c99ceef94274241561c7df874c6c2a62423b4917c4a",
+    "reliability_material.csv": "fa4448c44d5cd0f0c1560afce8aec9ac42c79bf7bdfebe4db6ac4b7158db6ee8",
+    "submission.md": "b61c5533e8f042d4e8e716ddeb17fc3220832e46a7d7742897eddb94a4043244"
+  }
+}

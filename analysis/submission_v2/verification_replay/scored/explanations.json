@@ -1,0 +1,228 @@
+{
+  "3e122cbj": {
+    "contributions": [
+      {
+        "feature": "inlens_particle_texture_p90",
+        "contribution": 1.7159097709523912,
+        "sign": "+",
+        "value": 0.7495595534635687,
+        "ref_median": 0.2799867826933117,
+        "ref_mad": 0.11389583519089197,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "ridge_p97",
+        "contribution": 1.0189302261992559,
+        "sign": "+",
+        "value": 0.3148869550601595,
+        "ref_median": 0.4601769291050293,
+        "ref_mad": 0.06279370083619697,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_count_per_Mpx",
+        "contribution": 0.6451585160163406,
+        "sign": "+",
+        "value": 120.78207038613725,
+        "ref_median": 98.12760055478502,
+        "ref_mad": 5.48264472764942,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.2",
+        "contribution": 0.46897410691102304,
+        "sign": "+",
+        "value": 0.05435259437480261,
+        "ref_median": 0.08831992934599757,
+        "ref_mad": 0.014500860031995117,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bright_d50",
+        "contribution": -0.18351617373553725,
+        "sign": "-",
+        "value": 131.68238059720892,
+        "ref_median": 145.72701316721543,
+        "ref_mad": 13.532982156340903,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_count_per_Mpx",
+        "contribution": -0.07534556867714819,
+        "sign": "-",
+        "value": 0.24687188632833365,
+        "ref_median": 0.5526388505111909,
+        "ref_mad": 0.21072167011271917,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.05",
+        "contribution": -0.06722110755040041,
+        "sign": "-",
+        "value": 0.3177560504882255,
+        "ref_median": 0.33950016983869447,
+        "ref_mad": 0.037292649793182274,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_grad_energy",
+        "contribution": 0.0016048634692491853,
+        "sign": "+",
+        "value": 0.15565472683124942,
+        "ref_median": 0.07026513123985449,
+        "ref_mad": 0.016566903350902457,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 31,
+      "Batch_2": 0,
+      "Batch_3": 0
+    },
+    "missing_primary_features": [],
+    "baseline_nearest_sites": "x7u69zsw(grey_pore)|tuy3zymq(grey_pore)|kbdh4tri(grey_pore)",
+    "baseline_drivers": "bright_count_per_Mpx(+z=+44.28)|bright_solidity(-z=-11.10)|bright_frac(+z=+8.90)|bright_circ(-z=-6.43)|pore_count_per_Mpx(+z=+4.13)|etd_crack_density_particles(+z=+5.06)|bright_max_d(+z=+3.34)|fft_slope(+z=+2.86)|bright_d10(-z=-3.39)|bright_d90(+z=+1.58)"
+  },
+  "fn0mhxef": {
+    "contributions": [
+      {
+        "feature": "pore_count_per_Mpx",
+        "contribution": 0.6251204908570838,
+        "sign": "+",
+        "value": 86.9140625,
+        "ref_median": 98.12760055478502,
+        "ref_mad": 5.48264472764942,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_frac",
+        "contribution": 0.2993250592753498,
+        "sign": "+",
+        "value": 0.07850662667410714,
+        "ref_median": 0.09307405462184874,
+        "ref_mad": 0.018310096392061673,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_grad_energy",
+        "contribution": 0.16487659435571073,
+        "sign": "+",
+        "value": 0.13682931920287567,
+        "ref_median": 0.07026513123985449,
+        "ref_mad": 0.016566903350902457,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "etd_crack_density_particles",
+        "contribution": 0.1562502427882726,
+        "sign": "+",
+        "value": 0.0003944760315059204,
+        "ref_median": 0.0015027101509388864,
+        "ref_mad": 0.0013755649097661042,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "corr_len_px",
+        "contribution": 0.04326103534648899,
+        "sign": "+",
+        "value": 16.0,
+        "ref_median": 21.0,
+        "ref_mad": 4.4478,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_particle_texture",
+        "contribution": 0.04090095027532026,
+        "sign": "+",
+        "value": 0.26372339144782064,
+        "ref_median": 0.17667829973157007,
+        "ref_mad": 0.0656704281860195,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 0,
+      "Batch_2": 31,
+      "Batch_3": 0
+    },
+    "missing_primary_features": [],
+    "baseline_nearest_sites": "71vgq3fw(grey_pore)|cfe5vt7s(ordinary)|utfgcjfa(ordinary)",
+    "baseline_drivers": "corr_len_px(-z=-1.12)|bright_solidity(+z=+1.23)|bright_d50(+z=+1.13)|pore_count_per_Mpx(-z=-2.05)|bright_circ(+z=+0.88)|crack_count_per_Mpx(+z=+0.03)|pore_max_d(-z=-0.32)|fft_slope(-z=-0.95)|pore_d90(-z=-0.45)|bright_count_per_Mpx(-z=-0.18)"
+  },
+  "xrv9xvzb": {
+    "contributions": [
+      {
+        "feature": "pore_max_d",
+        "contribution": 0.4342343167171492,
+        "sign": "+",
+        "value": 419.7236827826691,
+        "ref_median": 278.2410057451576,
+        "ref_mad": 104.68644598620469,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_frac",
+        "contribution": 0.32817803952525193,
+        "sign": "+",
+        "value": 0.11362691570881225,
+        "ref_median": 0.09307405462184874,
+        "ref_mad": 0.018310096392061673,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.3",
+        "contribution": 0.165266539808893,
+        "sign": "+",
+        "value": 0.05195573094584192,
+        "ref_median": 0.05203716614042807,
+        "ref_mad": 0.011164340374162859,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_particle_texture",
+        "contribution": -0.12156665088928197,
+        "sign": "-",
+        "value": 0.24940460830652697,
+        "ref_median": 0.17667829973157007,
+        "ref_mad": 0.0656704281860195,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.2",
+        "contribution": 0.11322184277940027,
+        "sign": "+",
+        "value": 0.08742728786006201,
+        "ref_median": 0.08831992934599757,
+        "ref_mad": 0.014500860031995117,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 0,
+      "Batch_2": 0,
+      "Batch_3": 31
+    },
+    "missing_primary_features": [],
+    "baseline_nearest_sites": "9luzk4jm(ordinary)|ufdvpb81(cracked)|utfgcjfa(ordinary)",
+    "baseline_drivers": "bright_d50(+z=+0.49)|bright_max_d(-z=-0.94)|pore_elong(-z=-0.51)|etd_crack_density_particles(-z=-0.97)|fft_slope(-z=-1.31)|crack_count_per_Mpx(+z=+0.95)|bright_circ(+z=+0.81)|bright_solidity(+z=+0.98)|pore_d90(+z=+1.87)|crack_frac(+z=+1.55)"
+  }
+}

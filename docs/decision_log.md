@@ -363,6 +363,13 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Alternatives rejected:** keeping v1 for the final evaluation because it scores higher on the known sites (optimises the hackathon metric at the expense of the thing the metric is meant to measure); removing texture too (morphology alone is at chance, so the deliverable would be a coin toss with an explanation); re-tuning the family after seeing the test truth (would make the drop development data).
 - **Provenance / caught by:** Santosh's review of the E33 assignments; the frozen E33 predictions file is not edited. Checklist C01, C03, C16, C21, C27, C32.
 
+### D54S · 2026-10-04 · Enforce the declared v2 model through final-folder scoring and submission
+- **Authorisation:** Santosh approved the review follow-up: fix model-version fallback/confidence provenance, freeze v2 separately and preserve E33.
+- **Decision:** primary remains the D52 material family (morphology plus acquisition-sensitive ETD/Inlens appearance), not the acquisition or combined comparator. Save known-only fitted models, primary deletion fits, matching known-site reliability evidence, raw/source hashes and source copies. Scoring imports the preserved package snapshot. Composition requires explicit version/family and validated artifacts; missing primary columns or mismatched evidence fail rather than falling back. New output directories preserve original bets.
+- **Interpretation:** removing frame height and explicit session statistics does not remove acquisition information carried by texture or mask measurements. `material` is a feature-family identifier, not proof of material origin. Dimensions remain available for QA/area normalisation. V2 is a revision after first-drop inspection and before truth, declared before final evaluation; it was not preregistered before this first drop. Development permutation evidence does not establish new-session performance.
+- **Feedback:** save labels separately and evaluate frozen bets before changing the model. A correct/incorrect sample does not validate or invalidate a feature's physical meaning. Subsequent label-informed changes become another version, with the first drop development evidence for that version. Do not automatically cut texture after one error.
+- **Alternatives rejected:** silent comparator fallback; v1 confidence bands attached to v2; rewriting E33; pooling a potentially mixed sample folder for batch QC; tuning on tomorrow's labels while continuing to call the drop untouched evaluation. E35S records the execution and checks. C01–C04/C06/C09/C14/C16/C17/C21/C27/C32/C33R/C34S.
+
 ---
 
 ## Part B — Pre-presentation review checklist
@@ -397,6 +404,7 @@ Run this before presenting a plan, a result, a figure or a verdict. Each item na
 - [ ] **C32 — When a per-site distance or novelty flag fires, read its top contributing feature against that site's acquisition flags before reporting it.** A bright-phase driver on a low-contrast site (or a pore driver on a grey-pore site) is an acquisition finding, not a material one. (D50 / E31)
 
 - [ ] **C33R — Does an uncertainty label have the calibration its wording implies?** Separate descriptive ranks from calibrated p-values, binomial reference intervals from dependent-CV generalisation intervals, and no observed exceedance from established membership/equivalence. Check reference/query fitting symmetry and shared-reference dependence before quoting IID error probabilities. (D52R / E33R)
+- [ ] **C34S — Is the declared prediction version enforced through delivery?** Verify model/source/input hashes, primary score columns and matching family-specific reliability. Missing primary output must fail, never silently select a comparator; fresh output directories preserve original bets. Distinguish pre-drop registration from changes made after image inspection and before labels. (D54S)
 - [ ] **C26 — Every alert rule gets its false-alarm rate measured two ways before it ships:** on an i.i.d. null and on splits of the homogeneous part of the real reference. Count KPIs: k rules at rate r give ≈ k·r alarms. (D29)
 - [ ] **C24 — Prose written from a figure must be re-checked against a thresholded number.** "Rises" / "drops" claims need a stated |z| or effect cut-off that the data actually cross. (D27)
 

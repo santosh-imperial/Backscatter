@@ -1,0 +1,110 @@
+[
+  {
+    "file": "img_3e122cbj_BSE.tif",
+    "site": "3e122cbj",
+    "detector": "BSE",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "efad123af7f20e762d44b0de140dea5ac3c7593d7b323d4da020eef2d1159374"
+  },
+  {
+    "file": "img_3e122cbj_ETD.tif",
+    "site": "3e122cbj",
+    "detector": "ETD",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "78133a28d1f0b68faf7dc4faf03c62fa7b6c86076766b50e3237777060d65e1d"
+  },
+  {
+    "file": "img_3e122cbj_Inlens.tif",
+    "site": "3e122cbj",
+    "detector": "Inlens",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "c03147055308da8bd2e06b4b6d6f58efe1237aa1c17067545be886f6502c4436"
+  },
+  {
+    "file": "img_fn0mhxef_BSE.tif",
+    "site": "fn0mhxef",
+    "detector": "BSE",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "be7677781389261f500c317fe20ebf972fa1389f32447b777072e82ecdcd7958"
+  },
+  {
+    "file": "img_fn0mhxef_ETD.tif",
+    "site": "fn0mhxef",
+    "detector": "ETD",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "02635143bbc1d158142a95d406cbca7ce94b40d9326068c70bbcb07fbe32c7fb"
+  },
+  {
+    "file": "img_fn0mhxef_Inlens.tif",
+    "site": "fn0mhxef",
+    "detector": "Inlens",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "670ea5dc3006b20a847e2aeaf134d063927c172be71adbb189cc1bac0cecbfad"
+  },
+  {
+    "file": "img_xrv9xvzb_BSE.tif",
+    "site": "xrv9xvzb",
+    "detector": "BSE",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "2bb8f7cb564a15879e49a99b7ff9f319472585ef2ba524bf4816ec5c74ffa222"
+  },
+  {
+    "file": "img_xrv9xvzb_ETD.tif",
+    "site": "xrv9xvzb",
+    "detector": "ETD",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "a05becd6d1e4b530197c2bf93636422d2d88d7d42fef259ec4dced9619f751d0"
+  },
+  {
+    "file": "img_xrv9xvzb_Inlens.tif",
+    "site": "xrv9xvzb",
+    "detector": "Inlens",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "19b9e6f2a0445b4584e3a77224bbe609ec213a8f4e77112d964d53187ca88e30"
+  }
+]

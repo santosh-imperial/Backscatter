@@ -1,0 +1,30 @@
+{
+  "started_utc": "2026-10-03T23:09:20.626550+00:00",
+  "completed_utc": "2026-10-03T23:09:22.247909+00:00",
+  "elapsed_s": 1.6207333328202367,
+  "input_directory": "/Users/santoshkumarsaravanan/Documents/Polaron/Hackathon-Polaron-test",
+  "source_snapshot_sha256": "f11e25dc9d5261de87e01216689010f9ecb65b5be2ff633e95dfd50f5cb96386",
+  "snapshot_path": "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/submission_v2/freeze/snapshot.json",
+  "model_version": "categoriser-v2-D52",
+  "primary_family": "material",
+  "model_sha256": "0b6d14e030910f9a01bdd4c7cc3105033ba75481354c6a7422d6aaab69e97dba",
+  "scorer_sha256": "614e5daf426d0123f32456e4b7e3c5ee3891101286395274eaaeba54d9295611",
+  "n_sites": 3,
+  "n_images": 9,
+  "training_only": true,
+  "first_drop_labels_pending": true,
+  "no_test_fitting_or_model_selection": true,
+  "source_execution": "preserved source snapshot under freeze/sources; live package edits ignored",
+  "bet_rule": "D52 material-family argmax; no comparator fallback or post-score overrides",
+  "output_sha256": {
+    "categoriser_summary.csv": "0df8e24989e4543a2c24310cc4dd29a0607e351a33f9fa08093823224e2fb81f",
+    "driver_contrasts.csv": "16d159627bfa10b241773bae82dba63c032b80b3ca9edd84ab7e365f4c6e830f",
+    "explanations.json": "6008fddf478871370b2fb08e8e623e85da9d2fc2a9a91101b23ef510bf2c7dad",
+    "features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+    "reliability_material.csv": "fa4448c44d5cd0f0c1560afce8aec9ac42c79bf7bdfebe4db6ac4b7158db6ee8",
+    "site_table.csv": "d7cc5dfc7831f140fac4f5e042ddffb660f7ea1fb1c18d41c1507c672c75ae72",
+    "submission_images.csv": "acf0a911b4a672ca5538cc6c4c995c11f061ff37e922847d2f5b828e39d9cc48",
+    "submission_sites.csv": "63b4386866fdc184a9d82956b499dcbf3c0460257cef14949c40a288fbf378da"
+  }
+}

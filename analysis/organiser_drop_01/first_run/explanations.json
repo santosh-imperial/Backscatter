@@ -1,0 +1,270 @@
+{
+  "3e122cbj": {
+    "contributions": [
+      {
+        "feature": "ridge_p97",
+        "contribution": 1.6478213849735246,
+        "sign": "+",
+        "value": 0.3148869550601595,
+        "ref_median": 0.4601769291050293,
+        "ref_mad": 0.06279370083619697,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_particle_texture_p90",
+        "contribution": 1.354036200211976,
+        "sign": "+",
+        "value": 0.7495595534635687,
+        "ref_median": 0.2799867826933117,
+        "ref_mad": 0.11389583519089197,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_count_per_Mpx",
+        "contribution": 0.7122721545750665,
+        "sign": "+",
+        "value": 120.78207038613725,
+        "ref_median": 98.12760055478502,
+        "ref_mad": 5.48264472764942,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bse_empty_bin_frac",
+        "contribution": -0.13026147902958027,
+        "sign": "-",
+        "value": 0.18803418803418803,
+        "ref_median": 0.09375,
+        "ref_mad": 0.11933806818181819,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bright_d50",
+        "contribution": -0.049365554299642296,
+        "sign": "-",
+        "value": 131.68238059720892,
+        "ref_median": 145.72701316721543,
+        "ref_mad": 13.532982156340903,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "etd_boundary_sharpness",
+        "contribution": -0.04810975868329126,
+        "sign": "-",
+        "value": 0.8113879591036096,
+        "ref_median": 0.7494664469234112,
+        "ref_mad": 0.10566738213561722,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_count_per_Mpx",
+        "contribution": -0.0036027100490835465,
+        "sign": "-",
+        "value": 0.24687188632833365,
+        "ref_median": 0.5526388505111909,
+        "ref_mad": 0.21072167011271917,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bse_p50",
+        "contribution": -0.000952434780346711,
+        "sign": "-",
+        "value": 57.0,
+        "ref_median": 57.0,
+        "ref_mad": 2.9652,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 31,
+      "Batch_2": 0,
+      "Batch_3": 0
+    },
+    "missing_primary_features": [
+      "bright_sep"
+    ],
+    "baseline_nearest_sites": "x7u69zsw(grey_pore)|tuy3zymq(grey_pore)|kbdh4tri(grey_pore)",
+    "baseline_drivers": "bright_count_per_Mpx(+z=+44.28)|bright_solidity(-z=-11.10)|bright_frac(+z=+8.90)|bright_circ(-z=-6.43)|pore_count_per_Mpx(+z=+4.13)|etd_crack_density_particles(+z=+5.06)|bright_max_d(+z=+3.34)|fft_slope(+z=+2.86)|bright_d10(-z=-3.39)|bright_d90(+z=+1.58)"
+  },
+  "fn0mhxef": {
+    "contributions": [
+      {
+        "feature": "pore_count_per_Mpx",
+        "contribution": 0.5912471509932496,
+        "sign": "+",
+        "value": 86.9140625,
+        "ref_median": 98.12760055478502,
+        "ref_mad": 5.48264472764942,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bse_p50",
+        "contribution": 0.4247629424405976,
+        "sign": "+",
+        "value": 53.0,
+        "ref_median": 57.0,
+        "ref_mad": 2.9652,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_frac",
+        "contribution": 0.26217864872708524,
+        "sign": "+",
+        "value": 0.07850662667410714,
+        "ref_median": 0.09307405462184874,
+        "ref_mad": 0.018310096392061673,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "corr_len_px",
+        "contribution": 0.26158124650393116,
+        "sign": "+",
+        "value": 16.0,
+        "ref_median": 21.0,
+        "ref_mad": 4.4478,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_p50",
+        "contribution": 0.05003309801317366,
+        "sign": "+",
+        "value": 103.0,
+        "ref_median": 89.0,
+        "ref_mad": 44.477999999999994,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bse_std",
+        "contribution": 0.032810134287224,
+        "sign": "+",
+        "value": 23.599888606208907,
+        "ref_median": 22.22681335635496,
+        "ref_mad": 2.018551231162708,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_max_d",
+        "contribution": 0.02732917914955868,
+        "sign": "+",
+        "value": 245.01422671901767,
+        "ref_median": 278.2410057451576,
+        "ref_mad": 104.68644598620469,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "H",
+        "contribution": 0.00013937696871603903,
+        "sign": "+",
+        "value": 2048.0,
+        "ref_median": 2060.0,
+        "ref_mad": 41.5128,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 3,
+      "Batch_2": 28,
+      "Batch_3": 0
+    },
+    "missing_primary_features": [],
+    "baseline_nearest_sites": "71vgq3fw(grey_pore)|cfe5vt7s(ordinary)|utfgcjfa(ordinary)",
+    "baseline_drivers": "corr_len_px(-z=-1.12)|bright_solidity(+z=+1.23)|bright_d50(+z=+1.13)|pore_count_per_Mpx(-z=-2.05)|bright_circ(+z=+0.88)|crack_count_per_Mpx(+z=+0.03)|pore_max_d(-z=-0.32)|fft_slope(-z=-0.95)|pore_d90(-z=-0.45)|bright_count_per_Mpx(-z=-0.18)"
+  },
+  "xrv9xvzb": {
+    "contributions": [
+      {
+        "feature": "pore_max_d",
+        "contribution": 0.4255194347005247,
+        "sign": "+",
+        "value": 419.7236827826691,
+        "ref_median": 278.2410057451576,
+        "ref_mad": 104.68644598620469,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "pore_frac",
+        "contribution": 0.321676065506168,
+        "sign": "+",
+        "value": 0.11362691570881225,
+        "ref_median": 0.09307405462184874,
+        "ref_mad": 0.018310096392061673,
+        "family": "morphology",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "bse_std",
+        "contribution": 0.1855491652248741,
+        "sign": "+",
+        "value": 20.073364010167822,
+        "ref_median": 22.22681335635496,
+        "ref_mad": 2.018551231162708,
+        "family": "acquisition",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.2",
+        "contribution": 0.17108577865325192,
+        "sign": "+",
+        "value": 0.08742728786006201,
+        "ref_median": 0.08831992934599757,
+        "ref_mad": 0.014500860031995117,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_particle_texture",
+        "contribution": -0.10710740093054842,
+        "sign": "-",
+        "value": 0.24940460830652697,
+        "ref_median": 0.17667829973157007,
+        "ref_mad": 0.0656704281860195,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "crack_g_0.3",
+        "contribution": 0.053534754374502995,
+        "sign": "+",
+        "value": 0.05195573094584192,
+        "ref_median": 0.05203716614042807,
+        "ref_mad": 0.011164340374162859,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      },
+      {
+        "feature": "inlens_grad_energy",
+        "contribution": -0.01735413947645302,
+        "sign": "-",
+        "value": 0.13703562678390668,
+        "ref_median": 0.07026513123985449,
+        "ref_mad": 0.016566903350902457,
+        "family": "acquisition-sensitive texture",
+        "measurement_missing_imputed": false
+      }
+    ],
+    "deletion_counts": {
+      "Batch_1": 0,
+      "Batch_2": 0,
+      "Batch_3": 31
+    },
+    "missing_primary_features": [],
+    "baseline_nearest_sites": "9luzk4jm(ordinary)|ufdvpb81(cracked)|utfgcjfa(ordinary)",
+    "baseline_drivers": "bright_d50(+z=+0.49)|bright_max_d(-z=-0.94)|pore_elong(-z=-0.51)|etd_crack_density_particles(-z=-0.97)|fft_slope(-z=-1.31)|crack_count_per_Mpx(+z=+0.95)|bright_circ(+z=+0.81)|bright_solidity(+z=+0.98)|pore_d90(+z=+1.87)|crack_frac(+z=+1.55)"
+  }
+}

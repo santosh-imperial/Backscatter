@@ -1,0 +1,16 @@
+{
+  "prior_sha256": "66664e11c40284532b90b080ecac32dd0c91b2473f4812443c55266a0a65c2e4",
+  "prior_bytes": 11120358,
+  "appended_rows": 281,
+  "prior_prefix_preserved": true,
+  "E34_append_line_endings_normalised_to_existing_LF": true,
+  "numerical_rows_unchanged_by_line_ending_repair": true,
+  "note_trailing_whitespace_trimmed": true,
+  "experiment": "E34R",
+  "renamed_from": "E34",
+  "reason": "Avoid concurrent E34 categoriser-v2 experiment identifier collision; only this receipt-owned 281-row append renamed.",
+  "original_append_sha256": "a6ddc8e2b8587a9e949a019e1a216c42f019822ed748dc5f2b008d9766c0f423",
+  "append_sha256": "2060c6a7d649a8440d410f5ba148ae9683318db45a4a5a0bed3ca77459a2b21c",
+  "appended_bytes": 64312,
+  "parallel_suffix_preserved": true
+}

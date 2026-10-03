@@ -8,6 +8,23 @@ A hackathon entry (started 2026-10-03). Given SEM cross-sections of battery elec
 
 Read `docs/problem_and_findings.md` before doing anything substantive. It holds the problem statement, everything we know about the data, the KPI catalogue with trust levels, decisions taken, and open questions.
 
+Provider clarification (2026-10-03, D49P): Batch 3 is the supplier's promised baseline; Batches 1/2 are later variations, not better/worse labels. The challenge target is morphology-based in/out-of-distribution comparison. Battery-harm proof is not a prerequisite for a distribution feature. Preserve the full measurable reference, with disclosed feature-quality exclusions; an ordinary-only subset is sensitivity/context, not the promised distribution. `docs/qc_plan.md` §1.1 describes a planned bounded OOD extension. The five-primary-KPI restrictions below describe the current executed release, not an immutable feature limit; promotion still requires a logged validation/version decision before unseen evaluation. Defect risk, acquisition uncertainty and distribution conformance are separate conclusions.
+
+Evaluation clarification (D53): every held-back sample must receive a batch bet, even if very uncertain, with
+confidence and feature explanations. Correct identification measures “different from baseline, and in what
+way.” Use the existing E31 combined argmax for the first organiser drop, with uncalibrated model scores and
+separate morphology/quality context; fit stability is not probability of correctness. Preserve first predictions
+before feedback and do not tune using the drop. A test folder can mix source batches, so do not pool it as one
+production batch. `analysis/organiser_drop_01/` holds the protocol, pre-prediction snapshot and outputs.
+
+D52/D54S supersede the first-drop combined-family rule for future judged submissions: the declared v2 primary
+is morphology plus acquisition-sensitive ETD/Inlens appearance, with frame height excluded from every family
+and explicit session statistics only in comparators. `analysis/submission_v2/` preserves known-only fitted
+models and matching reliability evidence. Require the explicit model version, never fall back to combined,
+and write new output directories. Texture origin remains unresolved; removing explicit acquisition columns
+does not establish material-only evidence. V2 was revised after first-drop inspection and before its truth,
+and declared before final evaluation. Save truth separately and evaluate saved bets before any new version.
+
 ## Team split
 
 - **Santosh**: data inspection, materials sanity-check of KPIs, narrative and judging story, organiser liaison.
@@ -26,7 +43,7 @@ notebooks/
 polaron_qc/              the QC package: features (FEATURE_VERSION 1.1.0), stats, ml, acquisition, physics, decision (Thresholds, hashed),
                          report (build_result / render_report / CLI), secondary + battery_metrics + void_metrics (exploratory battery geometry).
                          KPI lists and trust levels live in polaron_qc/__init__.py (PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST, BATTERY_SECONDARY_KPIS)
-tests/                   pytest suite (174 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
+tests/                   pytest suite (173 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
 reports/                 qc_Batch_1.html, qc_Batch_2.html — the per-batch judge-facing reports written by notebook 02 / the CLI
 analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small); analysis_cache/features/
                          is notebook 02's content-hashed parquet cache (ignored by version control); analysis_cache/ml/ holds the exploratory embeddings (committed)

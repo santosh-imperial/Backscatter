@@ -1,0 +1,10 @@
+{
+  "model_version": "categoriser-v2-D52",
+  "primary_family": "material",
+  "submission_receipt_sha256": "b9adcebb8b3baf41081c3cd961ae70bcfb597772b98c57980bbfdf33b6212f01",
+  "output_sha256": {
+    "report.html": "3f66d3fdb71d93b1e9d08d645a5016ae66640f5d3399069bcf8e28ee44ba95fd",
+    "report_evidence.json": "4983365a7dec1d0e6394e9a6176b55f50bafcc7749036c9b0c7d3d1c41c0eec4",
+    "report_driver_contrasts.csv": "8a9007b5a67549209faa16b366b96d134da44a68f4162b666c45928cf0c7ba6b"
+  }
+}

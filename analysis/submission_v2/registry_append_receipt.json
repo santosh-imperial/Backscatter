@@ -1,0 +1,8 @@
+{
+  "experiment": "E35S",
+  "prior_bytes": 11185667,
+  "prior_sha256": "501918e5c25d98967d294b8f96b6fef32c5d76785c7d1dc0a5ff3c08785558b2",
+  "appended_rows": 540,
+  "prior_prefix_preserved": true,
+  "operational_count_correction": "nine scored artifacts, superseding earlier count ten; append-only correction"
+}

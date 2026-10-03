@@ -1,0 +1,221 @@
+{
+  "experiment": "E34R",
+  "decision": "D53",
+  "verified_utc": "2026-10-03T22:50:58.588413+00:00",
+  "frozen_source_head": "c14504ec9ab7cb98165fe05bcb520e6566a991f3",
+  "current_head": "24afe6a1fb73bb339a896f63be5d0339c16c409b",
+  "provenance": "E34R first_run is the first Codex run; the independent E33 team submission is preserved. No claim of earlier execution than E33.",
+  "live_source_changes_ignored_by_frozen_runtime": [
+    "polaron_qc/categorise.py",
+    "notebooks/_build_02_batch_qc.py"
+  ],
+  "immutable_checks": {
+    "source_execution": "preserved freeze/sources snapshot",
+    "source_files": 14,
+    "raw_files": 102,
+    "model_sha256": "511e3dc9b1cd9284cad62c6e36bb8e50196b09dbbbb97786b8f38b999a926de9",
+    "known_site_counts": {
+      "Batch_3": 17,
+      "Batch_1": 7,
+      "Batch_2": 7
+    },
+    "full_model_training_sites": 31,
+    "deletion_fits": 31,
+    "incoming_sites_used_for_fit": false,
+    "first_prediction_output_sha256": {
+      "explanations.json": "56a825a54f70f9f8881bf4de2c91399fd15638331ed4e2c1846e34f4844266ea",
+      "features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+      "input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+      "site_table.csv": "6ad15b5bb42c5c41b8ce44f355480ad6c2ba2c0df2214e77f409f7ee2ec07317",
+      "submission_images.csv": "5237deeea8573b6427903c2dfe74616169636294b5c9a79b3ee3f91fc0611309",
+      "submission_sites.csv": "2860fe45c07688c7b1d0aa83210fa78a13a922231489421393c7dc794e2f6c29"
+    },
+    "first_wrapper_preserved": true
+  },
+  "assignments": [
+    {
+      "sample_id": "3e122cbj",
+      "predicted_batch": "Batch_1",
+      "top_model_score": 0.7654625928514553,
+      "margin": 0.6180004697256138,
+      "deletion_same_assignment": 31,
+      "deletion_fit_count": 31
+    },
+    {
+      "sample_id": "fn0mhxef",
+      "predicted_batch": "Batch_2",
+      "top_model_score": 0.4511994358464621,
+      "margin": 0.0480371204936009,
+      "deletion_same_assignment": 28,
+      "deletion_fit_count": 31
+    },
+    {
+      "sample_id": "xrv9xvzb",
+      "predicted_batch": "Batch_3",
+      "top_model_score": 0.7424352098388114,
+      "margin": 0.5657317691879008,
+      "deletion_same_assignment": 31,
+      "deletion_fit_count": 31
+    }
+  ],
+  "image_mapping": {
+    "sites": 3,
+    "images": 9,
+    "three_detectors_per_site": true,
+    "combined_argmax_retained": true,
+    "scores_sum_to_one": true
+  },
+  "replay": {
+    "byte_identical_prediction_files": [
+      "explanations.json",
+      "features.csv",
+      "input_manifest.json",
+      "site_table.csv",
+      "submission_images.csv",
+      "submission_sites.csv"
+    ],
+    "replay_directories": [
+      "verification_replay",
+      "verification_runtime_replay"
+    ],
+    "current_wrapper_sha256": "5da8bfeeb26b5c68573b2e25f635f06c71b169947fbc445cc4ee71a04b8c7f3c",
+    "independent_E33_numeric_columns_agree": [
+      "mp_Batch_1__morph",
+      "mp_Batch_2__morph",
+      "mp_Batch_3__morph",
+      "mp_Batch_1__acq",
+      "mp_Batch_2__acq",
+      "mp_Batch_3__acq",
+      "mp_Batch_1__combined",
+      "mp_Batch_2__combined",
+      "mp_Batch_3__combined",
+      "ood_score_knn__morph",
+      "ood_pct_knn__morph",
+      "ood_score_rms__morph",
+      "ood_pct_rms__morph",
+      "ood_score_maha__morph",
+      "ood_pct_maha__morph",
+      "ood_pct_knn_matched_median__morph",
+      "ood_score_knn__morph_texture",
+      "ood_pct_knn__morph_texture",
+      "ood_score_rms__morph_texture",
+      "ood_pct_rms__morph_texture",
+      "ood_score_maha__morph_texture",
+      "ood_pct_maha__morph_texture",
+      "ood_pct_knn_matched_median__morph_texture",
+      "ood_score_knn__acq",
+      "ood_pct_knn__acq",
+      "ood_score_rms__acq",
+      "ood_pct_rms__acq",
+      "ood_score_maha__acq",
+      "ood_pct_maha__acq",
+      "ood_pct_knn_matched_median__acq"
+    ],
+    "independent_E33_argmax_agrees": true
+  },
+  "preflight_checks": [
+    "complete_uint8_grayscale_triplet_accepted",
+    "missing_channel_rejected",
+    "mismatched_geometry_rejected",
+    "unsupported_dtype_rejected",
+    "unsupported_rgba_shape_rejected",
+    "complete_uint8_rgb_triplet_accepted",
+    "nonempty_predictions_not_overwritten",
+    "changed_runtime_dependency_rejected"
+  ],
+  "report_checks": {
+    "site_cards": 3,
+    "decodable_images": 9,
+    "relative_links_resolve": true,
+    "exact_pairwise_logit_decomposition_verified_all_sites": true,
+    "phase_overlay_fractions_match_original_measurements_all_sites": true,
+    "visual_review": "All three detector/mask panels inspected directly as images.",
+    "browser_preview": "Local file URL blocked by browser URL policy; no browser rendering or workaround used."
+  },
+  "registry": {
+    "E34R_rows": 281,
+    "historical_prefix_hash_preserved": true,
+    "append_receipt": {
+      "prior_sha256": "66664e11c40284532b90b080ecac32dd0c91b2473f4812443c55266a0a65c2e4",
+      "prior_bytes": 11120358,
+      "appended_rows": 281,
+      "prior_prefix_preserved": true,
+      "E34_append_line_endings_normalised_to_existing_LF": true,
+      "numerical_rows_unchanged_by_line_ending_repair": true,
+      "note_trailing_whitespace_trimmed": true,
+      "experiment": "E34R",
+      "renamed_from": "E34",
+      "reason": "Avoid concurrent E34 categoriser-v2 experiment identifier collision; only this receipt-owned 281-row append renamed.",
+      "original_append_sha256": "a6ddc8e2b8587a9e949a019e1a216c42f019822ed748dc5f2b008d9766c0f423",
+      "append_sha256": "2060c6a7d649a8440d410f5ba148ae9683318db45a4a5a0bed3ca77459a2b21c",
+      "appended_bytes": 64312,
+      "parallel_suffix_preserved": true
+    }
+  },
+  "packaging": {
+    "raw_test_files_ignored": true,
+    "no_raw_TIFFs_in_artifact": true,
+    "all_artifact_files_below_20MB": true,
+    "no_exact_raw_file_hash_overlap_with_training": true
+  },
+  "limitations": [
+    "Truth labels pending; no holdout accuracy claimed.",
+    "Model scores are uncalibrated preferences, not correctness probabilities.",
+    "Deletion fits overlap and measure training-set sensitivity.",
+    "Combined fingerprint includes acquisition-sensitive texture and session statistics.",
+    "Morphology distance ranks are descriptive; low contrast can cause mask artefacts.",
+    "The folder can mix batches; it is not pooled into a manufacturing-batch verdict."
+  ],
+  "external_message_sent": false,
+  "Codex_commit_made": false,
+  "artifact_sha256": {
+    "README.md": "586bad0f5744029091f7479d9dba8aa0674ee01020641fc58efebe0b8d78d9a6",
+    "build_report.py": "ccd4236d7a545fdb99cd07998b58929b0ef9f4f4c4f30b6101f38850bf8ac162",
+    "first_run/explanations.json": "56a825a54f70f9f8881bf4de2c91399fd15638331ed4e2c1846e34f4844266ea",
+    "first_run/features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "first_run/input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+    "first_run/prediction_receipt.json": "fca0b700259f0ea26a851d64daa3eb49dc1208b4d5c0025f80cd504b79cb1c45",
+    "first_run/report.html": "85d9ae2ff87e191739ab51e966eba27fcfbdbdbed70c355995cce59d35e918c2",
+    "first_run/report_driver_contrasts.csv": "ebbe8f220f8494c13c446b785016a358384b9d661e8c797b85e1716154074709",
+    "first_run/report_evidence.json": "49d923faec2f0169d21d29d684e7aac81aa3e772aea08181ce156f51bd02c4cc",
+    "first_run/site_table.csv": "6ad15b5bb42c5c41b8ce44f355480ad6c2ba2c0df2214e77f409f7ee2ec07317",
+    "first_run/source/score_folder.py": "1ed470f1cced9b308e7a972d355dd25d5b9bbab44922c71e5f524f728410c01f",
+    "first_run/submission_images.csv": "5237deeea8573b6427903c2dfe74616169636294b5c9a79b3ee3f91fc0611309",
+    "first_run/submission_sites.csv": "2860fe45c07688c7b1d0aa83210fa78a13a922231489421393c7dc794e2f6c29",
+    "freeze/known_sites.csv": "14eaa72f6355d9adb74f4beb8bcbc272ebb79114e3efec8c0ad80e0ffa866237",
+    "freeze/models.joblib": "511e3dc9b1cd9284cad62c6e36bb8e50196b09dbbbb97786b8f38b999a926de9",
+    "freeze/snapshot.json": "3a2fb1b8dcfaf2161c3655891519aa270dfe5a76fe22bedfe787b100b19c436c",
+    "freeze/sources/analysis/organiser_drop_01/protocol.md": "34c885f69fa3935aec635a4579838412812ab9dfc71ec209558b9fa141b04da3",
+    "freeze/sources/notebooks/_build_02_batch_qc.py": "81284a8f845ceebe0196877eb7b3ead08367cb10cb2de0dbfab7539bbb37b159",
+    "freeze/sources/polaron_qc/__init__.py": "c4ca6332c240463d02cf79e0278638a9fe7c9d05a37f2b87b31d2d241d0de5fb",
+    "freeze/sources/polaron_qc/acquisition.py": "ea2f3e61f7d6385a4d609f18c7938087836d5858464211b056e286a89777c834",
+    "freeze/sources/polaron_qc/battery_metrics.py": "fb4432fd205414488081fb336aec296a69a45e9408d63e8196b1aa1645335b15",
+    "freeze/sources/polaron_qc/categorise.py": "062579bc1b252752a8522d2f8b0093fdeb79c86f468d0db3a116fc9fd3492a1d",
+    "freeze/sources/polaron_qc/decision.py": "db19924f7fbb6658a7a9936f38de1f0802dd4ec67c9f135bda70f5ffdfb916eb",
+    "freeze/sources/polaron_qc/features.py": "44628d1b93b54f89747da86b29c12acc88f5d5896d25a3d65912bab56865149b",
+    "freeze/sources/polaron_qc/ml.py": "69423c14d52223e91b431954d7cfe3953ef2febcede9b5848d0ae32337e084d4",
+    "freeze/sources/polaron_qc/physics.py": "f4950d084d48834d07416b07c68a283fb0b77ba4e072893c8efbc18bb725e737",
+    "freeze/sources/polaron_qc/report.py": "2baf3bc6983a0535a1c3aeb80f46c902a93fccc4d6528e19b56973c80a37b57a",
+    "freeze/sources/polaron_qc/secondary.py": "b117e55d22693efbadffe807c77501adc336b8dd9a69a9a4c65ab4665ce04c94",
+    "freeze/sources/polaron_qc/stats.py": "30b31c6483ae0ef587233045941c4238409bc88e300067b14fddf3c2d60ea6be",
+    "freeze/sources/polaron_qc/void_metrics.py": "0ce8cbc8c86a459b1ec96c041ac679dfe6c1c94622bb8ed07c674f860adb00d2",
+    "input_metadata.json": "82044bbcb0e4d24b51750a4396cac9e1e6956108cfac54656d5da67ee234f4f5",
+    "protocol.md": "34c885f69fa3935aec635a4579838412812ab9dfc71ec209558b9fa141b04da3",
+    "registry_append_receipt.json": "f8fc2224dfc83e4a24ca1d356d62db20ca900aa78bebfb88c918e7737895b9fb",
+    "score_folder.py": "5da8bfeeb26b5c68573b2e25f635f06c71b169947fbc445cc4ee71a04b8c7f3c",
+    "verification_replay/explanations.json": "56a825a54f70f9f8881bf4de2c91399fd15638331ed4e2c1846e34f4844266ea",
+    "verification_replay/features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "verification_replay/input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+    "verification_replay/prediction_receipt.json": "989080567e64b2ce4d5ec60608a9a8270aebed44e20b4d62a4f8b6f5dfb03807",
+    "verification_replay/site_table.csv": "6ad15b5bb42c5c41b8ce44f355480ad6c2ba2c0df2214e77f409f7ee2ec07317",
+    "verification_replay/submission_images.csv": "5237deeea8573b6427903c2dfe74616169636294b5c9a79b3ee3f91fc0611309",
+    "verification_replay/submission_sites.csv": "2860fe45c07688c7b1d0aa83210fa78a13a922231489421393c7dc794e2f6c29",
+    "verification_runtime_replay/explanations.json": "56a825a54f70f9f8881bf4de2c91399fd15638331ed4e2c1846e34f4844266ea",
+    "verification_runtime_replay/features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "verification_runtime_replay/input_manifest.json": "91a828eba83ebfffee6aa4567be20b2fea61cd4d84d6456cf0747927e274a238",
+    "verification_runtime_replay/prediction_receipt.json": "61b503e42ecc0bb2871eb239def692cfe17b66ddd35197ce52c8b34fc091c3ee",
+    "verification_runtime_replay/site_table.csv": "6ad15b5bb42c5c41b8ce44f355480ad6c2ba2c0df2214e77f409f7ee2ec07317",
+    "verification_runtime_replay/submission_images.csv": "5237deeea8573b6427903c2dfe74616169636294b5c9a79b3ee3f91fc0611309",
+    "verification_runtime_replay/submission_sites.csv": "2860fe45c07688c7b1d0aa83210fa78a13a922231489421393c7dc794e2f6c29"
+  }
+}

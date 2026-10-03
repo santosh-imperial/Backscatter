@@ -106,3 +106,9 @@ I prepares a short walkthrough: why acquisition matters; which observed geometri
 Trained CNN/GNN defect models, supervised U-Net without independent labels, graphite-alignment automation without instances/direction, binder-network segmentation without resolvable evidence, and 3-D transport/performance predictions need additional data/validation. They are future branches with explicit gates in the ML and morphology registers.
 
 Once someone picks work, update this table with actual ownership, status and artifact path. Completion requires the specified output and limitations, not merely code running. This planning pass launches no new experiment, annotation or implementation task. Pre-presentation checks applied: C04/C05/C06/C13/C14/C16–C18/C21/C27–C30.
+
+
+**E35S / D54S final-folder preparation:** [Frozen v2 workflow](../analysis/submission_v2/README.md) saves
+models, family-specific reliability, first bets and image explanations with explicit version checks and
+no comparator fallback. Use new output directories for final evaluation. Save organiser truth separately,
+evaluate the frozen E33/v1 and v2 bets, and keep any label-informed model revision separate.

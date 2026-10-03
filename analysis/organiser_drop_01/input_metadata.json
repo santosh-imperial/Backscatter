@@ -1,0 +1,110 @@
+[
+  {
+    "file": "img_3e122cbj_BSE.tif",
+    "site": "3e122cbj",
+    "detector": "BSE",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_3e122cbj_ETD.tif",
+    "site": "3e122cbj",
+    "detector": "ETD",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_3e122cbj_Inlens.tif",
+    "site": "3e122cbj",
+    "detector": "Inlens",
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_fn0mhxef_BSE.tif",
+    "site": "fn0mhxef",
+    "detector": "BSE",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_fn0mhxef_ETD.tif",
+    "site": "fn0mhxef",
+    "detector": "ETD",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_fn0mhxef_Inlens.tif",
+    "site": "fn0mhxef",
+    "detector": "Inlens",
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_xrv9xvzb_BSE.tif",
+    "site": "xrv9xvzb",
+    "detector": "BSE",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_xrv9xvzb_ETD.tif",
+    "site": "xrv9xvzb",
+    "detector": "ETD",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  },
+  {
+    "file": "img_xrv9xvzb_Inlens.tif",
+    "site": "xrv9xvzb",
+    "detector": "Inlens",
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "pages": 1
+  }
+]

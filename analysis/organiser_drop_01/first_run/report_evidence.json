@@ -1,0 +1,38 @@
+[
+  {
+    "site": "3e122cbj",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3178,
+    "raw_crop_y": 838,
+    "side": 640,
+    "assigned_batch_nearest_site": "4ih2ggld",
+    "baseline_nearest_site": "x7u69zsw",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "fn0mhxef",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 704,
+    "side": 640,
+    "assigned_batch_nearest_site": "avn74qx1",
+    "baseline_nearest_site": "71vgq3fw",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "xrv9xvzb",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 724,
+    "side": 640,
+    "assigned_batch_nearest_site": "9luzk4jm",
+    "baseline_nearest_site": "9luzk4jm",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  }
+]
