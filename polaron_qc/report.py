@@ -488,12 +488,28 @@ def _read_physics(physics_csv, sites_ref, sites_batch, compare, drivers, primary
     if os.path.exists(physics_csv):
         ps = pd.read_csv(physics_csv)
         ps = ps[ps.batch.isin([sites_ref.batch.iloc[0], sites_batch.batch.iloc[0]])].copy()
-        have_band = ps.pore_frac_band.notna().sum() if "pore_frac_band" in ps else 0
-        if have_band < len(ps):
-            notes.append(f"physics_sites.csv: ±5-level threshold band available for {have_band} of {len(ps)} sites of this pair "
-                         "(this table reads physics_sites.csv; acquisition.threshold_bands has the band for all 31 sites in analysis_cache/acquisition_sites.csv, workflow hazard 4)")
     else:
         notes.append(f"physics cache {physics_csv} not found")
+    # ±5-level threshold band (D46): read from the acquisition cache (all 31 known sites, relative band × the site's own
+    # fraction) and fall back to physics_sites.csv; sites of an unseen batch have no band until acquisition.threshold_bands runs
+    bands, band_source = None, None
+    acq_csv = os.path.join(os.path.dirname(os.path.abspath(physics_csv)), "acquisition_sites.csv")
+    if os.path.exists(acq_csv):
+        acq = pd.read_csv(acq_csv); acq["site"] = acq.site.astype(str)
+        both = pd.concat([sites_ref, sites_batch], ignore_index=True)[["batch", "site", "pore_frac", "bright_frac"]].copy(); both["site"] = both.site.astype(str)
+        bands = both.merge(acq[["batch", "site", "pore_frac_band_rel", "bright_frac_band_rel"]], on=["batch", "site"], how="left")
+        bands["pore_frac_band"] = bands.pore_frac_band_rel * bands.pore_frac
+        bands["bright_frac_band"] = bands.bright_frac_band_rel * bands.bright_frac
+        band_source = "analysis_cache/acquisition_sites.csv (acquisition.threshold_bands; relative band × site fraction)"
+        n_have = int(bands.pore_frac_band.notna().sum())
+        if n_have < len(bands):
+            notes.append(f"±5-level threshold band available for {n_have} of {len(bands)} sites of this pair from {band_source}; "
+                         f"sites without a band: {bands.site[bands.pore_frac_band.isna()].tolist()} (run acquisition.threshold_bands for a new batch)")
+    if (bands is None or bands.pore_frac_band.notna().sum() == 0) and ps is not None and "pore_frac_band" in ps:
+        bands, band_source = ps, "analysis_cache/physics_sites.csv"
+        have_band = int(ps.pore_frac_band.notna().sum())
+        if have_band < len(ps):
+            notes.append(f"±5-level threshold band available for {have_band} of {len(ps)} sites of this pair ({band_source})")
     cmp_ = compare.set_index("kpi")
     statements = {}
     for k in primary:
@@ -504,11 +520,11 @@ def _read_physics(physics_csv, sites_ref, sites_batch, compare, drivers, primary
         band_col = {"pore_frac": "pore_frac_band", "bright_frac": "bright_frac_band"}.get(k)
         band_abs, band_available, gated, note = np.nan, False, True, ""
         delta_abs = float(abs(r.batch_median - r.ref_median)) if np.isfinite(r.batch_median) and np.isfinite(r.ref_median) else np.nan
-        if ps is not None and band_col and band_col in ps and ps[band_col].notna().any():
-            band_abs = float(np.nanmedian(ps[band_col]))  # band = max-min of the fraction under th ± 5 levels
+        if bands is not None and band_col and band_col in bands and bands[band_col].notna().any():
+            band_abs = float(np.nanmedian(bands[band_col]))  # band = max-min of the fraction under th ± 5 levels
             band_available = True
             gated = bool(delta_abs > band_abs / 2)        # compare |Δ median| with the band half-width
-            note = (f"±5-level band half-width (median of {int(ps[band_col].notna().sum())} sites with a band) = {band_abs / 2:.4f}; "
+            note = (f"±5-level band half-width (median of {int(bands[band_col].notna().sum())} sites with a band, {band_source}) = {band_abs / 2:.4f}; "
                     f"|Δ median| = {delta_abs:.4f} → physics reading {'printed' if gated else 'withheld (shift inside the band)'}")
         else:
             note = "±5-level threshold band not available for this KPI/these sites; statement printed ungated"

@@ -128,7 +128,7 @@ flowchart TD
   %% ---------------- decision
   subgraph DEC["Decision  [2.7]  (polaron_qc.decision)"]
     DA["Check A — batch-wide drift (primary KPIs)<br/>(i) beyond null · (ii) carried by primary · (iii) consistent across sites · (iv) material-only classifier p &lt; α (run in-pipeline)<br/>(v) acquisition views <b>available</b> and not strongly attenuating — missing views withhold a reject"]
-    DB["Check B — localized defect<br/>flag → <b>credible</b> only with severity margin + reliable measurement<br/>(low-contrast hard, grey-pore soft, inside ±5-level band) + image review<br/>review states: unreviewed → pending · confirmed → credible · refuted → closed<br/>tiered (D33): 1 site in [2, 3) MAD → routed to review, verdict unchanged; ≥ 3 MAD or 2 sites / 2 KPIs → investigate"]
+    DB["Check B — localized defect<br/>flag → <b>credible</b> only with severity margin + reliable measurement<br/>(low-contrast hard, grey-pore soft; the ±5-level band is shown beside pore shifts, not a Check B condition — D46) + image review<br/>review states: unreviewed → pending · confirmed → credible · refuted → closed<br/>tiered (D33): 1 site in [2, 3) MAD → routed to review, verdict unchanged; ≥ 3 MAD or 2 sites / 2 KPIs → investigate"]
     V{{"Verdict<br/>consistent within detectable limits ·<br/>investigate: drift · investigate: localized ·<br/>reject (provisional)"}}
     S["Decision stability (leave-one-site-out)<br/>every input refit per fold (classifier + acquisition views included)<br/>what would move it · usable n · 3 outcome columns"]
     DA --> V

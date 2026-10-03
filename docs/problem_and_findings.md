@@ -75,7 +75,7 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 | `bright_d10/d50/d90`, `bright_max_d`, `bright_circ`, `bright_solidity` | BSE | additive particle size distribution and shape | high when `bright_low_contrast` is False |
 | `profile_pore_k`, `profile_bright_k` (k = 0..9) | BSE | through-thickness gradients | medium (orientation vs current collector unknown) |
 | `fft_slope`, `corr_len_px` | BSE | scale-free texture descriptors | medium |
-| `etd_crack_density_particles` | ETD in BSE mask | detected ridge coverage inside additive-mask interiors; candidate crack appearance | measurement/interpretation review pending; no intact-particle fraction |
+| `etd_crack_density_particles` | ETD in BSE mask | detected ridge coverage inside additive-mask interiors; candidate crack appearance | high as a measurement (absolute ridge threshold, curtaining removed); null on this data (0.02–0.5 % everywhere); classifier input, not primary; materials interpretation (crack vs texture) review pending — aligned with `KPI_TRUST` per D46 |
 | `etd_crack_density_graphite`, `etd_curtain_frac`, `etd_curtain_anisotropy`, `etd_boundary_sharpness` | ETD | sample-preparation / focus flags | flags, not material KPIs |
 | `inlens_particle_texture`, `inlens_speckled_particle_frac` | Inlens in BSE mask | speckled vs smooth particle interiors | **confounded**; needs local-contrast normalisation |
 | `bright_sep`, `bright_low_contrast`, `pore_mode_resolved`, `graphite_mode`, `th_lo`, `th_hi` | BSE | segmentation quality | diagnostic |
