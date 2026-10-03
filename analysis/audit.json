@@ -1,0 +1,14 @@
+{
+  "image_count": 93,
+  "field_count": 31,
+  "pooled_otsu_thresholds": {
+    "BSE": 60,
+    "ETD": 54,
+    "SE": 52,
+    "Inlens": 120
+  },
+  "exact_file_duplicate_groups": 0,
+  "exact_pixel_duplicate_groups": 0,
+  "total_bytes": 1733281903,
+  "seed": 20261003
+}
