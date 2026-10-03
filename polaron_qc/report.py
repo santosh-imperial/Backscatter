@@ -6,8 +6,9 @@ Two public entry points plus four importable evidence helpers::
     result = build_result("Dataset/Batch_3", "Dataset/Batch_1")          # ~1-2 min with a warm feature cache
     render_report(result, "reports/qc_Batch_1.html")                      # self-contained HTML, embedded JPEGs
 
-``build_result`` is the first end-to-end assembly of the existing modules (features → stats → decision, with the
-ml and physics caches read from disk). It exists so the notebook (`notebooks/02_batch_qc.ipynb`) can reuse one
+``build_result`` is the end-to-end assembly of the existing modules (features → data-derived flags → stats → decision;
+the material-only classifier and the three acquisition views run inside the pipeline and inside every jackknife fold (D30);
+only the exploratory novelty map, the flag-inclusive classifier and the physics cache are read from disk). It exists so the notebook (`notebooks/02_batch_qc.ipynb`) can reuse one
 schema; integration problems it exposes are reported in the build log, never patched around silently.
 
 Schema of ``result`` (a plain dict; DataFrames where noted; every key always present, ``None`` when unavailable)
@@ -95,8 +96,9 @@ __all__ = ["KPI_TRUST", "TRUSTED_KPIS", "build_result", "render_report", "paint_
 # ---------------------------------------------------------------------------------------------------------------
 # constants
 # ---------------------------------------------------------------------------------------------------------------
-#: Trust level per KPI, transcribed from docs/problem_and_findings.md §4 ("KPI catalogue").
-#: TO BE MOVED to polaron_qc/__init__.py once the owner is assigned (workflow.md contract row "(owner to assign)").
+#: Descriptive trust labels printed in the report tables, transcribed from docs/problem_and_findings.md §4 ("KPI catalogue").
+#: The categorical levels the pipeline reasons with (high / medium / flag / confounded / diagnostic / exploratory) live in
+#: polaron_qc.KPI_TRUST; keep the two in step when the catalogue changes.
 KPI_TRUST: dict[str, str] = {
     "pore_frac": "high (grey-pore group: fallback threshold)", "pore_d50": "high", "pore_d90": "high", "pore_elong": "high",
     "pore_max_d": "high", "pore_count_per_Mpx": "high",
@@ -489,7 +491,7 @@ def _read_physics(physics_csv, sites_ref, sites_batch, compare, drivers, primary
         have_band = ps.pore_frac_band.notna().sum() if "pore_frac_band" in ps else 0
         if have_band < len(ps):
             notes.append(f"physics_sites.csv: ±5-level threshold band available for {have_band} of {len(ps)} sites of this pair "
-                         "(features.threshold_band(site) for every site is still 'to add' in workflow.md)")
+                         "(this table reads physics_sites.csv; acquisition.threshold_bands has the band for all 31 sites in analysis_cache/acquisition_sites.csv, workflow hazard 4)")
     else:
         notes.append(f"physics cache {physics_csv} not found")
     cmp_ = compare.set_index("kpi")
@@ -1151,7 +1153,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     # ---- 6. ML corroboration ----------------------------------------------------------------------------------
     def c2st_block(d, title):
         if d is None:
-            return f'<h3>{title}</h3><p class="ph">not available in analysis_cache/ml for this pair (no material-only run has been cached; the cached runs include the acquisition flag etd_boundary_sharpness).</p>'
+            return f'<h3>{title}</h3><p class="ph">not available for this run (material-only: the in-pipeline run did not execute, e.g. c2st_in_pipeline off or too few complete rows; flag-inclusive / variants: no cached run in analysis_cache/ml for this pair). A missing classifier is reported as not available and never counts as corroboration in Check A(iv).</p>'
         coef = d["coef"]
         sel = coef[coef.selected.astype(bool)] if "selected" in coef else coef.iloc[0:0]
         rows = [[_e(r.feature), _e(r.sign), _f(r.coef, 3, signed=True), _f(r.selection_stability, 2), _e(trust.get(r.feature, "—"))] for r in sel.itertuples()]
@@ -1235,7 +1237,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
                  _f(r.bright_frac_nominal, 4), f"{_f(r.bright_frac_hi_plus, 4)} – {_f(r.bright_frac_hi_minus, 4)}", _f(r.bright_frac_band_rel, 0, pct=True)] for r in hb.itertuples()]
         body += (f"<h3>±5-level threshold band (available for {len(hb)} of {len(pst)} sites of this pair)</h3>"
                  + (_table(rows, ["batch", "site", "pore_frac", "band (th_lo ± 5)", "rel. band", "bright_frac", "band (th_hi ± 5)", "rel. band"]) if rows else "")
-                 + '<p class="note">The pore-fraction band is as large as the batch differences (±15–25 % relative), which is why physics wording on pore_frac is gated on it; a per-site band for every site is still to be added to features.</p>')
+                 + '<p class="note">The pore-fraction band is as large as the batch differences (±15–25 % relative), which is why physics wording on pore_frac is gated on it; this table reads the band from physics_sites.csv; the per-site band for all 31 sites is in analysis_cache/acquisition_sites.csv (acquisition.threshold_bands).</p>')
     if phys.get("fraction_connected_note"):
         body += f"<p>{_e(phys['fraction_connected_note'])}</p>"
     if pst is not None and len(pst) and "delamination_index" in pst:
@@ -1300,7 +1302,7 @@ def render_report(result: dict, out_path: str, with_images: bool = True, width_p
     if m.get("notes"):
         body += "<h3>Integration notes from this build</h3><ul class='small'>" + "".join(f"<li>{_e(n)}</li>" for n in m["notes"]) + "</ul>"
     parts.append(_sec("limits", "Limits of this dataset", body))
-    footer = (f'<footer>Generated {_e(m["timestamp"])} by polaron_qc.report · config hash <code>{_e(m["config_hash"])}</code> · thresholds hash <code>{_e(m["thresholds_hash"])}</code> · '
+    footer = (f'<footer>Generated {_e(m["timestamp"])} by polaron_qc.report · run-config hash <code>{_e(m["config_hash"])}</code> (build_result settings; not the notebook\'s frozen configuration hash) · thresholds hash <code>{_e(m["thresholds_hash"])}</code> · '
               f'features v{_e(m.get("feature_version"))} · git {_e(m.get("git_describe") or "n/a")} · build runtime {_e(m.get("runtime_s"))} s · '
               f'statistic {_e(m["config"]["statistic"])}, α = {m["config"]["alpha"]}, power {m["config"]["power"]}, seed {m["config"]["seed"]}.</footer>')
 
@@ -1394,7 +1396,7 @@ def _parse_reviews(items):
 
 def main(argv=None) -> str:
     """CLI: ``python3 -m polaron_qc.report REF_DIR BATCH_DIR [OUT.html] [--review SITE:KPI=yes|no]... [--no-images]
-    [--cache-dir DIR]``. Returns the written report path."""
+    [--cache-dir DIR] [--summary OUT.json]``. Returns the written report path."""
     import argparse
     ap = argparse.ArgumentParser(description="One incoming batch vs the working reference → self-contained HTML report.")
     ap.add_argument("reference_dir"); ap.add_argument("batch_dir"); ap.add_argument("out", nargs="?")

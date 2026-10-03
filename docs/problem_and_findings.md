@@ -69,10 +69,10 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 | KPI | Channel | Materials meaning | Trust |
 |---|---|---|---|
 | `pore_frac` | BSE | open-porosity area fraction (calendering density, electrolyte access) | high, except grey-pore group |
-| `pore_d50`, `pore_elong`, `pore_max_d` | BSE | pore size, shape, largest void | high |
+| `pore_d50`, `pore_d90`, `pore_elong`, `pore_max_d`, `pore_count_per_Mpx` | BSE | pore size, shape, largest void, number density | high |
 | `crack_frac`, `crack_count_per_Mpx` | BSE | area / count of voids with long axis > 500 px (delamination-style cracks) | high; most defect-relevant KPI found |
 | `bright_frac`, `bright_count_per_Mpx` | BSE | additive loading and number density | high when `bright_low_contrast` is False |
-| `bright_d10/d50/d90`, `bright_circ`, `bright_solidity` | BSE | additive particle size distribution and shape | high when `bright_low_contrast` is False |
+| `bright_d10/d50/d90`, `bright_max_d`, `bright_circ`, `bright_solidity` | BSE | additive particle size distribution and shape | high when `bright_low_contrast` is False |
 | `profile_pore_k`, `profile_bright_k` (k = 0..9) | BSE | through-thickness gradients | medium (orientation vs current collector unknown) |
 | `fft_slope`, `corr_len_px` | BSE | scale-free texture descriptors | medium |
 | `etd_crack_density_particles` | ETD in BSE mask | detected ridge coverage inside additive-mask interiors; candidate crack appearance | measurement/interpretation review pending; no intact-particle fraction |
@@ -80,6 +80,9 @@ All structural KPIs are computed per site on the BSE image unless stated. Length
 | `inlens_particle_texture`, `inlens_speckled_particle_frac` | Inlens in BSE mask | speckled vs smooth particle interiors | **confounded**; needs local-contrast normalisation |
 | `bright_sep`, `bright_low_contrast`, `pore_mode_resolved`, `graphite_mode`, `th_lo`, `th_hi` | BSE | segmentation quality | diagnostic |
 | per-image `p1`, `empty_bin_frac`, `gray_levels`, `band_top/bottom` | all | black level, contrast stretching, edge bands | diagnostic |
+| `bright_void_distance_d50_px`, `bright_ring_void_frac_16px`, `local_bright_std_512px/1024px`, `local_bright_pore_spearman_512px/1024px`, `long_void_internal_area_frac`, `long_void_y_centroid_norm` | BSE masks | battery geometry candidates (additive neighbourhood, local homogeneity, internal long-void burden/location), §12 | **exploratory** (`KPI_TRUST` = exploratory): shown in a separate report section, excluded from verdicts, drift tests, localized rules and the classifier; expert phase-boundary review pending |
+
+The lists the pipeline actually uses are code, not prose: `PRIMARY_KPIS` = crack_frac, pore_max_d, pore_frac, bright_frac, bright_d50 (carry the verdict, Holm family); `MATERIAL_KPIS` = those five + pore_d50, pore_elong, crack_count_per_Mpx, bright_count_per_Mpx, bright_d90, bright_circ, corr_len_px, fft_slope, etd_crack_density_particles (classifier input; the notebook's "secondary KPIs" are the nine non-primary ones); the HTML "Secondary KPIs" appendix additionally lists pore_d90, pore_count_per_Mpx, bright_d10, bright_solidity, bright_max_d (`report.TRUSTED_KPIS`). `polaron_qc.KPI_TRUST` holds the categorical level per KPI; `report.KPI_TRUST` holds the descriptive label printed in tables. Where this table and the code disagree (currently `etd_crack_density_particles`: "review pending" here, `high` in code and "high; null on this data" in the report) the code is what ran; the wording is an open item in `analysis/g_reconcile/audit.md`.
 
 Cached outputs: `analysis_cache/site_features.csv` (one row per site), `analysis_cache/etd_inlens_features.csv`, `analysis_cache/bright_particles.csv` (one row per bright particle), `analysis_cache/image_quality.csv` (one row per image).
 
@@ -92,7 +95,7 @@ Three views of each primary-KPI comparison against Batch 3 (energy distance, HL 
 | Batch 1 | 0.98 (0.40), 17 v 5 | 0.70 (0.83), 10 v 5 | 2.34 (0.078) | +0.28 / −1.39 |
 | Batch 2 | 0.89 (0.34), 17 v 7 | 1.53 (0.16), 10 v 7 | 3.56 (0.015) | −0.73 / −3.01 |
 
-Adjustment **amplifies** rather than attenuates: the covariates, fitted on a heterogeneous reference, encode Batch 3's own sub-populations (bse_p1 vs pore_frac ρ = −0.52 on 17 sites, ≤ 0.36 on the ordinary 10). A 7-covariate ridge variant reverses the picture (p 0.97 / 0.27). Negative attenuation is read as "not explained away by acquisition covariates" and nothing more (D26). The ±5-gray-level threshold band, now computed for all 31 sites, is ≈ 33 % relative on pore_frac in every acquisition group (52 % on grey-pore sites) and exceeds every between-batch pore_frac shift.
+The energy statistics in this table are the unweighted E15 values; the pipeline (`report.build_result`, notebook 02 §5) applies the consequence weights to all three views, which scales every statistic by ≈ 1.73 (Batch 1: 1.70 / 1.22 / 4.06; Batch 2: 1.53 / 2.65 / 6.16) and leaves the p-values and attenuation shares identical. Adjustment **amplifies** rather than attenuates: the covariates, fitted on a heterogeneous reference, encode Batch 3's own sub-populations (bse_p1 vs pore_frac ρ = −0.52 on 17 sites, ≤ 0.36 on the ordinary 10). A 7-covariate ridge variant reverses the picture (p 0.97 / 0.27). Negative attenuation is read as "not explained away by acquisition covariates" and nothing more (D26). The ±5-gray-level threshold band, now computed for all 31 sites, is ≈ 33 % relative on pore_frac in every acquisition group (52 % on grey-pore sites) and exceeds every between-batch pore_frac shift.
 
 ## 4b. Assumption register
 
@@ -125,7 +128,9 @@ What follows from it: (1) the long-void reference sites are not a contradiction 
 4. Is the 25 nm/px in the TIFF tags the true pixel size? Image orientation relative to the current collector?
 5. What is the bright phase (Si, SiOx, other)?
 
-## 7. Plan for the QC notebook (next)
+## 7. Original plan for the QC notebook (superseded — kept for provenance)
+
+_Written before `docs/qc_plan.md`. The implemented pipeline differs on vocabulary and method: the top outcome is "consistent with the working reference, within detectable limits", never "accept" (D16); verdicts carry **decision stability**, not "confidence" (D18); the tests are site-level permutation tests on the Hodges–Lehmann shift with Holm over five primary KPIs, not KS tests (D21, D23). Read `docs/qc_plan.md` and notebook 02 for what was built._
 
 1. Load cached features; one config cell selects the reference batch (default Batch 3) and any sites to flag or exclude.
 2. Reference self-characterisation: split-half and leave-one-site-out distributions of every KPI and of a multivariate distance, giving a data-derived null for "normal variation" — reported with the reference's own sub-populations visible, and with robust (median / MAD) and classical versions side by side so the reader sees how much the cracked and grey-pore sites widen the null.
@@ -143,9 +148,9 @@ The `polaron_qc` modules implement site-level comparisons, separate drift/locali
 - An explicit negative human image review remains pending, so it cannot close the localized investigation as the report's wording promises.
 - MDC sampling fails when the incoming usable count exceeds the reference count; equal counts leave no reference sites for simulation and return infinity with no usable simulations. This is a limitation of the split-reference design, not evidence of infinite detectable change.
 
-Decision stability currently reruns the statistical decision while holding cached full-sample classifier evidence fixed; it is conditional on that evidence. The classifier still needs a separate pre-run for a new batch. These are implementation findings, not revisions to the observed material KPIs or claims about unseen-batch accuracy. See the experiment log E21 and decision-log open items for the review evidence and proposed corrections.
+At the time of E21, decision stability reran the statistical decision while holding cached full-sample classifier evidence fixed, and the classifier needed a separate pre-run for a new batch (both since changed, see below). These were implementation findings, not revisions to the observed material KPIs or claims about unseen-batch accuracy. See the experiment log E21 and decision-log open items for the review evidence and corrections.
 
-**Status after E22 (same day):** all four behaviours are fixed with regression tests (D30–D32): the acquisition views run inside the pipeline and a drift reject is withheld when none is available; flags are data-derived and written into the site tables before any statistic (five unseen grey-pore sites now flagged 5/5, counted as fallback, and triggering the quality abstention); image review has confirmed / refuted / unreviewed states; MDC reports "not available" instead of raising or returning ∞. The material-only classifier runs inside `build_result` and is refit in every leave-one-site-out fold, so stability is no longer conditional on a cached run and the unseen batch needs no ML pre-run for its verdict. Known-batch verdicts, stability shares and numbers are unchanged (E22).
+**Status after E22 (same day):** all four behaviours are fixed with regression tests (D30–D32): the acquisition views run inside the pipeline and a drift reject is withheld when none is available; flags are data-derived and written into the site tables before any statistic (five unseen grey-pore sites now flagged 5/5, counted as fallback, and triggering the quality abstention); image review has confirmed / refuted / unreviewed states; MDC reports "not available" instead of raising or returning ∞. The material-only classifier runs inside `build_result` and is refit in every leave-one-site-out fold, so stability is no longer conditional on a cached run and the unseen batch needs no ML pre-run for its verdict. Known-batch verdicts, stability shares and numbers are unchanged (E22). E28 later made the classifier independent of site-id order (canonical content order, seeded solver; D43), which moved the material-only point estimates to AUC 0.59 / p 0.30 (Batch 1) and 0.59 / 0.29 (Batch 2) without changing any verdict; the report now prints the seed range (D45). The suite stands at 174 tests after the G reconciliation.
 
 ## 9. Morphology differentiation first pass (E18, 2026-10-03)
 

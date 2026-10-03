@@ -4,7 +4,7 @@ Guidance for AI agents working in this repository. `AGENTS.md` points here.
 
 ## What this project is
 
-A hackathon entry (started 2026-10-03). Given SEM cross-sections of battery electrode coating from several batches, build an interpretable, uncertainty-aware QC system that compares an incoming batch against an approved baseline and returns **accept / investigate / reject** with an explanation a materials expert can verify. An unseen batch arrives mid-event. Judged on KPI quality, accuracy on the unseen batch, interpretability, honesty about uncertainty, and usability — not raw accuracy.
+A hackathon entry (started 2026-10-03). Given SEM cross-sections of battery electrode coating from several batches, build an interpretable, uncertainty-aware QC system that compares an incoming batch against an approved baseline and returns **accept / investigate / reject** (the task's framing; our top outcome is "consistent within detectable limits", never "accept" — see Style) with an explanation a materials expert can verify. An unseen batch arrives mid-event. Judged on KPI quality, accuracy on the unseen batch, interpretability, honesty about uncertainty, and usability — not raw accuracy.
 
 Read `docs/problem_and_findings.md` before doing anything substantive. It holds the problem statement, everything we know about the data, the KPI catalogue with trust levels, decisions taken, and open questions.
 
@@ -21,9 +21,19 @@ Dataset/                 raw TIFFs (git-ignored, 1.6 GB). Batch_{1,2,3}/img_<sit
 notebooks/
   01_dataset_analysis.ipynb        executed EDA notebook (the judge-facing artefact for section "data")
   _build_01_dataset_analysis.py    generator: writes the .ipynb from code/markdown cells
-analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small)
+  02_batch_qc.ipynb                executed QC notebook (reference characterisation, comparisons, decision, self-tests; §0 asserts FROZEN_HASH)
+  _build_02_batch_qc.py            its generator (edit this, never the .ipynb)
+polaron_qc/              the QC package: features (FEATURE_VERSION 1.1.0), stats, ml, acquisition, physics, decision (Thresholds, hashed),
+                         report (build_result / render_report / CLI), secondary + battery_metrics + void_metrics (exploratory battery geometry).
+                         KPI lists and trust levels live in polaron_qc/__init__.py (PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST, BATTERY_SECONDARY_KPIS)
+tests/                   pytest suite (174 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
+reports/                 qc_Batch_1.html, qc_Batch_2.html — the per-batch judge-facing reports written by notebook 02 / the CLI
+analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small); analysis_cache/features/
+                         is notebook 02's content-hashed parquet cache (ignored by version control); analysis_cache/ml/ holds the exploratory embeddings (committed)
 analysis/                parallel label-free audit (scripts, findings.md, report.html, assets). Integrity checks, intensity/texture
                          proxies with bootstrap CIs. Complements notebook 01; do not duplicate its checks, cite them.
+                         Sub-folders: battery/ (E25), morphology/ (E18/E24, atlas + annotation pack), ml_options/ (E26G/E27/E28J),
+                         qc_review/ (E21 probes), rehearsal_h/ (E28 drop rehearsal), g_reconcile/ (documentation-vs-code audit)
 docs/problem_and_findings.md       state of knowledge — keep it current
 docs/qc_plan.md                    agreed plan for the QC notebook (components, methods, decision logic, checkpoints)
 docs/workflow.md                   Mermaid diagram of the whole pipeline + data contracts between modules; update when an interface changes
@@ -33,7 +43,7 @@ docs/decision_log.md               Part A: every consequential decision with rat
                                    checklist built from reviewer catches; Part C: open items. Append, never delete.
 docs/assumption_register.html      self-contained HTML: every interpretive assumption with an annotated example image and a
                                    review status; rebuild with `python3 docs/_build_assumption_register.py` when assumptions change
-                                   (ids A1–A15 are referenced from other docs; append, don't renumber)
+                                   (ids A1–A18 are referenced from other docs; append, don't renumber)
 ```
 
 ## How notebooks are built and run
@@ -47,6 +57,7 @@ cd notebooks && PYDEVD_DISABLE_FILE_VALIDATION=1 jupyter nbconvert --to notebook
 
 - Feature cells are cached in `analysis_cache/`. If you change a feature definition, delete the corresponding CSV/NPZ before re-executing or you will get stale numbers. `image_quality.csv` is cheap; `site_features.csv`, `bright_particles.csv`, `fft_spectra.npz`, `bse_histograms.npz` take ~5 min; `etd_inlens_features.csv` ~2 min.
 - Full execution from empty cache is ~8 min on the M2 Max. Use a long timeout.
+- Notebook 02 is built and executed the same way (`python3 notebooks/_build_02_batch_qc.py`, then nbconvert on `02_batch_qc.ipynb`); it needs the raw `Dataset/` folder (≈ 60–70 s per compared batch with a warm `analysis_cache/features/`, ≈ 6 min for the reference cold) and writes `reports/qc_<batch>.html`. Running the generator alone overwrites the executed `.ipynb` with an unexecuted one, so always execute after generating.
 - After executing, check for errors programmatically (loop over cells for `output_type == "error"`) and look at the figures. Numbers quoted in markdown cells must match the executed outputs; re-read the outputs before writing prose.
 
 Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.26, scipy, scikit-image 0.23, scikit-learn 1.4, pandas 2.2, matplotlib, statsmodels, tifffile, torch 2.9 with MPS. No OpenCV. Kernel name `python3`.
@@ -62,7 +73,7 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
    - Batch 3 cracked sites `hzumfsms`, `0grcilhi`, `ufdvpb81` → the only clear material anomaly (large delamination-like voids).
 5. **Inlens intra-particle texture is confounded** with Inlens brightness (~75 % of variance). It may not drive a verdict without local-contrast normalisation and must be labelled as a candidate.
 6. **Detector label `SE` means `ETD`.** Merge them. Channels are pixel-aligned; BSE masks can be applied to ETD/Inlens directly.
-7. **Trim bright edge bands** (current collector / stitching) before measuring; `bright_bands()` in the build script does this.
+7. **Trim bright edge bands** (current collector / stitching) before measuring; `features.bright_bands()` does this (copies still exist in `ml.py` and `physics.py`, workflow hazard 6).
 8. **Per-image percentile thresholds make densities constant by construction.** Use one absolute threshold chosen across sites (see ETD ridge threshold `T_STAR`).
 9. **Batch 3 is the working reference, not a clean baseline** (confirmed by the problem providers: three supplier batches of one product; Batch 3 is one batch with more samples; the task is to differentiate). Use robust statistics, show Batch 3's own sub-populations, report all pairwise comparisons, and keep the reference selectable in one config cell.
 10. Frame height is a session fingerprint as much as a thickness proxy; do not present it as thickness without caveat.
