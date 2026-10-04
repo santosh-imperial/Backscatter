@@ -1,4 +1,4 @@
-# polaron-sem-qc
+# **Backscatter**
 
 **Interpretable, uncertainty-aware batch QC for battery-electrode SEM cross-sections.**
 
