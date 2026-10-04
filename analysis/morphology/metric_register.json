@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated": "2026-10-03",
+  "updated": "2026-10-04",
   "owner": "Santosh / QC team",
   "purpose": "Live morphology inventory: implementation, evidence, QC role and expert review are independent fields.",
   "supplier_baseline_confirmation": {
     "date": "2026-10-03",
     "source": "Challenge provider, relayed directly by Santosh",
-    "statement": "Batch 3 is the supplier's promised baseline; Batches 1 and 2 are subsequent variations, not explicitly better or worse. The challenge target is identifying differences and held-back in/out-of-distribution categorisation.",
+    "statement": "Batch 3 is the promised challenge reference; the organiser confirms the three folders are artificial visual batches constructed from cropped real electrode images, not verified supplier lots.",
     "decision": "D49P",
     "development_plan": "docs/qc_plan.md section 1.1",
     "implementation_status": "planned_not_activated",
@@ -16,6 +16,14 @@
       "No per-site OOD, manufacturing-outcome, held-back or expert phase labels are supplied.",
       "Current metric roles, expert reviews, measurements and verdict inputs are unchanged.",
       "Battery-harm proof is not a prerequisite for distribution features; measurement/acquisition and alert validation remain necessary."
+    ],
+    "history": [
+      {
+        "date": "2026-10-04",
+        "decision": "D59S",
+        "previous_statement": "Batch 3 is the supplier's promised baseline; Batches 1 and 2 are subsequent variations, not explicitly better or worse. The challenge target is identifying differences and held-back in/out-of-distribution categorisation.",
+        "reason": "New organiser clarification supersedes literal supplier-lot provenance, preserving the reference rule."
+      }
     ]
   },
   "sources": [
@@ -25,7 +33,8 @@
     "analysis/morphology/output/morphology_sites.csv",
     "analysis/battery/output/neighbourhood_sites.csv",
     "analysis/battery/output/void_sites.csv",
-    "analysis/battery/output/void_threshold_envelopes.csv"
+    "analysis/battery/output/void_threshold_envelopes.csv",
+    "analysis/classification_m1_m2/output/appearance_features.csv"
   ],
   "metrics": [
     {
@@ -48,14 +57,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Grey-pore fallback thresholds make pore measurements less reliable."
+        "Grey-pore fallback thresholds make pore measurements less reliable.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_mask",
       "review_status": "unreviewed",
@@ -70,6 +82,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -98,14 +115,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Grey-pore fallback thresholds make pore measurements less reliable.",
-        "Merging, fragmentation and size floor change counts."
+        "Merging, fragmentation and size floor change counts.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_geometry",
       "review_status": "unreviewed",
@@ -120,6 +140,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -147,14 +172,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Grey-pore fallback thresholds make pore measurements less reliable."
+        "Grey-pore fallback thresholds make pore measurements less reliable.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_geometry",
       "review_status": "unreviewed",
@@ -169,6 +197,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -196,14 +229,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Grey-pore fallback thresholds make pore measurements less reliable."
+        "Grey-pore fallback thresholds make pore measurements less reliable.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_geometry",
       "review_status": "unreviewed",
@@ -218,6 +254,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -246,14 +287,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Grey-pore fallback thresholds make pore measurements less reliable.",
-        "Maximum is sensitive to field size and a single merged component."
+        "Maximum is sensitive to field size and a single merged component.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_geometry",
       "review_status": "unreviewed",
@@ -268,6 +312,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -296,14 +345,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
-        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_mask",
       "review_status": "unreviewed",
@@ -318,6 +370,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -348,14 +405,17 @@
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
         "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
-        "Merging, fragmentation and size floor change counts."
+        "Merging, fragmentation and size floor change counts.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -370,6 +430,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -394,14 +459,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
-        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -416,6 +484,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -444,14 +517,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
-        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -466,6 +542,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -495,14 +576,17 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
-        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated."
+        "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -517,6 +601,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -546,14 +635,17 @@
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "Exclude bright low-contrast sites from material inference.",
         "Fresh graphite\u2013Si/SiOx material family confirmed by Santosh; exact chemistry and pixelwise bright-phase labels remain unvalidated.",
-        "Maximum is sensitive to field size and a single merged component."
+        "Maximum is sensitive to field size and a single merged component.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -568,6 +660,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -595,7 +692,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Not chemically verified graphite and not a separate binder measurement."
+        "Not chemically verified graphite and not a separate binder measurement.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/site_features.csv"
@@ -643,14 +741,17 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "pore_geometry",
       "review_status": "unreviewed",
@@ -665,6 +766,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -692,14 +798,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "500 px cutoff is an operational rule; a long void is not confirmed delamination."
+        "500 px cutoff is an operational rule; a long void is not confirmed delamination.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "crack_mask",
       "review_status": "unreviewed",
@@ -714,6 +823,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -741,14 +855,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not equate section counts to 3-D crack counts."
+        "Do not equate section counts to 3-D crack counts.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "crack_mask",
       "review_status": "unreviewed",
@@ -758,6 +875,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -781,14 +903,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Pixel perimeter, blur and fragmented boundaries affect circularity."
+        "Pixel perimeter, blur and fragmented boundaries affect circularity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -803,6 +928,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -829,14 +959,17 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "bright_geometry",
       "review_status": "unreviewed",
@@ -851,6 +984,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -877,7 +1015,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -933,7 +1072,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -981,7 +1121,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -1030,7 +1171,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -1078,7 +1220,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1126,7 +1269,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -1166,7 +1310,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Round particles have no reliable orientation; projected alignment is not 3-D texture."
+        "Round particles have no reliable orientation; projected alignment is not 3-D texture.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -1215,7 +1360,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Tiny rim fragments dominate counts; centroid distance ignores object extent."
+        "Tiny rim fragments dominate counts; centroid distance ignores object extent.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1263,7 +1409,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Sensitivity to area floors was observed; uniform points do not respect finite particle shape or non-overlap."
+        "Sensitivity to area floors was observed; uniform points do not respect finite particle shape or non-overlap.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv",
@@ -1321,7 +1468,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth."
+        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/site_features.csv"
@@ -1369,7 +1517,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1416,7 +1565,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1473,7 +1623,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth."
+        "Coating/collector orientation is unconfirmed; image-depth profile is not calibrated physical depth.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/site_features.csv"
@@ -1521,7 +1672,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1568,7 +1720,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/output/morphology_sites.csv"
@@ -1616,14 +1769,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Affected by blur, contrast remapping and focus; not a particle-size substitute."
+        "Affected by blur, contrast remapping and focus; not a particle-size substitute.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "correlation",
       "review_status": "unreviewed",
@@ -1633,6 +1789,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -1656,14 +1817,17 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Contrast remapping, noise and blur can shift this feature."
+        "Contrast remapping, noise and blur can shift this feature.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
-        "analysis_cache/site_features.csv"
+        "analysis_cache/site_features.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E01",
-        "E18"
+        "E18",
+        "E37S"
       ],
       "visual_kind": "fft",
       "review_status": "unreviewed",
@@ -1673,6 +1837,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -1696,14 +1865,17 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
-        "analysis_cache/acquisition_sites.csv"
+        "analysis_cache/acquisition_sites.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
-        "E04"
+        "E04",
+        "E37S"
       ],
       "visual_kind": "etd_ridges",
       "review_status": "unreviewed",
@@ -1718,6 +1890,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ],
       "battery_check_ids": [
@@ -1745,14 +1922,17 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
-        "analysis_cache/acquisition_sites.csv"
+        "analysis_cache/acquisition_sites.csv",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
-        "E04"
+        "E04",
+        "E37S"
       ],
       "visual_kind": "etd_ridges",
       "review_status": "unreviewed",
@@ -1762,6 +1942,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "Initial metric inventory; existing evidence distinguished from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -1785,7 +1970,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
@@ -1834,7 +2020,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
@@ -1883,7 +2070,8 @@
       "limitations": [
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
-        "Sites, not components or crops, are statistical units; specimen independence is unresolved."
+        "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
@@ -1924,18 +2112,21 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved."
+        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
         "analysis/e20_inlens/findings.md",
         "analysis/e20_inlens/sites.csv",
-        "analysis/e20_inlens/figures/evidence_particles.png"
+        "analysis/e20_inlens/figures/evidence_particles.png",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E03",
         "E20",
-        "E32"
+        "E32",
+        "E37S"
       ],
       "visual_kind": "inlens_texture",
       "review_status": "unreviewed",
@@ -1950,6 +2141,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E32 completed the actual per-particle normalisation audit: no primary variant qualifies. Evidence linked; confounded status, QC role and manual review unchanged (E33R)."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -1974,18 +2170,21 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved."
+        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
         "analysis/e20_inlens/findings.md",
         "analysis/e20_inlens/sites.csv",
-        "analysis/e20_inlens/figures/evidence_particles.png"
+        "analysis/e20_inlens/figures/evidence_particles.png",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E03",
         "E20",
-        "E32"
+        "E32",
+        "E37S"
       ],
       "visual_kind": "inlens_texture",
       "review_status": "unreviewed",
@@ -2000,6 +2199,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E32 completed the actual per-particle normalisation audit: no primary variant qualifies. Evidence linked; confounded status, QC role and manual review unchanged (E33R)."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -2024,18 +2228,21 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved."
+        "E20/E32 is complete: none of four primary normalisations qualifies; material origin and session/noise effects remain unresolved.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv",
         "analysis/e20_inlens/findings.md",
         "analysis/e20_inlens/sites.csv",
-        "analysis/e20_inlens/figures/evidence_particles.png"
+        "analysis/e20_inlens/figures/evidence_particles.png",
+        "analysis/quality_policy_audit/findings.md"
       ],
       "experiments": [
         "E03",
         "E20",
-        "E32"
+        "E32",
+        "E37S"
       ],
       "visual_kind": "inlens_texture",
       "review_status": "unreviewed",
@@ -2050,6 +2257,11 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E32 completed the actual per-particle normalisation audit: no primary variant qualifies. Evidence linked; confounded status, QC role and manual review unchanged (E33R)."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E37S classifier-input dependency/validity audit linked; original measurements, categorical trust, expert-review status and QC role unchanged. Post-feedback candidate excludes unavailable phase-dependent inputs; no automatic promotion."
         }
       ]
     },
@@ -2073,7 +2285,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2122,7 +2335,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2171,7 +2385,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2220,7 +2435,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2269,7 +2485,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2318,7 +2535,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2367,7 +2585,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2416,7 +2635,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Image height is not verified coating thickness; downsampling changes topology."
+        "Image height is not verified coating thickness; downsampling changes topology.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2466,17 +2686,27 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "No branch pruning; junctions and digital boundaries influence results.",
-        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
-        "analysis/morphology/benchmark/local_width_sites.csv"
+        "analysis/morphology/benchmark/local_width_sites.csv",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E24"
+        "E24",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "local_width",
       "review_status": "unreviewed",
-      "review_notes": "",
+      "review_notes": " E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -2492,13 +2722,24 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
       ],
       "battery_check_ids": [
         "B01",
         "B05"
       ],
-      "battery_implication": "In fresh graphite\u2013Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact. Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+      "battery_implication": "In fresh graphite\u2013Si/SiOx, the additive neighbourhood may influence later expansion accommodation, ionic access and electronic supply. These are competing mechanisms; geometric residual-solid adjacency is not electrical contact. Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter.",
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "void_local_width_d90_px",
@@ -2521,17 +2762,27 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "No branch pruning; junctions and digital boundaries influence results.",
-        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
-        "analysis/morphology/benchmark/local_width_sites.csv"
+        "analysis/morphology/benchmark/local_width_sites.csv",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E24"
+        "E24",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "local_width",
       "review_status": "unreviewed",
-      "review_notes": "",
+      "review_notes": " E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -2547,12 +2798,23 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "D36: fresh graphite\u2013Si/SiOx human confirmation and battery-hypothesis links; implementation, expert review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
       ],
       "battery_check_ids": [
         "B05"
       ],
-      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter."
+      "battery_implication": "Visible void structure can motivate wetting/transport/packing checks. Higher area fraction or larger 2-D sections are not inherently better: connectivity, unresolved binder pores, solid contact and volumetric loading also matter.",
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "crack_local_width_d50_px",
@@ -2575,7 +2837,8 @@
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
         "No branch pruning; junctions and digital boundaries influence results.",
-        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map."
+        "Expert width checks pending; centreline width is an estimate, not a maximal-inscribed-disk thickness map.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/benchmark/local_width_sites.csv"
@@ -2628,7 +2891,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "No numeric material claim available."
+        "No numeric material claim available.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [],
       "experiments": [
@@ -2681,7 +2945,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "No numeric material claim available."
+        "No numeric material claim available.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [],
       "experiments": [
@@ -2728,7 +2993,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "No numeric material claim available."
+        "No numeric material claim available.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [],
       "experiments": [
@@ -2775,7 +3041,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/etd_inlens_features.csv"
@@ -2823,7 +3090,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2865,7 +3133,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2906,7 +3175,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis_cache/physics_sites.csv"
@@ -2953,7 +3223,8 @@
         "Lengths use pixels; export calibration is unverified.",
         "Known-batch development; no unseen-batch validation.",
         "Sites, not components or crops, are statistical units; specimen independence is unresolved.",
-        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity."
+        "Do not claim chemistry, 3-D geometry, transport or a new independent signal from this conditional/derived quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "polaron_qc/physics.py"
@@ -2994,7 +3265,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3039,7 +3311,8 @@
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
-        "The mask band includes threshold holes inside a component silhouette; it is not physical expansion clearance."
+        "The mask band includes threshold holes inside a component silhouette; it is not physical expansion clearance.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3084,28 +3357,49 @@
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
-        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index."
+        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
-        "analysis/battery/output/void_sites.csv"
+        "analysis/battery/output/void_sites.csv",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E25"
+        "E25",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "battery_windows_512",
       "review_status": "unreviewed",
-      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending.",
+      "review_notes": "Extracted on all known sites. Eight scalar secondary KPIs integrated in features/report; diagnostics and width-depth profiles stay outside verdicts and classifiers. Independent annotations and specimen repeats pending. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E25: real masks and synthetic convention tests; independent expert accuracy unmeasured."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
       ],
       "battery_check_ids": [
         "B04"
-      ]
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "local_bright_pore_spearman_512px",
@@ -3128,7 +3422,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3173,7 +3468,8 @@
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
-        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index."
+        "Population dispersion tracks bright amount and size; it is not a pure agglomeration index.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3217,7 +3513,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3262,7 +3559,8 @@
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
-        "Pore segmentation must be usable; grey/fallback sites remain quality flagged. Excludes edge-clipped long voids and is not a replacement for crack_frac. No adhesion, electrical-disconnection or 3-D claim."
+        "Pore segmentation must be usable; grey/fallback sites remain quality flagged. Excludes edge-clipped long voids and is not a replacement for crack_frac. No adhesion, electrical-disconnection or 3-D claim.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3308,7 +3606,8 @@
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
-        "Image-row location is not collector-interface distance. Field of view and excluded components affect sampling. No fixed alarm threshold; descriptive secondary only."
+        "Image-row location is not collector-interface distance. Field of view and excluded components affect sampling. No fixed alarm threshold; descriptive secondary only.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3353,7 +3652,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3417,7 +3717,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3466,7 +3767,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3537,7 +3839,8 @@
         "Known-batch development after primary-family freeze; no unseen-batch validation.",
         "Sites, not components or windows, are statistical units; specimen independence is unresolved.",
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
-        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid."
+        "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/neighbourhood_sites.csv",
@@ -3589,7 +3892,8 @@
         "Expert phase/feature labels remain unreviewed; mask geometry cannot establish chemistry, electrical contact or battery performance.",
         "Threshold envelopes use paired -5/0/+5 shifts, not a full independent threshold grid.",
         "Width samples are medial-axis pixels from retained non-clipped voids; not independent observations or 3-D throats.",
-        "All31 nominal width-depth profiles; paired sensitivity on11 prespecified example sites only."
+        "All31 nominal width-depth profiles; paired sensitivity on11 prespecified example sites only.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/battery/output/void_sites.csv",
@@ -3634,7 +3938,8 @@
         "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
         "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
         "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
-        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/e_graph/protocol.json",
@@ -3683,20 +3988,30 @@
         "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
         "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
         "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
-        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/ml_options/e_graph/protocol.json",
         "analysis/ml_options/e_graph/sites.csv",
         "analysis/ml_options/e_graph/comparisons.csv",
-        "analysis/ml_options/e_graph/report.html"
+        "analysis/ml_options/e_graph/report.html",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E26G"
+        "E26G",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "bright_graph",
       "review_status": "unreviewed",
-      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion.",
+      "review_notes": "Exploratory graph audit complete; expert phase/component review and independent specimen/process validation remain required. No primary/classifier/verdict promotion. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -3707,8 +4022,19 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E26G: full-site masks, six fixed variants, 16 graph/geometry tests; independent expert accuracy unavailable."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
-      ]
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "graph_edge_axial_strength",
@@ -3732,7 +4058,8 @@
         "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
         "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
         "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
-        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/e_graph/protocol.json",
@@ -3781,7 +4108,8 @@
         "Edges are centroid proximity, not physical/electrical contact or 3-D connectivity.",
         "Sites are n; specimen independence is unresolved. Nodes and edges are coverage only.",
         "Clipped-object exclusion does not remove finite-frame nearest-neighbour bias.",
-        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion."
+        "Threshold/floor sensitivity is separate from sampling uncertainty; no auto-promotion.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/e_graph/protocol.json",
@@ -3830,7 +4158,8 @@
         "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
         "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
         "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
-        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+        "Energy share is not a particle-size fraction, phase loading or transport quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/j_gabor/protocol.json",
@@ -3879,7 +4208,8 @@
         "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
         "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
         "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
-        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+        "Energy share is not a particle-size fraction, phase loading or transport quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/j_gabor/protocol.json",
@@ -3928,7 +4258,8 @@
         "Sites are statistical units; specimen independence is unknown; windows/pixels do not increase n.",
         "Wavevectors are normal to visible stripes, not graphite plate-instance axes.",
         "Filtering remains sensitive to contrast shape, preparation and selected frequency bands; standardisation does not restore lost contrast.",
-        "Energy share is not a particle-size fraction, phase loading or transport quantity."
+        "Energy share is not a particle-size fraction, phase loading or transport quantity.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/ml_options/j_gabor/protocol.json",
@@ -3977,20 +4308,30 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
         "analysis/morphology/k_pilot/sites.csv",
         "analysis/morphology/k_pilot/findings.md",
-        "analysis/morphology/k_pilot/report.html"
+        "analysis/morphology/k_pilot/report.html",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E30K"
+        "E30K",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "k_morphology",
       "review_status": "unreviewed",
-      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -4001,8 +4342,19 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
-      ]
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "bright_solidity_count_q10",
@@ -4026,20 +4378,30 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
         "analysis/morphology/k_pilot/sites.csv",
         "analysis/morphology/k_pilot/findings.md",
-        "analysis/morphology/k_pilot/report.html"
+        "analysis/morphology/k_pilot/report.html",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E30K"
+        "E30K",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "k_morphology",
       "review_status": "unreviewed",
-      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -4050,8 +4412,19 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
-      ]
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "bright_circularity_count_iqr",
@@ -4075,20 +4448,30 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
         "analysis/morphology/k_pilot/sites.csv",
         "analysis/morphology/k_pilot/findings.md",
-        "analysis/morphology/k_pilot/report.html"
+        "analysis/morphology/k_pilot/report.html",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
-        "E30K"
+        "E30K",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "k_morphology",
       "review_status": "unreviewed",
-      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -4099,8 +4482,19 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E30K: fixed shape reuse and fresh raster pair measurements; source/math/raw binding checks are separate from expert validation."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
         }
-      ]
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
     },
     {
       "id": "bright_autocorr_xy_contrast_64px",
@@ -4124,7 +4518,8 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
@@ -4173,7 +4568,8 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
@@ -4222,7 +4618,8 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
@@ -4271,7 +4668,9 @@
         "Sites are n; components and pixel pairs are coverage; specimen independence is unresolved.",
         "Count-weighted shape quantiles describe a different population from area-weighted means; clipped components are excluded.",
         "Finite overlap domains may sample different spatial composition along x/y; normalisation does not remove preparation or threshold sensitivity.",
-        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established."
+        "No unseen/outcome accuracy, physical contact, transport or battery-performance implication is established.",
+        "D59S: sites are crops from around 15 source images assigned to artificial visual groups. Unknown shared-parent dependence qualifies historical/new CV, permutation and resampling; crop count is not verified independent n.",
+        "E41S: added eight-descriptor panel did not improve the fixed crop-held-out L1/forest comparisons; individual descriptor usefulness is not independently resolved. No observed bright evidence on low-contrast crops; coverage counts are not validation."
       ],
       "evidence_paths": [
         "analysis/morphology/k_pilot/protocol.json",
@@ -4280,15 +4679,23 @@
         "analysis/morphology/k_pilot/report.html",
         "analysis/morphology/l_audit/protocol.json",
         "analysis/morphology/l_audit/report.html",
-        "analysis/morphology/l_audit/recommendations.csv"
+        "analysis/morphology/l_audit/recommendations.csv",
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html",
+        "analysis/forest_geometry/output/evaluation/known_summary.csv",
+        "analysis/forest_geometry/output/geometry_known_verification.json",
+        "analysis/confidence_audit/findings.md",
+        "analysis/confidence_audit/report.html"
       ],
       "experiments": [
         "E30K",
-        "E31L"
+        "E31L",
+        "E41S",
+        "E42S"
       ],
       "visual_kind": "k_morphology",
       "review_status": "unreviewed",
-      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls.",
+      "review_notes": "E30K fixed known-site pilot complete. All material/QC use deferred pending independent phase/component, specimen/section, threshold and application validation. See measured uncertainty and controls. E41S tests this existing descriptor in a fixed experimental classification panel; gain is not established. Production classifier/QC roles and expert review remain unchanged. E42S records mixed score effects, with no production/expert promotion; retain confidence/explanation diagnostics alongside assignment accuracy.",
       "history": [
         {
           "date": "2026-10-03",
@@ -4304,6 +4711,1049 @@
           "date": "2026-10-03",
           "status": "computed",
           "reason": "E31L: registered OOD audit complete; automatic input deferred by observability/section gates. Definitions, manual review and QC role unchanged."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E41S fixed gated29/+8 \u00d7 matched L1/shallow forest comparison completed; no classification gain and no production role/expert promotion. Raw replay, complete dependency/coverage gates, crop sensitivity and imputed/observed explanations linked; parent dependence unresolved."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "E42S one fixed multinomialL2+8 plus probability/confidence audit. Ordinary score gain but equalclass losses/accuracy worsen;2/3 revealed development. No calibration/production/expert promotion."
+        }
+      ],
+      "classification_trial_status": "E41S_E42S_tested_mixed_probability_effect_no_balanced_gain_not_promoted"
+    },
+    {
+      "id": "appearance_bse_dog_fine_fraction_median",
+      "label": "BSE fine gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_dog_fine_fraction_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G2-G8)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_dog_mid_fraction_median",
+      "label": "BSE mid gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_dog_mid_fraction_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G8-G32)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_dog_coarse_fraction_median",
+      "label": "BSE coarse gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_dog_coarse_fraction_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G32-mean(G32))^2) divided by the sum of fine/mid/coarse band energies, centring within the measurement tile. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_dog_fine_fraction_iqr",
+      "label": "BSE spatial variation of fine-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_dog_fine_fraction_iqr"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile fine Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_dog_coarse_fraction_iqr",
+      "label": "BSE spatial variation of coarse-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_dog_coarse_fraction_iqr"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile coarse Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_gradient_axis_cos2_median",
+      "label": "BSE image-gradient axial cosine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_gradient_axis_cos2_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of (mean(gx^2)-mean(gy^2))/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_gradient_axis_sin2_median",
+      "label": "BSE image-gradient axial sine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_gradient_axis_sin2_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of 2*mean(gx*gy)/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_bse_gradient_axis_coherence_median",
+      "label": "BSE image-gradient axial coherence",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_bse_gradient_axis_coherence_median"
+      ],
+      "channels": [
+        "BSE"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of sqrt(cos2^2+sin2^2), with sigma8 Gaussian-derivative energy-weighted moments. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_dog_fine_fraction_median",
+      "label": "ETD fine gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_dog_fine_fraction_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G2-G8)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_dog_mid_fraction_median",
+      "label": "ETD mid gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_dog_mid_fraction_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G8-G32)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_dog_coarse_fraction_median",
+      "label": "ETD coarse gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_dog_coarse_fraction_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G32-mean(G32))^2) divided by the sum of fine/mid/coarse band energies, centring within the measurement tile. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_dog_fine_fraction_iqr",
+      "label": "ETD spatial variation of fine-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_dog_fine_fraction_iqr"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile fine Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_dog_coarse_fraction_iqr",
+      "label": "ETD spatial variation of coarse-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_dog_coarse_fraction_iqr"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile coarse Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_gradient_axis_cos2_median",
+      "label": "ETD image-gradient axial cosine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_gradient_axis_cos2_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of (mean(gx^2)-mean(gy^2))/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_gradient_axis_sin2_median",
+      "label": "ETD image-gradient axial sine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_gradient_axis_sin2_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of 2*mean(gx*gy)/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_etd_gradient_axis_coherence_median",
+      "label": "ETD image-gradient axial coherence",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_etd_gradient_axis_coherence_median"
+      ],
+      "channels": [
+        "ETD"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of sqrt(cos2^2+sin2^2), with sigma8 Gaussian-derivative energy-weighted moments. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_dog_fine_fraction_median",
+      "label": "Inlens fine gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_dog_fine_fraction_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G2-G8)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_dog_mid_fraction_median",
+      "label": "Inlens mid gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_dog_mid_fraction_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G8-G32)^2) divided by the sum of fine/mid/coarse band energies. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_dog_coarse_fraction_median",
+      "label": "Inlens coarse gaussian-band energy fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_dog_coarse_fraction_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of mean((G32-mean(G32))^2) divided by the sum of fine/mid/coarse band energies, centring within the measurement tile. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_dog_fine_fraction_iqr",
+      "label": "Inlens spatial variation of fine-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_dog_fine_fraction_iqr"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile fine Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_dog_coarse_fraction_iqr",
+      "label": "Inlens spatial variation of coarse-band fraction",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_dog_coarse_fraction_iqr"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "75th minus 25th percentile of the nine tile coarse Gaussian-band energy fractions. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_gradient_axis_cos2_median",
+      "label": "Inlens image-gradient axial cosine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_gradient_axis_cos2_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of (mean(gx^2)-mean(gy^2))/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_gradient_axis_sin2_median",
+      "label": "Inlens image-gradient axial sine moment",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_gradient_axis_sin2_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of 2*mean(gx*gy)/(mean(gx^2)+mean(gy^2)), with sigma8 Gaussian derivatives. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
+        }
+      ]
+    },
+    {
+      "id": "appearance_inlens_gradient_axis_coherence_median",
+      "label": "Inlens image-gradient axial coherence",
+      "family": "Mask-independent image appearance",
+      "keys": [
+        "appearance_inlens_gradient_axis_coherence_median"
+      ],
+      "channels": [
+        "Inlens"
+      ],
+      "units": "dimensionless",
+      "definition": "Median across nine tiles of sqrt(cos2^2+sin2^2), with sigma8 Gaussian-derivative energy-weighted moments. Fixed 3x3 grid of 512px measurement tiles; 96px Gaussian context, truncate3; contextual centring/standardisation; original BSE band trim shared across channels. Any invalid tile makes channel outputs unavailable.",
+      "interpretation": "Acquisition-sensitive image signature without phase masks; image axes and pixel-scale texture, not confirmed plate/coating axes or chemistry.",
+      "implementation_status": "computed",
+      "evidence_status": "acquisition_sensitive_development_audit",
+      "qc_role": "experimental_classification_only",
+      "limitations": [
+        "Nine windows provide coverage, not independent samples; measured union covers 14.6-19.3% of supplied fields.",
+        "Affine intensity invariance holds only for fixed trim and positive gain/offset without clipping/rounding; gamma changes these descriptors.",
+        "Gaussian bands overlap and are not orthogonal power bins. Gradient direction differs from elongated-object axes.",
+        "No phase chemistry, human mask/instance accuracy or battery-performance validation. No QC/submission promotion; E39S accuracy benefit unsupported.",
+        "Crops share around 15 unknown source images and artificial visual labels; crop-LOO is not source-independent validation."
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/output/appearance_features.csv",
+        "analysis/classification_m1_m2/output/appearance_definition.json",
+        "analysis/classification_m1_m2/report.html",
+        "analysis/classification_m1_m2/output/evaluation/known_summary.csv"
+      ],
+      "experiments": [
+        "E39S"
+      ],
+      "visual_kind": "m2_appearance",
+      "review_status": "unreviewed",
+      "review_notes": "No human SME available; classification success cannot validate physical interpretation.",
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "Fixed before E39S scores; 34 crop vectors, paired nuisance tests and actual response maps. No benefit demonstrated; separate experimental appearance role."
         }
       ]
     }
@@ -4321,6 +5771,11 @@
           "date": "2026-10-03",
           "status": "built",
           "reason": "E24 artifacts generated and output contracts verified. Expert review still pending."
+        },
+        {
+          "date": "2026-10-04",
+          "status": "built",
+          "reason": "E38S adds separate raw-only packets and import safeguards without regenerating E24 predictions or promoting expert status."
         }
       ]
     },
@@ -4579,6 +6034,113 @@
           "reason": "E20/E32 completed; four primary variants and two sensitivity variants tracked without adding or promoting scalar KPIs (E33R)."
         }
       ]
+    },
+    {
+      "id": "classifier_input_quality_gate_audit",
+      "label": "Classifier phase-mask input-quality audit",
+      "implementation_status": "computed",
+      "evidence_status": "invalid_input_invariance_passed_no_accuracy_gain",
+      "experiment": "E37S",
+      "qc_role": "experimental_candidate_not_promoted",
+      "review_status": "unreviewed",
+      "description": "E37S post-feedback known-site nested audit: direct and joint-interior dependencies mapped for all 29 inputs. Bad/unknown bright masks exclude 19 inputs; raised-black-level pore masks exclude 16. Full dependency gate removes rejected-value influence but known balanced accuracy 0.569 vs matched v2 0.608, advantage not established; labelled failure bets unchanged. Keep as a separate safety candidate, no live model or KPI trust promotion. Appearance origin, independent masks and specimen/session generalisation remain unresolved.",
+      "evidence_paths": [
+        "analysis/quality_policy_audit/protocol.md",
+        "analysis/quality_policy_audit/findings.md",
+        "analysis/quality_policy_audit/report.html",
+        "analysis/quality_policy_audit/output/feature_dependencies.csv"
+      ],
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "D56S/E37S: standalone input-validity matrices, nested evaluation and safety regressions; no classifier/verdict promotion or expert mask confirmation."
+        }
+      ]
+    },
+    {
+      "id": "independent_boundary_review_handoff",
+      "label": "Raw-only independent boundary review and grouping evidence",
+      "implementation_status": "built",
+      "evidence_status": "expert_annotations_pending_grouping_unavailable",
+      "experiment": "E38S",
+      "qc_role": "measurement_validation_only",
+      "review_status": "unreviewed",
+      "description": "Separate raw-only neutral-ID 6 development / 5 held-out E24 crops and 3 fixed first-drop development crops. Reviewer/exposure declarations, uncertainty/abstention and fresh-directory evaluator import are tested. TIFF header audit: no true specimen/preparation/imaging IDs over 34 sites. Zero expert annotations; current classifier/QC and scalar roles unchanged. The adapter corrects the historical bright-D50 crop-edge contract before annotations: >=50 px2, eight-connected, non-clipped objects on both whole-crop masks; retained/excluded counts and unavailable empty sets.",
+      "evidence_paths": [
+        "analysis/boundary_review/protocol.md",
+        "analysis/boundary_review/README.md",
+        "analysis/boundary_review/output/status.json",
+        "analysis/boundary_review/output/development.html",
+        "analysis/boundary_review/output/group_mapping_template.csv"
+      ],
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "built",
+          "reason": "E38S/D57S preparation and synthetic controls, not expert labels or grouped-validation evidence."
+        }
+      ]
+    },
+    {
+      "id": "classification_m1_m2_E39S",
+      "label": "M1/M2 no-annotation classifier/appearance audit",
+      "implementation_status": "computed",
+      "evidence_status": "accuracy_gain_not_established",
+      "qc_role": "experimental_only",
+      "description": "Six fixed nested crop-LOO candidates with complete phase dependency gating; 24 image-signature descriptors, response maps and all31-crop intensity challenges. Unknown parent leakage; current submission/QC unchanged.",
+      "experiments": [
+        "E39S"
+      ],
+      "evidence_paths": [
+        "analysis/classification_m1_m2/report.html"
+      ]
+    },
+    {
+      "id": "fixed_forest_geometry_E41S",
+      "label": "Fixed forest \u00d7 compact geometry classification audit",
+      "implementation_status": "computed",
+      "evidence_status": "fixed_comparison_no_accuracy_gain",
+      "qc_role": "experimental_only_not_promoted",
+      "experiments": [
+        "E41S"
+      ],
+      "review_status": "unreviewed",
+      "description": "Fixed 2\u00d72 gated29/+8 L1/500-tree depth3 leaf4 RF plus legacy and quality/availability controls. BA gatedL1 0.569/baseRF 0.465/geometryL1 0.521/geometryRF 0.417. All four main candidates 1/3 revealed development drop; complete gates and exact noncausal explanations, no SME labels or source groups; no production promotion.",
+      "evidence_paths": [
+        "analysis/forest_geometry/findings.md",
+        "analysis/forest_geometry/report.html"
+      ],
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "D62S/E41S fixed protocol execution and negative result preserved; D63S no promotion."
+        }
+      ]
+    },
+    {
+      "id": "confidence_and_L2_geometry_E42S",
+      "label": "Fixed L2 geometry and confidence audit",
+      "implementation_status": "computed",
+      "evidence_status": "mixed_score_effects_calibration_not_established",
+      "qc_role": "experimental_only_not_promoted",
+      "experiments": [
+        "E42S"
+      ],
+      "review_status": "unreviewed",
+      "description": "Ten deduplicated fixed classifiers; one additionalL2+8 probe. Full-vector and own-bet scores, ordinary/equalclass weighting, fixed reliability/thresholds, paired/flattening controls and exact explanations. GeometryL2 ordinary loss improves but balanced loss/accuracy worsen;2/3 revealed development. No exact utility/calibration or model/expert/QC promotion.",
+      "evidence_paths": [
+        "analysis/confidence_audit/report.html",
+        "analysis/confidence_audit/findings.md"
+      ],
+      "history": [
+        {
+          "date": "2026-10-04",
+          "status": "computed",
+          "reason": "D64S/E42S confidence criterion evaluation; D65S preserve mixed results, no automatic promotion."
+        }
+      ]
     }
   ],
   "material_confirmation": {
@@ -4727,5 +6289,12 @@
       "review_status": "unreviewed",
       "qc_role": "hypothesis_only"
     }
-  ]
+  ],
+  "dataset_construction": {
+    "date": "2026-10-04",
+    "source": "Organiser via Santosh",
+    "decision": "D59S",
+    "statement": "Real electrode images cropped from around 15 source images and organised into artificial batches sharing visual features.",
+    "interpretation": "The batches are curated visual groups, not verified supplier lots. Batch 3 remains the challenge reference. Parent-image IDs and independent specimen counts are unknown; related crops may cross site folds. Around 15 source images is not 15 confirmed independent specimens."
+  }
 }

@@ -1,0 +1,74 @@
+[
+  {
+    "site": "0eryguqq",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 486,
+    "side": 640,
+    "assigned_batch_nearest_site": "kbdh4tri",
+    "baseline_nearest_site": "cfe5vt7s",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "4hq27w4c",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 754,
+    "side": 640,
+    "assigned_batch_nearest_site": "epqdaau9",
+    "baseline_nearest_site": "xgj4xftb",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "fhwrjtet",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 486,
+    "side": 640,
+    "assigned_batch_nearest_site": "kbdh4tri",
+    "baseline_nearest_site": "71vgq3fw",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "fspqbkxl",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 754,
+    "side": 640,
+    "assigned_batch_nearest_site": "epqdaau9",
+    "baseline_nearest_site": "x77cy643",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "soo2ax3r",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 758,
+    "side": 640,
+    "assigned_batch_nearest_site": "b3esycq1",
+    "baseline_nearest_site": "tuy3zymq",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  },
+  {
+    "site": "y59rxmxl",
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "raw_crop_x": 3180,
+    "raw_crop_y": 620,
+    "side": 640,
+    "assigned_batch_nearest_site": "iv6g2oq0",
+    "baseline_nearest_site": "ufdvpb81",
+    "linear_logit_contrast_verified": true,
+    "overlay_phase_fractions_match_original_measurements": true
+  }
+]

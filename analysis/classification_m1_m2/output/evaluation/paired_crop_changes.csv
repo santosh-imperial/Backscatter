@@ -1,0 +1,5 @@
+candidate,reference,changed,newly_correct,newly_wrong,balanced_accuracy_delta
+gated_l2,gated_l1,8,3,5,-0.12324929971988807
+gated_lda,gated_l1,8,3,5,-0.12324929971988807
+augmented_l2,gated_l2,8,3,3,0.028011204481792673
+appearance_l2,gated_l2,17,2,8,-0.1456582633053221

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "packet_id": "eddac61ef173ee9aad57a7591fa91372d6cffc9fd2d6b1f85bf63cdedccde059",
+  "rois": [
+    {
+      "id": "D01",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "D02",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "D03",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "D04",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "D05",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "D06",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    }
+  ]
+}

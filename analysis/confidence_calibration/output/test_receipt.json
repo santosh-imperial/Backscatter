@@ -1,0 +1,11 @@
+{
+  "experiment": "E43S",
+  "command": "/opt/anaconda3/bin/python3 -m pytest tests -q",
+  "full_suite_tests_passed": 241,
+  "full_suite_warnings": 15,
+  "full_suite_elapsed_seconds": 188.44,
+  "targeted_tests_passed": 9,
+  "initial_full_suite_tests_passed": 240,
+  "initial_full_suite_elapsed_seconds": 186.99,
+  "initial_run_scope": "Before zero-probability support; followed by complete updated suite."
+}

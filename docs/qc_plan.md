@@ -2,6 +2,15 @@
 
 _Drafted 2026-10-03 after the dataset analysis; revised the same day after external review (see §6). Status: the existing five-primary-KPI path is implemented in `polaron_qc`; §1.1 has a completed standalone morphology OOD audit (E31L) following the provider's clarification; its live feature promotion remains deferred. Where this plan and the code differ, the code is what ran and the difference is noted inline or in `analysis/g_reconcile/audit.md`._
 
+**Dataset-construction qualification (D59S, 2026-10-04):** organisers confirm artificial visual batches
+assembled from crops of around 15 real electrode source images. This plan's supplier narrative describes
+the intended application; these folders do not establish real lot or manufacturing-outcome truth.
+Batch 3 remains the challenge reference. Parent-image/specimen identities are unavailable, so existing
+site-held-out, site-permutation and site-bootstrap results are dependence-qualified crop diagnostics,
+not source-independent accuracy/significance. Parent groups must be isolated in outer and inner folds
+when a mapping arrives; around 15 source images is not a verified independent specimen count. E39S
+adds a separate no-annotation model/appearance audit; current QC inputs/hash remain frozen.
+
 ## 1. What we are producing
 
 | # | Output | Who reads it | Where |
@@ -213,3 +222,28 @@ score columns, without fallback to an acquisition/combined comparator. Fresh out
 E33/v1. Texture remains confounded and no production QC thresholds are changed. V2 was revised after the
 first drop was inspected and before truth; it is declared before final evaluation, not preregistered before
 this first drop. Record label feedback separately before considering a new version.
+
+**Feedback evaluated (E36S/D55S, 2026-10-04):** the organiser swaps the Batch 1/2 bets and confirms Batch 3;
+both preserved primary versions score 1/3 sites. The two wrong v2 bets survive 31/31 training-site deletions.
+[Separate truth and saved-bet evaluation](../analysis/feedback_drop_01/report.md) verify class encoding,
+scores and original artifact hashes. Next, audit mask-dependent input quality on known data with fold-local
+fitting/selection and independent boundary review; the low-contrast query is Batch 2 despite both low-contrast
+training sites being Batch 1. Neither a global label swap nor automatic texture removal/comparator promotion
+is supported. A feedback-informed revision is another version and uses this drop as development evidence;
+the final evaluation remains separate. This recording changes no live QC or classifier inputs.
+
+**E37S / D56S input-quality audit completed:** the standalone dependency policy gates bad/unknown
+phase-dependent classifier values before fitting/selection/scoring, including joint ETD/Inlens selections.
+All 31 sites remain; ten safety regressions pass and the full suite has 183 tests. Known balanced accuracy
+0.569 versus matched v2 0.608 and unchanged labelled failure bets do not support automatic promotion.
+[Coverage and visual review](../analysis/quality_policy_audit/report.html) separate measured inputs from
+imputed baseline terms and preserve post-feedback provenance. Keep v2 as the declared model; pursue
+independent boundary and specimen/session validation. No live extraction, QC threshold or trust role changes.
+
+**E38S / D57S handoff prepared:** independent boundary review now has separate raw-only neutral-ID
+development/held-out pages and a separate first-drop development page, reusing fixed crop coordinates.
+Exports record measurability, independent drawing and prior exposure; fresh-directory evaluation preserves
+E24 artifacts and refuses changed sources. No expert masks are created. All 102 supplied TIFF headers
+over 34 sites lack explicit specimen/preparation/imaging IDs; Santosh confirms no mapping yet. A mapping
+sheet and unsent organiser questions are ready. Actual annotations and grouped validation remain open;
+this preparation does not change the declared v2, feature trust or frozen QC inputs.

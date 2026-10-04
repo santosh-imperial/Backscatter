@@ -1,0 +1,9 @@
+{
+  "experiment": "E36S",
+  "previous_sha256": "ebde857b6b4eb5aa58348041fec39c9570c5b7adea413c5be8d5b987f9c40e0a",
+  "previous_bytes": 11298637,
+  "previous_rows": 37759,
+  "appended_rows": 30,
+  "after_sha256": "a1e75ce5c685d781408309f766d3ff7c9c3412cf2bc207391e5e50c9226b2dde",
+  "historical_prefix_preserved": true
+}

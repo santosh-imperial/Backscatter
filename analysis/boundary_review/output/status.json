@@ -1,0 +1,20 @@
+{
+  "tiff_files": 102,
+  "sites": 34,
+  "known_sites": 31,
+  "first_drop_development_sites": 3,
+  "files_with_possible_grouping_or_settings_keys": 0,
+  "explicit_specimen_ids_available": 0,
+  "explicit_preparation_ids_available": 0,
+  "explicit_imaging_ids_available": 0,
+  "mapping_available": false,
+  "source": "Santosh: no mapping available yet; full TIFF header audit",
+  "grouped_validation_available": false,
+  "independent_annotation_exports_received": 0,
+  "reviewed_phase_masks": 0,
+  "packet_sizes": {
+    "development": 6,
+    "held_out_site": 5,
+    "feedback_development": 3
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "completed_utc": "2026-10-04T12:53:08.703548+00:00",
+  "checks": {
+    "prediction_receipt.json": true,
+    "submission_receipt.json": true,
+    "report_receipt.json": true
+  },
+  "n_sites": 6,
+  "n_images": 18,
+  "primary_features": 29,
+  "max_score_replay_error": 2.4980018054066022e-15,
+  "all_assignments_are_argmax": true,
+  "pairwise_contributions_replayed": true,
+  "old_frozen_files_unchanged": 1219,
+  "input_hashes_unchanged": true,
+  "model_fitted": false,
+  "labels_available": false
+}

@@ -1,0 +1,8 @@
+{
+  "max_score_difference": 0.11660578337296355,
+  "sites_different_above_1e12": [
+    "epqdaau9"
+  ],
+  "changed_bets": 0,
+  "interpretation": "Earlier matched comparator uses anchor ordering; actual frozen v2 selects C=2 at epqdaau9, comparator C=0.5. Preserve both."
+}

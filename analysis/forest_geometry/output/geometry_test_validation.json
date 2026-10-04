@@ -1,0 +1,12 @@
+{
+  "experiment": "E41S",
+  "command": "/opt/anaconda3/bin/python3 -m pytest tests/test_forest_geometry.py -q",
+  "passed": 10,
+  "warnings": 13,
+  "scope": "Quality/rejected-value invariance, explicit coverage, fixed estimands, unique joins, staged drop access, nominal replay/floor convention; no SME validation.",
+  "protected_inputs": 52,
+  "protected_inputs_changed": [],
+  "source_text_snapshots": 11,
+  "new_files_over_20MB": [],
+  "width_visual_QA": "Direct local PNG inspection: actual centreline overlay legible, display expansion labelled."
+}

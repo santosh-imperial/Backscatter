@@ -1,0 +1,13 @@
+variant,group,n_sites,n_correct,n_observed_inputs_min
+legacy_matched,bright_bad,2,2,29
+legacy_matched,ordinary,25,15,29
+legacy_matched,pore_bad,4,4,29
+direct_mask_gate,bright_bad,2,2,17
+direct_mask_gate,ordinary,25,15,29
+direct_mask_gate,pore_bad,4,4,21
+dependency_gate,bright_bad,2,2,10
+dependency_gate,ordinary,25,13,29
+dependency_gate,pore_bad,4,4,13
+quality_flags_only,bright_bad,2,2,2
+quality_flags_only,ordinary,25,13,2
+quality_flags_only,pore_bad,4,4,2

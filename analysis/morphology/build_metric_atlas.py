@@ -63,7 +63,8 @@ TABLE_PATHS = [OUT / "morphology_sites.csv", ROOT / "analysis_cache/site_feature
                ROOT / "analysis/battery/output/void_threshold_envelopes.csv",
                ROOT / "analysis/ml_options/e_graph/sites.csv",
                ROOT / "analysis/ml_options/j_gabor/sites.csv",
-               ROOT / "analysis/morphology/k_pilot/sites.csv"]
+               ROOT / "analysis/morphology/k_pilot/sites.csv",
+               ROOT / "analysis/classification_m1_m2/output/appearance_features.csv"]
 
 
 def digest(path):
@@ -417,6 +418,28 @@ class Atlas:
     def render(self, kind):
         if kind in self.assets:
             return kind
+        if kind == "m2_appearance":
+            # Reuse the measured source panel, not a segmentation proxy or invented map.
+            directory = ROOT / "analysis/classification_m1_m2"
+            path = directory / "assets/appearance_responses_3806gxp0.jpg"
+            receipt = json.loads((directory / "output/appearance_extraction_receipt.json").read_text())
+            panel = next(r for r in receipt["response_maps"] if r["path"] == str(path.relative_to(ROOT)))
+            assert digest(path) == panel["sha256"]
+            diag = pd.read_csv(directory / "output/appearance_diagnostics.csv")
+            row = diag[diag.site == "3806gxp0"].iloc[0]
+            y, x = json.loads(row.tile_origins_raw_yx)[4]
+            for source in receipt["source_images"]["3806gxp0"].values():
+                source_path = ROOT / source["path"]
+                assert digest(source_path) == source["sha256"]
+                self.selected_sources[source["path"]] = source["sha256"]
+            self.input_hashes[str(path.relative_to(ROOT))] = digest(path)
+            self.assets[kind] = dict(data="data:image/jpeg;base64," + base64.b64encode(path.read_bytes()).decode(),
+                batch="Batch_2", site="3806gxp0", channel="BSE + ETD + Inlens",
+                crop=dict(x=x, y_raw=y, y_trimmed=y-int(row.trim_top), width=512, height=512),
+                legend="Actual central tile: raw detector image, G2-G8 response and sigma8 gradient magnitude. Fine-band and gradient maps illustrate the filters, not phase labels. Other band energies and spatial IQR are defined in the evidence files.",
+                kind=kind, note="Saved scalar pools nine fixed windows; measured union coverage is 14.6-19.3% across supplied crops. Image-gradient axes are not plate or coating axes. Gamma sensitivity remains; no classifier or QC promotion.",
+                path=os.path.relpath(path, OUT))
+            return kind
         if kind == "k_morphology":
             return self.render_k_morphology()
         if kind == "gabor_texture":
@@ -760,6 +783,7 @@ def kind_for(metric):
     """Map semantic registry kinds and individual ids to faithful illustrations."""
     key=" ".join([metric["id"],metric.get("visual_kind","")]+metric.get("keys",[])).lower()
     visual=metric.get("visual_kind","")
+    if visual == "m2_appearance":return "m2_appearance"
     if visual == "k_morphology":return "k_morphology"
     if visual == "gabor_texture":return "gabor_texture"
     if visual == "bright_graph": return "bright_graph"
@@ -877,7 +901,8 @@ def card(metric, asset, atlas, index):
         heading="Battery implication / hypothesis"+(" · "+checks if checks else "")
         battery_paragraph=f'<p class="battery-hypothesis"><strong>{heading}</strong><br>{esc(metric.get("battery_implication","Interpretation pending materials review."))} <a href="../../../docs/battery_microstructure_review.md">Battery review and check definitions</a>.</p>'
     display_note=asset["note"]
-    saved_heading = "Saved site summary (four sampled windows)" if asset["kind"] == "gabor_texture" else "Saved full-site example"
+    saved_heading = ("Saved site summary (four sampled windows)" if asset["kind"] == "gabor_texture" else
+                     "Saved crop summary (nine sampled windows)" if asset["kind"] == "m2_appearance" else "Saved full-site example")
     if metric["id"]=="saltykov_unfolded_size_distribution":
         display_note="Figure shows observed 2-D input sizes only. No cached unfolded 3-D distribution or scalar is asserted in this atlas."
     body=f'''<article class="metric-card" id="{esc(metric["id"])}" data-family="{esc(metric.get("family","Other"))}" data-role="{esc(role)}" data-status="{esc(status)}" data-evidence="{esc(evidence)}" data-search="{esc(search.lower())}">
@@ -925,7 +950,9 @@ def main():
         material_context=f'<p><strong>Confirmed material premise:</strong> {esc(premise)} The image masks still do not distinguish Si from SiOx, resolve binder/carbon black, validate 3-D geometry, or measure cycling history, transport or battery performance. Battery implications on cards are hypotheses for expert review, with <a href="../../../docs/battery_microstructure_review.md">battery check definitions</a>.</p>'
     baseline=register.get("supplier_baseline_confirmation")
     if baseline:
-        material_context+=f'<p><strong>Confirmed supplier baseline:</strong> {esc(baseline["statement"])} <a href="../../../docs/qc_plan.md">D49P morphology OOD extension</a> is planned, not activated; current roles and expert-review states below are unchanged. Distribution evidence does not require proof of battery harm, but still needs measurement, acquisition and alert validation.</p>'
+        material_context+=f'<p><strong>Challenge reference:</strong> {esc(baseline["statement"])} <a href="../../../docs/qc_plan.md">D49P morphology OOD extension</a> is planned, not activated; current roles and expert-review states below are unchanged. Distribution evidence does not require proof of battery harm, but still needs measurement, acquisition and alert validation.</p>'
+    if register.get("dataset_construction"):
+        material_context+=f'<p><strong>Crop provenance / dependence (D59S):</strong> {esc(register["dataset_construction"]["interpretation"])} Crop-held-out scores do not establish source-held-out accuracy or independent specimen counts.</p>'
     assert metrics and len({m["id"] for m in metrics})==len(metrics)
     atlas=Atlas(); cards=[];coverage=[]
     for i,m in enumerate(metrics,1):

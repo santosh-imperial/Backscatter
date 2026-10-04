@@ -1,0 +1,43 @@
+{
+  "experiment": "E41S",
+  "version": "E41S-geometry-v1",
+  "known_sites": 31,
+  "variant_rows": 124,
+  "fixed8": [
+    "bright_aspect_count_iqr",
+    "bright_circularity_count_iqr",
+    "bright_solidity_count_q10",
+    "void_local_width_d50_px",
+    "void_local_width_d90_px",
+    "graph_edge_length_iqr_ratio",
+    "local_bright_std_512px",
+    "bright_pore_crosscorr_xy_contrast_256px"
+  ],
+  "cache_reuse": "Exact compatible E24/E25/E26G/E30K definitions; receipts bind current reused tables and historical source/raw provenance",
+  "binding_checks": {
+    "shape:polaron_qc/features.py": true,
+    "shape:analysis/morphology/k_pilot/descriptors.py": true,
+    "graph:polaron_qc/features.py": true,
+    "graph:analysis/ml_options/e_graph/graph.py": true,
+    "width:analysis/morphology/benchmark/local_width_sites.csv": true,
+    "width:analysis/morphology/benchmark_methods.py": true,
+    "width_ast:retained_voids": true,
+    "width_ast:local_width": true,
+    "window_source_function_AST_equal": true,
+    "all_31_raw_BSE_hashes_match_five_historical_manifests": true
+  },
+  "fresh_nominal_example_cells": 32,
+  "fresh_nominal_matches": 32,
+  "inputs_unchanged": true,
+  "known_outputs_ready": true,
+  "elapsed_seconds": 19.435859458055347,
+  "output_hashes": {
+    "analysis/forest_geometry/output/geometry_known_threshold_minus5_gated.csv": "76850307bbf1d936d6f6b6abe1d88947d0c9c7f5182b38a49dd0a3fe9ac7c36e",
+    "analysis/forest_geometry/output/geometry_known_availability.csv": "392a607d38de491cc4664f1522b4f01c7242d6257add59a389ecc6b9c8f2c73a",
+    "analysis/forest_geometry/output/geometry_known.csv": "088e3e7e1b62b78aab9e8c9cd2193378b4882a6a6b1d4018d4ea78e9971e7932",
+    "analysis/forest_geometry/output/geometry_known_threshold_plus5_gated.csv": "02b92490a1515fc074e45813b8a695a17782d43e13ce40b977cbb41d6d40869b",
+    "analysis/forest_geometry/output/geometry_known_nominal_gated.csv": "cd1fdb05ef652f7c481d106b07c61d094e7f2a6c45a86e3d45dbd837961b3409",
+    "analysis/forest_geometry/output/geometry_known_variants.csv": "c2e0b0669793234635379b6d904e7b99f5dc159f6910b13d704feec76b787d9f",
+    "analysis/forest_geometry/output/geometry_known_floor100_gated.csv": "eb36ef37aa0717add85979dc112b3876fb76a84896875a2457d6d08f45e785f7"
+  }
+}

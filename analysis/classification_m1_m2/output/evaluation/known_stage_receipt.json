@@ -1,0 +1,32 @@
+{
+  "experiment": "E39S",
+  "sources_sha256": {
+    "analysis/classification_m1_m2/appearance.py": "a50cfab54da2c853524e45e981e8190250855da14ab41c139ff730c5bafadde9",
+    "analysis/classification_m1_m2/build_report.py": "003f1db18f672b72c7b2009361ca0295037f3c34239b442e0c0c61d9c786c1e4",
+    "analysis/classification_m1_m2/extract.py": "21bab95975e4b9ff5d36f76a9468e6a9be504c0c366368122e7532dbfc2abe53",
+    "analysis/classification_m1_m2/models.py": "19d8efcf71032d92a94655d41b0b34fc6ac8f9aa01d1b4a7050962887d725b8f",
+    "analysis/classification_m1_m2/run.py": "a740a20b6abe72ecb59cf8a1db93ba6aba84f8327977156932a664fe4269d8c5",
+    "analysis/classification_m1_m2/protocol.md": "8e2e559520c203eff0c9652e848d827b9fb8016b9e88979e6565e3bd459847b8",
+    "analysis/quality_policy_audit/policy.py": "df6a0edbecf9c1ba390bacbd8328c73bc8d6fcefb2e45fbdb6bfe177760ce329",
+    "tests/test_classification_m1_m2.py": "415d3cc53fe99fd217613ed77594e2f3f8813e8f11f8650381f914c7ab75f336",
+    "tests/test_appearance_features.py": "a800b4eeb287f8a16427b0f998de069a200c0f1a7610b8d578a735f05d72fc1b"
+  },
+  "known_sha256": "14eaa72f6355d9adb74f4beb8bcbc272ebb79114e3efec8c0ad80e0ffa866237",
+  "appearance_sha256": "5f9c311b3a546849006b199ed29d2261fb39bc67113b012ac652a6d4232990ea",
+  "n_crops": 31,
+  "preserved_comparator_reproduction": {
+    "legacy_l1": {
+      "max_score_difference": 8.326672684688674e-17,
+      "matches": true
+    },
+    "gated_l1": {
+      "max_score_difference": 8.326672684688674e-17,
+      "matches": true
+    }
+  },
+  "first_drop_used_for_fitting": false,
+  "independent_parent_count": null,
+  "validation": "crop-LOO development diagnostic; unknown shared-parent leakage",
+  "permutation_p_values_reported": false,
+  "intervals_reported": false
+}

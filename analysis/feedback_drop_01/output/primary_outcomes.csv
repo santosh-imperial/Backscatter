@@ -1,0 +1,4 @@
+model_record,family,role,sample_id,true_batch,predicted_batch,correct,top_model_score,true_batch_model_score,deletion_same_assignment,deletion_fit_count,acquisition_flags,baseline_morphology_percentile
+D52_frozen_v2,material,declared v2 primary,3e122cbj,Batch_2,Batch_1,False,0.8382111985191647,0.0832193759071868,31,31,bright_low_contrast,100.0
+D52_frozen_v2,material,declared v2 primary,fn0mhxef,Batch_1,Batch_2,False,0.4955662470553389,0.3342086087205347,31,31,none of listed flags,17.647058823529413
+D52_frozen_v2,material,declared v2 primary,xrv9xvzb,Batch_3,Batch_3,True,0.6217864109386801,0.6217864109386801,31,31,contrast_stretched_bse,17.647058823529413

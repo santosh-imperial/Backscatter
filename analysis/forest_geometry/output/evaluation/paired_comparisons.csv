@@ -1,0 +1,6 @@
+candidate,reference,changed,newly_correct,newly_wrong,balanced_accuracy_delta
+base_rf,base_l1,12,5,6,-0.10364145658263318
+geometry_l1,base_l1,5,2,3,-0.04761904761904767
+geometry_rf,base_rf,1,0,1,-0.04761904761904756
+geometry_rf,base_l1,11,4,6,-0.15126050420168075
+geometry_rf,legacy_l1,7,1,5,-0.1904761904761904

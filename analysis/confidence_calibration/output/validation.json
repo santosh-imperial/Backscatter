@@ -1,0 +1,16 @@
+{
+  "experiment": "E43S",
+  "paired_models_replayed": 465,
+  "inner_score_vectors_replayed": 930,
+  "nested_scalars_replayed": 31,
+  "deployment_scalar_replayed": true,
+  "preprocessing_max_error": 0.0,
+  "score_replay_max_error": 0.0,
+  "scalar_replay_max_error": 1.1102230246251565e-16,
+  "sklearn_loss_max_error": 8.881784197001252e-16,
+  "protected_artifacts_verified": 704,
+  "raw_files_verified": 102,
+  "validator_sha256": "949eecd74707cf1acf3f44a6ef90b9a46513895d0bb9337e942aba8715503491",
+  "all_bets_unchanged": true,
+  "promotion_gate_passed": false
+}

@@ -1,0 +1,305 @@
+{
+  "completed_utc": "2026-10-04T12:50:44.775118+00:00",
+  "images": [
+    {
+      "file": "img_0eryguqq_BSE.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_0eryguqq_ETD.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_0eryguqq_Inlens.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_4hq27w4c_BSE.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 2148,
+      "colour_bbox_xyxy": [
+        6999,
+        0,
+        6999,
+        2147
+      ],
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_4hq27w4c_ETD.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 2148,
+      "colour_bbox_xyxy": [
+        6999,
+        0,
+        6999,
+        2147
+      ],
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_4hq27w4c_Inlens.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 2148,
+      "colour_bbox_xyxy": [
+        6999,
+        0,
+        6999,
+        2147
+      ],
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fhwrjtet_BSE.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fhwrjtet_ETD.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fhwrjtet_Inlens.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        1612,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fspqbkxl_BSE.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fspqbkxl_ETD.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_fspqbkxl_Inlens.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2148,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_soo2ax3r_BSE.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2156,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_soo2ax3r_ETD.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2156,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_soo2ax3r_Inlens.tif",
+      "rgb_planes_identical": true,
+      "shape": [
+        2156,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 0,
+      "colour_bbox_xyxy": null,
+      "all_colour_at_edge": true,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_y59rxmxl_BSE.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        1880,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 3760,
+      "colour_bbox_xyxy": [
+        0,
+        0,
+        1,
+        1879
+      ],
+      "all_colour_at_edge": false,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_y59rxmxl_ETD.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        1880,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 3760,
+      "colour_bbox_xyxy": [
+        0,
+        0,
+        1,
+        1879
+      ],
+      "all_colour_at_edge": false,
+      "frozen_loader": "uses plane 0 without change"
+    },
+    {
+      "file": "img_y59rxmxl_Inlens.tif",
+      "rgb_planes_identical": false,
+      "shape": [
+        1880,
+        7000,
+        3
+      ],
+      "dtype": "uint8",
+      "finite_pixels": true,
+      "differing_colour_pixels": 3760,
+      "colour_bbox_xyxy": [
+        0,
+        0,
+        1,
+        1879
+      ],
+      "all_colour_at_edge": false,
+      "frozen_loader": "uses plane 0 without change"
+    }
+  ]
+}

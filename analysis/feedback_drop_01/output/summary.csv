@@ -1,0 +1,7 @@
+model_record,family,role,n_sites,n_correct,accuracy
+E33_original_v1,combined,original submitted primary; scores rounded,3,1,0.3333333333333333
+E34R_frozen_v1,combined,independent v1 replay; same three sites,3,1,0.3333333333333333
+D52_frozen_v2,morph,saved comparator; not selected using truth,3,1,0.3333333333333333
+D52_frozen_v2,acq,saved comparator; not selected using truth,3,2,0.6666666666666666
+D52_frozen_v2,material,declared v2 primary,3,1,0.3333333333333333
+D52_frozen_v2,combined,saved comparator; not selected using truth,3,1,0.3333333333333333

@@ -1,0 +1,13 @@
+{
+  "experiment": "E36S",
+  "decision": "D55S",
+  "received_date": "2026-10-04",
+  "source": "Challenge organiser, relayed directly by Santosh in this chat",
+  "verbatim_response": "Great features you're heading towards, well done! 1 and 2 are swapped, 3 is correct.",
+  "mapping_basis": "Interpret the response against the frozen E33 submission: the Batch 1 and Batch 2 bets are exchanged, and the Batch 3 bet is correct. No separate organiser filename-to-label file was supplied.",
+  "submitted_order": ["3e122cbj", "fn0mhxef", "xrv9xvzb"],
+  "labels": {"3e122cbj": "Batch_2", "fn0mhxef": "Batch_1", "xrv9xvzb": "Batch_3"},
+  "label_scope": "Batch identity only; no phase-mask, manufacturing-defect or battery-performance labels",
+  "evaluation_scope": "Original v1 bets were frozen before feedback. D52 v2 was revised after first-drop inspection and before feedback, so its comparison is not an untouched pre-arrival test.",
+  "future_use": "Any feedback-informed revision makes this drop development evidence for that revision. Preserve existing predictions and use a separate model version."
+}

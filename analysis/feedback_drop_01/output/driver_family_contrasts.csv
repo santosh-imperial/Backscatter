@@ -1,0 +1,7 @@
+sample_id,assigned_batch,comparison_batch,true_batch,comparison_is_truth,family,contribution_sum,intercept_difference
+3e122cbj,Batch_1,Batch_2,Batch_2,True,morphology,2.359961668683241,-0.1733182310165603
+3e122cbj,Batch_1,Batch_2,Batch_2,True,acquisition-sensitive appearance,2.671472904388551,-0.1733182310165603
+fn0mhxef,Batch_2,Batch_1,Batch_1,True,morphology,1.401994830916965,0.1733182310165603
+fn0mhxef,Batch_2,Batch_1,Batch_1,True,acquisition-sensitive appearance,-0.7339033984335365,0.1733182310165603
+xrv9xvzb,Batch_3,Batch_2,Batch_3,False,morphology,1.2050713671995448,0.7797272783182414
+xrv9xvzb,Batch_3,Batch_2,Batch_3,False,acquisition-sensitive appearance,-0.028826299442177322,0.7797272783182414

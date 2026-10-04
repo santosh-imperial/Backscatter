@@ -1,0 +1,1 @@
+site_a,site_b,detector,patch,a_y,a_x,b_y,b_x,height,width,valid,passed,pearson,spearman,exact_pixel_fraction,affine_gain_b_from_a,affine_offset_b_from_a,affine_residual_target_sd,std_a,std_b,reason

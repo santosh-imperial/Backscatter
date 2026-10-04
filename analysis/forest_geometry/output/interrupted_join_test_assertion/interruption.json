@@ -1,0 +1,4 @@
+{
+  "reason": "Stopped before forest results after new test used numpy DataFrame comparison instead of ndarray assertion; implementation unchanged, assertion corrected. Preserve partial L1 artifacts; fixed complete trial rerun in fresh evaluation directory.",
+  "selected_or_retuned_using_partial_scores": false
+}

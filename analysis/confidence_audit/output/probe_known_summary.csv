@@ -1,0 +1,2 @@
+n_sites,n_correct,accuracy,balanced_accuracy,recall_Batch_1,recall_Batch_2,recall_Batch_3,balanced_logloss,balanced_brier,candidate,C_values,full_fit_C,n_features
+31,16,0.5161290322580645,0.39775910364145656,0.2857142857142857,0.14285714285714285,0.7647058823529411,0.9660664251821728,0.5993004591331991,geometry_l2,0.1,0.1,37

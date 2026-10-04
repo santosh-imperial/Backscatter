@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "checks": {
+    "model_sources_match": true,
+    "original_submission_artifacts_unchanged": true,
+    "extraction_inputs_match": true,
+    "all_raw102_tiffs_unchanged": true,
+    "extraction_sources_match": true,
+    "source_audit_valid": true,
+    "registry_historical_prefix_unchanged": true,
+    "known_score_mapping": true,
+    "known_crop_counts": true,
+    "feedback_score_mapping": true,
+    "feedback_crop_counts": true,
+    "saved_fits_reproduce_feedback": true,
+    "known_oof_linear_attributions_sum": true,
+    "feedback_development_linear_attributions_sum": true,
+    "all24_registered_experimental": true,
+    "only_five_existing_primary_metrics": true,
+    "report_images_decode": true,
+    "report_local_links_exist": true,
+    "new_artifacts_under20mb": true
+  },
+  "full_suite": {
+    "command": "MPLCONFIGDIR=/private/tmp/polaron-e39-mpl /opt/anaconda3/bin/python3 -m pytest tests -q",
+    "passed": 215,
+    "warnings": 15,
+    "wall_seconds": 195.87
+  },
+  "scientific_charts_visually_inspected": true,
+  "response_panels_inspected_by_extractor": true,
+  "atlas_build_and_synthetic_controls_passed": true,
+  "native_browser_layout_verified": false,
+  "source_parent_ids_available": false,
+  "true_source_heldout_validation_available": false,
+  "submission_promotion": false,
+  "human_annotation_count": 0,
+  "protected_artifact_count": 142,
+  "registered_metric_count": 112,
+  "feedback_input_hashes": {
+    "analysis/submission_v2/first_run/scored/features.csv": "007875ef5aa2aabababfa910a65aae381ec8657e7f6e20d3e17149a7a5466ef9",
+    "analysis/feedback_drop_01/truth.json": "bba516a7fb390331d20e5c34ab5eb768c89e2614f4cf219c42fe2c30f464cb47"
+  },
+  "delivery_artifact_hashes": {
+    "analysis/classification_m1_m2/report.html": "d2ea29b50e98375b5c1f4cf0f2595e08ce77047f12e27a89db10668aff5cb107",
+    "analysis/classification_m1_m2/findings.md": "07d679262e2ad0a19c037e3b8235f70b75cf3e03e50567e7e0d7e09ab0416bd2",
+    "analysis/classification_m1_m2/README.md": "427aa8d0c6b4eb9b0e64701101de69a4aa1db4e1181ef7c3b21cc32068830117",
+    "docs/assumption_register.html": "68fb5d90faf540dad4dcd05a7a38b82d32319c6805accc9954f22182b92f8067",
+    "analysis/morphology/output/metric_atlas.html": "5bedad7df1d32da8720268dc6e304c43d1c96177bd1c1a2c7305f468dd50dde3",
+    "analysis/morphology/metric_register.json": "3222be03d987607027cdbe212d8427cccf919581ad97ffdd24043555a19f0e3c"
+  },
+  "peer_review": "No consequential fitting/mapping/attribution error; as-run independent_unit metadata explicitly qualified as observation unit in README",
+  "checklist": [
+    "C04",
+    "C05",
+    "C06",
+    "C09",
+    "C14",
+    "C16",
+    "C17",
+    "C18",
+    "C21",
+    "C28",
+    "C29",
+    "C30",
+    "C33R",
+    "C34S",
+    "C35S",
+    "C39S"
+  ]
+}

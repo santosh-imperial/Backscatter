@@ -1,5 +1,14 @@
 # Site categoriser and baseline-membership assessment (`polaron_qc.categorise`)
 
+**Provenance update (D59S, 2026-10-04):** organisers confirm artificial visual batches
+formed from crops of around15 real electrode source images. Batch 3 remains the challenge
+reference; these are not verified supplier lots. Parent IDs are unavailable, so related
+crops may cross site-LOO folds. The historical scores/p-values/intervals below are
+dependence-qualified crop diagnostics, not source-held-out performance or independent
+specimen uncertainty. E39S's fixed M1/M2 candidates do not support replacing v2;
+[the full comparison](../classification_m1_m2/findings.md) records negative results.
+E40S recovers no pixel-overlap components and cannot rule out non-overlapping related crops.
+
 Three **separate** answers per sample (sample = one site = one BSE/ETD/Inlens image set), never conflated:
 
 1. **Site categorisation** — "does this sample resemble Batch 1, 2 or 3?" A 3-class model over the known
@@ -177,6 +186,29 @@ The `material` family includes acquisition-sensitive appearance, whose material 
 The version-bound scorer/composer at `analysis/submission_v2/` preserves known-only fitted models and the
 matching v2 reliability evidence, requires the declared primary without fallback, and preserves E33/v1.
 Use that workflow for final evaluation. Label feedback is evaluated against saved bets before any new version.
+
+### 1.9 First-drop labels and stable misclassification (E36S/D55S, 2026-10-04)
+
+Organiser feedback relayed by Santosh swaps the original Batch 1/2 bets and confirms Batch 3:
+`3e122cbj → Batch_2`, `fn0mhxef → Batch_1`, `xrv9xvzb → Batch_3`. This mapping interprets
+the response against the frozen submission; no separate filename-label file was supplied.
+Original v1 and v2 primary outcomes are both **1/3 sites (33.3%)**. The v2 scores remain
+0.8382/0.4956/0.6218 on the assigned classes, and all assignments remain unchanged on 31/31
+training-site deletions, including both mistakes. Stability is not correctness confidence.
+
+Saved class encoding and prediction columns reproduce, with no demonstrated label inversion.
+The first error uses several particle-interior descriptors from its unreliable bright mask;
+the labelled low-contrast query is Batch 2, disproving exclusivity of that acquisition pattern to
+Batch 1. The second error is driven chiefly by pore descriptors resembling known Batch 2 sites.
+Morphology-only makes the same swaps (1/3); acquisition-only corrects the second query (2/3), a
+post-feedback diagnostic that does not justify promoting that comparator. There is no isolated
+texture-cause finding. Scores remain uncalibrated and specimen independence unresolved.
+
+[Truth and reproducible saved-bet evaluation](../feedback_drop_01/report.md) preserve every original
+prediction/model/report. Audit mask-dependent input quality on known data before a new version;
+feedback-informed revisions must treat this drop as development evidence. No live model or QC
+threshold changes here. V2 was revised after first-drop inspection and is not an untouched
+pre-arrival evaluation; the final evaluation remains separate.
 
 ## 2. Setup and provenance
 

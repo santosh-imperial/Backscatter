@@ -1,0 +1,34 @@
+{
+  "experiment": "E37S",
+  "version": "quality-policy-audit-E37S-v1",
+  "tests": {
+    "targeted_passed": 10,
+    "full_passed": 183,
+    "full_seconds": 178.19
+  },
+  "protected_original_artifacts": 142,
+  "all_saved_artifact_hashes_match": true,
+  "final_renderer_snapshot_matches": true,
+  "serialized_models_reproduce_failure_predictions": true,
+  "known_input_cells": {
+    "total": 899,
+    "observed": 797,
+    "unavailable": 102
+  },
+  "nested_site_permutations": 200,
+  "registry_appended_rows": 181,
+  "historical_registry_prefix_preserved": true,
+  "numerical_known_and_failure_tables_source_verified": true,
+  "report_embedded_images": 3,
+  "full_site_overlay_fractions_verified": 5,
+  "reviewed_phase_masks": 0,
+  "coverage_confusions_and_five_boundary_panels_visually_inspected": true,
+  "atlas_verified": {
+    "metrics": 88,
+    "bound_images": 92
+  },
+  "source_snapshot_preserved": true,
+  "renderer_changed_after_fits_only_for_prose_and_columns": true,
+  "no_live_package_or_frozen_submission_change": true,
+  "candidate_promoted": false
+}

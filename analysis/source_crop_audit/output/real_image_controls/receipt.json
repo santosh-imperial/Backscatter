@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "selected_site": "b3esycq1",
+  "selection": "minimum_BSE_file_SHA256_no_label_or_visual_screening",
+  "source_paths": {
+    "BSE": "Dataset/Batch_2/img_b3esycq1_BSE.tif",
+    "ETD": "Dataset/Batch_2/img_b3esycq1_ETD.tif",
+    "Inlens": "Dataset/Batch_2/img_b3esycq1_Inlens.tif"
+  },
+  "source_sha256": {
+    "BSE": "01e83352c90c1a77bf2e8d216651d2b1cb747257b22b4cbc2e8c7c4ccaa485d5",
+    "ETD": "d01394a58d801249909c8401349efdfda8b8b018c0d1b6349468335273048f77",
+    "Inlens": "c078f946f4951d34fccfbd081f2f08250678d0b4c049bd2d4a3b4fb3c48b325b"
+  },
+  "source_code_sha256": {
+    "analysis/source_crop_audit/control_real.py": "a39ec6dc2cf5b283fff163b8df70f0aeac2ba1a9d4eb550c53a1db279e4fbb01",
+    "analysis/source_crop_audit/control_real_protocol.md": "25bff3bbb50f2f4698df94ad1eb11512e28331d305db8dba89cee8d5617205d6",
+    "analysis/source_crop_audit/run.py": "23e9759bc19cb625a22c936471d84196570bf51bb040e110cdc83caecceba021",
+    "analysis/source_crop_audit/match.py": "9d9b38ade1af0bd69beeaa32708d8f3d80754c56122dc82efbc94cdc616bc069"
+  },
+  "expected_translation": [
+    93,
+    233
+  ],
+  "recovered_translation": [
+    93,
+    233
+  ],
+  "source_crop_a": {
+    "y": 160,
+    "x": 500,
+    "height": 800,
+    "width": 2200
+  },
+  "source_crop_b": {
+    "y": 253,
+    "x": 733,
+    "height": 800,
+    "width": 2200
+  },
+  "synthetic_transform_b": {
+    "gain": 0.65,
+    "offset": 31,
+    "quantisation": "nearest_integer_uint8_no_clipping"
+  },
+  "coarse_ncc": 0.9938264581570596,
+  "candidate_gate_passed": true,
+  "fine_central_ncc": 0.9998077852181201,
+  "all_nine_checks_passed": true,
+  "shuffled_negative_max_coarse_ncc": 0.09403174591853852,
+  "negative_seed": 419,
+  "raw_sources_unchanged": true,
+  "organiser_source_mapping_validated": false,
+  "limitation": "Constructed control confirms one relationship; no recall estimate on unknown source crops."
+}

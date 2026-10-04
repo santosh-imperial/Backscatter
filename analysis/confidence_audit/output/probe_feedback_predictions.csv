@@ -1,0 +1,4 @@
+candidate,site,true_batch,predicted_batch,correct,n_observed_inputs,C,score_Batch_1,score_Batch_2,score_Batch_3
+geometry_l2,3e122cbj,Batch_2,Batch_1,False,12,,0.5917780861656612,0.19918679235104791,0.20903512148329084
+geometry_l2,fn0mhxef,Batch_1,Batch_1,True,37,,0.47165600661505863,0.3886799693002283,0.13966402408471312
+geometry_l2,xrv9xvzb,Batch_3,Batch_3,True,37,,0.11735394724791837,0.10457477902288968,0.7780712737291919

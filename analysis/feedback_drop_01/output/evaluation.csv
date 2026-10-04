@@ -1,0 +1,19 @@
+model_record,family,role,sample_id,true_batch,predicted_batch,correct,top_model_score,true_batch_model_score
+E33_original_v1,combined,original submitted primary; scores rounded,3e122cbj,Batch_2,Batch_1,False,0.765,0.147
+E33_original_v1,combined,original submitted primary; scores rounded,fn0mhxef,Batch_1,Batch_2,False,0.451,0.403
+E33_original_v1,combined,original submitted primary; scores rounded,xrv9xvzb,Batch_3,Batch_3,True,0.742,0.742
+E34R_frozen_v1,combined,independent v1 replay; same three sites,3e122cbj,Batch_2,Batch_1,False,0.7654625928514553,0.1474621231258414
+E34R_frozen_v1,combined,independent v1 replay; same three sites,fn0mhxef,Batch_1,Batch_2,False,0.4511994358464621,0.4031623153528611
+E34R_frozen_v1,combined,independent v1 replay; same three sites,xrv9xvzb,Batch_3,Batch_3,True,0.7424352098388114,0.7424352098388114
+D52_frozen_v2,morph,saved comparator; not selected using truth,3e122cbj,Batch_2,Batch_1,False,0.6280149406204957,0.0535697965693825
+D52_frozen_v2,morph,saved comparator; not selected using truth,fn0mhxef,Batch_1,Batch_2,False,0.4832753729498402,0.1767023881209136
+D52_frozen_v2,morph,saved comparator; not selected using truth,xrv9xvzb,Batch_3,Batch_3,True,0.5912236645995894,0.5912236645995894
+D52_frozen_v2,acq,saved comparator; not selected using truth,3e122cbj,Batch_2,Batch_1,False,0.7443887353856294,0.1248409906429823
+D52_frozen_v2,acq,saved comparator; not selected using truth,fn0mhxef,Batch_1,Batch_1,True,0.7288529449520414,0.7288529449520414
+D52_frozen_v2,acq,saved comparator; not selected using truth,xrv9xvzb,Batch_3,Batch_3,True,0.8001052551480178,0.8001052551480178
+D52_frozen_v2,material,declared v2 primary,3e122cbj,Batch_2,Batch_1,False,0.8382111985191647,0.0832193759071868
+D52_frozen_v2,material,declared v2 primary,fn0mhxef,Batch_1,Batch_2,False,0.4955662470553389,0.3342086087205347
+D52_frozen_v2,material,declared v2 primary,xrv9xvzb,Batch_3,Batch_3,True,0.6217864109386801,0.6217864109386801
+D52_frozen_v2,combined,saved comparator; not selected using truth,3e122cbj,Batch_2,Batch_1,False,0.9269711509273714,0.0589013382160522
+D52_frozen_v2,combined,saved comparator; not selected using truth,fn0mhxef,Batch_1,Batch_2,False,0.5074680540049411,0.4888962899792959
+D52_frozen_v2,combined,saved comparator; not selected using truth,xrv9xvzb,Batch_3,Batch_3,True,0.9810079641086228,0.9810079641086228

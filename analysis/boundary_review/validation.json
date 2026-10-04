@@ -1,0 +1,27 @@
+{
+  "experiment": "E38S",
+  "after_roi_clipping_correction": true,
+  "commands": [
+    {
+      "command": "/opt/anaconda3/bin/python3 -m pytest tests/test_boundary_review.py -q",
+      "passed": 8,
+      "seconds": 1.8
+    },
+    {
+      "command": "MPLCONFIGDIR=/private/tmp/polaron-boundary-mpl /opt/anaconda3/bin/python3 -m pytest tests -q",
+      "passed": 191,
+      "seconds": 190.91,
+      "warnings": 15
+    },
+    {
+      "command": "/opt/anaconda3/bin/python3 -m analysis.boundary_review.verify_ui",
+      "passed": true,
+      "fixture": "synthetic DOM; no real human annotations"
+    }
+  ],
+  "real_development_blank_export_scored_rows": 0,
+  "real_feedback_blank_export_scored_rows": 0,
+  "held_out_unreleased_import_refused": true,
+  "actual_expert_labels_created": false,
+  "browser_layout_verified": false
+}
