@@ -1,7 +1,7 @@
 {
- "built_utc": "2026-10-04T12:11:29+00:00",
- "git": "8b58b72-dirty",
- "builder_sha256": "40d691d1b5dddc1ebd6bcebd34232858243f30c49b45d22ae4de1f7d7e70d357",
+ "built_utc": "2026-10-04T12:26:44+00:00",
+ "git": "c2b857a-dirty",
+ "builder_sha256": "08aefb252bc608b94fc1780b29997ef26d06841fa691f0d355e5bfec2570c95a",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
   "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
@@ -28,8 +28,9 @@
   "ui/bundles/lot_Batch_1/img/lot_f1vzngrs_bright.jpg": "8bf52bd67c0e1a231410756d3039d96c08d27fa931d259ec789f815e1ff337f1",
   "ui/bundles/lot_Batch_1/img/lot_f1vzngrs_voids.jpg": "f7e762f97a8e736d3dc83168e7d05e3a54e82e3804ae198f2fb7ff4838a5ee1c",
   "analysis/signatures/fig_signature_crops.png": "395d322feaaa70e34288da520e725e5bfd717478c84b272e3d42204601da75a3",
-  "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef"
+  "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef",
+  "analysis/signatures/fig_signature_strips.png": "c36baf85df8fcf5330298bdfbecd48b45643e18b9e1df714a99ce2649eadbd5a"
  },
- "output_sha256": "651482f182241209ee160dd65d61f61089ade11d26ac19c59d8117a1df3caf34",
- "size_mb": 1.15
+ "output_sha256": "c16d69d202c9ba6a808be79ec98c2166c1e973174d46f5a829c4c512909799eb",
+ "size_mb": 1.26
 }
