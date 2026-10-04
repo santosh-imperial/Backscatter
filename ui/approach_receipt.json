@@ -1,6 +1,6 @@
 {
- "built_utc": "2026-10-04T12:26:44+00:00",
- "git": "c2b857a-dirty",
+ "built_utc": "2026-10-04T12:27:00+00:00",
+ "git": "736a5d6",
  "builder_sha256": "08aefb252bc608b94fc1780b29997ef26d06841fa691f0d355e5bfec2570c95a",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
@@ -31,6 +31,6 @@
   "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef",
   "analysis/signatures/fig_signature_strips.png": "c36baf85df8fcf5330298bdfbecd48b45643e18b9e1df714a99ce2649eadbd5a"
  },
- "output_sha256": "c16d69d202c9ba6a808be79ec98c2166c1e973174d46f5a829c4c512909799eb",
+ "output_sha256": "83128393a6426a77dc8f26c0afea0ae9eb8a5350d13909837be3c4f8f827bbc8",
  "size_mb": 1.26
 }
