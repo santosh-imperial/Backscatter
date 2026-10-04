@@ -1,7 +1,7 @@
 {
- "built_utc": "2026-10-04T11:34:54+00:00",
+ "built_utc": "2026-10-04T11:37:31+00:00",
  "builder": "ui-1.0.0",
- "git": "066c52a-dirty",
+ "git": "e8dd014",
  "template_sha256": "c60ef343961b64ed6971770ea0ac60531069ac37cbe1ee1bac75f9ea30c86eba",
  "builder_sha256": "8d1a268bf255e2c542720b4e2970fb8f2a557a57a4f1dbbb854e8d28ec0d4523",
  "inputs_sha256": {
@@ -17,6 +17,6 @@
   "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a"
  },
  "output": "ui/index.html",
- "output_sha256": "a6038615c389748ac6d975b9eee263bad7a9c01045b3404bc47d275d4ff60f44",
+ "output_sha256": "fb2f6714e9b4f9b979260d3a2215631e9a4487609ca2a07222589413c5c3d16a",
  "size_mb": 7.98
 }
