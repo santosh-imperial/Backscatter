@@ -236,7 +236,7 @@ TABS_CSS = """<style>.apptabs{display:flex;gap:6px;align-items:center;padding:10
 def tabs(active: str, extra: str = "", sticky: bool = False) -> str:
     a = lambda href, label, key: f'<a href="{href}"{" aria-current=page" if key == active else ""}>{label}</a>'
     return (TABS_CSS + f'<div class="apptabs{" sticky" if sticky else ""}" role="navigation" aria-label="Sections"><span class="mark">Backscatter</span>' + a("/inspect", "Inspect a lot", "inspect")
-            + a("/built", "How it was built", "built") + f'<span class="who">{extra}</span></div>')
+            + a("/approach", "Our approach", "approach") + a("/built", "How it was built", "built") + f'<span class="who">{extra}</span></div>')
 
 
 def with_tabs(html: str, active: str, extra: str = "", sticky: bool = False) -> str:
@@ -252,6 +252,14 @@ def root():
 @app.get("/inspect", response_class=HTMLResponse)
 def inspect_page():
     return with_tabs((HERE / "inspect.html").read_text(encoding="utf-8"), "inspect", "Local server · frozen rules b4f4da2e357c", sticky=True)
+
+
+@app.get("/approach", response_class=HTMLResponse)
+def approach_page():
+    p = ROOT / "ui" / "approach.html"
+    if not p.exists():
+        raise HTTPException(404, "ui/approach.html has not been built (python -m app.build_approach)")
+    return with_tabs(p.read_text(encoding="utf-8"), "approach", "How the model and workflow were built", sticky=True)
 
 
 @app.get("/built", response_class=HTMLResponse)

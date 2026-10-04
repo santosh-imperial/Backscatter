@@ -143,3 +143,17 @@ def test_export_review_option_parses_like_the_report_cli():
     assert _parse_reviews(["4ih2ggld:crack_frac=yes", "f1vzngrs:pore_max_d=no"]) == {("4ih2ggld", "crack_frac"): True, ("f1vzngrs", "pore_max_d"): False}
     src = open(os.path.join(ROOT, "app", "export_lot.py")).read()
     assert '"--review"' in src and "image_reviewed=reviews" in src
+
+
+@pytest.mark.skipif(not os.path.exists(os.path.join(BUNDLES, "lot_Batch_1", "baseline.json")), reason="UI bundles not exported locally")
+def test_approach_page_builds_from_saved_files_with_sources(tmp_path):
+    from app import build_approach
+    out = tmp_path / "approach.html"
+    build_approach.main(["--out", str(out)])
+    page = out.read_text()
+    for sid in ("s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"):
+        assert f'id="{sid}"' in page
+    assert "b4f4da2e357c" in page and "0.608" in page and "D52" in page
+    assert " accept" not in page.lower() and " confidence" not in page.lower()
+    receipt = json.load(open(tmp_path / "approach_receipt.json"))
+    assert len(receipt["inputs_sha256"]) >= 20 and receipt["size_mb"] < 4

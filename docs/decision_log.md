@@ -407,6 +407,12 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
   - The "bet was wrong" callout is neutral. Verdict red is not reused for track-record outcomes.
 - **Addendum 2 (same day):** a quality abstention is shown in neutral graphite with an image-quality icon and the lead "The images are not enough to judge the lot". The frozen verdict label is unchanged. Amber stays for investigate verdicts, because an abstention calls for re-imaging, not supplier escalation.
 
+### D59U · 2026-10-04 · "Our approach" tab: model and workflow rationale, built from saved evidence
+- **Decision (Santosh):** add a third tab explaining how the model and workflow were built, why, and how they integrate into the product. It is a visual story for judges, and it is not about how the interface was built. Claude drafts the narrative; Santosh approves it.
+- **How:** `app/build_approach.py` reads the lot bundles, the frozen evaluation and snapshot, the registry and the frozen thresholds. It embeds existing figures and bundle overlays, cites a D/E ID for each claim, rejects forbidden wording and writes a receipt of input hashes.
+- **Why:** judges score interpretability and honesty. The rationale (traps found, alternatives rejected, limits) is part of the product's credibility, and every number must trace to an artefact.
+- **Alternatives rejected:** hand-written slides with typed numbers (drift risk); linking only to notebooks (too deep for a demo).
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.

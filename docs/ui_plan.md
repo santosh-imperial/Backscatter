@@ -393,3 +393,31 @@ The static page still works on its own if the server fails.
 - **Small fixes.** The theme button keeps a fixed label with a correct pressed state. History pills have 4 px
   padding. On an abstention the KPI panel is titled "Where the lot sits". Captions wrap on phones.
 
+## 11. Our approach (D59U)
+
+A third tab, **Our approach**, explains how the model and the workflow behind Backscatter were built, why this is the
+right implementation, and how it plugs into the product. It does not describe how the interface was built.
+`python -m app.build_approach --feedback <feedback folder> --out ui/approach.html --replace` builds it. The server
+serves it at `/approach`. The tabs are: Inspect a lot · Our approach · How it was built.
+
+The page has eight sections:
+
+1. The question and the data
+2. What the data taught us before any model: contrast stretching, low-contrast segmentation, the Inlens confound
+   and baseline heterogeneity
+3. Features: the five primary KPIs on the image, and what was measured but not promoted
+4. The decision model, with a workflow diagram and observed shift against detectable shift
+5. The resemblance model: feature families, the nested test, the confusion matrix, appearance crops, and a link to
+   the Categoriser v2 method note
+6. Outcomes, including the first drop at 1 of 3
+7. How it plugs into the product: the runtime diagram and an on-screen → source table
+8. Why this design: a table of each choice → the rejected alternative → the evidence
+
+How it's built:
+
+- **Numbers.** Every number is read from saved files: the bundles, the frozen evaluation and snapshot, the registry
+  and `Thresholds`.
+- **Images.** Every image is an existing repository figure or bundle overlay. The receipt hashes 24 inputs.
+- **Sources.** Each claim cites its decision or experiment ID.
+- **Status.** The narrative is Claude's draft, **pending Santosh's approval**.
+

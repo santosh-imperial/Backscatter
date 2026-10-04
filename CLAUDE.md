@@ -48,6 +48,7 @@ app/                     customer QC interface (D56U): export_lot.py (lot / samp
                          (one self-contained ui/index.html; reads saved bundles only). ui/bundles/ holds exported bundles
                          server.py + inspect.html: local inspection server (D57U), `python -m app.server` → 127.0.0.1:8770;
                          runs land in inspections/, large lots can be dropped in inbox/ (both git-ignored)
+                         build_approach.py → ui/approach.html: the "Our approach" tab (D59U), every number read from saved files
 reports/                 qc_Batch_1.html, qc_Batch_2.html — the per-batch judge-facing reports written by notebook 02 / the CLI
 analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small); analysis_cache/features/
                          is notebook 02's content-hashed parquet cache (ignored by version control); analysis_cache/ml/ holds the exploratory embeddings (committed)

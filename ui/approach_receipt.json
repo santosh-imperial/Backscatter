@@ -1,0 +1,33 @@
+{
+ "built_utc": "2026-10-04T11:47:27+00:00",
+ "git": "9f30884-dirty",
+ "builder_sha256": "3d595ecda7dc3e8fe682c8cddd54821d762e53e97a3d127a9ba9ce411a847a56",
+ "inputs_sha256": {
+  "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
+  "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
+  "ui/bundles/lot_Batch_1/baseline.json": "82435a650e7b653457851630cb2b3f273e3680ee4522def3ecf37851ed8c94c3",
+  "ui/bundles/samples_drop01/samples.json": "766b05763e3e7cf0787aaed4164624a177d7a2b7e1ee2674bdaa78477de70f40",
+  "analysis/submission_v2/freeze/evaluation/categoriser_summary.csv": "0df8e24989e4543a2c24310cc4dd29a0607e351a33f9fa08093823224e2fb81f",
+  "analysis/submission_v2/freeze/evaluation/confusion_material.csv": "f66857a7d5474f663201bce5377bdc9be56c3e740c78f3bc42a6244541b2b2f5",
+  "analysis/submission_v2/freeze/snapshot.json": "f11e25dc9d5261de87e01216689010f9ecb65b5be2ff633e95dfd50f5cb96386",
+  "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a",
+  "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/truth.csv": "76f1feb50a7c042314f627fc281235b042c471e6c4a0ebcd7d06cc7998a73b9b",
+  "analysis/assets/img_pl8uabbv_BSE.jpg": "bffdd61dda749fd2d2db9767a08068695973624237860430f24e2cf3b7240224",
+  "analysis/assets/img_pl8uabbv_ETD.jpg": "aabfe0884f9e6597e5ba16e6669cf5397ec0a523a605d7925620db275c5513b7",
+  "analysis/assets/img_pl8uabbv_Inlens.jpg": "10ef2d9359071887eb4daa65f10c6efe8f1bb24ba3d3b1ff727ec982f4e6d86f",
+  "analysis/morphology/output/atlas_assets/acquisition_histogram.jpg": "63a2318731e5a47a34b0f507586035b349b990e94a754e55b525427519102dcd",
+  "analysis/morphology/benchmark/rois/Batch_1_4ih2ggld_baseline.png": "1a83416a2cd733654ad1ab92325f46492167b800a5cd1a78833b5879a7c114c8",
+  "analysis/morphology/benchmark/rois/Batch_1_f1vzngrs_baseline.png": "1da0ff39f58a9c5c06618b663acfdf18cb687c399f24a1c4f9533d261e870853",
+  "analysis/e20_inlens/figures/strips_by_batch.png": "b2c2329cd99d036bc8591ec1c53d6a5fef270c27eb2f49156933eb5910983890",
+  "analysis/e20_inlens/figures/variant_vs_inlens_p50.png": "9e63f024c757fab9712911d332ff7c5b785f9aa3099d6bdb067177149149b814",
+  "ui/bundles/lot_Batch_1/img/ref_71vgq3fw_voids.jpg": "ad942466c4f9326f5e93f405511798492e201e080a363eb2ad32efa28899e33f",
+  "ui/bundles/lot_Batch_1/img/ref_hzumfsms_voids.jpg": "7f8fa9827aaf19730e31d7ac9248cc30a645f77f103608ff120dc81860a50b98",
+  "ui/bundles/lot_Batch_1/img/crop_0_4ih2ggld_crack_frac.jpg": "d9e0848b65fddc362483006a125647f486271cb6d5fd8a1ba67e2556da68fdf9",
+  "ui/bundles/lot_Batch_1/img/lot_f1vzngrs_bright.jpg": "8bf52bd67c0e1a231410756d3039d96c08d27fa931d259ec789f815e1ff337f1",
+  "ui/bundles/lot_Batch_1/img/lot_f1vzngrs_voids.jpg": "f7e762f97a8e736d3dc83168e7d05e3a54e82e3804ae198f2fb7ff4838a5ee1c",
+  "analysis/signatures/fig_signature_crops.png": "395d322feaaa70e34288da520e725e5bfd717478c84b272e3d42204601da75a3",
+  "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef"
+ },
+ "output_sha256": "3bc78bd840c0ba198666f316e07cf564bc00c7a8d4b5347c3fb883e502cc7eee",
+ "size_mb": 1.15
+}
