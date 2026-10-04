@@ -96,7 +96,7 @@ th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
 <main id="main">
   <header style="display:flex;flex-direction:column;gap:6px">
     <div class="row" style="justify-content:space-between"><h1>Inspect a lot</h1><span class="row"><button class="primary" id="newbtn" hidden>New inspection</button><button class="themebtn" id="theme" aria-pressed="false">Dark mode</button></span></div>
-    <p class="sub">Add the SEM cross-sections of an incoming electrode lot. The tool compares them with the approved baseline, Batch 3, using frozen rules and a frozen model, then opens the lot review.</p>
+    <p class="sub">Add the SEM cross-sections of an incoming electrode lot. The tool compares them with an approved baseline using frozen rules and a frozen model, then opens the lot review. In this demo the baseline is Batch 3, the challenge reference.</p>
   </header>
 
   <section class="card" aria-labelledby="new-h" id="new">
@@ -187,7 +187,7 @@ $("inbox").addEventListener("change", e => {
   const opt = e.target.selectedOptions[0];
   const nSites = +opt.dataset.sites, lotMode = document.querySelector("input[name=mode]:checked").value === "lot";
   $("checks").innerHTML = `<li>${icon("ok", "ok")}<span>Inbox folder <span class="mono">${esc(v)}</span>: ${esc(opt.dataset.desc)}. The server checks every image when the run starts.</span></li>`
-    + (lotMode && nSites < 5 ? `<li>${icon("warn", "warn")}<span>${nSites} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button></span></li>` : "");
+    + (lotMode && nSites < 5 ? `<li>${icon("warn", "warn")}<span>${nSites} sites is fewer than the 5 sites the frozen rules need in a lot, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button></span></li>` : "");
 });
 
 /* ---------- check in the browser before anything uploads ---------- */
@@ -213,7 +213,7 @@ function renderChecks() {
     h += li(a.incomplete.length ? "bad" : "ok", a.incomplete.length ? `Missing or duplicate detector images for ${a.incomplete.map(esc).join(", ")}. Each site needs one BSE, one ETD or SE and one Inlens image.` : "Every site has one BSE, one ETD and one Inlens image");
     if (a.known.length) h += li("bad", `Site IDs from the training set: ${a.known.slice(0, 4).map(esc).join(", ")}${a.known.length > 4 ? " and more" : ""}. Backscatter inspects new lots only.`);
     if (a.bad.length) h += li("bad", `File names the tool cannot read: ${a.bad.slice(0, 3).map(esc).join(", ")}${a.bad.length > 3 ? " and more" : ""}. Use img_&lt;site&gt;_&lt;detector&gt;.tif.`);
-    if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button>`);
+    if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is fewer than the 5 sites the frozen rules need in a lot, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button>`);
     h += li("queued", "The server also checks image format and that no image or site comes from the training set.");
   }
   $("checks").innerHTML = h;

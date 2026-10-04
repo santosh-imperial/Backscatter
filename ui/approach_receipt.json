@@ -1,7 +1,7 @@
 {
- "built_utc": "2026-10-04T12:27:54+00:00",
- "git": "f35471a",
- "builder_sha256": "e801c043a98b5ea499ced9e05a68dda90ea083043292ebf8798e3246b9550e1a",
+ "built_utc": "2026-10-04T12:51:30+00:00",
+ "git": "99b8d4d-dirty",
+ "builder_sha256": "7d67b8aa7a6acda8ca59b0556f91f6d9a95f914ceb6d7eca2222bccd0a374577",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
   "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
@@ -13,7 +13,7 @@
   "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a",
   "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/truth.csv": "76f1feb50a7c042314f627fc281235b042c471e6c4a0ebcd7d06cc7998a73b9b",
   "analysis/submission_v2/freeze/evaluation/kruskal_context.csv": "3af4fdd4fd9e160f0faf76ae96e618bb683cfd221a0a354fd8dc93350c7324c7",
-  "analysis/morphology/metric_register.json": "248df2ce988924cf74977130d2728c33f4ee6253c981a3849cdf833604b2c33c",
+  "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/morphology/metric_register.json": "0ffc973a7fc90997427314158c158984cfed1dcce35cc63e59c67465ee36e509",
   "analysis/assets/img_pl8uabbv_BSE.jpg": "bffdd61dda749fd2d2db9767a08068695973624237860430f24e2cf3b7240224",
   "analysis/assets/img_pl8uabbv_ETD.jpg": "aabfe0884f9e6597e5ba16e6669cf5397ec0a523a605d7925620db275c5513b7",
   "analysis/assets/img_pl8uabbv_Inlens.jpg": "10ef2d9359071887eb4daa65f10c6efe8f1bb24ba3d3b1ff727ec982f4e6d86f",
@@ -29,8 +29,11 @@
   "ui/bundles/lot_Batch_1/img/lot_f1vzngrs_voids.jpg": "f7e762f97a8e736d3dc83168e7d05e3a54e82e3804ae198f2fb7ff4838a5ee1c",
   "analysis/signatures/fig_signature_crops.png": "395d322feaaa70e34288da520e725e5bfd717478c84b272e3d42204601da75a3",
   "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef",
-  "analysis/signatures/fig_signature_strips.png": "c36baf85df8fcf5330298bdfbecd48b45643e18b9e1df714a99ce2649eadbd5a"
+  "analysis/signatures/fig_signature_strips.png": "c36baf85df8fcf5330298bdfbecd48b45643e18b9e1df714a99ce2649eadbd5a",
+  "ui/bundles/samples_drop01/img/smp_3e122cbj_voids.jpg": "d7f0816a19db1660d141ffef1d976599b689ccec0feb8c41b7e8b8bfb69dcc58",
+  "ui/bundles/samples_drop01/img/smp_fn0mhxef_voids.jpg": "929f4ff0b3fac1b98ecc7aaae67f147d47c99493c993a96cd8ef24f035dd58ca",
+  "ui/bundles/samples_drop01/img/smp_xrv9xvzb_voids.jpg": "7df1bdb01becd20a1266c574fb960b74f8e4f9317341ff7c9f091ee1bfa10905"
  },
- "output_sha256": "1154caf6b7b503a347b50df99487c5a962c52090e8df9be2672348e8ce6a171a",
- "size_mb": 1.26
+ "output_sha256": "52a159cc2ff5ff16a72385ae6c78892804943f2ffdb072786ed85a016b96a8dd",
+ "size_mb": 1.36
 }

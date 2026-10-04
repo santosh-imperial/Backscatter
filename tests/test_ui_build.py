@@ -157,3 +157,36 @@ def test_approach_page_builds_from_saved_files_with_sources(tmp_path):
     assert " accept" not in page.lower() and " confidence" not in page.lower()
     receipt = json.load(open(tmp_path / "approach_receipt.json"))
     assert len(receipt["inputs_sha256"]) >= 20 and receipt["size_mb"] < 4
+
+
+@pytest.mark.skipif(not os.path.exists(os.path.join(BUNDLES, "lot_Batch_1", "baseline.json")), reason="UI bundles not exported locally")
+def test_approach_page_keeps_the_merged_review_corrections(tmp_path):
+    """docs/merged_qc_review.md (2026-10-04): judged answer first, artificial batches, unresolved texture cause,
+    the implemented abstention rule, exploratory labels and no session-memorisation claim."""
+    from app import build_approach
+    out = tmp_path / "approach.html"
+    build_approach.main(["--out", str(out)])
+    page = out.read_text()
+    text = re.sub(r"<[^>]+>", " ", page.split("<body", 1)[1])
+    assert page.index('id="s0"') < page.index('id="s1"') < page.index('id="s7"')
+    assert "The scores are uncalibrated" in text and "artificial batches" in text
+    assert "do not identify confirmed supplier lots" in text and "No agreed production tolerances" in text
+    assert "Texture depends on image conditions" in text
+    assert "fewer than 5 sites" in text
+    for gone in ("memoris", "about six", "88 descriptors"):
+        assert gone not in text.lower(), gone
+    for para in re.findall(r"<p[ >].*?</p>", page.split("<body", 1)[1], re.S):  # STE prose: paragraphs only
+        for sent in _sentences(" ".join(re.sub(r"<[^>]+>", " ", para).split())):
+            assert len(re.findall(r"[A-Za-z][A-Za-z0-9-]*", sent)) <= 25, sent
+
+
+def test_abstention_checklist_mirrors_the_implemented_rule():
+    """The checklist must name the rule that fired (decision.quality_abstention), not a per-KPI shortage."""
+    src = open(os.path.join(ROOT, "app", "ui_template.html")).read()
+    body = src[src.index("function abstentionReasons"):]
+    body = body[:body.index("\n}\n")]
+    assert "The rules need 5 for every primary KPI" not in src
+    # the three cases of decision.quality_abstention: site count, every primary KPI short, majority flagged
+    for cue in ("n < T.min_usable_sites", "usable.every(u => u < T.min_usable_sites)", "low.length > n / 2", "grey.length > n / 2"):
+        assert cue in body, cue
+    assert decision.Thresholds().min_usable_sites == 5

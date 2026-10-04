@@ -128,7 +128,7 @@ def check_input(folder: Path, mode: str) -> dict:
     note = ""
     from polaron_qc.decision import Thresholds
     if mode == "lot" and len(sites) < Thresholds().min_usable_sites:
-        note = (f"{len(sites)} sites is below the {Thresholds().min_usable_sites} usable sites the frozen rules need, "
+        note = (f"{len(sites)} sites is fewer than the {Thresholds().min_usable_sites} sites the frozen rules need in a lot, "
                 "so expect a quality abstention.")
     return {"sites": sites, "images": len(rows), "note": note}
 

@@ -263,7 +263,7 @@ const PRIM = () => DATA.primary_kpis;
 const REVIEW = {unreviewed: "pending", confirmed: "confirmed", refuted: "refuted"};
 const sent = t => { const x = cap(plain(t)).trim(); return /[.!?]$/.test(x) ? x : x + "."; };
 const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
-const plain = s => String(s || "").replace(/\bBatch_(\w+)/g, "Batch $1").replace(/working reference/g, "approved baseline").replace(/ordinary-reference/g, "ordinary-baseline")
+const plain = s => String(s || "").replace(/\bBatch_(\w+)/g, "Batch $1").replace(/working reference/g, "baseline").replace(/ordinary-reference/g, "ordinary-baseline")
   .replace(/the reference null/g, "the baseline null").replace(/\bthis batch\b/g, "this lot").replace(/clean batches/g, "lots drawn from the baseline").replace(/see MDC for/g, "see the detectable shift for");
 const ICON = {
   ok: '<path d="M5 12.5l4.2 4.2L19 7"/>',
@@ -290,7 +290,7 @@ function nav(active) {
   const st = l => `<span style="color:var(--${l.verdict_state === "abst" ? "muted" : l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject", abst: "not judged"}[l.verdict_state])}</span>`;
   const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
   let h = `<div class="brand">Backscatter<small>Incoming electrode lot QC from SEM cross-sections</small></div>`;
-  h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:var(--base)"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
+  h += `<div class="navgroup"><h2>Baseline</h2>${a("baseline", `<span class="dot" style="background:var(--base)"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
   if (real.length) h += `<div class="navgroup"><h2>${DATA.inspection ? "Inspected lot" : "Incoming lots"}</h2>${real.map(l => a(l.id, `<span class="dot" style="background:${l.color}"></span>${esc(bname(l.lot))}<span class="st">${st(l)}</span>`)).join("")}</div>`;
   if (DATA.samplesets.length) h += DATA.inspection && real.length
     ? `<div class="navgroup"><h2>This lot</h2>${DATA.samplesets.map(s => a(s.id, "Per-site resemblance")).join("")}</div>`
@@ -444,12 +444,12 @@ function laneModel(l) {
        <p class="note">A sensitivity analysis. A difference between views does not measure an instrument share. Flags come from this lot's own images.</p>`},
   ];
   if (l.outcome.quality_abstention) {
-    const usable = l.usable_n ? Math.min(...PRIM().map(k => l.usable_n[k][1])) : 0;
-    const na = `Not assessable at ${usable} usable site${usable === 1 ? "" : "s"}`;
+    const why = abstentionReasons(l).list.map(x => x.short).join("; ") || "too few usable sites";
+    const na = "Not assessable";
     lanes.slice(0, 3).forEach((ln, i) => {
-      ln.state = na; ln.icon = "dash"; ln.role = "Shown for reference; too few usable sites to judge.";
+      ln.state = na; ln.icon = "dash"; ln.role = `Shown for reference: ${why}.`;
       if (i === 0) ln.kv = mdcs.length ? `would only detect ≥ ${f(Math.min(...mdcs), 2)} MAD` : "detectable shift not available";
-      ln.body = `<p class="callout plain">With ${usable} usable site${usable === 1 ? "" : "s"} these values cannot support a decision. They are shown for reference only.</p>` + ln.body;
+      ln.body = `<p class="callout plain">The rules cannot judge this lot: ${esc(why)}. These values are shown for reference only.</p>` + ln.body;
     });
   }
   lanes.forEach(ln => { ln.sets = /^Sets the action/.test(ln.role); });
@@ -484,7 +484,7 @@ function lotView(l) {
   const dt = decisionText(l, nearest);
   let h = l.fixture ? `<p class="fixture-banner" role="note">Layout fixture. These values are altered copies of a known lot to show this verdict state. They are not results.</p>` : "";
   h += `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:${l.color};width:14px;height:14px"></span>${esc(bname(l.lot))}</h1>
-    <p class="sub">Incoming lot against approved baseline ${esc(bname(l.reference))}. ${l.sites.length} sites imaged, baseline ${l.meta.n_sites_ref} sites.</p>
+    <p class="sub">${l.fixture || DATA.inspection ? "Incoming lot" : "Known batch"} compared with the baseline, ${esc(bname(l.reference))}. ${l.sites.length} sites imaged, baseline ${l.meta.n_sites_ref} sites.</p>
     <p class="note">${exTxt ? `Excluded by quality flags: <span class="mono">${esc(exTxt)}</span>.` : "Every lot site counts for every primary KPI."}</p></header>`;
   h += `<section class="card decision" aria-labelledby="act-h">
     <div class="verdictbox ${l.verdict_state}"><h2 class="sr" id="act-h">Recommended action</h2>
@@ -510,14 +510,26 @@ function lotView(l) {
   return h;
 }
 
+/* Mirrors polaron_qc.decision.quality_abstention: fewer than min_usable_sites sites in the lot, every primary KPI
+   below min_usable_sites usable sites, or low contrast / grey pores on more than half of the sites. */
+function abstentionReasons(l) {
+  const T = DATA.thresholds, n = l.sites.length, out = [];
+  const usable = PRIM().map(k => l.usable_n ? l.usable_n[k][1] : 0);
+  const low = l.sites.filter(s => s.bright_low_contrast), grey = l.sites.filter(s => s.grey_pore);
+  if (n < T.min_usable_sites) out.push({key: "n", short: `the lot has ${n} site${n === 1 ? "" : "s"}; the rules need ${T.min_usable_sites}`,
+    fix: `Image at least ${T.min_usable_sites - n} more site${T.min_usable_sites - n > 1 ? "s" : ""}. The rules need ${T.min_usable_sites} sites in a lot; this lot has ${n}.`});
+  if (usable.every(u => u < T.min_usable_sites)) out.push({key: "kpi", short: `every primary KPI has fewer than ${T.min_usable_sites} usable sites`,
+    fix: `Image more sites that pass the quality checks. Every primary KPI has fewer than ${T.min_usable_sites} usable sites.`});
+  if (low.length > n / 2) out.push({key: "low", short: "most sites have low bright-phase contrast",
+    fix: `Re-acquire the low-contrast sites (${low.map(s => s.site).join(", ")}). More than half of the sites have low bright-phase contrast.`});
+  if (grey.length > n / 2) out.push({key: "grey", short: "most sites have a raised black level",
+    fix: `Re-acquire the grey-pore sites (${grey.map(s => s.site).join(", ")}). More than half of the sites have a raised black level.`});
+  return {list: out, low: low.filter(() => !(low.length > n / 2)).map(s => s.site)};
+}
 function abstentionChecklist(l) {
-  const T = DATA.thresholds;
-  const usable = l.usable_n ? Math.min(...PRIM().map(k => l.usable_n[k][1])) : 0;
-  const need = Math.max(0, T.min_usable_sites - usable);
-  const low = l.sites.filter(s => s.bright_low_contrast).map(s => s.site);
-  const items = [];
-  if (need) items.push(`Image at least ${need} more site${need > 1 ? "s" : ""} that pass the quality checks. Now ${usable} usable; the rules need ${T.min_usable_sites} for every primary KPI.`);
-  if (low.length) items.push(`Re-acquire ${low.join(", ")} with better contrast. ${low.length > 1 ? "Their" : "Its"} bright-phase values do not count.`);
+  const r = abstentionReasons(l);
+  const items = r.list.map(x => x.fix);
+  if (r.low.length) items.push(`If possible, re-acquire ${r.low.join(", ")} with better contrast. ${r.low.length > 1 ? "Their" : "Its"} bright-phase values do not count.`);
   const last = DATA.inspection
     ? `<a class="linkbtn" href="/inspect?name=${encodeURIComponent(l.lot)}">Start a new inspection</a> with all sites of the lot.`
     : "Start a new inspection with all sites of the lot.";
@@ -629,7 +641,7 @@ function workbench(l, nearest, lanes) {
     </div>
     <div class="panel">
       <div class="controls"><h2>${l.outcome.quality_abstention ? "Where the lot sits" : "What drives it"}</h2>
-        ${l.outcome.quality_abstention ? `<p class="callout plain">Too few usable sites: none of these shifts can be assessed. They are shown for reference only.</p>` : ""}
+        ${l.outcome.quality_abstention ? `<p class="callout plain">The rules cannot judge this lot, so none of these shifts can be assessed. They are shown for reference only.</p>` : ""}
         <p class="note">Select a KPI to show its overlay and the lot site furthest from the baseline median.</p>
         <div class="kpis"><div aria-hidden="true" style="padding:0 8px">${shiftAxis()}</div>${rows}</div>
         <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for five KPIs; 1.000 means no evidence of a shift.</p></div>
@@ -682,7 +694,7 @@ function footer(parts, extra) {
 /* ------------------------------------------------------------------ sample set view */
 function samplesView(s) {
   let h = `<header class="head"><h1 tabindex="-1" id="h1">${esc(s.name)}</h1>
-    <p class="sub">Each sample gets the known supplier lot it most resembles. A sample set gets no lot verdict, because its samples can come from different lots.</p>
+    <p class="sub">Each sample gets the known batch it most resembles. A sample set gets no lot verdict, because its samples can come from different lots.</p>
     <p class="note">Model <span class="mono">${esc(s.model_version)}</span>, morphology plus acquisition-sensitive appearance. Scores are uncalibrated. The deletion count shows how often the same bet survives when one training site is removed. It measures sensitivity to the training set, not the chance that the bet is right.</p></header>`;
   h += `<div class="samples">${s.samples.map(x => sampleCard(s, x)).join("")}</div>`;
   return h + footer([`model ${esc(s.model_version)}`, `model sha256 ${esc(String(s.model_sha256).slice(0, 16))}`, `source snapshot ${esc(String(s.source_snapshot_sha256).slice(0, 16))}`, `scored ${esc(s.scored_utc)}`]);
@@ -736,7 +748,7 @@ function sampleCard(set, x) {
 function baselineView() {
   const b = DATA.baseline;
   let h = `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:var(--base);width:14px;height:14px"></span>${esc(bname(b.reference))}</h1>
-    <p class="sub">The supplier's approved baseline: ${b.n_sites} sites, ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}.
+    <p class="sub">The baseline for this challenge: ${b.n_sites} sites, ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}.
     It is heterogeneous, so every comparison uses robust statistics and keeps these groups visible.</p></header>`;
   h += `<section class="card"><h2>Five primary KPIs across the baseline sites</h2>${PRIM().map(k => `<div class="controls"><h3>${esc(KLAB[k])} <span class="mono note">${k}, ${KUNIT[k]}, trust ${esc(b.trust[k])}</span></h3>
       ${strip(k, b.values, null)}</div>`).join("")}${stripLegend(null, false)}${valuesTable(PRIM()[0], b.values, null, [])}</section>`;
@@ -758,7 +770,7 @@ function trackView() {
   const right = ss.filter(x => x.truth.true_batch === x.bet).length;
   let h = `<header class="head"><h1 tabindex="-1" id="h1">Track record</h1>
     <p class="lead">${ss.length ? `${right} of ${ss.length} first-drop samples were assigned to the right lot. ` : ""}Balanced accuracy on the 31 known sites is ${f(prim.balanced_accuracy, 3)}, where chance is 0.33.</p>
-    <p class="note">Development results and three organiser labels. They are not new-session accuracy.</p></header>`;
+    <p class="note">Development results on the available crops and three organiser labels. Related crops can share a source image, so these results do not establish accuracy on new source images.</p></header>`;
   if (!DATA.inspection) h += `<section class="card"><h2>Lot verdicts on the known lots</h2><div class="tw"><table><thead><tr><th>Lot</th><th>Verdict</th><th class="n">Energy p</th><th class="n">Detectable shift</th><th class="n">Stability</th></tr></thead><tbody>
     ${DATA.lots.filter(l => !l.fixture).map(l => { const m = PRIM().map(k => l.mdc[k] && l.mdc[k].mdc_mad).filter(isNum);
       return `<tr><td>${esc(bname(l.lot))}</td><td>${esc(l.verdict_label)}</td><td class="n">${fp(l.energy.p)}</td><td class="n">${f(Math.min(...m), 2)}–${f(Math.max(...m), 2)} MAD</td><td class="n">${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs}</td></tr>`; }).join("")}</tbody></table></div>
@@ -782,9 +794,9 @@ function trackView() {
         return `<li><span class="mono">${esc(x.sample_id)}</span>: ${flagList(x.flags).length ? `${esc(flagList(x.flags).join(", "))}, a combination of quality and lot that the 31 known sites never showed.` : "no quality flag explains this miss."} Largest contributions: ${d.slice(0, 2).map(r => esc(r.feature)).join(" and ")}.</li>`; }).join("")}</ul></section>`;
   }
   if (DATA.loco && DATA.loco.length) {
-    h += `<section class="card"><h2>Does the model memorise imaging sessions?</h2><div class="tw"><table><thead><tr><th>Check</th><th class="n">Value</th><th>Note</th></tr></thead><tbody>
+    h += `<section class="card"><h2>Holding out acquisition clusters (exploratory)</h2><div class="tw"><table><thead><tr><th>Check</th><th class="n">Value</th><th>Note</th></tr></thead><tbody>
       ${DATA.loco.map(r => `<tr><td>${esc(r.statistic)}</td><td class="n">${esc(bname(String(r.value).replace(";", ", ")))}</td><td class="note">${esc(plain(r.note))}</td></tr>`).join("")}</tbody></table></div>
-      <p class="note">Holding out whole acquisition clusters keeps balanced accuracy near the value for one site left out at a time (E35). This is a weak test on 31 sites. Real session metadata would replace it.</p></section>`;
+      <p class="note">Each test holds out one cluster of crops with similar acquisition statistics (E35). The clusters are not confirmed sessions, and related crops can share a source image. The result describes the available crops. It does not establish accuracy on new source images.</p></section>`;
   }
   return h + footer(["frozen evaluation analysis/submission_v2/freeze/evaluation", "registry E35"]);
 }
@@ -797,15 +809,16 @@ function overviewView() {
   const ss = DATA.samplesets.flatMap(x => x.samples.filter(y => y.truth)), right = ss.filter(y => y.truth.true_batch === y.bet).length;
   const consistent = lots.filter(l => l.verdict_state === "ok");
   return `<header class="head"><h1 tabindex="-1" id="h1">How Backscatter was built</h1>
-    <p class="sub">Backscatter compares an incoming electrode lot with the supplier's approved baseline, using rules and a model frozen before any unseen lot arrived. This tab is the development record behind it.</p></header>
+    <p class="sub">Backscatter compares an incoming electrode lot with an approved baseline, using rules and a model frozen before any unseen lot arrived. This tab is the development record behind it.</p>
+    <p class="note">The challenge data are ${b.n_sites + lots.reduce((a, l) => a + l.sites.length, 0)} crops from about 15 electrode images. The organisers arranged them into three artificial batches, and Batch 3 is the challenge reference. The batches are not confirmed supplier lots, and we do not know which crops share a source image. No production limits are available.</p></header>
   <section class="card"><h2>From baseline to decision</h2><div class="overview">
-    <div class="step"><span class="note">1 · Approved baseline</span><span class="big">${b.n_sites} sites</span><p class="note">${esc(bname(b.reference))}: ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}. Heterogeneous, so every comparison uses robust statistics.</p><a href="#baseline">See the baseline</a></div>
+    <div class="step"><span class="note">1 · Baseline (challenge reference)</span><span class="big">${b.n_sites} sites</span><p class="note">${esc(bname(b.reference))}: ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}. Heterogeneous, so every comparison uses robust statistics.</p><a href="#baseline">See the baseline</a></div>
     <div class="step"><span class="note">2 · Frozen rules</span><span class="big">${PRIM().length} KPIs</span><p class="note">Measured on BSE masks per site. Four lanes sit beside one recommended action; no rule combines them. Thresholds <span class="mono">${esc(DATA.thresholds.hash)}</span>.</p><a href="#method">How a lot is judged</a></div>
     <div class="step"><span class="note">3 · Track record</span><span class="big">${ss.length ? `${right} of ${ss.length}` : f(prim.balanced_accuracy, 3)}</span><p class="note">${ss.length ? `First-drop samples assigned to the right lot. ` : ""}Per-site balanced accuracy on the 31 known sites: ${f(prim.balanced_accuracy, 3)}, where chance is 0.33.</p><a href="#track">See the track record</a></div>
   </div></section>
   <section class="card"><h2>What the known lots show</h2><div class="ste">
     <p>${consistent.length === lots.length && lots.length ? `${lots.map(l => esc(bname(l.lot))).join(" and ")} are both consistent within detectable limits` : "The known lots are judged"} on the five defect-relevant KPIs at ${lots.length ? lots[0].sites.length : "n/a"} sites each. At that size the smallest shift the rules detect with 80 % power is ${mdc.length ? `${f(Math.min(...mdc), 2)}–${f(Math.max(...mdc), 2)} MAD` : "not available"}, so not detected does not mean unchanged.</p>
-    <p>The per-site fingerprint still separates the lots better than chance (balanced accuracy ${f(prim.balanced_accuracy, 3)}, permutation p ${fp(prim.perm_p)}). Morphology alone does not (${f(morph ? morph.balanced_accuracy : NaN, 3)}); the separation needs appearance features that are sensitive to how the images were acquired.</p></div>
+    <p>On the available crops, the per-site fingerprint separates the batches better than chance (balanced accuracy ${f(prim.balanced_accuracy, 3)}, permutation p ${fp(prim.perm_p)}). This is exploratory: related crops can share a source image, so it does not establish accuracy on new source images. Morphology alone does not (${f(morph ? morph.balanced_accuracy : NaN, 3)}); the separation needs appearance features that are sensitive to how the images were acquired.</p></div>
     <div class="evlinks">${lots.map(l => `<a href="#${l.id}">Lot review: ${esc(bname(l.lot))}</a>`).join("")}${DATA.samplesets.map(x => `<a href="#${x.id}">${esc(x.name)}</a>`).join("")}<a href="#baseline">Approved baseline</a><a href="#track">Track record</a><a href="#method">Method and provenance</a></div></section>
   ${footer([`thresholds ${esc(DATA.thresholds.hash)}`])}`;
 }
@@ -852,7 +865,7 @@ function render(focus) {
   if (lot && h.kpi && PRIM().includes(h.kpi)) ST[lot.id] = {kpi: h.kpi, site: h.site, view: h.view || KVIEW[h.kpi], cmp: h.cmp};
   if (lot) { html = lotView(lot); title = bname(lot.lot); }
   else if (set) { html = samplesView(set); title = set.name; }
-  else if (h.id === "baseline") { html = baselineView(); title = "Approved baseline"; }
+  else if (h.id === "baseline") { html = baselineView(); title = "Baseline"; }
   else if (h.id === "track") { html = trackView(); title = "Track record"; }
   else if (h.id === "method") { html = methodView(); title = "Method and provenance"; }
   else if (!DATA.inspection && (h.id === "overview" || !h.id)) { active = "overview"; html = overviewView(); title = "How it was built"; }

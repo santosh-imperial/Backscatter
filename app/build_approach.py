@@ -202,9 +202,11 @@ def build(args):
     mdc_n = [lots[b]["summary"]["mdc"][k]["n_incoming"] for b in lots for k in PRIMARY_KPIS if lots[b]["summary"]["mdc"][k]["feasible"]]
     nrange = f"{min(mdc_n)}–{max(mdc_n)}" if min(mdc_n) != max(mdc_n) else f"{min(mdc_n)}"
     krus = pd.read_csv(need(os.path.join(FREEZE, "evaluation", "kruskal_context.csv"))).set_index("feature")
-    reg_items = json.load(open(need("analysis/morphology/metric_register.json")))["metrics"]
+    reg_items = json.load(open(need(getattr(args, "register", None) or "analysis/morphology/metric_register.json")))["metrics"]
     reg_items = reg_items if isinstance(reg_items, list) else list(reg_items.values())
     n_reg, n_reg_primary = len(reg_items), sum(1 for m in reg_items if m.get("qc_role") == "primary")
+    reg_status = {k: sum(1 for m in reg_items if m.get("implementation_status") == k) for k in ("computed", "implemented", "deferred")}
+    reg_unreviewed = sum(1 for m in reg_items if m.get("review_status", "unreviewed") == "unreviewed")
 
     I = {
         "bse": img("analysis/assets/img_pl8uabbv_BSE.jpg", (0.3, 0, 0.7, 1), 560),
@@ -233,13 +235,24 @@ def build(args):
     }
     kpi_table = "".join(f'<tr><td class="mono">{k}</td><td>{e(a)}</td><td>{e(b)}</td><td>{e(KPI_TRUST.get(k, ""))}{" when the site is not low-contrast" if k.startswith("bright_") else ""}</td></tr>' for k, (a, b) in kpi_rows.items())
     loco_rows = "".join(f'<tr><td>{e(r.statistic)}</td><td class="n">{e(r.value)}</td></tr>' for r in loco.itertuples())
+    def judged_card(x):
+        sid, pr = x["sample_id"], x["prediction"]
+        im = img(f"ui/bundles/samples_drop01/img/smp_{sid}_voids.jpg", (0.3, 0, 0.7, 1), 420)
+        scores = " · ".join(f'{b.replace("_", " ")} {pr[f"model_score_{b}"]:.2f}' for b in ("Batch_1", "Batch_2", "Batch_3"))
+        lab = truth.get(sid)
+        res = "" if lab is None else (f'<p><b>Organiser label: {e(lab.replace("_", " "))}.</b> The assignment was {"right" if lab == pr["predicted_batch"] else "wrong"}.</p>')
+        flags = pr["acquisition_flags"].replace("_", " ")
+        return (f'<div class="jcard"><img src="{im[0]}" width="{im[1]}" height="{im[2]}" alt="BSE strip of sample {e(sid)} with voids painted red">'
+                f'<p class="mono">{e(sid)}</p><p class="jbet">Assigned: {e(pr["predicted_batch"].replace("_", " "))}</p>'
+                f'<p class="note">Model scores: {e(scores)}. Margin {pr["margin"]:.2f}. Quality flags: {e(flags)}.</p>{res}</div>')
+    judged_cards = "".join(judged_card(x) for x in ss)
     drop_rows = "".join(
         f'<tr><td class="mono">{e(x["sample_id"])}</td><td>{e(x["prediction"]["predicted_batch"].replace("_", " "))}</td>'
         f'<td>{e(str(truth.get(x["sample_id"], "pending")).replace("_", " "))}</td>'
         f'<td>{"right" if truth.get(x["sample_id"]) == x["prediction"]["predicted_batch"] else ("wrong" if x["sample_id"] in truth else "")}</td>'
         f'<td>{e(x["prediction"]["acquisition_flags"].replace("_", " "))}</td></tr>' for x in ss)
     why = [
-        ("Measure physical quantities on the image, then test them per site", "An end-to-end image classifier", f"{int(sum(snap['training_site_counts'].values()))} known sites. A learned model would mostly learn the microscope session (D15, D38)."),
+        ("Measure physical quantities on the image, then test them per site", "An end-to-end image classifier", f"{int(sum(snap['training_site_counts'].values()))} crops from about 15 images are too few to train and test a learned image model on independent images (D15, D38, D59S)."),
         ("Histogram-anchored BSE thresholds with a low-contrast flag", "Fixed thresholds or plain multi-Otsu", "Multi-Otsu inflated the bright fraction 3× on low-contrast sites (D05, D07)."),
         ("Five primary KPIs that a materials expert can check on the image", "Every measured feature as a verdict input", "Small n: more tests mean more false alarms; each primary KPI has a painted image (D21, D22)."),
         ("Separate lanes, one action from frozen rules", "One combined score", "Defect risk, distribution conformance and acquisition uncertainty are different questions (D49P, D56U)."),
@@ -263,14 +276,23 @@ def build(args):
 
     body = f"""
 <header class="hero"><div class="toprow"><h1>Our approach</h1><button class="themebtn" id="theme" aria-pressed="false">Dark mode</button></div>
-<p class="lead">Backscatter examines an incoming electrode lot against the supplier's approved baseline. A lot is a batch; the organisers use the word batch.
-It gives three answers and keeps them apart. They are the QC action from frozen rules, the distance from the baseline, and the known batch that each sample resembles.
-It measures physical quantities on SEM cross-sections, tests them site by site, and shows the evidence on the image. Nothing is refitted on a new lot.</p>
-<nav class="toc" aria-label="Sections"><a href="#s1">The question and the data</a><a href="#s2">What the data taught us</a><a href="#s3">Features</a><a href="#s4">Decision model</a><a href="#s5">Acquisition and review</a><a href="#s6">Physics and the cell</a><a href="#s7">Resemblance model</a><a href="#s8">What is different</a><a href="#s9">Outcomes</a><a href="#s10">Into the product</a><a href="#s11">Why this design</a></nav></header>
+<p class="lead">Backscatter is a QC tool for incoming electrode lots. It compares a new lot with an approved baseline and shows the evidence on SEM cross-sections.
+It gives three separate answers: the batch that each sample resembles, the distance from the baseline, and a QC action from frozen rules. Nothing is refitted on a new lot.</p>
+<nav class="toc" aria-label="Sections"><a href="#s0">The judged answer</a><a href="#s1">The question and the data</a><a href="#s2">What the data taught us</a><a href="#s3">Features</a><a href="#s4">Decision model</a><a href="#s5">Acquisition and review</a><a href="#s6">Physics and the cell</a><a href="#s7">Resemblance model</a><a href="#s8">What is different</a><a href="#s9">Outcomes</a><a href="#s10">Into the product</a><a href="#s11">Why this design</a></nav></header>
+
+<section id="s0"><h2>The judged answer</h2>
+<p>Each sample receives a Batch 1, 2 or 3 assignment. The system chooses the batch with the highest model score. It shows all three scores and the features that support the assignment.
+The scores are uncalibrated. A high score can occur for a wrong assignment. The QC action and the baseline distance are separate outputs. {ev('D53', 'D54S')}</p>
+<div class="jgrid">{judged_cards}</div>
+<p>{f'The first drop had {right} correct assignment{"" if right == 1 else "s"} out of {len(ss)}. The errors stay visible here.' if truth else 'The organiser labels are not loaded in this build.'} A three-sample folder can contain different batches, so it is not necessarily one QC lot.
+A QC abstention does not prevent a required sample assignment. {ev('E33', 'E36S')}</p></section>
 
 <section id="s1"><h2><span class="sn">1</span>The question and the data</h2>
-<p>Three supplier lots of one product. {e(base['reference'].replace('_', ' '))} is the approved baseline with {base['n_sites']} sites ({', '.join(f"{v} {k.replace('_', '-')}" for k, v in groups.items())}).
-Batches 1 and 2 have {lots['Batch_1']['summary']['meta']['n_sites_batch']} and {lots['Batch_2']['summary']['meta']['n_sites_batch']} sites. Each site is three pixel-aligned detector images. There are no defect labels, and lengths are pixels: the 25 nm/px tag is nominal and unverified. {ev('D03', 'D14', 'D49P')}</p>
+<p>The challenge data contain {base['n_sites'] + sum(lots[b]['summary']['meta']['n_sites_batch'] for b in lots)} crops from about 15 electrode images. The organisers assign these crops to three artificial batches.
+{e(base['reference'].replace('_', ' '))} is the challenge reference, with {base['n_sites']} crops ({', '.join(f"{v} {k.replace('_', '-')}" for k, v in groups.items())}). Batches 1 and 2 have {lots['Batch_1']['summary']['meta']['n_sites_batch']} and {lots['Batch_2']['summary']['meta']['n_sites_batch']} crops.
+The batches do not identify confirmed supplier lots. No agreed production tolerances are available. We do not know which crops share a source image.
+Each crop is a site with three pixel-aligned detector images. There are no defect labels. Lengths are in pixels, because the 25 nm/px tag is nominal and unverified. {ev('D03', 'D59S', 'E40S')}</p>
+<p>The supplier QC use case is our proposed application of the method. These challenge data do not establish it.</p>
 <div class="trio">{fig(I['bse'], 'BSE image of a baseline site', '<b>BSE</b>: backscattered electrons. Brightness follows atomic number, so voids, graphite and the bright additive phase separate.')}
 {fig(I['etd'], 'ETD image of the same site', '<b>ETD</b>: secondary electrons. Edges and topography.')}
 {fig(I['inl'], 'Inlens image of the same site', '<b>Inlens</b>: surface-sensitive and dominated by charging.')}</div>
@@ -280,7 +302,8 @@ Batches 1 and 2 have {lots['Batch_1']['summary']['meta']['n_sites_batch']} and {
 <div class="pair"><div><h3>Brightness is not material</h3><p>About half the images were contrast-stretched after acquisition: the histogram shows empty, comb-like bins. Raw intensity of any detector is never a material KPI. {ev('D04')}</p></div>{fig(I['hist'], 'BSE crops and a comb-shaped histogram', 'Gaps in the exported histogram show remapping after acquisition.')}</div>
 <div class="pair"><div><h3>Low-contrast sites break simple thresholds</h3><p>On two Batch 1 sites the bright phase sat only 25–35 grey levels above graphite. Plain multi-Otsu then inflated the bright fraction 3×. We anchor thresholds on the histogram, flag low contrast, and drop bright-phase KPIs on those sites. {ev('D05', 'D07')}</p></div>
 <div class="duo">{fig(I['lc'], 'Low-contrast site with speckled bright mask', '<b>4ih2ggld, low contrast</b>: the bright mask (yellow) fragments into rims and particle interiors.')}{fig(I['ok'], 'Ordinary site with clean bright mask', '<b>f1vzngrs, ordinary</b>: clean particles. Yellow bright phase, teal voids; unreviewed algorithm masks.')}</div></div>
-<div class="pair"><div><h3>The strongest-looking feature was the microscope</h3><p>Inlens particle texture orders the lots B1 > B2 > B3 and separates them strongly (Kruskal p {krus.loc['inlens_particle_texture', 'p']:.3f}). But it rises with Inlens brightness (Spearman ρ +0.77 over 31 sites). About 75 % of its variance follows acquisition statistics. It never drives a verdict.
+<div class="pair"><div><h3>Texture depends on image conditions</h3><p>Inlens particle texture orders the batches B1 > B2 > B3 (Kruskal p {krus.loc['inlens_particle_texture', 'p']:.3f}). It also rises with Inlens brightness (Spearman ρ +0.77 over 31 sites). About 75 % of its variance follows acquisition statistics.
+The tests do not establish whether its batch differences come from material, image conditions or both. The classifier uses texture with this limit stated. The QC rules do not use it as a primary KPI.
 A later test (E32) showed that the contrast is not only a gain or offset effect. It stays linked to brightness, and a gamma change moves it by a third of the batch gap. The Batch 1 over Batch 2 part of the order comes from the amplitude. {ev('D11', 'D51', 'E20', 'E32')}</p></div>
 <div class="duo">{fig(I['order'], 'Inlens texture by lot', 'Lots order B1 > B2 > B3 …')}{fig(I['conf'], 'Inlens texture against Inlens brightness', '… but texture tracks image brightness.')}</div></div>
 <div class="pair"><div><h3>The baseline is not one population</h3><p>Four grey-pore sites need a fallback pore threshold and three cracked sites carry the only clear material anomaly in the known data. They stay in the baseline, visible, with robust statistics. Frame height tracked sessions, so it was dropped from every model. {ev('D08', 'D14', 'D52')}</p></div>
@@ -292,13 +315,18 @@ A later test (E32) showed that the contrast is not only a gain or offset effect.
 <div class="stack">{fig(I['kcrop'], 'Full-resolution crop of a crack-like void', '<b>crack_frac</b>: the pixels counted are the red void, here at full resolution (Batch 1, 4ih2ggld).')}
 <div class="duo">{fig(I['kvoids'], 'Voids painted on a BSE strip', '<b>pore_frac, pore_max_d</b>: voids and the largest void on the BSE strip.')}{fig(I['kbright'], 'Bright particles outlined', '<b>bright_frac, bright_d50</b>: the outlined particles are what is counted.')}</div></div>
 <details class="more"><summary>Measured, tested, not promoted</summary>
-<p>Our metric register lists {n_reg} measured descriptors. They include the {n_reg_primary} primary KPIs above, shape variability, orientation, neighbour spacing, graph arrangement, Gabor texture and frozen image embeddings. None of the other {n_reg - n_reg_primary} became a verdict input. Each stays descriptive until it separates lots without tracking acquisition and an expert reviews it. {ev('E18', 'E26G', 'E27', 'E28J', 'E30K')}</p>
+<p>The metric register tracks {n_reg} entries. We computed {reg_status['computed']} entries. {reg_status['implemented']} {"entry is" if reg_status['implemented'] == 1 else "entries are"} implemented, and {reg_status['deferred']} {"is" if reg_status['deferred'] == 1 else "are"} deferred.
+{"All entries still require expert review." if reg_unreviewed == n_reg else f"{reg_unreviewed} entries still require expert review."} The QC rules use five primary KPIs. The batch classifier uses {len(snap['primary_features'])} features.
+Register entries are not classifier features. Source: <span class="mono">analysis/morphology/metric_register.json</span> and <span class="mono">docs/morphology_metrics.md</span>.</p>
 {fig(I['geom'], 'Geometry descriptor examples', 'Nearest-neighbour spacing and void alignment, two of the descriptors kept as context.')}</details></section>
 
 <section id="s4"><h2><span class="sn">4</span>The decision model</h2>
 <p>A site, not a patch, is the unit of evidence. For each primary KPI we compare the lot's sites with the baseline's sites. The test is a permutation test on the Hodges–Lehmann shift, corrected for five KPIs (Holm). An energy-distance test covers all five KPIs together.
 A KPI drives the verdict at Holm p below {T.alpha} with a shift of at least {T.min_effect_mad:g} MAD. A separate localized path checks single sites against the ordinary-baseline maximum. It promotes only the two void KPIs ({', '.join(LOCAL_KPIS_PROMOTE)}). A site at {T.severity_margin_mad:g} MAD goes to image review. A site at {T.single_site_escalate_mad:g} MAD, or agreement of two sites or two KPIs, changes the verdict. The other extreme-value KPIs are flagged and never promote.
-Fewer than {T.min_usable_sites} usable sites means a quality abstention. Every reference-dependent fit is repeated in each leave-one-site-out re-run to give decision stability. The thresholds are frozen and hashed: <span class="mono">{T.hash()}</span>. {ev('D17', 'D21', 'D22', 'D23', 'D29', 'D33')}</p>
+A significant KPI shift alone cannot cause a reject. The batch path also requires evidence from the joint test and the material classifier check. Enough sites must support the shift. The acquisition checks must permit a reject. The local path checks measurement quality and image-review results.
+The material classifier check is separate from the {len(snap['primary_features'])}-feature batch classifier.
+A KPI with fewer than {T.min_usable_sites} usable sites leaves the batch test. The whole lot abstains only in three cases. In the first case, the lot has fewer than {T.min_usable_sites} sites. In the second, every primary KPI has fewer than {T.min_usable_sites} usable sites. In the third, more than half of the sites have low contrast or grey pores.
+Every reference-dependent fit is repeated in each leave-one-site-out re-run to give decision stability. The thresholds are frozen and hashed: <span class="mono">{T.hash()}</span>. {ev('D17', 'D21', 'D22', 'D23', 'D28', 'D29', 'D33')}</p>
 <div class="figbox">{FLOW}</div>
 <h3>Not detected is not unchanged</h3>
 <p>Both known variant lots are consistent within detectable limits. The chart shows why that is honest and not reassuring. Each dot is the observed shift. Each band is the smallest shift the rules detect with the lot's usable sites ({nrange} per KPI, after quality flags). {ev('D16', 'D23')}</p>
@@ -317,23 +345,26 @@ Fewer than {T.min_usable_sites} usable sites means a quality abstention. Every r
 <p>Eight experimental battery geometry KPIs exist: void distance from the additive, local bright dispersion, additive and pore association, and long-void burden. They sit in a drawer with site-bootstrap intervals and threshold sensitivity. The verdict does not use them. An expert must examine them before use. {ev('E25', 'D47K')}</p></section>
 
 <section id="s7"><h2><span class="sn">7</span>The resemblance model</h2>
-<p>The judged task also asks which known lot each held-back site comes from. A frozen L1 logistic regression uses {len(snap['primary_features'])} features ({fam['morph'].n_features} morphology, {len(snap['primary_features']) - fam['morph'].n_features} appearance). Its C of {snap['chosen_C']['material']} was chosen by inner cross-validation on the known sites. It was fitted on the {int(sum(snap['training_site_counts'].values()))} known sites only. Session statistics and frame height are excluded; appearance features stay labelled acquisition-sensitive. Scores are uncalibrated. {ev('D50', 'D52', 'D54S')}</p>
+<p>The judged task asks which known batch each held-back sample comes from. A frozen L1 logistic regression uses {len(snap['primary_features'])} features ({fam['morph'].n_features} morphology, {len(snap['primary_features']) - fam['morph'].n_features} appearance). Its C of {snap['chosen_C']['material']} was chosen by inner cross-validation on the known sites. It was fitted on the {int(sum(snap['training_site_counts'].values()))} known sites only. Session statistics and frame height are excluded; appearance features stay labelled acquisition-sensitive. Scores are uncalibrated. {ev('D50', 'D52', 'D54S')}</p>
 <div class="pair"><div><h3>Nested leave-one-site-out test</h3><p>{correct} of {int(conf.values.sum())} sites correct, balanced accuracy {prim.balanced_accuracy:.3f} against chance 0.33, permutation p {prim.perm_p:.3f} over {int(prim.n_perm)} label shuffles. Morphology alone does not separate the lots ({fam['morph'].balanced_accuracy:.3f}); Batch 2 recall stays weak ({prim.recall_Batch_2:.2f}).
-The nested test chooses C inside each fold. A second test holds out whole acquisition clusters, with C fixed at 0.5. It keeps the balanced accuracy at {loco_vals[0]:.3f}–{loco_vals[-1]:.3f}. Within the known data the model does not simply memorise sessions. With 31 sites this is a weak test. {ev('E34', 'E35')}</p>
+The nested test chooses C inside each fold. Each test excludes one crop. Related crops can occur in both fit and test data. We do not know which crops share a source image.
+The result describes the available crops. It does not establish accuracy on new source images. The permutation result is exploratory evidence.
+A second test holds out clusters of crops with similar acquisition statistics, with C fixed at 0.5. It keeps balanced accuracy at {loco_vals[0]:.3f}–{loco_vals[-1]:.3f}. The clusters are not confirmed sessions. {ev('E34', 'E35', 'E40S')}</p>
 <p>Full method note: <a href="{METHOD_NOTE}">Categoriser v2 method</a>.</p></div>
 <div class="figbox">{family_chart(summ)}</div></div>
 <div class="pair"><div class="tw">{confusion(conf)}</div>{fig(I['sig'], 'ETD and Inlens crops per lot', 'What "appearance" means: ETD ridges and Inlens particle texture per lot. An expert must judge whether this is material or imaging.')}</div></section>
 
-<section id="s8"><h2><span class="sn">8</span>What is different, and in what way</h2>
-<p>The organisers ask what is different about each later batch. We tested 119 descriptors against the baseline, site by site. Twenty-four separate Batch 1 or Batch 2 from the baseline at p below 0.05; about six would do so by chance. Thirteen of the 24 are ETD or Inlens texture descriptors, seven are BSE morphology. The five primary KPIs move by at most 1.4 MAD. {ev('E32')}</p>
+<section id="s8"><h2><span class="sn">8</span>What is different, and in what way (exploratory)</h2>
+<p>The organisers ask what is different about each later batch. We tested 119 descriptors against the baseline, site by site. Twenty-four have a nominal p below 0.05 against Batch 1 or Batch 2. These p-values are exploratory and are not corrected for the many comparisons. They do not establish material causes. Thirteen of the 24 are ETD or Inlens texture descriptors, seven are BSE morphology. The five primary KPIs move by at most 1.4 MAD. {ev('E32')}</p>
 <p>Batch 1 shows more texture inside the additive particles, smoother graphite faces in ETD, and more additive in the lower part of the strip. Batch 2 shows fewer resolved pores per area and additive particles that lie farther from voids. Texture descriptors are acquisition-sensitive. The first organiser drop showed that these cues are not exclusive to one batch. The full table is in <span class="mono">docs/batch_signatures.md</span>.</p>
 {fig(I['sigstrip'], 'Strip plots of eight descriptors per batch', 'Site values per batch for eight descriptors; the bar is the median. Shifts are in baseline MADs with a site-level permutation p.')}</section>
 
 <section id="s9"><h2><span class="sn">9</span>Outcomes, stated plainly</h2>
-<p>Known lots: both consistent within detectable limits with {nrange} usable sites per KPI, while the fingerprint separates them better than chance. First organiser drop: {right} of {len(ss) if truth else 'n/a'} samples assigned to the right lot. The low-contrast Batch 2 sample was called Batch 1, a quality and lot combination the known sites never showed. Its strongest drivers were measured inside an unreliable bright mask. The decision model drops such measurements on flagged sites. The resemblance model only marks them. The bets stay as saved, and the acquisition-only comparator that scored 2 of 3 was not adopted after the fact. The next audit defines a quality policy for every mask-dependent input on the known data, inside the folds. {ev('E33', 'E35', 'E36S', 'D54S')}</p>
+<p>Known lots: both consistent within detectable limits with {nrange} usable sites per KPI, while the fingerprint separates them better than chance. First organiser drop: {right} of {len(ss) if truth else 'n/a'} samples assigned to the right lot. The low-contrast Batch 2 sample was called Batch 1, a quality and lot combination the known sites never showed. Its strongest drivers were measured inside an unreliable bright mask. The decision model drops such measurements on flagged sites. The resemblance model only marks them. The bets stay as saved, and the acquisition-only comparator that scored 2 of 3 was not adopted after the fact. {ev('E33', 'E35', 'E36S', 'D54S')}</p>
+<p>We completed the input-quality audit and the fixed model comparisons. We also tested a layer that corrects the model scores. No candidate met the criteria for deployment. We retain the frozen v2 classifier. Its scores are not calibrated probabilities of a correct assignment. {ev('E37S', 'E39S', 'E41S', 'E42S', 'E43S')}</p>
 <p>Model v2 was revised after the first-drop images were examined and before their labels arrived, then frozen before the final evaluation. The first drop is development evidence for v2, not an untouched test. {ev('D52', 'D54S')}</p>
 <div class="tw"><table><thead><tr><th>Sample</th><th>Saved bet</th><th>Organiser label</th><th>Result</th><th>Quality flags</th></tr></thead><tbody>{drop_rows}</tbody></table></div>
-<p>A 3-site rehearsal through the product abstains, as the rules require below {T.min_usable_sites} usable sites, and lists what to re-image. {ev('D57U')}</p></section>
+<p>A 3-site rehearsal through the product abstains, because the lot has fewer than {T.min_usable_sites} sites, and lists what to re-image. {ev('D57U')}</p></section>
 
 <section id="s10"><h2><span class="sn">10</span>How it plugs into Backscatter</h2>
 <p>The product runs the same frozen commands an operator would run by hand, each into a new folder with a receipt. Nothing refits on the incoming lot, and training images or site IDs are refused before any work. {ev('D56U', 'D57U')}</p>
@@ -349,8 +380,8 @@ The nested test chooses C inside each fold. A second test holds out whole acquis
 <section id="s11"><h2><span class="sn">11</span>Why this is the right implementation</h2>
 <div class="tw"><table class="why"><thead><tr><th>We chose</th><th>Instead of</th><th>Because</th></tr></thead><tbody>{why_rows}</tbody></table></div>
 <h3>How we keep ourselves honest</h3>
-<p>Every consequential decision has a numbered entry with its rationale and the alternatives: D01 to D59U. Every number comes from a logged experiment and a registry row: E01 to E36S. A review checklist, C01 to C35, grew from each mistake a reviewer caught. Eighteen interpretive assumptions, A1 to A18, sit in an assumption register with an annotated image and a review state each. Two cold rehearsals of the drop procedure found three failures before the organisers' drop. Each exploratory pilot was pre-registered before its first run. {ev('D21', 'E23', 'E28', 'D34')}</p>
-<p class="note">Limits we state: 2-D sections only; pixel lengths; one heterogeneous baseline lot; expert review of masks still pending. The electrodes are new, so we make no claims about cycle damage or performance.</p></section>
+<p>Every consequential decision has a numbered entry with its rationale and alternatives in <span class="mono">docs/decision_log.md</span>. Every reported number has an entry in <span class="mono">docs/experiment_log.md</span> and a registry row. A review checklist grew from each mistake a reviewer caught. The interpretive assumptions sit in an assumption register, each with an annotated image and a review state. Two cold rehearsals of the drop procedure found three failures before the organisers' drop. Each exploratory pilot was pre-registered before its first run. {ev('D21', 'E23', 'E28', 'D34')}</p>
+<p class="note">Limits we state: 2-D sections only; pixel lengths; one heterogeneous reference batch; expert review of masks still pending. The batches are artificial groups of crops from about 15 images, with unknown source overlap. The electrodes are new, so we make no claims about cycle damage or performance.</p></section>
 """
     return body
 
@@ -390,6 +421,10 @@ th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: le
 td.n, th.n { text-align: right; font-family: var(--font-data) } td.diag { font-weight: 600 } table.cm td.n { text-align: center }
 table.why td:first-child { font-weight: 500 }
 details.more { border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; background: var(--surface) } details.more summary { cursor: pointer; font-weight: 500 } details.more[open] summary { margin-bottom: 10px }
+.jgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
+.jcard { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.jcard img { width: 100%; height: auto; border-radius: 6px; border: 1px solid var(--line) } .jcard p { margin: 0 } .jbet { font-weight: 600; font-size: 16.5px }
+@media (max-width: 860px) { .jgrid { grid-template-columns: minmax(0, 1fr) } }
 .toprow { display: flex; justify-content: space-between; align-items: center; gap: 12px }
 .themebtn { font: inherit; font-size: 12px; padding: 5px 11px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--muted); cursor: pointer }
 @media (max-width: 860px) { main { padding-inline: 16px } .trio, .pair, .duo { grid-template-columns: minmax(0, 1fr) } h1 { font-size: 26px } }
@@ -401,6 +436,7 @@ def main(argv=None):
     ap.add_argument("--feedback", help="organiser feedback folder with truth.csv (first-drop labels)")
     ap.add_argument("--out", default="ui/approach.html")
     ap.add_argument("--replace", action="store_true")
+    ap.add_argument("--register", help="metric register JSON to count (default: this checkout's analysis/morphology/metric_register.json)")
     a = ap.parse_args(argv)
     if os.path.exists(a.out) and not a.replace:
         raise SystemExit(f"{a.out} exists; pass --replace")
