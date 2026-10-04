@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Electrode Lot QC</title>
+<title>Backscatter</title>
+<script>try { const t = localStorage.getItem("backscatter-theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -14,19 +15,19 @@
   --ink: #15191e; --muted: #535b67; --line: #dce0e5; --line-strong: #b9c0c9;
   --accent: #2f3e52; --accent-ink: #ffffff; --focus: #3d6fb0;
   --ok: #26704a; --ok-bg: #e4f1e9; --warn: #855700; --warn-bg: #faefd9; --bad: #a8291f; --bad-bg: #fbe6e3;
-  --b3: #1baf7a; --grey-pore: #eda100; --low-contrast: #e34948;
+  --base: #4d5662; --low-contrast: #e34948;
   --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --t-xs: 12px; --t-sm: 13.5px; --t-md: 15px; --t-lg: 17px; --t-xl: 22px; --t-2xl: 28px;
   --r: 10px; --measure: 70ch; color-scheme: light;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44;
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44; --base: #aab3be;
   --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
   --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
   --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark } }
 :root[data-theme="dark"] {
-  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44;
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44; --base: #aab3be;
   --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
   --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
   --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark }
@@ -70,7 +71,8 @@ button, input, select { font: inherit; font-size: var(--t-sm) }
 .decision { padding: 0; gap: 0; overflow: hidden }
 .verdictbox { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line) }
 .verdictbox.ok { background: var(--ok-bg) } .verdictbox.warn { background: var(--warn-bg) } .verdictbox.bad { background: var(--bad-bg) }
-.verdict { font-size: var(--t-xl); font-weight: 600; line-height: 1.25; display: flex; gap: 10px; align-items: center }
+[hidden] { display: none !important }
+.verdict { font-size: var(--t-xl); font-weight: 600; line-height: 1.3; display: flex; gap: 10px; align-items: center }
 .verdictbox.ok .verdict { color: var(--ok) } .verdictbox.warn .verdict { color: var(--warn) } .verdictbox.bad .verdict { color: var(--bad) }
 .verdictbox .why { font-size: var(--t-md) }
 .verdictbox .note { color: inherit; opacity: 1 }
@@ -125,9 +127,11 @@ details.more[open] > summary { margin-bottom: 10px }
 .pills { display: flex; flex-wrap: wrap; gap: 6px }
 .pills button { font: inherit; font-family: var(--font-data); font-size: var(--t-xs); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; display: inline-flex; gap: 6px; align-items: center }
 .pills button[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
-.flagdot { width: 7px; height: 7px; border-radius: 50%; background: var(--low-contrast); display: inline-block }
+.flagdot { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-block }
+.themebtn { margin-top: auto; align-self: flex-start; font-size: var(--t-xs); background: none; border: 1px solid var(--line-strong); border-radius: 7px; padding: 4px 10px; color: var(--muted); cursor: pointer }
+.checklist { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px }
 figure { margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0 }
-.imgwrap { position: relative; line-height: 0 }
+.imgwrap { position: relative; line-height: 0; max-width: min(100%, calc(36vh * var(--ar, 3))) }
 .imgwrap img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line); background: #000 }
 .imgtag { position: absolute; left: 8px; top: 8px; line-height: 1.3; font-size: var(--t-xs); padding: 3px 8px; border-radius: 6px; background: rgba(10, 12, 14, .78); color: #f2f4f6; font-family: var(--font-data) }
 .cropbox { position: absolute; border: 2px solid #ffd166; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.55); background: none; padding: 0; cursor: zoom-in }
@@ -158,7 +162,8 @@ button.pt { width: 24px; height: 24px; margin-left: -12px; margin-top: -12px; ba
 button.pt::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--c) }
 button.pt[aria-checked="true"]::before { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink) }
 button.pt.ex::before { background: none; border: 2px solid var(--low-contrast) }
-.pt.ring { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--b3) }
+.pt.ring { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--base) }
+.pt.gp { background: var(--surface) !important; box-shadow: inset 0 0 0 2px var(--base) }
 .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: var(--t-xs); color: var(--muted) }
 .legend span { display: inline-flex; align-items: center; gap: 6px }
 .tw { overflow-x: auto }
@@ -273,12 +278,16 @@ function nav(active) {
   const b = DATA.baseline;
   const st = l => `<span style="color:var(--${l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject"}[l.verdict_state])}</span>`;
   const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
-  let h = `<div class="brand">Electrode Lot QC<small>SEM cross-sections against the approved baseline</small></div>`;
-  h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:${b.color}"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
+  let h = `<div class="brand">Backscatter<small>Incoming electrode lot QC from SEM cross-sections</small></div>`;
+  h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:var(--base)"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
   if (real.length) h += `<div class="navgroup"><h2>${DATA.inspection ? "Inspected lot" : "Incoming lots"}</h2>${real.map(l => a(l.id, `<span class="dot" style="background:${l.color}"></span>${esc(bname(l.lot))}<span class="st">${st(l)}</span>`)).join("")}</div>`;
-  if (DATA.samplesets.length) h += `<div class="navgroup"><h2>Sample sets</h2>${DATA.samplesets.map(s => a(s.id, esc(s.name))).join("")}</div>`;
+  if (DATA.samplesets.length) h += DATA.inspection && real.length
+    ? `<div class="navgroup"><h2>This lot</h2>${DATA.samplesets.map(s => a(s.id, "Per-site resemblance")).join("")}</div>`
+    : `<div class="navgroup"><h2>Sample sets</h2>${DATA.samplesets.map(s => a(s.id, esc(s.name))).join("")}</div>`;
   h += `<div class="navgroup"><h2>Evidence</h2>${a("track", "Track record")}${a("method", "Method and provenance")}</div>`;
   if (fx.length) h += `<div class="navgroup"><h2>Layout fixtures, not real data</h2>${fx.map(l => a(l.id, `${esc(l.lot)}<span class="st">${st(l)}</span>`)).join("")}</div>`;
+  const dark = document.documentElement.dataset.theme === "dark";
+  h += `<button class="themebtn" data-theme-toggle aria-pressed="${dark}">${dark ? "Light mode" : "Dark mode"}</button>`;
   document.getElementById("nav").innerHTML = h;
 }
 
@@ -317,13 +326,13 @@ function strip(kpi, ref, lot, opts = {}) {
   const x = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
   const ticks = niceTicks(lo, hi, 4).filter(t => t >= lo && t <= hi);
   const tickLines = ticks.map(t => `<span class="tick" style="left:${x(t)}"></span>`).join("");
-  const b3 = bcol(DATA.baseline.reference);
+  const b3 = "var(--base)";
   const rv = ref.filter(r => isNum(r[kpi]));
   const jit = i => 17 + ((i * 37) % 11 - 5) * 1.6;
   let h = `<div class="strip">`;
   h += `<div class="srow"><span class="slab">${esc(bname(DATA.baseline.reference))} (n ${rv.length})</span><div class="strack" aria-hidden="true">${tickLines}`;
-  rv.forEach((r, i) => { const c = r.group === "grey_pore" ? "var(--grey-pore)" : b3;
-    h += `<span class="pt${r.group === "cracked" ? " ring" : ""}" style="left:${x(r[kpi])};top:${jit(i)}px;background:${c}" title="${esc(r.site)} ${sig(r[kpi], 4)} (${esc(r.group)})"></span>`; });
+  rv.forEach((r, i) => { const c = b3;
+    h += `<span class="pt${r.group === "cracked" ? " ring" : r.group === "grey_pore" ? " gp" : ""}" style="left:${x(r[kpi])};top:${jit(i)}px;background:${c}" title="${esc(r.site)} ${sig(r[kpi], 4)} (${esc(r.group)})"></span>`; });
   const mr = median(rv.map(r => r[kpi]));
   if (isNum(mr)) h += `<span class="med" style="left:${x(mr)};background:${b3}"></span>`;
   h += `</div></div>`;
@@ -341,9 +350,9 @@ function strip(kpi, ref, lot, opts = {}) {
   return h;
 }
 function stripLegend(color, withLot) {
-  const b3 = bcol(DATA.baseline.reference);
+  const b3 = "var(--base)";
   const d = (st) => `<span class="pt" style="position:static;margin:0;${st}"></span>`;
-  return `<div class="legend"><span>${d(`background:${b3}`)}baseline site</span><span>${d("background:var(--grey-pore)")}grey-pore group (fallback threshold)</span>
+  return `<div class="legend"><span>${d(`background:${b3}`)}baseline site</span><span>${d(`background:var(--surface);box-shadow:inset 0 0 0 2px ${b3}`)}grey-pore baseline site (fallback threshold)</span>
     <span>${d(`background:${b3};box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px ${b3}`)}cracked baseline site</span>
     ${withLot ? `<span>${d(`background:${color}`)}lot site (select to view)</span><span>${d("background:none;border:2px solid var(--low-contrast)")}excluded by quality flag</span>` : ""}
     <span><span style="width:3px;height:12px;background:${color || b3};display:inline-block;border-radius:2px"></span>median</span></div>`;
@@ -361,7 +370,7 @@ function radios(label, act, key, opts, cur, cls) {
 }
 function figure(views, view, id, tag, caption, boxes) {
   const v = views[view];
-  return `<figure><div class="imgwrap"><img src="${IMG[v.key]}" width="${v.w}" height="${v.h}" alt="${esc(id)}: ${VIEWALT[view]}">
+  return `<figure><div class="imgwrap" style="--ar:${(v.w / v.h).toFixed(3)}"><img src="${IMG[v.key]}" width="${v.w}" height="${v.h}" alt="${esc(id)}: ${VIEWALT[view]}">
     ${tag ? `<span class="imgtag">${tag}</span>` : ""}${boxes || ""}</div>${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
 }
 
@@ -460,7 +469,7 @@ function lotView(l) {
   h += `<section class="card decision" aria-labelledby="act-h">
     <div class="verdictbox ${l.verdict_state}"><h2 class="sr" id="act-h">Recommended action</h2>
       <div class="verdict">${icon({ok: "ok", warn: "warn", bad: "bad"}[l.verdict_state], "ico")}${esc(l.verdict_label)}</div>
-      <p class="why">${esc(sent(l.next_action))}</p>
+      ${l.outcome.quality_abstention ? abstentionChecklist(l) : `<p class="why">${esc(sent(l.next_action))}</p>`}
       <p class="note">Decision stability ${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs} leave-one-site-out re-runs. Stability is not a probability of being right.</p>
       <details class="more"><summary>Details: why, and what would change it</summary><div class="ste">
         <p>${dt.why}</p>${dt.move.map(m => `<p>${m}</p>`).join("")}
@@ -480,6 +489,17 @@ function lotView(l) {
   return h;
 }
 
+function abstentionChecklist(l) {
+  const T = DATA.thresholds;
+  const usable = l.usable_n ? Math.min(...PRIM().map(k => l.usable_n[k][1])) : 0;
+  const need = Math.max(0, T.min_usable_sites - usable);
+  const low = l.sites.filter(s => s.bright_low_contrast).map(s => s.site);
+  const items = [];
+  if (need) items.push(`Image at least ${need} more site${need > 1 ? "s" : ""} that pass the quality checks. Now ${usable} usable; the rules need ${T.min_usable_sites} for every primary KPI.`);
+  if (low.length) items.push(`Re-acquire ${low.join(", ")} with better contrast. ${low.length > 1 ? "Their" : "Its"} bright-phase values do not count.`);
+  items.push("Start a new inspection with all sites of the lot.");
+  return `<p class="why">Too few usable sites for a decision. To get one:</p><ol class="checklist">${items.map(t => `<li>${esc(t)}</li>`).join("")}</ol>`;
+}
 function cropIndex(l, site, kpi) { return l.crops.findIndex(c => c.site === site && (!kpi || c.kpi === kpi)); }
 const reviewable = f => f.margin_in_mad >= DATA.thresholds.severity_margin_mad && f.measurement_reliable !== false;
 /* Opening view: the lane that sets the action decides; with none, the KPI closest to a driver, no crop. */
@@ -652,7 +672,7 @@ function sampleCard(set, x) {
   const wrong = x.truth && x.truth.true_batch !== x.bet;
   let truth = "";
   if (x.truth) truth = wrong
-    ? `<p class="callout bad">The bet was wrong. Organiser label, received after the bet: ${esc(bname(x.truth.true_batch))}. The saved bet is unchanged.${!hasFlag(x.flags) ? ` No quality flag explains this miss. The largest contributions came from ${d.slice(0, 2).map(r => esc(r.feature)).join(" and ")}.` : ""}</p>`
+    ? `<p class="callout plain"><b>The bet was wrong.</b> Organiser label, received after the bet: ${esc(bname(x.truth.true_batch))}. The saved bet is unchanged.${!hasFlag(x.flags) ? ` No quality flag explains this miss. The largest contributions came from ${d.slice(0, 2).map(r => esc(r.feature)).join(" and ")}.` : ""}</p>`
     : `<p class="callout plain">The bet was right. Organiser label, received after the bet: ${esc(bname(x.truth.true_batch))}.</p>`;
   const top = d.slice(0, 8), rest = d.slice(8).reduce((a, r) => a + r.contribution, 0);
   const tot = d.reduce((a, r) => a + r.contribution, 0) + (x.intercept || 0);
@@ -691,7 +711,7 @@ function sampleCard(set, x) {
 /* ------------------------------------------------------------------ baseline view */
 function baselineView() {
   const b = DATA.baseline;
-  let h = `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:${b.color};width:14px;height:14px"></span>${esc(bname(b.reference))}</h1>
+  let h = `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:var(--base);width:14px;height:14px"></span>${esc(bname(b.reference))}</h1>
     <p class="sub">The supplier's approved baseline: ${b.n_sites} sites, ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}.
     It is heterogeneous, so every comparison uses robust statistics and keeps these groups visible.</p></header>`;
   h += `<section class="card"><h2>Five primary KPIs across the baseline sites</h2>${PRIM().map(k => `<div class="controls"><h3>${esc(KLAB[k])} <span class="mono note">${k}, ${KUNIT[k]}, trust ${esc(b.trust[k])}</span></h3>
@@ -755,6 +775,7 @@ function methodView() {
     <p><b>Localized anomalies.</b> Each lot site against the maximum of the ordinary baseline sites on crack_frac and pore_max_d. One site 2–3 MAD beyond is routed to image review. 3 MAD, two sites, both KPIs or a confirmed review change the verdict.</p>
     <p><b>Distance from baseline.</b> k-nearest-neighbour distance on morphology features, ranked among the baseline sites left out one at a time. Descriptive; not a membership probability.</p>
     <p><b>Image quality and acquisition.</b> Flags derived from each lot's own images decide which KPI values count before any statistic runs. The drift test is repeated on ordinary sites only and with acquisition covariates, as a sensitivity analysis.</p>
+    <p><b>The name.</b> Backscatter is named after the backscattered-electron (BSE) signal it measures: the image where voids, graphite and the bright additive phase separate by brightness.</p>
     <p><b>Sample resemblance.</b> A logistic model on morphology plus acquisition-sensitive ETD and Inlens appearance, fitted on the 31 known sites only and frozen. It assigns every sample to the known lot it most resembles.</p></div></section>
   <section class="card"><h2>Terms</h2><dl class="kpiste">
     <dt>MAD</dt><dd>Median absolute deviation of the baseline sites, scaled to match a standard deviation. Shifts are given in MAD so different KPIs share one scale.</dd>
@@ -792,7 +813,7 @@ function render(focus) {
   else if (h.id === "method") { html = methodView(); title = "Method and provenance"; }
   else { const first = DATA.lots.find(l => !l.fixture) || DATA.lots[0];
     if (first) { active = first.id; html = lotView(first); title = bname(first.lot); } else { active = DATA.samplesets[0].id; html = samplesView(DATA.samplesets[0]); title = DATA.samplesets[0].name; } }
-  document.title = `${title} · Electrode Lot QC`;
+  document.title = `${title} · Backscatter`;
   nav(active);
   const cur = document.querySelector("#nav a[aria-current]");
   if (cur && matchMedia("(max-width: 900px)").matches) { const nv = document.getElementById("nav"); nv.scrollLeft = Math.max(0, cur.offsetLeft - 16); }
@@ -848,6 +869,12 @@ document.addEventListener("click", e => {
   if (act === "crop" && s.crop != null) { const c = document.getElementById("crop-" + key); if (c) { c.scrollIntoView({block: "nearest"}); c.focus({preventScroll: true}); } return; }
   const again = document.querySelector(`#${CSS.escape(region)} button[data-act="${act}"][data-val="${CSS.escape(val)}"]`);
   if (again) again.focus({preventScroll: true});
+});
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-theme-toggle]"); if (!t) return;
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next; try { localStorage.setItem("backscatter-theme", next); } catch (err) {}
+  t.textContent = next === "dark" ? "Light mode" : "Dark mode"; t.setAttribute("aria-pressed", String(next === "dark"));
 });
 document.addEventListener("keydown", e => {
   const r = e.target.closest('[role="radio"]'); if (!r) return;

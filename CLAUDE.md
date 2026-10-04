@@ -114,7 +114,7 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 
 ## Plots
 
-Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`, Batch 3 grey-pore group `#eda100`, low-contrast marker `#e34948` ring, any other (unseen) batch `UNSEEN_COLOR` `#6f42c1`. Never index `BATCH_COLORS[b]`; use `.get(b, UNSEEN_COLOR)` (an unknown folder name crashed the notebook in the drop rehearsal, E23). One y-axis per plot, legend whenever ≥ 2 series, bar = median in strip plots.
+Batch colours are fixed: Batch 1 `#2a78d6`, Batch 2 `#eb6834`, Batch 3 `#1baf7a`, Batch 3 grey-pore group `#eda100`, low-contrast marker `#e34948` ring, any other (unseen) batch `UNSEEN_COLOR` `#6f42c1`. Never index `BATCH_COLORS[b]`; use `.get(b, UNSEEN_COLOR)` (an unknown folder name crashed the notebook in the drop rehearsal, E23). One y-axis per plot, legend whenever ≥ 2 series, bar = median in strip plots. Product exception (D58U, Backscatter interface in `app/`): the approved baseline is neutral graphite and grey-pore baseline sites are hollow markers; green/amber/red mean the verdict only.
 
 ## Git
 

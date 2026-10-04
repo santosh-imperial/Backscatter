@@ -132,6 +132,10 @@ def load_lot(bundle: str, img: Images, inputs: dict, fixture: bool = False) -> d
         label = "Investigate: too few usable sites (quality abstention)"
     if s["meta"]["thresholds_hash"] != decision.Thresholds().hash():
         raise SystemExit(f"{p}: thresholds hash {s['meta']['thresholds_hash']} differs from the frozen rules ({decision.Thresholds().hash()}); re-export the lot")
+    if d.get("distance") and os.path.isabs(str(d["distance"].get("source", ""))):
+        src = d["distance"]["source"]  # show repository-relative paths, never a home directory
+        root = os.path.dirname(HERE)
+        d["distance"]["source"] = os.path.relpath(src, root) if src.startswith(root) else os.path.basename(src)
     if d.get("distance") is None:
         raise SystemExit(f"{p} has no lane-3 distance table; export it with --distance-table")
     sites = [{k: v for k, v in site.items() if k != "images"} | {"views": _views(img, bundle, site["images"]),

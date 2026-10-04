@@ -34,7 +34,7 @@ from pathlib import Path
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
 
 ROOT = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
@@ -145,12 +145,11 @@ def _sub(d: Path, key: str, cmd: list[str]) -> None:
         raise RuntimeError("\n".join(tail))
 
 
-def pipeline(d: Path) -> None:
-    rec = load(d)
+def step_commands(d: Path, rec: dict) -> dict:
     folder, mode, name = Path(rec["input_dir"]), rec["mode"], rec["name"]
     py = sys.executable
     v2 = d / "v2"
-    cmds = {
+    return {
         "score": [py, "-m", "analysis.submission_v2.score_folder", "--model-version", MODEL_VERSION, "--input", str(folder),
                   "--out", str(v2 / "scored"), "--cache-dir", str(ROOT / "_scratch" / "inspect_cache" / "v2")],
         "compose": [py, "-m", "analysis.submission_test.compose_submission", "--model-version", MODEL_VERSION,
@@ -163,6 +162,19 @@ def pipeline(d: Path) -> None:
         "build": [py, "-m", "app.build_ui", "--samples", str(d / "bundle_samples"), "--track-record", str(EVAL), "--out", str(d / "index.html"), "--inspection"]
                  + (["--lot", str(d / "bundle_lot")] if mode == "lot" else ["--baseline", str(BASELINE_BUNDLE)]),
     }
+
+
+FAIL_TEXT = {"score": "Measuring the sites or scoring them with model v2 stopped.",
+             "compose": "Assembling the per-sample bets stopped.",
+             "lot": "Comparing the lot with the approved baseline stopped.",
+             "samples": "Preparing the sample images stopped.",
+             "build": "Building the report stopped."}
+
+
+def pipeline(d: Path) -> None:
+    rec = load(d)
+    folder, mode = Path(rec["input_dir"]), rec["mode"]
+    cmds = step_commands(d, rec)
     rec.update(status="running", started_utc=now())
     save(d, rec)
     with LOCK:
@@ -182,7 +194,8 @@ def pipeline(d: Path) -> None:
                     _sub(d, key, cmds[key])
                 set_step(d, key, status="done", seconds=round(time.monotonic() - t0, 1), detail=detail)
             except Exception as e:  # report the failing step and stop; earlier outputs stay on disk
-                set_step(d, key, status="failed", seconds=round(time.monotonic() - t0, 1), detail=str(e)[-1200:])
+                plain = str(e)[-600:] if key == "check" else f"{FAIL_TEXT[key]} The log has the technical details."
+                set_step(d, key, status="failed", seconds=round(time.monotonic() - t0, 1), detail=plain, log=key != "check")
                 r = load(d); r.update(status="failed", finished_utc=now()); save(d, r)
                 return
     r = load(d)
@@ -208,16 +221,17 @@ def summarise(d: Path, mode: str) -> dict:
 # ---------------------------------------------------------------------------------------------------------------
 # web
 # ---------------------------------------------------------------------------------------------------------------
-app = FastAPI(title="Electrode Lot QC", docs_url=None, redoc_url=None, openapi_url=None)
+app = FastAPI(title="Backscatter", docs_url=None, redoc_url=None, openapi_url=None)
 TABS_CSS = """<style>.apptabs{display:flex;gap:6px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line,#dce0e5);background:var(--bg,#f4f5f6);font:14px/1.4 "IBM Plex Sans",system-ui,sans-serif}
 .apptabs a{padding:6px 12px;border-radius:8px;text-decoration:none;color:var(--ink,#15191e)}.apptabs a[aria-current=page]{background:var(--accent,#2f3e52);color:var(--accent-ink,#fff)}
 .apptabs a:hover:not([aria-current]){background:var(--sunk,#eceef1)}.apptabs .who{margin-left:auto;color:var(--muted,#535b67);font-size:12.5px}
+.apptabs .mark{font-weight:600;letter-spacing:.01em;margin-right:14px}
 @media (max-width:600px){.apptabs .who{display:none}}</style>"""
 
 
 def tabs(active: str, extra: str = "") -> str:
     a = lambda href, label, key: f'<a href="{href}"{" aria-current=page" if key == active else ""}>{label}</a>'
-    return (TABS_CSS + '<div class="apptabs" role="navigation" aria-label="Sections">' + a("/inspect", "Inspect a lot", "inspect")
+    return (TABS_CSS + '<div class="apptabs" role="navigation" aria-label="Sections"><span class="mark">Backscatter</span>' + a("/inspect", "Inspect a lot", "inspect")
             + a("/built", "How it was built", "built") + f'<span class="who">{extra}</span></div>')
 
 
@@ -258,6 +272,21 @@ def run_page(rid: str):
     return with_tabs(html, "inspect", f"Inspection {rec['name']} · {rec['started_utc'][:16].replace('T', ' ')} UTC")
 
 
+@app.get("/api/known-sites")
+def api_known_sites():
+    """Training site IDs, so the browser can refuse them before a long upload (the server checks again)."""
+    return sorted(pd.read_csv(FREEZE / "known_sites.csv").site.astype(str))
+
+
+@app.get("/runs/{rid}/log/{key}", response_class=PlainTextResponse)
+def run_log(rid: str, key: str):
+    d = run_dir(rid)
+    if key not in dict(STEPS):
+        raise HTTPException(404, "unknown step")
+    p = d / f"{key}.log"
+    return p.read_text() if p.exists() else "No log for this step."
+
+
 @app.get("/api/inbox")
 def api_inbox():
     INBOX.mkdir(exist_ok=True)
@@ -276,7 +305,9 @@ def api_runs():
     for p in sorted(RUNS.iterdir(), reverse=True):
         if (p / "run.json").exists():
             r = load(p)
-            recs.append({k: r.get(k) for k in ("id", "name", "mode", "source", "status", "created_utc", "finished_utc", "summary", "sites")})
+            item = {k: r.get(k) for k in ("id", "name", "mode", "source", "status", "created_utc", "started_utc", "finished_utc", "summary", "sites", "steps")}
+            item["rehearsal"] = bool(r.get("rehearsal", str(r.get("name", "")).lower().startswith("rehearsal")))
+            recs.append(item)
     return recs
 
 
@@ -304,6 +335,7 @@ async def api_create(request: Request):
         input_dir.mkdir(parents=True)
     d.mkdir(parents=True, exist_ok=True)
     rec = {"id": rid, "name": name, "mode": mode, "source": source, "input_dir": str(input_dir), "created_utc": now(),
+           "rehearsal": name.lower().startswith("rehearsal"),
            "status": "uploading" if source == "upload" else "ready",
            "steps": [{"key": k, "label": l, "status": "queued"} for k, l in STEPS]}
     save(d, rec)
@@ -369,10 +401,28 @@ def run_report_file(rid: str):
     return FileResponse(p, filename=f"{load(d)['name']}_report.html", media_type="text/html")
 
 
+def rebuild_pages() -> list[str]:
+    """Rebuild every finished inspection page from its saved bundles with the current template (no step re-runs;
+    bundles, bets and verdicts are untouched)."""
+    done = []
+    for d in sorted(RUNS.iterdir()) if RUNS.exists() else []:
+        if not (d / "run.json").exists() or load(d).get("status") != "done":
+            continue
+        cmd = step_commands(d, load(d))["build"] + ["--replace"]
+        _sub(d, "build", cmd)
+        done.append(d.name)
+    return done
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--port", type=int, default=8770)
+    ap.add_argument("--rebuild-pages", action="store_true", help="rebuild stored inspection pages with the current template, then exit")
     a = ap.parse_args(argv)
+    if a.rebuild_pages:
+        for name in rebuild_pages():
+            print("rebuilt", name)
+        return
     dataset_dir()
     RUNS.mkdir(exist_ok=True); INBOX.mkdir(exist_ok=True)
     import uvicorn

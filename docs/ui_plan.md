@@ -350,3 +350,28 @@ The static page still works on its own if the server fails.
 - The preview pane cannot read the Documents folder, so the server is started from a terminal:
   `/opt/anaconda3/bin/python3 -m app.server`.
 
+**Fourth critique pass (25/40, both tabs).**
+
+- **Stored pages.** Each inspection page was built with the template of its own run. `python -m app.server
+  --rebuild-pages` rebuilds every finished page from its saved bundles with the current template. Bundles, bets and
+  verdicts are untouched. Run it after any template change.
+- **Front door.**
+  - The idle progress card is hidden (`[hidden]` now wins over `display` rules).
+  - The verdict icon appears on the result card and in the history.
+  - The result card offers Open, Download report and Inspect another lot.
+  - Run is refused while another inspection is running.
+  - The time estimate comes from the last finished inspection of the same type.
+  - Training site IDs are refused in the browser before upload, using `/api/known-sites`.
+  - A failed subprocess step shows one plain sentence and a Show log link (`/runs/<id>/log/<step>`), never a
+    traceback.
+  - History rows carry a Rehearsal tag for runs named "Rehearsal…" and full link names.
+  - The live region announces each step and the verdict.
+- **Lot review.**
+  - A quality abstention leads with a checklist: how many more usable sites, which sites to re-acquire, then a new
+    inspection. The frozen text stays in Details.
+  - Stacked images are capped near 36 % of the screen height, so the image column no longer exceeds the screen.
+  - In an inspection, the lot's own resemblance page is listed as "This lot → Per-site resemblance".
+  - Footer paths are relative to the repository.
+  - The Method page explains the name.
+- **Theme.** Light by default, with a Dark mode toggle (D58U addendum).
+

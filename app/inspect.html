@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Inspect a lot · Electrode Lot QC</title>
+<title>Inspect a lot · Backscatter</title>
+<script>try { const t = localStorage.getItem("backscatter-theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -25,6 +26,12 @@
   --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
   --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark }
 * { box-sizing: border-box }
+[hidden] { display: none !important }
+.tag { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: var(--t-xs); border: 1px solid var(--line-strong); color: var(--muted) }
+.pill .ico, .result .v .ico { width: 16px; height: 16px; vertical-align: -3px; margin-right: 4px }
+.result .v .ico { width: 22px; height: 22px; vertical-align: -4px }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.themebtn { font-size: var(--t-xs); padding: 4px 10px; color: var(--muted) }
 html, body { margin: 0 }
 html { scrollbar-color: var(--line-strong) var(--bg) }
 body { background: var(--bg); color: var(--ink); font: var(--t-md)/1.55 var(--font-body); accent-color: var(--accent) }
@@ -86,7 +93,7 @@ th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
 <body>
 <main id="main">
   <header style="display:flex;flex-direction:column;gap:6px">
-    <h1>Inspect a lot</h1>
+    <div class="row" style="justify-content:space-between"><h1>Inspect a lot</h1><button class="themebtn" id="theme" aria-pressed="false">Dark mode</button></div>
     <p class="sub">Add the SEM cross-sections of an incoming electrode lot. The tool compares them with the approved baseline, Batch 3, using frozen rules and a frozen model, then opens the lot review.</p>
   </header>
 
@@ -105,8 +112,8 @@ th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
     </div>
     <ul class="checks" id="checks" aria-live="polite"></ul>
     <div class="grid2">
-      <div class="field"><label for="name">Lot name</label><input type="text" id="name" placeholder="Lot-2026-10-04-A" autocomplete="off" spellcheck="false">
-        <span class="note">Letters, digits, - or _. It names the inspection and its folder.</span></div>
+      <div class="field"><label for="name">Lot name</label><input type="text" id="name" autocomplete="off" spellcheck="false" aria-describedby="name-help">
+        <span class="note" id="name-help">Letters, digits, - or _, for example Lot-0412-A. It names the inspection and its folder.</span></div>
       <fieldset class="field" style="border:0;margin:0;padding:0"><legend class="legend">This folder is</legend>
         <label class="choice"><input type="radio" name="mode" value="lot" checked><span><b>One lot</b><span class="note">Lot verdict against the baseline, plus which known lot each site resembles.</span></span></label>
         <label class="choice"><input type="radio" name="mode" value="samples"><span><b>A sample set that may mix lots</b><span class="note">Which known lot each site resembles. No lot verdict.</span></span></label>
@@ -119,6 +126,7 @@ th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
   <section class="card" aria-labelledby="prog-h" id="progress" hidden>
     <div class="row" style="justify-content:space-between"><h2 id="prog-h">Inspection <span id="prog-name"></span></h2><span class="note mono" id="prog-time"></span></div>
     <div id="upload" hidden><p class="note" id="up-text">Uploading</p><div class="bar" role="progressbar" aria-label="Upload" aria-valuemin="0" aria-valuemax="100" id="up-bar"><span></span></div></div>
+    <p class="note" id="eta"></p>
     <ol class="steps" id="steps"></ol>
     <div id="result"></div>
   </section>
@@ -136,9 +144,12 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "
 const ICON = {ok: '<path d="M5 12.5l4.2 4.2L19 7"/>', bad: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
   warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.6v.1"/>', run: '<circle cx="12" cy="12" r="8" stroke-dasharray="36 14"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.2s" repeatCount="indefinite"/></circle>',
   queued: '<circle cx="12" cy="12" r="3"/>', skipped: '<path d="M6 12h12"/>'};
+const VICON = {ok: "ok", warn: "warn", bad: "bad"};
+const betsText = b => Object.entries(b || {}).map(([k, n]) => `${n} resemble${n === 1 ? "s" : ""} ${k.replace("_", " ")}`).join(", ");
 const icon = (k, cls) => `<svg class="ico ${cls || ""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const say = t => { $("live").textContent = ""; setTimeout(() => { $("live").textContent = t; }, 30); };
-const S = {files: [], folder: "", source: null, run: null, poll: null};
+const S = {files: [], folder: "", source: null, run: null, poll: null, known: new Set(), runs: [], lastStatus: {}};
+fetch("/api/known-sites").then(r => r.ok ? r.json() : []).then(k => { S.known = new Set(k); }).catch(() => {});
 
 /* ---------- choose files ---------- */
 function setFiles(files, folder) {
@@ -187,7 +198,8 @@ function analyse() {
     (sites[m[1]] = sites[m[1]] || {})[det] = ((sites[m[1]] || {})[det] || 0) + 1; bytes += f.size;
   }
   const incomplete = Object.entries(sites).filter(([s, d]) => ["BSE", "ETD", "Inlens"].some(k => d[k] !== 1)).map(([s]) => s);
-  return {sites, bad, bytes, incomplete, n: Object.keys(sites).length, images: S.files.filter(f => FN.test(f.name)).length};
+  const known = Object.keys(sites).filter(x => S.known.has(x));
+  return {sites, bad, bytes, incomplete, known, n: Object.keys(sites).length, images: S.files.filter(f => FN.test(f.name)).length};
 }
 function renderChecks() {
   const a = analyse(), li = (k, t) => `<li>${icon(k, k)}<span>${t}</span></li>`;
@@ -196,6 +208,7 @@ function renderChecks() {
   else {
     h += li(a.images ? "ok" : "bad", `${a.images} detector images for ${a.n} site${a.n === 1 ? "" : "s"}, ${(a.bytes / 1048576).toFixed(0)} MB${S.folder ? ` from <span class="mono">${esc(S.folder)}</span>` : ""}`);
     h += li(a.incomplete.length ? "bad" : "ok", a.incomplete.length ? `Missing or duplicate detector images for ${a.incomplete.map(esc).join(", ")}. Each site needs one BSE, one ETD or SE and one Inlens image.` : "Every site has one BSE, one ETD and one Inlens image");
+    if (a.known.length) h += li("bad", `Site IDs from the training set: ${a.known.slice(0, 4).map(esc).join(", ")}${a.known.length > 4 ? " and more" : ""}. Backscatter inspects new lots only.`);
     if (a.bad.length) h += li("bad", `File names the tool cannot read: ${a.bad.slice(0, 3).map(esc).join(", ")}${a.bad.length > 3 ? " and more" : ""}. Use img_&lt;site&gt;_&lt;detector&gt;.tif.`);
     if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention.`);
     h += li("queued", "The server also checks image format and that no image or site comes from the training set.");
@@ -214,7 +227,9 @@ $("run").addEventListener("click", async () => {
   err("");
   const name = $("name").value.trim(), mode = document.querySelector("input[name=mode]:checked").value;
   if (!S.source) return err("Add a lot folder first.");
-  if (S.source === "upload") { const a = analyse(); if (!a.images) return err("No readable TIFFs in this folder."); if (a.incomplete.length || a.bad.length) return err("Fix the files marked above, then run again."); }
+  if (S.source === "upload") { const a = analyse(); if (!a.images) return err("No readable TIFFs in this folder."); if (a.incomplete.length || a.bad.length || a.known.length) return err("Fix the files marked above, then run again."); }
+  const busy = S.runs.find(x => ["queued", "running"].includes(x.status));
+  if (busy) return err(`Another inspection is running (${esc(busy.name)}). Wait for it to finish, then run this one.`);
   if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,47}$/.test(name)) return err("Use letters, digits, - or _ for the lot name.");
   let rec;
   try { const r = await fetch("/api/runs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({name, mode, source: S.source, folder: S.source === "inbox" ? S.folder : undefined})});
@@ -233,45 +248,56 @@ $("run").addEventListener("click", async () => {
 function setUp(n, total, name) { const p = total ? Math.round(n / total * 100) : 0; $("up-bar").firstElementChild.style.width = p + "%"; $("up-bar").setAttribute("aria-valuenow", p); $("up-text").textContent = `Uploading ${esc(name)}: ${p} %`; }
 
 /* ---------- progress ---------- */
+function etaText(rec) {
+  const past = S.runs.filter(x => x.status === "done" && x.mode === rec.mode && x.started_utc && x.finished_utc && x.id !== rec.id);
+  if (!past.length) return `No earlier ${rec.mode === "lot" ? "one-lot" : "sample-set"} inspection to estimate from.`;
+  const p = past[0], secs = Math.round((Date.parse(p.finished_utc) - Date.parse(p.started_utc)) / 1000);
+  return `The last ${rec.mode === "lot" ? "one-lot" : "sample-set"} inspection took ${secs} s for ${(p.sites || []).length} sites. Larger lots take longer.`;
+}
 function showRun(rec) {
   $("progress").hidden = false; $("prog-name").textContent = rec.name; history.replaceState(null, "", "#" + rec.id);
+  $("eta").textContent = etaText(rec);
   renderSteps(rec); $("progress").scrollIntoView({block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
 }
 function renderSteps(rec) {
   const st = {done: ["ok", "ok"], failed: ["bad", "bad"], running: ["run", "muted"], queued: ["queued", "muted"], skipped: ["skipped", "muted"]};
   $("steps").innerHTML = rec.steps.map(s => { const [k, c] = st[s.status] || st.queued;
-    return `<li>${icon(k, c)}<span><span class="lab">${esc(s.label)}</span>${s.detail ? `<br><span class="det">${esc(s.detail)}</span>` : ""}</span><span class="t">${s.status === "running" ? "running" : s.seconds != null ? s.seconds.toFixed(0) + " s" : s.status === "skipped" ? "skipped" : ""}</span></li>`; }).join("");
+    return `<li>${icon(k, c)}<span><span class="lab">${esc(s.label)}</span>${s.detail ? `<br><span class="det">${esc(s.detail)}</span>` : ""}${s.log ? ` <a href="/runs/${rec.id}/log/${s.key}" target="_blank" rel="noopener">Show log</a>` : ""}</span><span class="t">${s.status === "running" ? "running" : s.seconds != null ? s.seconds.toFixed(0) + " s" : s.status === "skipped" ? "skipped" : ""}</span></li>`; }).join("");
+  rec.steps.forEach(s => { const prev = S.lastStatus[s.key]; if (prev && prev !== s.status && ["running", "done", "failed"].includes(s.status)) say(`${s.label}: ${s.status === "running" ? "started" : s.status}.`); S.lastStatus[s.key] = s.status; });
   const t0 = rec.started_utc && Date.parse(rec.started_utc), t1 = rec.finished_utc ? Date.parse(rec.finished_utc) : Date.now();
   $("prog-time").textContent = t0 ? `${Math.round((t1 - t0) / 1000)} s` : "";
   let h = "";
   if (rec.status === "done") {
     const s = rec.summary || {};
-    const bets = Object.entries(s.bets || {}).map(([b, n]) => `${n} resemble ${b.replace("_", " ")}`).join(", ");
+    const bets = betsText(s.bets);
+    const acts = `<div class="actions"><a class="btn" href="/runs/${rec.id}/">${rec.mode === "lot" ? "Open the lot review" : "Open the results"}</a>
+      <a href="/runs/${rec.id}/report.html">Download report</a><button id="another">Inspect another lot</button></div>`;
     h = rec.mode === "lot"
-      ? `<div class="result ${s.verdict_state || "plain"}"><span class="note">Recommended action</span><span class="v">${esc(s.verdict_label)}</span><span class="note">Sample resemblance: ${esc(bets)}.</span><a class="btn" href="/runs/${rec.id}/">Open the lot review</a></div>`
-      : `<div class="result plain"><span class="v">Sample resemblance ready</span><span class="note">${esc(bets)}. A sample set gets no lot verdict.</span><a class="btn" href="/runs/${rec.id}/">Open the results</a></div>`;
+      ? `<div class="result ${s.verdict_state || "plain"}"><span class="note">Recommended action</span><span class="v">${icon(VICON[s.verdict_state] || "queued")}${esc(s.verdict_label)}</span><span class="note">Per-site resemblance: ${esc(bets)}.</span>${acts}</div>`
+      : `<div class="result plain"><span class="v">Sample resemblance ready</span><span class="note">${esc(bets)}. A sample set gets no lot verdict.</span>${acts}</div>`;
   } else if (rec.status === "failed") {
     const f = rec.steps.find(x => x.status === "failed");
-    h = `<div class="result bad"><span class="v">Inspection stopped at “${esc(f ? f.label : "a step")}”</span><span class="note">Earlier results are kept in the inspection folder. Fix the input and start a new inspection.</span></div>`;
+    h = `<div class="result plain"><span class="v">Inspection stopped at “${esc(f ? f.label : "a step")}”</span><span class="note">${esc(f && f.detail || "")} Earlier results are kept in the inspection folder.</span><div class="actions"><button id="another">Inspect another lot</button></div></div>`;
   }
   $("result").innerHTML = h;
 }
 function poll(id) {
   clearInterval(S.poll);
   const tick = async () => { const r = await fetch(`/api/runs/${id}`); if (!r.ok) return; const rec = await r.json(); renderSteps(rec);
-    if (["done", "failed"].includes(rec.status)) { clearInterval(S.poll); say(rec.status === "done" ? "Inspection finished." : "Inspection stopped."); history_(); } };
+    if (["done", "failed"].includes(rec.status)) { clearInterval(S.poll); const s = rec.summary || {};
+      say(rec.status === "done" ? `Inspection finished. ${rec.mode === "lot" ? "Recommended action: " + s.verdict_label + "." : "Sample resemblance ready."}` : "Inspection stopped."); history_(); } };
   tick(); S.poll = setInterval(tick, 1500);
 }
 
 /* ---------- history and inbox ---------- */
 async function history_() {
-  const r = await fetch("/api/runs"); if (!r.ok) return; const runs = await r.json();
+  const r = await fetch("/api/runs"); if (!r.ok) return; const runs = await r.json(); S.runs = runs;
   if (!runs.length) return;
   $("hist").innerHTML = runs.map(x => { const s = x.summary || {};
-    const res = x.status === "done" ? (x.mode === "lot" ? `<span class="pill ${s.verdict_state || ""}">${esc(s.verdict_label)}</span>` : `<span class="pill">${esc(Object.entries(s.bets || {}).map(([b, n]) => `${n} × ${b.replace("_", " ")}`).join(", "))}</span>`)
+    const res = x.status === "done" ? (x.mode === "lot" ? `<span class="pill ${s.verdict_state || ""}">${icon(VICON[s.verdict_state] || "queued")}${esc(s.verdict_label)}</span>` : `<span class="pill">${esc(betsText(s.bets))}</span>`)
       : `<span class="pill ${x.status === "failed" ? "bad" : ""}">${esc(x.status)}</span>`;
-    return `<tr><td class="mono">${esc(x.name)}</td><td>${x.mode === "lot" ? "One lot" : "Sample set"}${x.sites ? `, ${x.sites.length} sites` : ""}</td><td class="mono">${esc((x.created_utc || "").slice(0, 16).replace("T", " "))}</td><td>${res}</td>
-      <td>${x.status === "done" ? `<a href="/runs/${x.id}/">Open</a>` : `<a href="#${x.id}" data-run="${x.id}">Progress</a>`}</td></tr>`; }).join("");
+    return `<tr><td class="mono">${esc(x.name)}${x.rehearsal ? '<span class="tag">Rehearsal</span>' : ""}</td><td>${x.mode === "lot" ? "One lot" : "Sample set"}${x.sites ? `, ${x.sites.length} sites` : ""}</td><td class="mono">${esc((x.created_utc || "").slice(0, 16).replace("T", " "))}</td><td>${res}</td>
+      <td>${x.status === "done" ? `<a href="/runs/${x.id}/" aria-label="Open ${esc(x.name)}">Open</a>` : `<a href="#${x.id}" data-run="${x.id}" aria-label="Show progress of ${esc(x.name)}">Progress</a>`}</td></tr>`; }).join("");
 }
 document.addEventListener("click", e => { const a = e.target.closest("a[data-run]"); if (!a) return; e.preventDefault(); fetch(`/api/runs/${a.dataset.run}`).then(r => r.json()).then(rec => { showRun(rec); poll(rec.id); }); });
 async function inbox() {
@@ -280,6 +306,15 @@ async function inbox() {
     $("inbox").innerHTML = '<option value="">Choose a folder</option>' + list.map(x => `<option value="${esc(x.folder)}" data-desc="${x.images} images, ${x.sites} sites" data-sites="${x.sites}">${esc(x.folder)} (${x.sites} sites)</option>`).join("");
   } catch (e) { /* inbox is optional */ }
 }
+document.addEventListener("click", e => {
+  if (e.target.closest("#another")) { clearInterval(S.poll); S.files = []; S.source = null; S.folder = ""; S.lastStatus = {};
+    $("name").value = ""; $("checks").innerHTML = ""; $("inbox").value = ""; $("progress").hidden = true; $("upload").hidden = true;
+    history.replaceState(null, "", location.pathname); window.scrollTo(0, 0); $("drop").focus(); say("Ready for another lot."); }
+  if (e.target.closest("#theme")) { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next; try { localStorage.setItem("backscatter-theme", next); } catch (err) {} themeLabel(); }
+});
+function themeLabel() { const d = document.documentElement.dataset.theme === "dark"; $("theme").textContent = d ? "Light mode" : "Dark mode"; $("theme").setAttribute("aria-pressed", String(d)); }
+themeLabel();
 history_(); inbox();
 if (location.hash.length > 1) fetch(`/api/runs/${location.hash.slice(1)}`).then(r => r.ok ? r.json() : null).then(rec => { if (rec) { showRun(rec); poll(rec.id); } });
 </script>

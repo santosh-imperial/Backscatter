@@ -65,3 +65,33 @@ def test_tabs_are_injected_after_body(srv):
     server, _, _ = srv
     html = server.with_tabs("<html><body><main></main></body></html>", "built")
     assert html.index("apptabs") > html.index("<body>") and 'href="/built" aria-current=page' in html
+
+
+def test_known_sites_rehearsal_flag_and_plain_log_route(srv):
+    server, c, _ = srv
+    known = c.get("/api/known-sites").json()
+    assert "4ih2ggld" in known and len(known) == 31
+    rec = c.post("/api/runs", json={"name": "Rehearsal-x", "mode": "samples", "source": "upload"}).json()
+    assert rec["rehearsal"] is True
+    assert c.get("/api/runs").json()[0]["rehearsal"] is True
+    r = c.get(f"/runs/{rec['id']}/log/score")
+    assert r.status_code == 200 and r.text == "No log for this step."
+    assert c.get(f"/runs/{rec['id']}/log/../../etc").status_code == 404
+
+
+def test_failed_subprocess_step_shows_plain_text_not_a_traceback(srv, tmp_path, monkeypatch):
+    server, c, _ = srv
+    d = tmp_path / "lot"; d.mkdir()
+    for det, seed in (("BSE", 1), ("ETD", 2), ("Inlens", 3)):
+        _tif(d / f"img_zz9_{det}.tif", seed)
+    rec = c.post("/api/runs", json={"name": "Lot-B", "mode": "samples", "source": "upload"}).json()
+    run = server.RUNS / rec["id"]
+    r = server.load(run); r["input_dir"] = str(d); server.save(run, r)
+    def boom(dd, key, cmd):
+        raise RuntimeError("Traceback (most recent call last):\n  File x\nValueError: secret internals")
+    monkeypatch.setattr(server, "_sub", boom)
+    server.pipeline(run)
+    out = server.load(run)
+    failed = [s for s in out["steps"] if s["status"] == "failed"][0]
+    assert out["status"] == "failed" and failed["key"] == "score" and failed["log"] is True
+    assert "Traceback" not in failed["detail"] and "log" in failed["detail"]

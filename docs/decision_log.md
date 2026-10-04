@@ -386,6 +386,26 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Alternatives rejected:** a hosted service (sends customer images off the machine; out of scope); running the pipeline inside the page (impossible in a static file); a Streamlit app (a second UI stack beside the static page).
 - **Consequences:** Batches 1–3 cannot be demoed as new lots. Rehearsal used the first-drop folder (docs/ui_plan.md §10). The 7-site runtime is not yet measured. Checklist C16, C27, C31, C34S.
 
+### D58U · 2026-10-04 · Product name Backscatter; colour carries meaning only
+- **Decision (Santosh):**
+  - The product is named **Backscatter**, after the backscattered-electron (BSE) signal it measures.
+  - Interface chrome stays neutral graphite, with no brand hue.
+  - Green, amber and red mean the verdict only, always paired with an icon and a word.
+  - In the product, the approved baseline is drawn in neutral graphite (`--base`). Grey-pore baseline sites are hollow graphite markers, not amber. Cracked sites keep a ring.
+  - An inspected lot uses the fixed unseen colour #6f42c1.
+  - Batch 1/2/3 colours stay wherever those identities matter: sample resemblance, track record, the known lots on "How it was built", and the notebooks and reports.
+  - Painted voids stay red (#e34948), matching the reports and the assumption register.
+- **Why:** in a QC tool, the baseline in green read as "pass" and the grey-pore group in amber read as "warning". Data colours were competing with the verdict colours.
+- **Alternatives rejected:**
+  - Fixed batch colours everywhere: consistent, but semantically misleading in the product.
+  - Cyan voids: would decouple from the reports. Santosh chose to keep red.
+  - A brand accent: there's no hue left that doesn't already carry meaning.
+- **Scope:** a product-interface exception to the CLAUDE.md Plots rule. Notebook and report plots keep the fixed batch colours.
+- **Addendum (same day, Santosh):**
+  - Light mode is the default on both pages, whatever the system setting. A Dark mode toggle remembers the choice in the browser.
+  - Low-contrast flags on site chips are neutral hollow markers. The red low-contrast ring stays in strip charts, under the Plots rule.
+  - The "bet was wrong" callout is neutral. Verdict red is not reused for track-record outcomes.
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.
