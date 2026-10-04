@@ -1,7 +1,7 @@
 {
- "built_utc": "2026-10-04T11:47:27+00:00",
- "git": "9f30884-dirty",
- "builder_sha256": "3d595ecda7dc3e8fe682c8cddd54821d762e53e97a3d127a9ba9ce411a847a56",
+ "built_utc": "2026-10-04T12:11:29+00:00",
+ "git": "8b58b72-dirty",
+ "builder_sha256": "40d691d1b5dddc1ebd6bcebd34232858243f30c49b45d22ae4de1f7d7e70d357",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
   "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
@@ -12,6 +12,8 @@
   "analysis/submission_v2/freeze/snapshot.json": "f11e25dc9d5261de87e01216689010f9ecb65b5be2ff633e95dfd50f5cb96386",
   "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a",
   "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/truth.csv": "76f1feb50a7c042314f627fc281235b042c471e6c4a0ebcd7d06cc7998a73b9b",
+  "analysis/submission_v2/freeze/evaluation/kruskal_context.csv": "3af4fdd4fd9e160f0faf76ae96e618bb683cfd221a0a354fd8dc93350c7324c7",
+  "analysis/morphology/metric_register.json": "248df2ce988924cf74977130d2728c33f4ee6253c981a3849cdf833604b2c33c",
   "analysis/assets/img_pl8uabbv_BSE.jpg": "bffdd61dda749fd2d2db9767a08068695973624237860430f24e2cf3b7240224",
   "analysis/assets/img_pl8uabbv_ETD.jpg": "aabfe0884f9e6597e5ba16e6669cf5397ec0a523a605d7925620db275c5513b7",
   "analysis/assets/img_pl8uabbv_Inlens.jpg": "10ef2d9359071887eb4daa65f10c6efe8f1bb24ba3d3b1ff727ec982f4e6d86f",
@@ -28,6 +30,6 @@
   "analysis/signatures/fig_signature_crops.png": "395d322feaaa70e34288da520e725e5bfd717478c84b272e3d42204601da75a3",
   "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef"
  },
- "output_sha256": "3bc78bd840c0ba198666f316e07cf564bc00c7a8d4b5347c3fb883e502cc7eee",
+ "output_sha256": "651482f182241209ee160dd65d61f61089ade11d26ac19c59d8117a1df3caf34",
  "size_mb": 1.15
 }
