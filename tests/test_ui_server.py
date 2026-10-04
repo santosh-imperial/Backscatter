@@ -115,4 +115,5 @@ def test_summary_marks_abstention_and_miss_pattern(srv, tmp_path):
         "sample_id,predicted_batch,acquisition_flags\na1,Batch_1,bright_low_contrast\na2,Batch_3,none of listed flags\n")
     s = server.summarise(d, "lot")
     assert s["abstention"] is True and s["verdict_state"] == "abst" and s["miss_pattern"] == ["a1"]
+    assert s["verdict_label"] == "Not enough usable images to judge this lot" and s["frozen_verdict"] == decision.INVESTIGATE_DRIFT
     assert s["bets"] == {"Batch_1": 1, "Batch_3": 1}

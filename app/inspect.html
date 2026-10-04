@@ -68,6 +68,8 @@ button:hover { filter: brightness(1.05) }
 .err { color: var(--bad); font-size: var(--t-sm) }
 .bar { height: 8px; border-radius: 4px; background: var(--sunk); overflow: hidden }
 .bar span { display: block; height: 100%; background: var(--accent); width: 0; transition: width .2s }
+#stepbox > summary { cursor: pointer; font-size: var(--t-sm); color: var(--muted) }
+#samplemode { font-size: var(--t-xs); padding: 3px 9px; margin-left: 6px }
 .steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column }
 .steps li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: start }
 .steps li:last-child { border-bottom: 0 }
@@ -126,9 +128,9 @@ th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
   <section class="card" aria-labelledby="prog-h" id="progress" hidden>
     <div class="row" style="justify-content:space-between"><h2 id="prog-h" tabindex="-1">Inspection <span id="prog-name"></span></h2><span class="note mono" id="prog-time"></span></div>
     <div id="upload" hidden><p class="note" id="up-text">Uploading</p><div class="bar" role="progressbar" aria-label="Upload" aria-valuemin="0" aria-valuemax="100" id="up-bar"><span></span></div></div>
-    <p class="note" id="eta"></p>
-    <ol class="steps" id="steps"></ol>
     <div id="result"></div>
+    <p class="note" id="eta"></p>
+    <details id="stepbox" open><summary id="stepsum">Steps</summary><ol class="steps" id="steps"></ol></details>
   </section>
 
   <section class="card" aria-labelledby="hist-h">
@@ -185,7 +187,7 @@ $("inbox").addEventListener("change", e => {
   const opt = e.target.selectedOptions[0];
   const nSites = +opt.dataset.sites, lotMode = document.querySelector("input[name=mode]:checked").value === "lot";
   $("checks").innerHTML = `<li>${icon("ok", "ok")}<span>Inbox folder <span class="mono">${esc(v)}</span>: ${esc(opt.dataset.desc)}. The server checks every image when the run starts.</span></li>`
-    + (lotMode && nSites < 5 ? `<li>${icon("warn", "warn")}<span>${nSites} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention.</span></li>` : "");
+    + (lotMode && nSites < 5 ? `<li>${icon("warn", "warn")}<span>${nSites} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button></span></li>` : "");
 });
 
 /* ---------- check in the browser before anything uploads ---------- */
@@ -211,7 +213,7 @@ function renderChecks() {
     h += li(a.incomplete.length ? "bad" : "ok", a.incomplete.length ? `Missing or duplicate detector images for ${a.incomplete.map(esc).join(", ")}. Each site needs one BSE, one ETD or SE and one Inlens image.` : "Every site has one BSE, one ETD and one Inlens image");
     if (a.known.length) h += li("bad", `Site IDs from the training set: ${a.known.slice(0, 4).map(esc).join(", ")}${a.known.length > 4 ? " and more" : ""}. Backscatter inspects new lots only.`);
     if (a.bad.length) h += li("bad", `File names the tool cannot read: ${a.bad.slice(0, 3).map(esc).join(", ")}${a.bad.length > 3 ? " and more" : ""}. Use img_&lt;site&gt;_&lt;detector&gt;.tif.`);
-    if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention.`);
+    if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention. <button id="samplemode">Run as a sample set instead</button>`);
     h += li("queued", "The server also checks image format and that no image or site comes from the training set.");
   }
   $("checks").innerHTML = h;
@@ -265,7 +267,11 @@ function renderSteps(rec) {
   const st = {done: ["ok", "ok"], failed: ["bad", "bad"], running: ["run", "muted"], queued: ["queued", "muted"], skipped: ["skipped", "muted"]};
   $("steps").innerHTML = rec.steps.map(s => { const [k, c] = st[s.status] || st.queued;
     return `<li>${icon(k, c)}<span><span class="lab">${esc(s.label)}</span>${s.detail ? `<br><span class="det">${esc(s.detail)}</span>` : ""}${s.log ? ` <a href="/runs/${rec.id}/log/${s.key}" target="_blank" rel="noopener">Show log</a>` : ""}</span><span class="t">${s.status === "running" ? "running" : s.seconds != null ? s.seconds.toFixed(0) + " s" : s.status === "skipped" ? "skipped" : ""}</span></li>`; }).join("");
-  $("eta").hidden = ["done", "failed"].includes(rec.status);
+  const fin = ["done", "failed"].includes(rec.status);
+  $("eta").hidden = fin;
+  const total = rec.steps.reduce((a, x) => a + (x.seconds || 0), 0);
+  $("stepsum").textContent = fin ? `${rec.steps.filter(x => x.status !== "skipped").length} steps · ${Math.round(total)} s · show the steps` : "Steps";
+  if (fin && !S.stepsShown) { $("stepbox").open = false; S.stepsShown = true; }
   rec.steps.forEach(s => { const prev = S.lastStatus[s.key]; if (prev && prev !== s.status && ["running", "done", "failed"].includes(s.status)) say(`${s.label}: ${s.status === "running" ? "started" : s.status}.`); S.lastStatus[s.key] = s.status; });
   const t0 = rec.started_utc && Date.parse(rec.started_utc), t1 = rec.finished_utc ? Date.parse(rec.finished_utc) : Date.now();
   $("prog-time").textContent = t0 ? `${Math.round((t1 - t0) / 1000)} s` : "";
@@ -278,7 +284,7 @@ function renderSteps(rec) {
     const miss = (s.miss_pattern || []).length;
     const sec = `<span class="note">Per-site resemblance (secondary; does not change the action): ${esc(bets)}.${miss ? ` <a href="/runs/${rec.id}/#samples-bundle_samples">${miss} sample${miss > 1 ? "s match" : " matches"} a known miss pattern</a>.` : ""}</span>`;
     h = rec.mode === "lot"
-      ? `<div class="result ${s.verdict_state || "plain"}"><span class="note">Recommended action</span><span class="v">${icon(VICON[s.verdict_state] || "queued")}${esc(s.verdict_label)}</span>${s.abstention ? `<span><b>The images are not enough to judge the lot.</b> The lot review lists what to re-image.</span>` : ""}${sec}${acts}</div>`
+      ? `<div class="result ${s.verdict_state || "plain"}"><span class="note">Recommended action</span><span class="v">${icon(VICON[s.verdict_state] || "queued")}${esc(s.verdict_label)}</span>${s.abstention ? `<span class="note mono">Frozen rule output: ${esc(s.frozen_verdict || "investigate")} · quality abstention</span><span>The lot review lists what to re-image.</span>` : ""}${sec}${acts}</div>`
       : `<div class="result plain"><span class="v">Sample resemblance ready</span><span class="note">${esc(bets)}. A sample set gets no lot verdict.${(s.miss_pattern || []).length ? ` <a href="/runs/${rec.id}/#samples-bundle_samples">${s.miss_pattern.length} sample${s.miss_pattern.length > 1 ? "s match" : " matches"} a known miss pattern</a>.` : ""}</span>${acts}</div>`;
   } else if (rec.status === "failed") {
     const f = rec.steps.find(x => x.status === "failed");
@@ -312,7 +318,9 @@ async function inbox() {
   } catch (e) { /* inbox is optional */ }
 }
 document.addEventListener("click", e => {
-  if (e.target.closest("#another") || e.target.closest("#newbtn")) { clearInterval(S.poll); $("new").hidden = false; $("newbtn").hidden = true; S.files = []; S.source = null; S.folder = ""; S.lastStatus = {};
+  if (e.target.closest("#samplemode")) { document.querySelector('input[name=mode][value=samples]').checked = true;
+    if (S.source === "inbox") $("inbox").dispatchEvent(new Event("change")); else renderChecks(); say("Switched to a sample-set run."); }
+  if (e.target.closest("#another") || e.target.closest("#newbtn")) { clearInterval(S.poll); S.stepsShown = false; $("stepbox").open = true; $("new").hidden = false; $("newbtn").hidden = true; S.files = []; S.source = null; S.folder = ""; S.lastStatus = {};
     $("name").value = ""; $("checks").innerHTML = ""; $("inbox").value = ""; $("progress").hidden = true; $("upload").hidden = true;
     history.replaceState(null, "", location.pathname); window.scrollTo(0, 0); $("drop").focus(); say("Ready for another lot."); }
   if (e.target.closest("#theme")) { const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";

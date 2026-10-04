@@ -406,6 +406,10 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
   - Low-contrast flags on site chips are neutral hollow markers. The red low-contrast ring stays in strip charts, under the Plots rule.
   - The "bet was wrong" callout is neutral. Verdict red is not reused for track-record outcomes.
 - **Addendum 2 (same day):** a quality abstention is shown in neutral graphite with an image-quality icon and the lead "The images are not enough to judge the lot". The frozen verdict label is unchanged. Amber stays for investigate verdicts, because an abstention calls for re-imaging, not supplier escalation.
+- **Addendum 3 (same day, sixth critique):**
+  - A quality abstention has one visible name everywhere: "Not enough usable images to judge this lot". The frozen rule output is shown beside it ("Frozen rule output: investigate — batch-wide drift · quality abstention"), and navigation shows "not judged".
+  - Lanes that cannot be judged at this n show a neutral dash, "Not assessable at N usable sites" and "Shown for reference", never a green tick. The drift lane gives the smallest shift it could detect.
+  - On Inspect, a finished result comes before the collapsed step list. A lot-mode run that will abstain offers "Run as a sample set instead". No rule changed.
 
 ### D59U · 2026-10-04 · "Our approach" tab: model and workflow rationale, built from saved evidence
 - **Decision (Santosh):** add a third tab explaining how the model and workflow were built, why, and how they integrate into the product. It is a visual story for judges, and it is not about how the interface was built. Claude drafts the narrative; Santosh approves it.

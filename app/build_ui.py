@@ -41,6 +41,9 @@ VERDICT_LABELS = {
     decision.REJECT: ("Reject (provisional)", "bad"),
 }
 
+# A quality abstention has one visible name everywhere; the frozen rule output is shown beside it (D58U addendum 3).
+ABSTENTION_LABEL = "Not enough usable images to judge this lot"
+
 # ---- ASD-STE100 display text (docs/ui_plan.md §4.1–4.3, approved by Santosh 2026-10-04) -----------------------
 STE = {
     "intro": ("This panel shows possible effects on the cell. It shows text only for the KPIs that cause the verdict. "
@@ -129,7 +132,7 @@ def load_lot(bundle: str, img: Images, inputs: dict, fixture: bool = False) -> d
     if s["outcome_columns"].get("quality_abstention"):
         # The frozen rules return an investigate string for an abstention; the page names the real reason and keeps
         # the frozen string in the footer and the details.
-        label = "Investigate: too few usable sites (quality abstention)"
+        label = ABSTENTION_LABEL
         state = "abst"  # neutral treatment: the images are not enough to judge, not an amber verdict (D58U)
     if s["meta"]["thresholds_hash"] != decision.Thresholds().hash():
         raise SystemExit(f"{p}: thresholds hash {s['meta']['thresholds_hash']} differs from the frozen rules ({decision.Thresholds().hash()}); re-export the lot")

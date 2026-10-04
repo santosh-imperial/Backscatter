@@ -421,3 +421,11 @@ How it's built:
 - **Sources.** Each claim cites its decision or experiment ID.
 - **Status.** The narrative is Claude's draft, **pending Santosh's approval**.
 
+**Sixth critique pass (26/40), abstention.**
+
+- One visible name everywhere, with the frozen rule output beside it (D58U addendum 3).
+- Lanes that can't be judged are marked "Not assessable at N usable sites".
+- The KPI panel notes that the shifts are shown for reference only.
+- On Inspect, the result comes before a collapsed "6 steps · 168 s" list.
+- When fewer than 5 sites are added in lot mode, Inspect offers "Run as a sample set instead".
+

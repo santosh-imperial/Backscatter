@@ -271,7 +271,8 @@ const ICON = {
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/>',
   bad: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
   chev: '<path d="M9 6l6 6-6 6"/>',
-  imgq: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><path d="M4 3.5l16 17"/>'};
+  imgq: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><path d="M4 3.5l16 17"/>',
+  dash: '<path d="M6 12h12"/>'};
 const VICON = {ok: "ok", warn: "warn", bad: "bad", abst: "imgq"};
 const icon = (k, cls = "ico") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const topFeat = t => String(t || "").split("|").slice(0, 2).map(x => {
@@ -286,7 +287,7 @@ const announce = t => { const el = document.getElementById("live"); el.textConte
 function nav(active) {
   const a = (id, inner) => `<a href="#${id}"${id === active ? ' aria-current="page"' : ""}>${inner}</a>`;
   const b = DATA.baseline;
-  const st = l => `<span style="color:var(--${l.verdict_state === "abst" ? "muted" : l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject", abst: "abstained"}[l.verdict_state])}</span>`;
+  const st = l => `<span style="color:var(--${l.verdict_state === "abst" ? "muted" : l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject", abst: "not judged"}[l.verdict_state])}</span>`;
   const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
   let h = `<div class="brand">Backscatter<small>Incoming electrode lot QC from SEM cross-sections</small></div>`;
   h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:var(--base)"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
@@ -442,6 +443,15 @@ function laneModel(l) {
        ${adjAlone ? `<p class="callout">Only the covariate-adjusted view falls below 0.05. Adjustment on a mixed baseline can create signal, and the frozen rules do not use this view to raise drift. Read it as a prompt to check session metadata, not as drift.</p>` : ""}
        <p class="note">A sensitivity analysis. A difference between views does not measure an instrument share. Flags come from this lot's own images.</p>`},
   ];
+  if (l.outcome.quality_abstention) {
+    const usable = l.usable_n ? Math.min(...PRIM().map(k => l.usable_n[k][1])) : 0;
+    const na = `Not assessable at ${usable} usable site${usable === 1 ? "" : "s"}`;
+    lanes.slice(0, 3).forEach((ln, i) => {
+      ln.state = na; ln.icon = "dash"; ln.role = "Shown for reference; too few usable sites to judge.";
+      if (i === 0) ln.kv = mdcs.length ? `would only detect ≥ ${f(Math.min(...mdcs), 2)} MAD` : "detectable shift not available";
+      ln.body = `<p class="callout plain">With ${usable} usable site${usable === 1 ? "" : "s"} these values cannot support a decision. They are shown for reference only.</p>` + ln.body;
+    });
+  }
   lanes.forEach(ln => { ln.sets = /^Sets the action/.test(ln.role); });
   return {lanes, nearest};
 }
@@ -479,6 +489,7 @@ function lotView(l) {
   h += `<section class="card decision" aria-labelledby="act-h">
     <div class="verdictbox ${l.verdict_state}"><h2 class="sr" id="act-h">Recommended action</h2>
       <div class="verdict">${icon(VICON[l.verdict_state], "ico")}${esc(l.verdict_label)}</div>
+      ${l.outcome.quality_abstention ? `<p class="note mono">Frozen rule output: ${esc(l.verdict)} · quality abstention</p>` : ""}
       ${l.outcome.quality_abstention ? abstentionChecklist(l) : `<p class="why">${esc(sent(l.next_action))}</p>`}
       <p class="note">Decision stability ${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs} leave-one-site-out re-runs. Stability is not a probability of being right.</p>
       <details class="more"><summary>Details: why, and what would change it</summary><div class="ste">
@@ -510,7 +521,7 @@ function abstentionChecklist(l) {
   const last = DATA.inspection
     ? `<a class="linkbtn" href="/inspect?name=${encodeURIComponent(l.lot)}">Start a new inspection</a> with all sites of the lot.`
     : "Start a new inspection with all sites of the lot.";
-  return `<p class="why"><b>The images are not enough to judge the lot.</b> To get a decision:</p><ol class="checklist">${items.map(t => `<li>${esc(t)}</li>`).join("")}<li>${last}</li></ol>`;
+  return `<p class="why">To get a decision:</p><ol class="checklist">${items.map(t => `<li>${esc(t)}</li>`).join("")}<li>${last}</li></ol>`;
 }
 function cropIndex(l, site, kpi) { return l.crops.findIndex(c => c.site === site && (!kpi || c.kpi === kpi)); }
 const reviewable = f => f.margin_in_mad >= DATA.thresholds.severity_margin_mad && f.measurement_reliable !== false;
@@ -618,6 +629,7 @@ function workbench(l, nearest, lanes) {
     </div>
     <div class="panel">
       <div class="controls"><h2>${l.outcome.quality_abstention ? "Where the lot sits" : "What drives it"}</h2>
+        ${l.outcome.quality_abstention ? `<p class="callout plain">Too few usable sites: none of these shifts can be assessed. They are shown for reference only.</p>` : ""}
         <p class="note">Select a KPI to show its overlay and the lot site furthest from the baseline median.</p>
         <div class="kpis"><div aria-hidden="true" style="padding:0 8px">${shiftAxis()}</div>${rows}</div>
         <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for five KPIs; 1.000 means no evidence of a shift.</p></div>

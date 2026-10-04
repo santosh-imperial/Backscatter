@@ -1,9 +1,9 @@
 {
- "built_utc": "2026-10-04T11:37:31+00:00",
+ "built_utc": "2026-10-04T11:59:09+00:00",
  "builder": "ui-1.0.0",
- "git": "e8dd014",
- "template_sha256": "c60ef343961b64ed6971770ea0ac60531069ac37cbe1ee1bac75f9ea30c86eba",
- "builder_sha256": "8d1a268bf255e2c542720b4e2970fb8f2a557a57a4f1dbbb854e8d28ec0d4523",
+ "git": "8b58b72-dirty",
+ "template_sha256": "5eab576af0cb14a0687141861774c1eb58cafbc2087f7c9a0bfa060fd3dc3904",
+ "builder_sha256": "f956fa311474b5d79291fd8438d8bf7b1bd82816f9470715c496ea885e1cafcb",
  "inputs_sha256": {
   "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/truth.csv": "76f1feb50a7c042314f627fc281235b042c471e6c4a0ebcd7d06cc7998a73b9b",
   "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/output/summary.csv": "01cd17354027d278b738c425ea83be5db6a9bd1636af7e130a651e1ff8b44651",
@@ -17,6 +17,6 @@
   "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a"
  },
  "output": "ui/index.html",
- "output_sha256": "fb2f6714e9b4f9b979260d3a2215631e9a4487609ca2a07222589413c5c3d16a",
+ "output_sha256": "5c3cd224cb0f8954efcf5f10b256629be45b23fa42c43a03f3083e1608e372c5",
  "size_mb": 7.98
 }

@@ -205,13 +205,14 @@ def pipeline(d: Path) -> None:
 
 def summarise(d: Path, mode: str) -> dict:
     sys.path.insert(0, str(ROOT))
-    from app.build_ui import VERDICT_LABELS
+    from app.build_ui import ABSTENTION_LABEL, VERDICT_LABELS
     out = {}
     if mode == "lot":
         lot = json.loads((d / "bundle_lot" / "lot.json").read_text())
         label, state = VERDICT_LABELS[lot["summary"]["verdict"]]
         if lot["summary"]["outcome_columns"].get("quality_abstention"):
-            label, state = "Investigate: too few usable sites (quality abstention)", "abst"
+            label, state = ABSTENTION_LABEL, "abst"
+            out["frozen_verdict"] = lot["summary"]["verdict"]
             out["abstention"] = True
         out.update(verdict_label=label, verdict_state=state, lot_id="lot-" + re.sub(r"[^A-Za-z0-9_.-]", "_", lot["lot"]))
     pred = pd.read_csv(d / "v2" / "submission" / "predictions.csv")
