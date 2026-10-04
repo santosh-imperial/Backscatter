@@ -1,0 +1,49 @@
+{
+  "experiment": "E42S",
+  "all_checks_passed": true,
+  "replay_max_error": 1.1102230246251565e-16,
+  "independent_score_loss_max_error": 8.881784197001252e-16,
+  "explanation_margin_max_error": 1.3322676295501878e-15,
+  "n_prediction_rows": 340,
+  "n_summaries": 20,
+  "n_reliability_rows": 100,
+  "n_threshold_rows": 100,
+  "protected_files_unchanged": 633,
+  "raw_TIFFs_unchanged": 102,
+  "report_links": 17,
+  "report_images": 3,
+  "native_browser_layout_verified": false,
+  "sources_sha256": {
+    "analysis/confidence_audit/verify.py": "3cbf8bb5630db8ed4dc333f94201c17ca2393c9f6f7b58c170c6e29ec90c1b33",
+    "analysis/confidence_audit/build_report.py": "5c657f82484b749af252792d02f869847c49daa4cc988b2a0a7d19ff37ba2f31",
+    "analysis/confidence_audit/findings.md": "93f61a609d37434cd5b0ff429c30cca245726545d395c315b5721fcde6deb9ef",
+    "analysis/confidence_audit/register_results.py": "64d444d39c323da78e24c09646c3bf820aa599a2dea235c0fe6a2478b014cd03"
+  },
+  "report_sha256": "3a578fcc806f2a139e78c5f9fb55ad5d481a5f9bed465a21c211778bb6c03741",
+  "test_validation": {
+    "command": "pytest tests -q",
+    "passed": 232,
+    "warnings": 15,
+    "elapsed_seconds": 189.09
+  },
+  "organiser_utility_not_identified": true,
+  "no_calibration_fit": true,
+  "no_submission_promotion": true,
+  "registry_append": {
+    "experiment": "E42S",
+    "appended_rows": 2522,
+    "historical_prefix_bytes": 11485845,
+    "historical_prefix_sha256": "e63a7b1beac49872f17c576bde074526486232538c985852abdb5214bbcbb343",
+    "current_sha256": "70c6aeaf747f93eb6636ed67e9cf3c3974a1bde35059135300de4664a7a065a4"
+  },
+  "checklist": "C01-C06/C09/C13/C14/C16-C18/C21/C28-C30/C33R-C40S",
+  "inventory_validation": {
+    "entries": 112,
+    "existing_eight_expert_status_unchanged": true,
+    "register_sha256": "0ffc973a7fc90997427314158c158984cfed1dcce35cc63e59c67465ee36e509",
+    "atlas_sha256": "aa5af1b1f71c9778b8a1b2edeb9bd131c2586e47b2d2d4b34a6a866dfd6a091b",
+    "atlas_verification": "112 cards/116 bound images/filter/provenance checks pass"
+  },
+  "assumption_register_sha256": "cef7e6feee5260c56d3ce235be07ae26b3a1b2b7299d845a76a5cbd66544edfb",
+  "doc_registry_revision": "E41S/D62S/D63S and E42S/D64S/D65S/C40S; numerical ledger append-only"
+}

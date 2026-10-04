@@ -1,0 +1,20 @@
+{
+  "experiment": "E41S",
+  "version": "E41S-geometry-v1",
+  "stage_receipt": {
+    "path": "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/forest_geometry/output/evaluation/known_stage_receipt.json",
+    "sha256": "d7bc189dd0444ea31ce8c778243dbe1032dcb643e6e49a4eb945cd2d576899e7",
+    "stage": "known_only_complete"
+  },
+  "sites": 3,
+  "inputs_unchanged": true,
+  "labels_read": false,
+  "outcomes_read": false,
+  "scope": "Post-feedback development features; not new validation",
+  "output_hashes": {
+    "analysis/forest_geometry/output/geometry_first_drop.csv": "87b118669a45d587e85ef8687c60f8f1a3e42641fa62d7e723a4537e831e9fe9",
+    "analysis/forest_geometry/output/geometry_first_drop_availability.csv": "f6504916e953b308d555467293deda156c100a9f70a57fd180883cb55eb95b1e",
+    "analysis/forest_geometry/output/geometry_first_drop_variants.csv": "87b118669a45d587e85ef8687c60f8f1a3e42641fa62d7e723a4537e831e9fe9",
+    "analysis/forest_geometry/output/geometry_first_drop_nominal_gated.csv": "d4d274799c9e578e4cdbcb9741a5559efc1384dabe87a8ef858d7c532cb2fb59"
+  }
+}

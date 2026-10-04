@@ -1,0 +1,8 @@
+{
+  "experiment": "E42S",
+  "source": "probe_explanations.csv",
+  "original_sha256": "f928531938d795a471e509c10b604f1b15402c1d8234efe8aa09707f89525853",
+  "corrected": "explanations.csv",
+  "corrected_sha256": "9f0b6c20771378a42a0745bc08caf5202e5cfbd1f5c0bd448a681a09027c72d6",
+  "reason": "Inherited E39 family label treated non-E39 keys as image appearance; fixed8 are mask-dependent geometry. Original field preserved as as_run_family; contributions, feature_group, observed labels and all model/results artifacts unchanged."
+}

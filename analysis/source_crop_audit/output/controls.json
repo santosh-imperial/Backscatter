@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "seed": 418,
+  "expected_translation": [
+    93,
+    233
+  ],
+  "recovered_translation": [
+    93,
+    233
+  ],
+  "synthetic_coarse_ncc": 0.9633147034644223,
+  "synthetic_fine_ncc": 0.9999999999999856,
+  "synthetic_multichannel_verification": true,
+  "unrelated_max_coarse_ncc": 0.10207433531079736,
+  "unrelated_patch": {
+    "valid": true,
+    "pearson": 0.03651336120171829,
+    "spearman": 0.04119430696957135,
+    "exact_pixel_fraction": 0.0,
+    "affine_gain_b_from_a": 0.035558228657265906,
+    "affine_offset_b_from_a": 105.86761114152453,
+    "affine_residual_target_sd": 0.9993331648923461,
+    "std_a": 32.23349261983177,
+    "std_b": 31.390314758103866,
+    "passed": false
+  },
+  "limitation": "Synthetic success is not a recall estimate for unknown organiser parent crops."
+}

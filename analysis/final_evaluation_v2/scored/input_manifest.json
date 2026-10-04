@@ -1,0 +1,218 @@
+[
+  {
+    "file": "img_0eryguqq_BSE.tif",
+    "site": "0eryguqq",
+    "detector": "BSE",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "4fffed829318f1a14184bfc3f9524eca07ad3b7592284babeaf3f53ebf9e6e55"
+  },
+  {
+    "file": "img_0eryguqq_ETD.tif",
+    "site": "0eryguqq",
+    "detector": "ETD",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "e88660f85916259cc90978c2a90e9db4baeb3050ca2c08f693fff61ef9f82fb3"
+  },
+  {
+    "file": "img_0eryguqq_Inlens.tif",
+    "site": "0eryguqq",
+    "detector": "Inlens",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "0dce1c504df5e1b27b4af9d19620c1141d77e9de065bfebaced5d9b1f62c234e"
+  },
+  {
+    "file": "img_4hq27w4c_BSE.tif",
+    "site": "4hq27w4c",
+    "detector": "BSE",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "e0184e85877644c730f83121ddc7eef12af691bd5947e59c1eb3ae69543270dd"
+  },
+  {
+    "file": "img_4hq27w4c_ETD.tif",
+    "site": "4hq27w4c",
+    "detector": "ETD",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "eded4fb6af8d8b74f13ce0adc095b535cb6647f91dbedd0c2994ec1b98ea6c23"
+  },
+  {
+    "file": "img_4hq27w4c_Inlens.tif",
+    "site": "4hq27w4c",
+    "detector": "Inlens",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "2828e51c5c027b2c7a519b8c5374300bfb2a40937b2f89b2baaba382eb8875cf"
+  },
+  {
+    "file": "img_fhwrjtet_BSE.tif",
+    "site": "fhwrjtet",
+    "detector": "BSE",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "744830f0dd983f8275252edb55d7ef2befe6356edf8a202670ce9d6401d81e38"
+  },
+  {
+    "file": "img_fhwrjtet_ETD.tif",
+    "site": "fhwrjtet",
+    "detector": "ETD",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "024b3072744ff0ec9e6949a8ff347150e59bb2f18541995f37d01bede46bf117"
+  },
+  {
+    "file": "img_fhwrjtet_Inlens.tif",
+    "site": "fhwrjtet",
+    "detector": "Inlens",
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "76cb0e8d605172ad16a5d6231617b8cd6acb6cabffefb29b0055781ac1395349"
+  },
+  {
+    "file": "img_fspqbkxl_BSE.tif",
+    "site": "fspqbkxl",
+    "detector": "BSE",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "cb4a6fe9006a2d23c765fd07316bc33b6b39ffd68485ecc811aea7d7f74a55ff"
+  },
+  {
+    "file": "img_fspqbkxl_ETD.tif",
+    "site": "fspqbkxl",
+    "detector": "ETD",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "a8cdd53426e324f5da58457681b17e6a6a963cd866482a637843215b41fa6c61"
+  },
+  {
+    "file": "img_fspqbkxl_Inlens.tif",
+    "site": "fspqbkxl",
+    "detector": "Inlens",
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "069175c3714da9a8df9a7562ecd90896af548e4be966905bd1e26dd745800159"
+  },
+  {
+    "file": "img_soo2ax3r_BSE.tif",
+    "site": "soo2ax3r",
+    "detector": "BSE",
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "c73b525da79bf5c8efd7c938e87e7e7dd6a97633c6a7e3db3f24a160c5b96b75"
+  },
+  {
+    "file": "img_soo2ax3r_ETD.tif",
+    "site": "soo2ax3r",
+    "detector": "ETD",
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "41c606643c3544662da97bae895ae947a102fd348c65511fb6198d23b7cf091c"
+  },
+  {
+    "file": "img_soo2ax3r_Inlens.tif",
+    "site": "soo2ax3r",
+    "detector": "Inlens",
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "91b8a3cef31af4e55c99b587100c8fdebfff1fdf47caf7478d6ee81a468fe7a4"
+  },
+  {
+    "file": "img_y59rxmxl_BSE.tif",
+    "site": "y59rxmxl",
+    "detector": "BSE",
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "17d7d7ab53c90d95df77b9f480e8424d77972cb3a7f5f854f16bd52e9c26a482"
+  },
+  {
+    "file": "img_y59rxmxl_ETD.tif",
+    "site": "y59rxmxl",
+    "detector": "ETD",
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "8bef1eefa4c6ce7ed7c7c11d793317f8a6fd2930bbf42c6c995bf8f99ed78946"
+  },
+  {
+    "file": "img_y59rxmxl_Inlens.tif",
+    "site": "y59rxmxl",
+    "detector": "Inlens",
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "sha256": "c1b05eac6e4ad2fff8164b6767a5a79d8a7c9bda69704739fbff16dced5fde13"
+  }
+]

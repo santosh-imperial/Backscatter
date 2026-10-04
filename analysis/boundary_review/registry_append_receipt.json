@@ -1,0 +1,8 @@
+{
+  "experiment": "E38S",
+  "prior_rows": 37978,
+  "appended_rows": 17,
+  "prior_prefix_bytes": 11362909,
+  "prior_prefix_sha256": "6f9e2a01b158c71bfcbd08261978a94e49f5a5c2ec176323d534300f971d703c",
+  "appended_sha256": "5b3581fc9ec1f0185f8faa08f6a437cc9f47624adaaad5b4bfb96af003cd9a54"
+}

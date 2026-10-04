@@ -1,0 +1,9 @@
+{
+  "experiment": "E37S",
+  "previous_bytes": 11309794,
+  "previous_rows": 37797,
+  "previous_sha256": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a",
+  "appended_rows": 181,
+  "after_sha256": "6f9e2a01b158c71bfcbd08261978a94e49f5a5c2ec176323d534300f971d703c",
+  "historical_prefix_preserved": true
+}

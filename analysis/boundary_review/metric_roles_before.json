@@ -1,0 +1,442 @@
+{
+  "pore_frac": {
+    "qc_role": "primary",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_count_per_Mpx": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_d50": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_d90": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_max_d": {
+    "qc_role": "primary",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_frac": {
+    "qc_role": "primary",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_count_per_Mpx": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_d10": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_d50": {
+    "qc_role": "primary",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_d90": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_max_d": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "graphite_frac": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_elong": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "crack_frac": {
+    "qc_role": "primary",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "crack_count_per_Mpx": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_circ": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_solidity": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_aspect_aw": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_width_d90_d50": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_horizontal_alignment": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "pore_alignment_strength": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_width_d90_d10": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_horizontal_alignment": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_alignment_strength": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_nn_mean_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "bright_nn_csr_ratio": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_pore": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_pore_slope": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_pore_abs_slope": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_bright": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_bright_slope": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "profile_bright_abs_slope": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "corr_len_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "acquisition_sensitive"
+  },
+  "fft_slope": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "acquisition_sensitive"
+  },
+  "etd_crack_density_particles": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "etd_crack_density_graphite": {
+    "qc_role": "acquisition_diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "diagnostic_only"
+  },
+  "etd_curtain_frac": {
+    "qc_role": "acquisition_diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "diagnostic_only"
+  },
+  "etd_curtain_anisotropy": {
+    "qc_role": "acquisition_diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "diagnostic_only"
+  },
+  "etd_boundary_sharpness": {
+    "qc_role": "acquisition_diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "diagnostic_only"
+  },
+  "inlens_particle_texture": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "confounded"
+  },
+  "inlens_particle_texture_p90": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "confounded"
+  },
+  "inlens_speckled_particle_frac": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "confounded"
+  },
+  "longest_void_px": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "longest_void_over_thickness": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "columns_interrupted_frac": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "delamination_index": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "crack_orientation_deg_median": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "tortuosity_fraction_connected": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "constant_on_current_data"
+  },
+  "tortuosity_index": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "undefined_on_current_data"
+  },
+  "tortuosity_penalised_index": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "not_a_transport_measurement"
+  },
+  "void_local_width_d50_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "void_local_width_d90_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "crack_local_width_d50_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "bright_to_void_distance": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "unvalidated"
+  },
+  "etd_plate_orientation": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "unvalidated"
+  },
+  "binder_network_frac": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "unvalidated"
+  },
+  "etd_ridge_dom_angle": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "diagnostic_only"
+  },
+  "anisotropy_index": {
+    "qc_role": "descriptive_only",
+    "review_status": "unreviewed",
+    "evidence_status": "expert_review_pending"
+  },
+  "stereology_volume_fractions": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "assumption_limited"
+  },
+  "nominal_additive_mass_fractions": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "assumption_limited"
+  },
+  "saltykov_unfolded_size_distribution": {
+    "qc_role": "excluded_from_verdict",
+    "review_status": "unreviewed",
+    "evidence_status": "assumption_limited"
+  },
+  "bright_void_distance_d50_px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "bright_ring_void_frac_16px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "local_bright_std_512px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "local_bright_pore_spearman_512px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "local_bright_std_1024px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "local_bright_pore_spearman_1024px": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "long_void_internal_area_frac": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "long_void_y_centroid_norm": {
+    "qc_role": "secondary_experimental",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "bright_void_boundary_frac": {
+    "qc_role": "diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "constant_on_current_data"
+  },
+  "battery_neighbourhood_coverage": {
+    "qc_role": "diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "long_void_coverage": {
+    "qc_role": "diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "battery_geometry_threshold_envelopes": {
+    "qc_role": "diagnostic",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "void_width_depth_slopes": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "geometry_tests_passed_expert_pending"
+  },
+  "graph_edge_length_median_px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "known_site_geometry_tests_passed_expert_pending"
+  },
+  "graph_edge_length_iqr_ratio": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "known_site_geometry_tests_passed_expert_pending"
+  },
+  "graph_edge_axial_strength": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "known_site_geometry_tests_passed_expert_pending"
+  },
+  "graph_log_area_assortativity": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "known_site_geometry_tests_passed_expert_pending"
+  },
+  "gabor_coarse_energy_share": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_tests_passed_material_use_deferred"
+  },
+  "gabor_axial_strength": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_tests_passed_material_use_deferred"
+  },
+  "gabor_horizontal_wavevector_balance": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_tests_passed_material_use_deferred"
+  },
+  "bright_aspect_count_iqr": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_solidity_count_q10": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_circularity_count_iqr": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_autocorr_xy_contrast_64px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_autocorr_xy_contrast_256px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_pore_crosscorr_xy_contrast_64px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  },
+  "bright_pore_crosscorr_xy_contrast_256px": {
+    "qc_role": "secondary_exploratory",
+    "review_status": "unreviewed",
+    "evidence_status": "math_and_source_checks_material_use_deferred"
+  }
+}

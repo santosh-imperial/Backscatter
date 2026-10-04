@@ -1,0 +1,18 @@
+{
+  "experiment": "E37S",
+  "input_receipt_sha256": "e2072a4a194d73750293ade1759cb320bf2526349a597cb21f09fac80ce67a88",
+  "renderer_sha256": "64ce905c937c7d80942e8b02d7cf89a6c844dc332c2462513545e025a0e532e0",
+  "renderer_source_snapshot": "report_build_source.txt",
+  "renderer_qualification": "Final report layout/prose amended after fits to expose runner-up and true-class scores; model computations unchanged; original pre-fit renderer preserved in output/sources.",
+  "output_sha256": {
+    "findings.md": "74a90bfc30b56af105476f2216c8a8a806fd9acd284945a7937071a1d651075c",
+    "report.html": "584b666ca9bcb3eb2f3e7b2598566ad64b3b6f5f7917fa873955d3efb361e6ca",
+    "image_evidence.json": "12f0828a4438e182664082b43108a2f2603a49bc6bb4881bece60ae169193976",
+    "assets/boundary_examples.jpg": "280c4da69b91c4d15dbf9547b6fec1aa8d1f133eaf5df773811896c77e81cd4d",
+    "assets/confusions.png": "85d1be2adf427f03a62e2b66f1c3df5e861f8349f7d3b4a7135aca83222b69da",
+    "assets/coverage.png": "ec6dfaa31f378c4371f955cffa0495e3c6e817e8eed4b75aaf60a141c54d515e"
+  },
+  "raw_evidence_read_only": true,
+  "five_overlay_fractions_verified": true,
+  "crops_unreviewed": true
+}

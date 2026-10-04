@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "checks": {
+    "all_unordered_pairs_complete": true,
+    "candidate_gate_matches_saved_scores": true,
+    "summary_matches_pair_scores": true,
+    "no_fabricated_components": true,
+    "all_current_source_hashes_match": true,
+    "all_input_hashes_still_match": true,
+    "all_frozen_submission_hashes_still_match": true,
+    "real_control_passed_actual_gate": true,
+    "real_control_has_nine_passing_checks": true,
+    "real_control_is_labelled_synthetic": true,
+    "new_files_under_20mb": true
+  },
+  "targeted_tests": {
+    "command": "/opt/anaconda3/bin/python3 -m pytest tests/test_source_crop_audit.py -q",
+    "passed": 6,
+    "wall_seconds": 1.44
+  },
+  "source_hashes": {
+    "analysis/source_crop_audit/protocol.md": "1a616447408151946dfa96deb31feaa636812f27824dade373c8f7171c8a7090",
+    "analysis/source_crop_audit/run.py": "23e9759bc19cb625a22c936471d84196570bf51bb040e110cdc83caecceba021",
+    "analysis/source_crop_audit/match.py": "9d9b38ade1af0bd69beeaa32708d8f3d80754c56122dc82efbc94cdc616bc069",
+    "tests/test_source_crop_audit.py": "1c267734caa12becf808bd5bb473c45ef1bf57034942014aa245a7255b2123c9",
+    "analysis/source_crop_audit/control_real.py": "a39ec6dc2cf5b283fff163b8df70f0aeac2ba1a9d4eb550c53a1db279e4fbb01",
+    "analysis/source_crop_audit/control_real_protocol.md": "25bff3bbb50f2f4698df94ad1eb11512e28331d305db8dba89cee8d5617205d6"
+  },
+  "full_repository_suite": "not run by source-crop agent; coordinating agent owns full validation",
+  "control_png_visually_inspected": true,
+  "control_png_is_technical_constructed_crop_not_organiser_overlap": true
+}

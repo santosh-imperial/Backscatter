@@ -1,0 +1,56 @@
+{
+  "experiment": "E41S",
+  "checks": {
+    "sources_sha256": 16,
+    "known_inputs_sha256": 5,
+    "known_outputs_sha256": 255,
+    "protected_artifacts_sha256": 241,
+    "raw_sha256": 102,
+    "feedback_inputs_sha256": 2,
+    "saved_known_and_drop_score_replay_max_difference": 9.71445146547012e-17,
+    "full_fit_renaming_and_row_permutation_max_difference": 0.0,
+    "margin_reconstruction_groups": 238,
+    "margin_reconstruction_max_error": 1.9984014443252818e-15,
+    "rejected_cell_numeric_mutation_invariance": true,
+    "registry_historical_prefix_unchanged": true,
+    "report_links_checked": 18,
+    "report_images_decoded": 7,
+    "new_file_size_under_20MiB": true,
+    "class_mapping_counts_and_argmax": true,
+    "existing_eight_inventory_entries_linked_without_expert_promotion": true,
+    "inventory_entries": 112
+  },
+  "all_checks_passed": true,
+  "report_sha256": "2a25392705dfad10cba58273063b40feffcbf26e171f535254cfda6663e7a82c",
+  "delivery_sources_sha256": {
+    "analysis/forest_geometry/verify_delivery.py": "fd7680f9cbf40ed6883720634dd71cd7dba8040f2eccbab93237a87706d9dd8c",
+    "analysis/forest_geometry/delivery_report.py": "404c217a034c438fbb91714a29f8bccc8c43ad9f2b5275bd21e6c581c7967774",
+    "analysis/forest_geometry/findings.md": "1b11d87fae0dc5206df5dea6a0e795d382cd398f7af8da1664f527466c772dde",
+    "analysis/forest_geometry/register_results.py": "4ef08c3f86ce567439cf9f6257b4e777ec25cb763a0d7057633ce81b4c76adee"
+  },
+  "native_browser_layout_verified": false,
+  "no_commit_requested": true,
+  "source_group_generalisation_established": false,
+  "submission_promotion": false,
+  "test_validation": {
+    "experiment": "E41S",
+    "command": "/opt/anaconda3/bin/python3 -m pytest tests -q",
+    "passed": 232,
+    "warnings": 15,
+    "elapsed_seconds": 199.94,
+    "narrow_passed": 17,
+    "narrow_warnings": 13,
+    "warnings_existing": true,
+    "bare_pytest_archive_collection": "Failed import-file mismatch because archived test-source snapshots are not the documented tests/ suite. No production test failed.",
+    "interrupted_trial": "Preserved early run, corrected test assertion only; no parameter change."
+  },
+  "registry_append": {
+    "experiment": "E41S",
+    "appended_rows": 312,
+    "historical_prefix_bytes": 11397675,
+    "historical_prefix_sha256": "ddd1a285657672168a04b7debe6783d28bd6dd7e8ca0ac91fa68552bced0c032",
+    "current_sha256": "e63a7b1beac49872f17c576bde074526486232538c985852abdb5214bbcbb343"
+  },
+  "review_checklist": "C01-C06/C09/C13/C14/C16-C18/C21/C28-C30/C33R-C39S",
+  "append_only_csv_note_whitespace": "New empty-note rows end with a cosmetic space; retained after sealed append under immutable-row policy. No numeric edits."
+}

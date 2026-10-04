@@ -1,0 +1,92 @@
+[
+  {
+    "site": "4ih2ggld",
+    "label": "known B1 / low contrast",
+    "review_status": "unreviewed",
+    "raw_crop_x": 3242,
+    "raw_crop_y": 902,
+    "side": 512,
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "pore_frac_verified": 0.10208843740958318,
+    "bright_frac_verified": 0.12341532936165843,
+    "joint_interior_fraction": 0.5855993086599696,
+    "raw_sha256": {
+      "Dataset/Batch_1/img_4ih2ggld_BSE.tif": "a7fa8987f58071205743249f0b089912c3cdab5289d48aa4dc21e5b73aa21b09",
+      "Dataset/Batch_1/img_4ih2ggld_ETD.tif": "297533fcdc52070bbf80c81ce61d6fa0b6956c8988310bc632926eef2cdcc2a1",
+      "Dataset/Batch_1/img_4ih2ggld_Inlens.tif": "bcb9b0d7958dc1547db0915118f981d9cdc05ee8e7a63f1478693ed664b74dc1"
+    }
+  },
+  {
+    "site": "3e122cbj",
+    "label": "labelled B2 / low contrast",
+    "review_status": "unreviewed",
+    "raw_crop_x": 3242,
+    "raw_crop_y": 902,
+    "side": 512,
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "pore_frac_verified": 0.08049733082116502,
+    "bright_frac_verified": 0.1301994922339042,
+    "joint_interior_fraction": 0.6117249580564665,
+    "raw_sha256": {
+      "Hackathon-Polaron-test/img_3e122cbj_BSE.tif": "efad123af7f20e762d44b0de140dea5ac3c7593d7b323d4da020eef2d1159374",
+      "Hackathon-Polaron-test/img_3e122cbj_ETD.tif": "78133a28d1f0b68faf7dc4faf03c62fa7b6c86076766b50e3237777060d65e1d",
+      "Hackathon-Polaron-test/img_3e122cbj_Inlens.tif": "c03147055308da8bd2e06b4b6d6f58efe1237aa1c17067545be886f6502c4436"
+    }
+  },
+  {
+    "site": "fn0mhxef",
+    "label": "labelled B1 / ordinary",
+    "review_status": "unreviewed",
+    "raw_crop_x": 3244,
+    "raw_crop_y": 768,
+    "side": 512,
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "pore_frac_verified": 0.07850662667410714,
+    "bright_frac_verified": 0.06032066127232143,
+    "joint_interior_fraction": 0.7781540876116071,
+    "raw_sha256": {
+      "Hackathon-Polaron-test/img_fn0mhxef_BSE.tif": "be7677781389261f500c317fe20ebf972fa1389f32447b777072e82ecdcd7958",
+      "Hackathon-Polaron-test/img_fn0mhxef_ETD.tif": "02635143bbc1d158142a95d406cbca7ce94b40d9326068c70bbcb07fbe32c7fb",
+      "Hackathon-Polaron-test/img_fn0mhxef_Inlens.tif": "670ea5dc3006b20a847e2aeaf134d063927c172be71adbb189cc1bac0cecbfad"
+    }
+  },
+  {
+    "site": "71vgq3fw",
+    "label": "known B3 / raised black level",
+    "review_status": "unreviewed",
+    "raw_crop_x": 3244,
+    "raw_crop_y": 774,
+    "side": 512,
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "pore_frac_verified": 0.07663966712898752,
+    "bright_frac_verified": 0.05914805825242719,
+    "joint_interior_fraction": 0.7714006241331484,
+    "raw_sha256": {
+      "Dataset/Batch_3/img_71vgq3fw_BSE.tif": "6e39035f9fec96c1b3728c7e4a482f9e3aa07802eb0afbb15c01deb01f1b7113",
+      "Dataset/Batch_3/img_71vgq3fw_ETD.tif": "d33a99897dc39863f8385d22e8ee36cfd084f4666f74063a600629db85fb4341",
+      "Dataset/Batch_3/img_71vgq3fw_Inlens.tif": "f754984ce9e2a2506aaa5aa902692d9c6a4319de960becf8608984995828d6d5"
+    }
+  },
+  {
+    "site": "xrv9xvzb",
+    "label": "labelled B3 / BSE stretching",
+    "review_status": "unreviewed",
+    "raw_crop_x": 3244,
+    "raw_crop_y": 788,
+    "side": 512,
+    "trim_top": 0,
+    "trim_bottom": 0,
+    "pore_frac_verified": 0.11362691570881225,
+    "bright_frac_verified": 0.050869868637110016,
+    "joint_interior_fraction": 0.7300329091406678,
+    "raw_sha256": {
+      "Hackathon-Polaron-test/img_xrv9xvzb_BSE.tif": "2bb8f7cb564a15879e49a99b7ff9f319472585ef2ba524bf4816ec5c74ffa222",
+      "Hackathon-Polaron-test/img_xrv9xvzb_ETD.tif": "a05becd6d1e4b530197c2bf93636422d2d88d7d42fef259ec4dced9619f751d0",
+      "Hackathon-Polaron-test/img_xrv9xvzb_Inlens.tif": "19b9e6f2a0445b4584e3a77224bbe609ec213a8f4e77112d964d53187ca88e30"
+    }
+  }
+]

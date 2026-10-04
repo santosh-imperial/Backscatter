@@ -1,0 +1,97 @@
+{
+  "experiment": "E41S",
+  "examples": [
+    {
+      "batch": "Batch_2",
+      "site": "3806gxp0",
+      "path": "analysis/forest_geometry/assets/geometry_Batch_2_3806gxp0.png",
+      "sha256": "77d1e47187c69905b08afd499eb97bc30725ccaa1af3d59bc4658d3ec13a6202",
+      "box_trimmed_yxyx": [
+        640,
+        2860,
+        1408,
+        4140
+      ],
+      "box_raw_yxyx": [
+        640,
+        2860,
+        1408,
+        4140
+      ],
+      "selection": "Fixed central min(768,H)x min(1280,W), full-frame measurements",
+      "expert_validation": "none; unvalidated predicted masks",
+      "displayed_width_centreline_samples": 5963,
+      "full_field_width_centreline_samples": 94449,
+      "width_display": "3x3 maximum expansion only for display; scalar measurements unchanged"
+    },
+    {
+      "batch": "Batch_1",
+      "site": "4ih2ggld",
+      "path": "analysis/forest_geometry/assets/geometry_Batch_1_4ih2ggld.png",
+      "sha256": "413b4b7744dba3e1cb32b1655858603691705bf7602934c0acedc9ffef402965",
+      "box_trimmed_yxyx": [
+        774,
+        2858,
+        1542,
+        4138
+      ],
+      "box_raw_yxyx": [
+        774,
+        2858,
+        1542,
+        4138
+      ],
+      "selection": "Fixed central min(768,H)x min(1280,W), full-frame measurements",
+      "expert_validation": "none; unvalidated predicted masks",
+      "displayed_width_centreline_samples": 9228,
+      "full_field_width_centreline_samples": 123819,
+      "width_display": "3x3 maximum expansion only for display; scalar measurements unchanged"
+    },
+    {
+      "batch": "Batch_3",
+      "site": "71vgq3fw",
+      "path": "analysis/forest_geometry/assets/geometry_Batch_3_71vgq3fw.png",
+      "sha256": "b0279dd9686b0d399700be65875594d8848c78c9448dce78466871fc6de965bd",
+      "box_trimmed_yxyx": [
+        646,
+        2860,
+        1414,
+        4140
+      ],
+      "box_raw_yxyx": [
+        646,
+        2860,
+        1414,
+        4140
+      ],
+      "selection": "Fixed central min(768,H)x min(1280,W), full-frame measurements",
+      "expert_validation": "none; unvalidated predicted masks",
+      "displayed_width_centreline_samples": 6963,
+      "full_field_width_centreline_samples": 88550,
+      "width_display": "3x3 maximum expansion only for display; scalar measurements unchanged"
+    },
+    {
+      "batch": "Batch_3",
+      "site": "hzumfsms",
+      "path": "analysis/forest_geometry/assets/geometry_Batch_3_hzumfsms.png",
+      "sha256": "303935843c3e894ab1d4233ded4658035a5e0960b86e4ed6aad58cdd57fff4ea",
+      "box_trimmed_yxyx": [
+        660,
+        2860,
+        1428,
+        4140
+      ],
+      "box_raw_yxyx": [
+        660,
+        2860,
+        1428,
+        4140
+      ],
+      "selection": "Fixed central min(768,H)x min(1280,W), full-frame measurements",
+      "expert_validation": "none; unvalidated predicted masks",
+      "displayed_width_centreline_samples": 10225,
+      "full_field_width_centreline_samples": 126368,
+      "width_display": "3x3 maximum expansion only for display; scalar measurements unchanged"
+    }
+  ]
+}

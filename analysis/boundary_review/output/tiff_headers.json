@@ -1,0 +1,5000 @@
+[
+  {
+    "file": "Dataset/Batch_1/img_4ih2ggld_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a7fa8987f58071205743249f0b089912c3cdab5289d48aa4dc21e5b73aa21b09"
+  },
+  {
+    "file": "Dataset/Batch_1/img_4ih2ggld_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "297533fcdc52070bbf80c81ce61d6fa0b6956c8988310bc632926eef2cdcc2a1"
+  },
+  {
+    "file": "Dataset/Batch_1/img_4ih2ggld_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "bcb9b0d7958dc1547db0915118f981d9cdc05ee8e7a63f1478693ed664b74dc1"
+  },
+  {
+    "file": "Dataset/Batch_1/img_5n1q8atc_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "4b040a76c364ca75938060810d908518c31c8be58e634adab5db72ba9677dc9e"
+  },
+  {
+    "file": "Dataset/Batch_1/img_5n1q8atc_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "3ea3c666893e311120dcbf0a505200d06c93ab684f6832a9732956fcac81977a"
+  },
+  {
+    "file": "Dataset/Batch_1/img_5n1q8atc_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "75a2cd34be99d49774e1e38d94d876d62e12520f69bef03294e7c0741f064ef7"
+  },
+  {
+    "file": "Dataset/Batch_1/img_f1vzngrs_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "ae83f993b63bd5463501676b2666f79ef980d4571cffbb9b77c8e555c7313e8e"
+  },
+  {
+    "file": "Dataset/Batch_1/img_f1vzngrs_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "3ce882983d16c4710b0e87915241de47b4dee9762a3a3321b70187557dc4aa9f"
+  },
+  {
+    "file": "Dataset/Batch_1/img_f1vzngrs_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "d15fcdf666d15990c791d5bf15a8a1815bdfeaf74f19227aa5bace95620a9d8b"
+  },
+  {
+    "file": "Dataset/Batch_1/img_ffwubibz_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "73e0d186d84ec7518bdacfd542374dac379388644db09c53c39eed5d66942280"
+  },
+  {
+    "file": "Dataset/Batch_1/img_ffwubibz_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "30ee408fa65e8ac98038a15e67efd918790f914f4146b8f5f20e9addf472050a"
+  },
+  {
+    "file": "Dataset/Batch_1/img_ffwubibz_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a43622998ad7fbec755a45ff05d6450a83141d0e61edcd43b2dce5693b50efa6"
+  },
+  {
+    "file": "Dataset/Batch_1/img_fzrt2k6r_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9fa0f4c9a5cb019fde2f081618788453afb96f86532d4b0ca0a83783edf1ec3a"
+  },
+  {
+    "file": "Dataset/Batch_1/img_fzrt2k6r_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "35b29b950a2b1379650ca9ae813919500cc264f5c27d73f9384ed8e1df32d68a"
+  },
+  {
+    "file": "Dataset/Batch_1/img_fzrt2k6r_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "53ce1e8d9e30a31e80414f511e016ac4c8aebad4decc697758889797b583df6e"
+  },
+  {
+    "file": "Dataset/Batch_1/img_iv6g2oq0_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1780,
+      6960,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6960",
+      "ImageLength": "1780",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1780, 6960, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399552, 25)",
+      "YResolution": "(25399552, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "1d3a4a5dc4a518646c7f47e672f51e55e47b96a9e2196391de2e821b0d99f65f"
+  },
+  {
+    "file": "Dataset/Batch_1/img_iv6g2oq0_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1780,
+      6960,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6960",
+      "ImageLength": "1780",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1780, 6960, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399552, 25)",
+      "YResolution": "(25399552, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "431ac0c2311878298f80d10434ba8ba62f1411ebc9c399eb8c2a0ae7934881fd"
+  },
+  {
+    "file": "Dataset/Batch_1/img_iv6g2oq0_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1780,
+      6960,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6960",
+      "ImageLength": "1780",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1780, 6960, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399552, 25)",
+      "YResolution": "(25399552, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "035c9eb14f6df135fa5025fa344acb2f43844233038cfdd099ca19a162e88836"
+  },
+  {
+    "file": "Dataset/Batch_1/img_uhdslk0o_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1880",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1880, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127000848, 125)",
+      "YResolution": "(127000848, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "dee7514f2b2453610fefe7158ea59f2e715fa2f39e3b9cf357625d238f2b113f"
+  },
+  {
+    "file": "Dataset/Batch_1/img_uhdslk0o_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1880",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1880, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127000848, 125)",
+      "YResolution": "(127000848, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "95ead8f91b6e3a265a294b207c411a3e49f3a1191205e66aca32e742d700905f"
+  },
+  {
+    "file": "Dataset/Batch_1/img_uhdslk0o_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1880,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1880",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1880, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127000848, 125)",
+      "YResolution": "(127000848, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "5016888d9f20c1f105a5edc3969ce0bfe6633ed2f57018247afa0c8c5ad06716"
+  },
+  {
+    "file": "Dataset/Batch_2/img_3806gxp0_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "806d025a34c813c44a6626c882c5358456304dd58d978aa474b42e55f7bfce20"
+  },
+  {
+    "file": "Dataset/Batch_2/img_3806gxp0_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "8d11855c77e82d59aac88cf847d4e2e5d6026c4128acfe504c659ae012eacc45"
+  },
+  {
+    "file": "Dataset/Batch_2/img_3806gxp0_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "446eee0eb9055c046e4d6617dd33b5565fc43ca570df60d802b9f614bcada518"
+  },
+  {
+    "file": "Dataset/Batch_2/img_avn74qx1_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "e1113d827cf083c93edd1e67765777398408899461f99e31130710833c2b35de"
+  },
+  {
+    "file": "Dataset/Batch_2/img_avn74qx1_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "b4156dced55a2a7998d7212deff27d213a5a4dced55ae940bd63b37b479074c6"
+  },
+  {
+    "file": "Dataset/Batch_2/img_avn74qx1_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "05af6d555e6d7efe1602f863edadedbc415a54d72da0acfa28c88e447e4ba310"
+  },
+  {
+    "file": "Dataset/Batch_2/img_b3esycq1_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "01e83352c90c1a77bf2e8d216651d2b1cb747257b22b4cbc2e8c7c4ccaa485d5"
+  },
+  {
+    "file": "Dataset/Batch_2/img_b3esycq1_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "d01394a58d801249909c8401349efdfda8b8b018c0d1b6349468335273048f77"
+  },
+  {
+    "file": "Dataset/Batch_2/img_b3esycq1_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2156,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2156",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2156, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997984, 125)",
+      "YResolution": "(126997984, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c078f946f4951d34fccfbd081f2f08250678d0b4c049bd2d4a3b4fb3c48b325b"
+  },
+  {
+    "file": "Dataset/Batch_2/img_epqdaau9_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "7e7bcdf0bdaf9d1eb3d148d514c21deb06ae4c634b979a3323c2147998ee00d2"
+  },
+  {
+    "file": "Dataset/Batch_2/img_epqdaau9_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9a2876f3a36c3b5fbf453314d5390292364d30706b2a40c6925870ae692e2f37"
+  },
+  {
+    "file": "Dataset/Batch_2/img_epqdaau9_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2148,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2148",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2148, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001504, 125)",
+      "YResolution": "(127001504, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "1fac9e7e5f0f568743b011b6e918654679f2b4ecf6f478ed34bea3b4df7a46d5"
+  },
+  {
+    "file": "Dataset/Batch_2/img_i9jiqjwl_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9636159933edf7b2f5bdf709c6472a3124e44ec710b80296283d9a8e65c96f60"
+  },
+  {
+    "file": "Dataset/Batch_2/img_i9jiqjwl_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "bc959dfd434f532bd1fc8117703ce681e9e1c444037ef74ecb3f85ada65bfc35"
+  },
+  {
+    "file": "Dataset/Batch_2/img_i9jiqjwl_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "233f18713c99f4ba109f17298fe1e37348e03fe47391948c0be2daa1fe27636b"
+  },
+  {
+    "file": "Dataset/Batch_2/img_r17byphk_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "2071683d1b7591ef34e03aa2707081b923c51451ee7165323af93f253a904172"
+  },
+  {
+    "file": "Dataset/Batch_2/img_r17byphk_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "8d808ef46b99b43fa9531f44254a35abc7f14c2f04db0f1379c6c5015136332f"
+  },
+  {
+    "file": "Dataset/Batch_2/img_r17byphk_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9a36c53fa4536c92775ca04d1556da3025a2baebd1c16b672e1fa5ffac306e6d"
+  },
+  {
+    "file": "Dataset/Batch_2/img_rxax5ozo_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "e1cffb1b6a62f7aa6a10a48cc52a8ef18833929a858c5c6692e5c5bd7558f2c9"
+  },
+  {
+    "file": "Dataset/Batch_2/img_rxax5ozo_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "1560ac370f768db7d11fc824d81dfbc2b750dc7eb11eba3f7cee5e521190dfe1"
+  },
+  {
+    "file": "Dataset/Batch_2/img_rxax5ozo_SE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a5f3d99b7c16c00e589865d31c8a8ee0d06cc9f7e97291c29f9f6ae0fefc459e"
+  },
+  {
+    "file": "Dataset/Batch_3/img_0grcilhi_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "17b8f934fbb4f6904fcf12c7624c58f017f62b5633c856ad159bf6bd2cd9b95a"
+  },
+  {
+    "file": "Dataset/Batch_3/img_0grcilhi_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "8b1083c09b5369ab2e964cec1e5f4eff61bdb5864d570772a854a9ba091ccb98"
+  },
+  {
+    "file": "Dataset/Batch_3/img_0grcilhi_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "94eab6358b2110e804065e3fd4d3af80cfd2b57257c325c3cdcd776839bad89a"
+  },
+  {
+    "file": "Dataset/Batch_3/img_71vgq3fw_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "6e39035f9fec96c1b3728c7e4a482f9e3aa07802eb0afbb15c01deb01f1b7113"
+  },
+  {
+    "file": "Dataset/Batch_3/img_71vgq3fw_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "d33a99897dc39863f8385d22e8ee36cfd084f4666f74063a600629db85fb4341"
+  },
+  {
+    "file": "Dataset/Batch_3/img_71vgq3fw_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "f754984ce9e2a2506aaa5aa902692d9c6a4319de960becf8608984995828d6d5"
+  },
+  {
+    "file": "Dataset/Batch_3/img_9luzk4jm_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "4017bd17628b2d29634e767a623cebd9ec6e5996cee2d3aaa9e7265fc58482a7"
+  },
+  {
+    "file": "Dataset/Batch_3/img_9luzk4jm_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "2c45a0a4fc2f9df4af049d3b42a4f6ba366b48738f8389ef7d3f3c830b8fcc3f"
+  },
+  {
+    "file": "Dataset/Batch_3/img_9luzk4jm_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "8b3980438c6e785b3e27fcd5b82f953134972084f4e3b43ab4fb733423249e36"
+  },
+  {
+    "file": "Dataset/Batch_3/img_cfe5vt7s_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "14f1a08a2d3eaf2b5687b0055b630e7a49eea96c093c260302938aa3e1640193"
+  },
+  {
+    "file": "Dataset/Batch_3/img_cfe5vt7s_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "3d81cc9bb94178d0a85909b6431a3ec3541946683c4f855cbd616f97a6b5c2e9"
+  },
+  {
+    "file": "Dataset/Batch_3/img_cfe5vt7s_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2080,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2080",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2080, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998864, 125)",
+      "YResolution": "(126998864, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "b1d814fe9c3378d7a51df2b124450a5c1f535bdc5909ec2e57c71dfe4947cb0f"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hawkfj64_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "7cc8fc9616c960e182c4b1de208909e8eed67c6a1b7454b2c7e0d34e4a569f34"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hawkfj64_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "02b8b7e90833c6f7e9a68d68208f5689794544a1f669c745109aee4049c5fd46"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hawkfj64_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "82703f194028c2ffa93a762b982af10210129d387465e88810735b52806cab41"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hzumfsms_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c06fe783ed9d03d847262839e62c99e76549b0c6a18b3d10045cab3b0e0873ef"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hzumfsms_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "e61e908cadbd7d77fc8ce5ef85cfd2bf9828ca1d5e6816a9cc24d50bdbf11e40"
+  },
+  {
+    "file": "Dataset/Batch_3/img_hzumfsms_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "0005f037c8460f8609992da953b6dabea393a1f3544fdbea257f0b95564169a7"
+  },
+  {
+    "file": "Dataset/Batch_3/img_kbdh4tri_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9fa862772440db2644c55dceda66a4aa38830275f2e984775bf28b50d4f95573"
+  },
+  {
+    "file": "Dataset/Batch_3/img_kbdh4tri_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "81f1f6b8bc71959ddd0f772ae615e3e7f2c6cac9656f5ea1b888dee16fd437d8"
+  },
+  {
+    "file": "Dataset/Batch_3/img_kbdh4tri_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "1c0f1f5b217b548ae25b38fe307a3e1469dc4b0365943eb95a3f3f233c3f94a3"
+  },
+  {
+    "file": "Dataset/Batch_3/img_mgxahqnk_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "e13bcd2ac2f815bfed7903c60e4c8b42bd42287496daf7290c3ae04f5a4bd528"
+  },
+  {
+    "file": "Dataset/Batch_3/img_mgxahqnk_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "2c4eb0dfd48057e59701ff81ed48e900cab0fd5fc3cbc8e5010bef986e1d5191"
+  },
+  {
+    "file": "Dataset/Batch_3/img_mgxahqnk_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1904,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1904",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1904, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126997216, 125)",
+      "YResolution": "(126997216, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "55ea0df3c2880409005a65edc30013404e8f2066fca453d81d2aebd896abee18"
+  },
+  {
+    "file": "Dataset/Batch_3/img_pl8uabbv_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "9d2977711be2306806e1e2e496278a18832f8a9d09bc9fb1fbe15a4f0ad1ef34"
+  },
+  {
+    "file": "Dataset/Batch_3/img_pl8uabbv_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "93d979453d58e946a56efe866c8443da4994ce8d3d7dcefdf63ef413e4703892"
+  },
+  {
+    "file": "Dataset/Batch_3/img_pl8uabbv_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2272,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2272",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2272, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126998952, 125)",
+      "YResolution": "(126998952, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a3fa1bce37994de14dd8706c3b276ec500f4a92de558ed0747df662529d03342"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ptg8lmto_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "fd390172b2dd51530e2dbc6825ffa7c41ad7c423ddb97a741c82f89d176a943d"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ptg8lmto_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "1db2585b7c73ecce0bc361e9bb070f60328f93788b9126b4ace7e27e4d11e130"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ptg8lmto_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "fa3945a1675f28667784b6b051860ad16254c9080fa69feee70da228b3dc33bf"
+  },
+  {
+    "file": "Dataset/Batch_3/img_tuy3zymq_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "8bae4640c792d627325f1616056a80afc19fb834d4cad62f12897d2399c0529b"
+  },
+  {
+    "file": "Dataset/Batch_3/img_tuy3zymq_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "19c4acd6037c3dac51905ecbf6a70558aa831257d998e5675ac9f6393440d0ff"
+  },
+  {
+    "file": "Dataset/Batch_3/img_tuy3zymq_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "22413e6436c2319996134e8f439d85ba472ba530640b1d6f43694dd6b6bc765c"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ufdvpb81_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "cef47de25c068b0f7ba255da3c28ccd9d100ad22069186bc5542c54aee8d2362"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ufdvpb81_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c9eda07cd9d2c0174227b1f6cec8eeb66ffe196d5092cf8b1d115805d5dd5b56"
+  },
+  {
+    "file": "Dataset/Batch_3/img_ufdvpb81_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "e95a8efcc6c997884159bbd9a83d24bdba1e7e71c3aa8591f2ab2e17b9777479"
+  },
+  {
+    "file": "Dataset/Batch_3/img_utfgcjfa_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "4e62e17fbfa089f410ac8e4026c0878ae7f27c54d231a350dd958b40c96002dd"
+  },
+  {
+    "file": "Dataset/Batch_3/img_utfgcjfa_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "7d2e91e4d10fae1e9e662298c154b3c816fce4e39a361b98a3027103a72a8aea"
+  },
+  {
+    "file": "Dataset/Batch_3/img_utfgcjfa_SE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "7b825b9a460d336ddfba675633273f08698bd3ab78ec27337972d3a475359294"
+  },
+  {
+    "file": "Dataset/Batch_3/img_vc2whyaq_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "75e04a6c86abfdedd4d06ad83d017bc60def52b56f1bc520a4f59a65932c07ce"
+  },
+  {
+    "file": "Dataset/Batch_3/img_vc2whyaq_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "16947ec5802fe2e43843f67521eaf58d27c4e4cd1e3b988034d3527b55674971"
+  },
+  {
+    "file": "Dataset/Batch_3/img_vc2whyaq_SE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "bbfd6114c3e88b8c8c3eb6845f5488c00bcaff8c740a65679af4e7e31a40b877"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x77cy643_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "b05c4ac6ddc0eae01a98ff89c7171971625d062e95bccb1ba0f1a1971722a388"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x77cy643_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a5a1596eb2444b35cae2af968ccd04a0f87857c31d04266a9c51325110230c08"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x77cy643_SE.tif",
+    "pages": 1,
+    "shape": [
+      2068,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2068",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2068, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127004056, 125)",
+      "YResolution": "(127004056, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "320d20ca81725704ec323cd63f8be595c50a921568de6109b20385ca024709f5"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x7u69zsw_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "bfe4d2d302ccb04929f4ea92be03b76b93fb38421c13268007a6fff33166d954"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x7u69zsw_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "0f586c012d8818d77021d47c3cfc08b3c69f41d4ad76fa7c799de10dae24740d"
+  },
+  {
+    "file": "Dataset/Batch_3/img_x7u69zsw_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2060,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2060",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2060, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(126999264, 125)",
+      "YResolution": "(126999264, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c68602fffa533afb3bd1f629b47722933b54f541c37d54630520981c825dbd30"
+  },
+  {
+    "file": "Dataset/Batch_3/img_xgj4xftb_BSE.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "f19ecf7f3a5eafdc60ebda36d54660c3aa7c595a17b9994f363fdfa293ae6c61"
+  },
+  {
+    "file": "Dataset/Batch_3/img_xgj4xftb_ETD.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c8252dd9583a912d1c2b05608411e7366d786b1ae6ba0f007f0d86be8def4b6d"
+  },
+  {
+    "file": "Dataset/Batch_3/img_xgj4xftb_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      1612,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "1612",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [1612, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25400152, 25)",
+      "YResolution": "(25400152, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "12a96727dbbfb944625b06d42cfcfc516d0b5781ca29944cde8069de59ed9be3"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_3e122cbj_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "efad123af7f20e762d44b0de140dea5ac3c7593d7b323d4da020eef2d1159374"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_3e122cbj_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "78133a28d1f0b68faf7dc4faf03c62fa7b6c86076766b50e3237777060d65e1d"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_3e122cbj_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2316,
+      6996,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "6996",
+      "ImageLength": "2316",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2316, 6996, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399944, 25)",
+      "YResolution": "(25399944, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "c03147055308da8bd2e06b4b6d6f58efe1237aa1c17067545be886f6502c4436"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_fn0mhxef_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "be7677781389261f500c317fe20ebf972fa1389f32447b777072e82ecdcd7958"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_fn0mhxef_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "02635143bbc1d158142a95d406cbca7ce94b40d9326068c70bbcb07fbe32c7fb"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_fn0mhxef_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2048,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2048",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2048, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(127001488, 125)",
+      "YResolution": "(127001488, 125)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "670ea5dc3006b20a847e2aeaf134d063927c172be71adbb189cc1bac0cecbfad"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_xrv9xvzb_BSE.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "2bb8f7cb564a15879e49a99b7ff9f319472585ef2ba524bf4816ec5c74ffa222"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_xrv9xvzb_ETD.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "a05becd6d1e4b530197c2bf93636422d2d88d7d42fef259ec4dced9619f751d0"
+  },
+  {
+    "file": "Hackathon-Polaron-test/img_xrv9xvzb_Inlens.tif",
+    "pages": 1,
+    "shape": [
+      2088,
+      7000,
+      3
+    ],
+    "dtype": "uint8",
+    "tag_names": [
+      "BitsPerSample",
+      "Compression",
+      "ImageDescription",
+      "ImageLength",
+      "ImageWidth",
+      "PhotometricInterpretation",
+      "PlanarConfiguration",
+      "Predictor",
+      "ResolutionUnit",
+      "RowsPerStrip",
+      "SamplesPerPixel",
+      "Software",
+      "StripByteCounts",
+      "StripOffsets",
+      "XResolution",
+      "YResolution"
+    ],
+    "description_keys": [
+      "shape"
+    ],
+    "possible_metadata_keys": [],
+    "tag_values": {
+      "ImageWidth": "7000",
+      "ImageLength": "2088",
+      "BitsPerSample": "(8, 8, 8)",
+      "Compression": "5",
+      "PhotometricInterpretation": "2",
+      "ImageDescription": "{\"shape\": [2088, 7000, 3]}",
+      "SamplesPerPixel": "3",
+      "RowsPerStrip": "12",
+      "XResolution": "(25399712, 25)",
+      "YResolution": "(25399712, 25)",
+      "PlanarConfiguration": "1",
+      "ResolutionUnit": "2",
+      "Software": "tifffile.py",
+      "Predictor": "2"
+    },
+    "file_sha256": "19b9e6f2a0445b4584e3a77224bbe609ec213a8f4e77112d964d53187ca88e30"
+  }
+]

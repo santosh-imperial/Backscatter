@@ -1,0 +1,30 @@
+feature,extraction_dependency,invalid_when_bright_bad,invalid_when_pore_bad,source,qualification
+pore_frac,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+pore_d50,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+pore_elong,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+pore_max_d,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_frac,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_count_per_Mpx,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_frac,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_count_per_Mpx,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_d50,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_d90,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_circ,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+corr_len_px,sampled raw BSE image,False,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+fft_slope,sampled raw BSE image,False,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+etd_crack_density_particles,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+pore_d90,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+pore_count_per_Mpx,pore mask,False,True,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_d10,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_solidity,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+bright_max_d,bright mask,True,False,polaron_qc/features.py:bse_site_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+etd_crack_density_graphite,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_g_0.05,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_g_0.1,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_g_0.2,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+crack_g_0.3,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+ridge_p97,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+inlens_particle_texture,bright interior,True,False,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+inlens_particle_texture_p90,bright interior,True,False,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+inlens_speckled_particle_frac,bright interior,True,False,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive
+inlens_grad_energy,joint phase interiors/orientation,True,True,polaron_qc/features.py:multichannel_features,dependency policy; no expert mask validation; appearance remains acquisition-sensitive

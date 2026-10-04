@@ -1,0 +1,12 @@
+{
+  "experiment": "E36S",
+  "replay_output": "/private/tmp/polaron-feedback-replay-u96rrtr9",
+  "csv_outputs_byte_identical": 5,
+  "existing_output_overwrite_rejected": true,
+  "original_artifacts_preserved": 142,
+  "registry_historical_prefix_preserved": true,
+  "registry_appended_rows": 30,
+  "assumption_register_embedded_images_decodable": 26,
+  "feedback_report_links_resolve": true,
+  "no_model_fit_or_live_pipeline_change": true
+}

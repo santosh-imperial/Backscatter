@@ -1,0 +1,17 @@
+{
+  "experiment": "E38S",
+  "input_and_output_hashes_verified": true,
+  "protected_original_artifacts": 222,
+  "original_artifacts_unchanged": true,
+  "known_crop_identities_preserved": 11,
+  "exact_raw_value_crops_verified": 14,
+  "hint_free_embedded_images": 14,
+  "real_expert_annotations": 0,
+  "grouped_validation_available": false,
+  "scalar_roles_and_review_evidence_unchanged": true,
+  "raw_tiffs_packaged": false,
+  "synthetic_regression_tests_passed": 8,
+  "synthetic_ui_controls_passed": true,
+  "native_browser_layout_verified": false,
+  "browser_limitation": "Browser automation refuses file URLs; no workaround attempted."
+}

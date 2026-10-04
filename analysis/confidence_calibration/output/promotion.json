@@ -1,0 +1,21 @@
+{
+  "loss_gate_passed": false,
+  "relative_primary_reductions": {
+    "balanced_multiclass_logloss": 0.030784332825553425,
+    "balanced_bet_brier": -0.16517377424974325
+  },
+  "other_loss_nonworsening": {
+    "multiclass_logloss": false,
+    "multiclass_brier": false,
+    "balanced_multiclass_brier": false,
+    "bet_brier": false,
+    "bet_nll": false,
+    "balanced_bet_nll": false
+  },
+  "minimum_relative_reduction": 0.01,
+  "maximum_other_loss_increase": 1e-06,
+  "all_bets_unchanged": true,
+  "eligible_for_versioned_replacement": false,
+  "promoted": false,
+  "interpretation": "Practical crop-held-out gate; not source-independent calibration evidence. No drop labels used."
+}

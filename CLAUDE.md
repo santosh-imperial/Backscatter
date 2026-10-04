@@ -8,6 +8,17 @@ A hackathon entry (started 2026-10-03). Given SEM cross-sections of battery elec
 
 Read `docs/problem_and_findings.md` before doing anything substantive. It holds the problem statement, everything we know about the data, the KPI catalogue with trust levels, decisions taken, and open questions.
 
+**Dataset-construction clarification (2026-10-04, D59S):** the organisers say these are crops from around
+15 electrode sample images, arranged into artificial batches with shared visual features. This supersedes
+literal supplier-lot provenance for this dataset. Batch 3 remains the challenge reference; labels support
+visual-group identification, not actual lot identity or battery outcomes. Around 15 images does not mean
+15 independent specimens. Parent crop IDs are unknown: historical/new site-LOO and site permutation
+results are crop diagnostics that may share source images across folds, not source-held-out accuracy or
+independence-calibrated uncertainty. Never infer parent IDs from frame height or quality/session flags.
+Use confirmed parent IDs in both outer and inner grouped validation if supplied; verified pixel overlaps
+are only minimum-dependence evidence. E39S tests bounded models and mask-independent appearance
+without human annotations, separately from frozen submission v2 and QC.
+
 Provider clarification (2026-10-03, D49P): Batch 3 is the supplier's promised baseline; Batches 1/2 are later variations, not better/worse labels. The challenge target is morphology-based in/out-of-distribution comparison. Battery-harm proof is not a prerequisite for a distribution feature. Preserve the full measurable reference, with disclosed feature-quality exclusions; an ordinary-only subset is sensitivity/context, not the promised distribution. `docs/qc_plan.md` §1.1 describes a planned bounded OOD extension. The five-primary-KPI restrictions below describe the current executed release, not an immutable feature limit; promotion still requires a logged validation/version decision before unseen evaluation. Defect risk, acquisition uncertainty and distribution conformance are separate conclusions.
 
 Evaluation clarification (D53): every held-back sample must receive a batch bet, even if very uncertain, with
@@ -24,6 +35,63 @@ models and matching reliability evidence. Require the explicit model version, ne
 and write new output directories. Texture origin remains unresolved; removing explicit acquisition columns
 does not establish material-only evidence. V2 was revised after first-drop inspection and before its truth,
 and declared before final evaluation. Save truth separately and evaluate saved bets before any new version.
+
+Organiser feedback received 2026-10-04 (E36S/D55S): the Batch 1/2 bets were swapped;
+`3e122cbj` is Batch 2, `fn0mhxef` is Batch 1, and `xrv9xvzb` is Batch 3, interpreted
+against the frozen submission. Both primary versions scored 1/3 sites. All v2 bets
+survived 31/31 training-site deletions, including both mistakes: stability is not
+correctness confidence. The low-contrast query is Batch 2, so this acquisition
+pattern is not exclusive to Batch 1. [Feedback evaluation](analysis/feedback_drop_01/report.md)
+preserves truth separately and verifies saved class mapping/scores. No automatic
+label swap, texture removal or comparator promotion follows. Future feedback-informed
+revisions use the first drop as development evidence and require a new version.
+
+E37S/D56S completes the separate post-feedback input-quality audit. A dependency gate excludes numerical
+inputs affected by bad/unknown phase masks, including joint ETD/Inlens interiors; rejected-value invariance
+passes. Known balanced accuracy 0.569 versus matched v2 0.608 and unchanged failure bets do not support
+automatic promotion. `analysis/quality_policy_audit/` holds the experimental model, coverage and visual
+review; frozen v2 remains the declared submission. Imputation patterns remain a possible acquisition shortcut,
+and independent phase boundaries plus specimen/session grouping are still open.
+
+E39S/D60S completes M1/M2 without human phase annotations: gated L2 crop-held-out balanced accuracy
+0.445, augmented L2 0.473, versus matched ungated L1 0.608; no promotion. The new24 fixed image
+descriptors remain gamma-sensitive, with experimental classification-only inventory roles. E40S recovers
+no pixel-overlap clusters from561 pairs; non-overlapping shared sources remain unknown. Parent mapping
+and the bounded M3 frozen-DINO supervised probe are next; frozen v2/QC remain unchanged.
+
+E41S/D63S completes the fixed forest × compact geometry comparison: gated29 L1/RF balanced
+accuracy0.569/0.465 and gated37 L1/RF0.521/0.417. All main candidates retain1/3 revealed-drop
+outcome. Existing eight descriptors have raw replay/coverage/classification-trial evidence, without
+expert/QC promotion. Sources/fits/receipts and image references are in `analysis/forest_geometry/`;
+no forest/feature search follows this negative result. Fixed-model tree-path terms are noncausal and
+imputed inputs are unobserved. Current v2/QC remain unchanged; M3 is the next separate representation
+experiment. The documented full suite `pytest tests -q` has232passing tests; archived source snapshots
+are audit data, not an additional test collection.
+
+E42S/D65S adds the confidence criterion and one fixed multinomialL2+8 probe. The organisers'
+confidence rule is available only as qualitative examples; no exact cutoff/payout is specified.
+Assess assignment plus full-vector probability quality, own-bet correctness, observed/imputed
+explanations and both ordinary/equalclass weighting. Lowering all scores is not inherently better
+confidence, and changed bets change binary correctness targets. GeometryL2 has mixed known scores
+and2/3 revealed development; no promotion. `analysis/confidence_audit/` preserves models, descriptive
+reliability/threshold/flattening controls and exact linear explanations. Any calibration method must
+be separately fixed and fit within outer training folds; unknown source dependence remains.
+
+E43S/D68S tests one nested scalar score correction on actual frozen v2, preserving all bets.
+Equalclass full-label NLL improves3.08%, own-bet Brier worsens16.52%; all other loss safeguards
+worsen, so no promotion. `analysis/confidence_calibration/` retains465paired fits, nested-only
+calibration evidence, controls, receipts and report. Its baseline is actual saved v2: the E42S
+anchor-ordered matched comparator differs on one fold's C/score vector despite identical bets.
+Do not equate that matched comparator with an exact release replay; source ordering is part
+of inner-C selection. Full suite241passes. No confidence method/cutoff search on revealed labels;
+unknown shared parents still prevent source-level calibration claims. M3 remains next.
+
+E38S/D57S prepares raw-only neutral-ID boundary review: six E24 development crops, five separately held-out
+crops and three fixed first-drop development crops. No expert masks were created; exports retain independent
+drawing and prior exposure, and fresh-directory evaluation preserves historical artifacts. All 102 supplied
+TIFF headers over 34 sites lack explicit specimen/preparation/imaging IDs; Santosh confirms no mapping yet.
+The mapping sheet and unsent organiser questions are in `analysis/boundary_review/`. True grouped validation
+and expert accuracy remain unavailable. At E38S/E39S the full suite had 215 tests; current v2/QC inputs remain unchanged.
 
 ## Team split
 
@@ -43,7 +111,7 @@ notebooks/
 polaron_qc/              the QC package: features (FEATURE_VERSION 1.1.0), stats, ml, acquisition, physics, decision (Thresholds, hashed),
                          report (build_result / render_report / CLI), secondary + battery_metrics + void_metrics (exploratory battery geometry).
                          KPI lists and trust levels live in polaron_qc/__init__.py (PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST, BATTERY_SECONDARY_KPIS)
-tests/                   pytest suite (173 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
+tests/                   pytest suite (241 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
 reports/                 qc_Batch_1.html, qc_Batch_2.html — the per-batch judge-facing reports written by notebook 02 / the CLI
 analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small); analysis_cache/features/
                          is notebook 02's content-hashed parquet cache (ignored by version control); analysis_cache/ml/ holds the exploratory embeddings (committed)
@@ -92,7 +160,7 @@ Environment: anaconda `python3` at `/opt/anaconda3/bin/python3` (3.12), numpy 1.
 6. **Detector label `SE` means `ETD`.** Merge them. Channels are pixel-aligned; BSE masks can be applied to ETD/Inlens directly.
 7. **Trim bright edge bands** (current collector / stitching) before measuring; `features.bright_bands()` does this (copies still exist in `ml.py` and `physics.py`, workflow hazard 6).
 8. **Per-image percentile thresholds make densities constant by construction.** Use one absolute threshold chosen across sites (see ETD ridge threshold `T_STAR`).
-9. **Batch 3 is the working reference, not a clean baseline** (confirmed by the problem providers: three supplier batches of one product; Batch 3 is one batch with more samples; the task is to differentiate). Use robust statistics, show Batch 3's own sub-populations, report all pairwise comparisons, and keep the reference selectable in one config cell.
+9. **Batch 3 is the working reference, not a clean baseline.** The organiser confirms the task is to differentiate; the 2026-10-04 clarification says folders are artificial visual groups formed from cropped source images, superseding literal supplier-batch provenance. Show Batch 3's own sub-populations, report all pairwise comparisons, and keep the reference selectable in one config cell. Crop-level uncertainty is not source-independent uncertainty.
 10. Frame height is a session fingerprint as much as a thickness proxy; do not present it as thickness without caveat.
 11. **Fresh graphite–Si/SiOx electrode is confirmed by Santosh (2026-10-03).** Interpret features as as-manufactured structure and possible susceptibility during formation/later cycling, never evidence of cycling-induced damage, SEI or lithium plating. Exact Si versus SiOx chemistry, recipe, binder identity and pixelwise chemical labels remain unspecified. A bright threshold fragment is not automatically a Si/SiOx particle; residual-solid adjacency is not electrical contact. See `docs/battery_microstructure_review.md` for the hypothesis checks and wording audit.
 

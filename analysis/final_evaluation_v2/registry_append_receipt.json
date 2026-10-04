@@ -1,0 +1,9 @@
+{
+  "completed_utc": "2026-10-04T12:55:47.801160+00:00",
+  "rows_appended": 432,
+  "earlier_bytes": 12612090,
+  "earlier_sha256": "ec31b9e37c8087ebbcbb0cb55c74630cb22574e85be5d606cf00787cfe16febd",
+  "earlier_bytes_preserved": true,
+  "append_sha256": "fb516a2da8508e58d4b82dbe71e095a5a9af0a346869e5295f2bec55b06eb58f",
+  "registry_sha256": "4ce4e81781fe46b2a30b932148ba4accf512a27e4600512c81495af3ca68c4db"
+}

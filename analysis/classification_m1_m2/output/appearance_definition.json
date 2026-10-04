@@ -1,0 +1,58 @@
+{
+  "version": "m2-mask-independent-1.0",
+  "feature_names": [
+    "appearance_bse_dog_fine_fraction_median",
+    "appearance_bse_dog_mid_fraction_median",
+    "appearance_bse_dog_coarse_fraction_median",
+    "appearance_bse_dog_fine_fraction_iqr",
+    "appearance_bse_dog_coarse_fraction_iqr",
+    "appearance_bse_gradient_axis_cos2_median",
+    "appearance_bse_gradient_axis_sin2_median",
+    "appearance_bse_gradient_axis_coherence_median",
+    "appearance_etd_dog_fine_fraction_median",
+    "appearance_etd_dog_mid_fraction_median",
+    "appearance_etd_dog_coarse_fraction_median",
+    "appearance_etd_dog_fine_fraction_iqr",
+    "appearance_etd_dog_coarse_fraction_iqr",
+    "appearance_etd_gradient_axis_cos2_median",
+    "appearance_etd_gradient_axis_sin2_median",
+    "appearance_etd_gradient_axis_coherence_median",
+    "appearance_inlens_dog_fine_fraction_median",
+    "appearance_inlens_dog_mid_fraction_median",
+    "appearance_inlens_dog_coarse_fraction_median",
+    "appearance_inlens_dog_fine_fraction_iqr",
+    "appearance_inlens_dog_coarse_fraction_iqr",
+    "appearance_inlens_gradient_axis_cos2_median",
+    "appearance_inlens_gradient_axis_sin2_median",
+    "appearance_inlens_gradient_axis_coherence_median"
+  ],
+  "channels": [
+    "BSE",
+    "ETD",
+    "Inlens"
+  ],
+  "tile_size_px": 512,
+  "grid": "3 by 3; edge/centre/edge origins with fixed Gaussian context",
+  "filter_context_px": 96,
+  "gaussian_sigmas_px": [
+    2.0,
+    8.0,
+    32.0
+  ],
+  "gaussian_truncate": 3.0,
+  "bands": [
+    "G2-G8",
+    "G8-G32",
+    "G32 minus measurement-tile mean"
+  ],
+  "energy": "mean square within 512px measurement tile; divided by sum of three band energies",
+  "pooling": "equal-window median; fine/coarse fractions also have tile IQR",
+  "gradient": "sigma8 Gaussian derivatives; energy-weighted cos2/sin2 and axial resultant; tile medians",
+  "input_normalization": "contextual patch centred and divided by its standard deviation",
+  "shared_trim": "existing bright_bands(BSE) top/bottom applied to all aligned detectors",
+  "constant_policy": "any nonfinite tile makes all eight channel descriptors unavailable",
+  "provenance": "31 labelled supplied crops; parent mapping unknown; about15 source images and artificial batches per organiser",
+  "interpretation": "mask-independent acquisition-sensitive image appearance; no phase chemistry, plate axes or battery-harm validation",
+  "invariance": "positive affine intensity transform absent clipping/rounding and conditional on fixed trim; gamma and quantisation not invariant",
+  "independent_unit": "one supplied crop/site vector; tiles and channels are not additional observations"
+}

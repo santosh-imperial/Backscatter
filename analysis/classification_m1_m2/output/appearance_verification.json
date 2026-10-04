@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "source_hashes_match": true,
+    "output_hashes_match": true,
+    "raw_tiff_hashes_match": true,
+    "response_assets_match": true,
+    "original_count_34": true,
+    "known_count_31": true,
+    "sensitivity_count_155": true,
+    "all_original_features_available": true,
+    "all_sensitivity_features_available": true,
+    "sensitivity_originals_identical": true,
+    "no_predictor_metadata": true,
+    "all_experiment_files_under_20mb": true
+  },
+  "passed": true,
+  "n_source_tiffs": 102,
+  "n_response_maps": 6,
+  "viewed_response_map": "analysis/classification_m1_m2/assets/appearance_responses_3e122cbj.jpg",
+  "interpretation": "image-appearance only; source-parent independence unknown; conditional intensity sensitivity, not material validation"
+}

@@ -1,0 +1,8 @@
+{
+  "components": [],
+  "confirmed_edges": [],
+  "grouping_status": "diagnostic_only_not_parent_or_specimen_IDs",
+  "isolates_are_unknown_parents": true,
+  "classifier_grouping_changed": false,
+  "same_parent_nonoverlapping_crops_not_identifiable": true
+}

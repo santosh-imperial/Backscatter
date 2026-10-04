@@ -1,0 +1,12 @@
+{
+  "experiment": "E41S",
+  "command": "/opt/anaconda3/bin/python3 -m pytest tests -q",
+  "passed": 232,
+  "warnings": 15,
+  "elapsed_seconds": 199.94,
+  "narrow_passed": 17,
+  "narrow_warnings": 13,
+  "warnings_existing": true,
+  "bare_pytest_archive_collection": "Failed import-file mismatch because archived test-source snapshots are not the documented tests/ suite. No production test failed.",
+  "interrupted_trial": "Preserved early run, corrected test assertion only; no parameter change."
+}

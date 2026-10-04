@@ -1,0 +1,16 @@
+{
+  "raw_tiffs_unchanged": true,
+  "frozen_submission_unchanged": true,
+  "protected_submission_file_count": 106,
+  "source_unchanged_after_protocol": true,
+  "synthetic_controls_passed": true,
+  "site_count": 34,
+  "tiff_count": 102,
+  "pair_count": 561,
+  "candidate_pair_count": 0,
+  "confirmed_edge_count": 0,
+  "nontrivial_overlap_component_count": 0,
+  "maximum_coarse_ncc": 0.5883629239677566,
+  "wall_seconds": 79.39643597602844,
+  "true_parent_heldout_validation_available": false
+}

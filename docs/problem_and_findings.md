@@ -1,6 +1,6 @@
 # Polaron challenge — problem statement and state of knowledge
 
-_Last updated: 2026-10-03 (supplier-promised baseline and in/out-of-distribution target clarified; fresh graphite–Si/SiOx material confirmed). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
+_Last updated: 2026-10-04 (nested confidence experiment E43S/D68S; artificial-batch dependence D59S). Owner: Santosh (narrative, materials review) + Claude (pipeline, statistics)._
 
 ## 1. The problem
 
@@ -12,13 +12,90 @@ _Last updated: 2026-10-03 (supplier-promised baseline and in/out-of-distribution
 
 **Judging criteria** (in the organisers' words): quality of extracted material KPIs; accuracy on the new batch; interpretability; honest handling of uncertainty; real-world usability for a QC decision. Raw accuracy alone is explicitly not the target.
 
+**Dataset construction clarified (2026-10-04, D59S).** The organiser says the real electrode data were
+cropped from **around 15 source images** and “backwards engineer[ed] ... into artificial batches” with
+shared features. This supersedes literal supplier-lot provenance for these folders; Batch 3 remains the
+challenge reference, and labels identify curated visual groups. It does not establish 15 independent
+electrodes/specimens. Parent-image IDs remain unavailable, so holding out a crop/site can leave related
+crops in training. All historical and new site-LOO scores, permutation results and site-resampled
+intervals need this dependence qualification: they do not establish source-held-out performance,
+independence-based significance or manufacturing generalisation. Nor does this clarify coating-edge
+orientation or validate phase masks. [E39S protocol](../analysis/classification_m1_m2/protocol.md)
+fixes the no-annotation classifier/appearance comparison; source-overlap inspection is diagnostic.
+
+**No-annotation M1/M2 completed (E39S/D60S).** The bounded model change does not improve classification:
+matched ungated L1 balanced accuracy 0.608, complete-gated L1 0.569, complete-gated L2 0.445,
+shrinkage LDA 0.445, new appearance-only L2 0.300 and gated-plus-appearance L2 0.473.
+These are nested crop-held-out development diagnostics, with no new IID p-values/intervals.
+The 24 fixed image descriptors pool three-detector Gaussian-scale, gradient-direction and spatial
+variation measures over 14.6–19.3% of each field without phase masks. Gain/offset cancels at fixed trim;
+gamma changes 5/31 or 8/31 appearance-only bets. The augmented model fixes one revealed first-drop
+mistake (2/3 development diagnostics), but every candidate still misses low-contrast B2 `3e122cbj`.
+[Report and actual response maps](../analysis/classification_m1_m2/report.html) retain negative results;
+no candidate is promoted and v2/QC remain unchanged. **E40S source audit** finds no recoverable overlap
+among 561 pairs of 34 crops, with corrected synthetic/real-image controls passing the actual gate;
+non-overlapping related crops remain undetectable, so no source grouping/CV is inferred. Next bounded
+classification work is the frozen-DINO supervised probe (M3); parent mapping remains necessary.
+
+**Fixed forest × compact geometry completed (E41S/D63S).** At the fixed bounds, neither
+model change nor added section geometry improves classification. Gated29 L1/forest balanced
+accuracy0.569/0.465; gated37 L1/forest0.521/0.417, versus preserved ungatedL1 0.608.
+The forest retainsB3 recall14/17 but geometry-forest B1/B2 recall2/7 and1/7. All four main
+candidates retain the same1/3 revealed-drop outcome; low-contrast B2 has only12/37 observed
+inputs, and several leading forest terms are imputed texture rather than observed evidence.
+All eight existing descriptors have raw extraction, complete coverage/quality gates and four
+[actual geometry panels](../analysis/forest_geometry/report.html); they remain experimental.
+Threshold/floor probes, seeds and exact path accounting show sensitivity/stability of the fitted
+model, not phase truth, causal importance or correctness confidence. No SME labels, source
+mapping, model tuning, automatic feature promotion or submission/QC change. Full suite232
+passes. [Findings](../analysis/forest_geometry/findings.md) preserve all comparisons; M3's frozen
+representation probe remains the next bounded classification experiment.
+
+**Judging and confidence clarified; E42S/D65S completed.** Santosh reports that correct batch,
+confidence and explanation quality all matter. The examples penalise highly confident mistakes;
+exact confidence cutoffs/payoffs are unspecified. [The confidence audit](../analysis/confidence_audit/report.html)
+evaluates all ten fixed measurement candidates, full-vector and own-bet losses, ordinary/equalclass
+weighting, fixed reliability/threshold counts and flattening/prior controls, without calibrating or
+inventing an organiser utility. New L2+8 has balanced accuracy0.398 versus L2without8 0.445:
+ordinary logloss0.904→0.881 improves, equalclass0.962→0.966 worsens. On the revealed drop it fixes
+one mistake (2/3). Existing gated29L2 keeps1/3 but lowers both wrong scores0.838→0.584 and0.496→0.484,
+while raising the correct0.622→0.800. That is useful development confidence evidence, not a calibrated
+probability or external test. The anchor-ordered matched legacy reference has better known
+assignment/proper scores in E42S; E43S below finds one fold differs from actual frozen v2. No promotion.
+Future comparisons judge score quality and explanations alongside accuracy. Unknown source dependence
+and unreviewed masks remain; currentv2/QC unchanged, M3 next with this audit included.
+
+**Conditional replacement authorised (D66S, qualified by D68S).** Santosh authorises a switch if confidence
+quality improves. E42S's all-loss comparison used a matched legacy comparator; it is not an exact
+frozen-v2 replay. E43S evaluates the actual frozen scores and fails its confidence promotion gate.
+The three revealed development examples cannot alone justify promotion. Assignment always takes the largest class score, without a
+0.5 cutoff: `fn0mhxef`'s gated29 L2 scores B1 0.417, B2 0.484, B3 0.099 therefore bet B2;
+geometry37 L2 instead bets B1 because its B1 score 0.472 exceeds B2 0.389 and B3 0.140.
+These are uncalibrated class scores, with correctness confidence assessed separately.
+
+**Nested v2 confidence correction completed (E43S/D68S).** One scalar correction of normalised OvR
+scores preserves all31 known and3 revealed bets. Every outer crop's scalar uses only the other30
+labels and internal held-out scores from29-training-crop models (465 paired fits), including
+training-only C selection/preprocessing. Equal-class multiclass NLL improves1.064476→1.031706
+(3.08%), but own-bet Brier worsens0.208736→0.243214 (16.52%); all six other losses worsen.
+The fixed promotion gate fails; retain v2 and its existing confidence qualifications. Full scalar
+alpha0.527967 (T1.894059) softens the revealed wrongB1 bet0.838→0.632 and wrongB2 0.496→0.420,
+but also correctB3 0.622→0.485. Drop losses improve without changing1/3; those labels were not used
+for fit/selection. [Report](../analysis/confidence_calibration/report.html) preserves all controls.
+**Baseline correction:** actual frozen v2 selects C2 at `epqdaau9`; the anchor-ordered E42S
+legacy comparator selects C0.5. Bets agree, but that fold's score gap reaches0.116606, and its
+true-class tail changes the NLL materially (equal-class1.064476 versus matched0.889949).
+The earlier assertion that actual v2 wins every proper loss is therefore superseded. Earlier
+artifacts remain intact; only the frozen model's own sealed scores define the E43S baseline.
+Unknown source dependence still prevents source-level calibration claims. M3 remains next.
+
 **Provider clarification (via Santosh, 2026-10-03).** Batch 3 is the supplier's promised baseline. Batches 1 and 2 arrived subsequently and illustrate variation the model should detect; they are not explicitly better or worse. The challenge target is to identify differences and categorise held-back samples as in or out of the promised distribution. Batch membership is usable development information; manufacturing-performance and acceptable/defective labels remain unavailable.
 
 **Evaluation clarification and first drop (D53).** The organiser now requires a batch assignment for every
 sample, even when very uncertain, with confidence and feature explanations. The goal remains “different from
 the baseline, and in what way”; correct assignment to the known batches measures the “in what way” part.
-`Hackathon-Polaron-test` has arrived with three aligned detector sets; true labels are pending tomorrow's
-feedback. E33 preserves the original combined categoriser's forced bet and explicitly qualified model scores; morphology
+`Hackathon-Polaron-test` has three aligned detector sets; the organiser supplied label feedback on 2026-10-04
+(E36S below). E33 preserves the original combined categoriser's forced bet and explicitly qualified model scores; morphology
 distance from Batch 3 and QC action remain distinct. Preserve first predictions before feedback, with no tuning
 on this drop. Do not treat the potentially mixed test folder as a single manufacturing batch.
 
@@ -29,7 +106,62 @@ requires the declared family and matching reliability evidence, with no comparat
 of original E33/v1 predictions. V2 was revised after first-drop inspection, before truth, and declared before
 final evaluation. Feedback is evaluated against saved bets before any further model revision.
 
+**First-drop outcome (E36S/D55S, 2026-10-04).** The organiser's “1 and 2 are swapped, 3 is correct” is
+interpreted against the original submission: `3e122cbj → Batch_2`, `fn0mhxef → Batch_1`,
+`xrv9xvzb → Batch_3`. Both original v1 and declared v2 bets scored **1/3 sites (33.3%)**;
+the aligned detector images are not additional test samples. V2's wrong 0.8382 Batch 1 bet had only
+0.0832 score on its true Batch 2 label, and all three bets survived 31/31 training-site deletions.
+This demonstrates stable misclassification, not calibrated confidence. Saved class encoding and score
+columns reproduce correctly, so a global output-label swap is unsupported. Low contrast occurs on the
+labelled Batch 2 query; several strong inputs rely on its unreliable bright mask. Morphology-only makes
+the same swaps, while acquisition-only corrects the second query (2/3), so the feedback neither isolates
+texture as the cause nor justifies promoting session statistics. [Separate truth, evaluation and driver review](../analysis/feedback_drop_01/report.md)
+preserve every original prediction. Prioritise a known-data audit of quality handling for mask-dependent
+inputs and expert boundary review. No model/QC inputs change here; any feedback-informed revision must
+be separately versioned and treat this first drop as development evidence. Three labels cannot establish
+generalisation, phase truth, battery harm or calibration.
+
+**Input-quality audit completed (E37S/D56S).** The frozen categoriser annotates quality flags but passes
+their dependent numerical inputs unchanged. A standalone dependency gate makes bad/unknown bright-mask
+measurements and affected cross-detector inputs unavailable (19 of 29 on low contrast); the raised-black-level
+pore rule invalidates 16. ETD particle ridge coverage also depends on a joint-interior orientation estimate,
+and Inlens gradient energy is measured on joint interiors rather than the whole frame. All 31 known sites,
+including cracked reference sites, remain in fold-local nested evaluation. Known balanced accuracy is 0.569
+versus matched legacy 0.608; advantage is not established, and all three labelled failure bets stay unchanged.
+The low-contrast wrong bet's score falls 0.838 → 0.553, with true Batch 2 score still only 0.127. Rejected-value
+invariance is demonstrated, but accuracy/generalisation improvement is not. [Dependency, coverage and visual review](../analysis/quality_policy_audit/report.html)
+and [detailed findings](../analysis/quality_policy_audit/findings.md) retain experimental status, separate imputed
+baseline terms, preserved original predictions and post-feedback provenance. The suite passes 183 tests.
+Keep frozen v2 as the declared submission; next validation is independent boundary review and specimen/session
+grouping. Quality-pattern imputation can still encode acquisition, and the remaining pore/image inputs also
+support the mistakes. No live classifier/QC input or expert/KPI trust status is changed here.
+
 **Our framing.** Compare incoming material with the full measurable Batch 3 distribution, including its morphological heterogeneity. A change in either direction, in spread, tails, alignment or spatial arrangement can matter even when phase loading or defect burden is unchanged or lower. Do not redefine the promise as an ordinary-only or defect-free subset. Quality exclusions must be feature-specific and disclosed, with acquisition and material interpretations separated. The current five-primary-KPI decision path is an executed baseline; the standalone morphology OOD development audit in `qc_plan.md` §1.1 is completed as E31L, while live promotion is deferred and genuine unseen validation is unavailable. Distribution departure can support an investigation or a provisional conformance hold without a demonstrated battery-harm mechanism. Statistical non-detection is not proof of equivalence or a production release authorisation.
+
+**Boundary/grouping handoff prepared (E38S/D57S).** Separate raw-only pages reuse E24's exact six
+development/five held-out crops, with neutral IDs and no batch/method hints. Three fixed first-drop
+crops form a separate post-feedback development page. Exports record independent drawing and previous
+exposure, preserve uncertain/unmeasurable cases and evaluate saved methods in fresh output directories.
+No independent annotation exports or reviewed phase masks have been received. A full 102-TIFF header
+audit over 34 sites recovers no specimen/preparation/imaging IDs or acquisition-setting keys; Santosh
+confirms no mapping is available yet. [Review handoff](../analysis/boundary_review/README.md) includes
+the raw-only pages, mapping template and unsent organiser questions. Expert accuracy and true grouped
+validation remain unavailable; neutral IDs cannot erase previous exposure, and ROI errors are not full-site
+KPI accuracy. Current v2, extraction, thresholds and scalar trust roles remain unchanged.
+
+**Next classification plan under a no-SME assumption (D58S).** The user asks us to
+assume human annotation is unavailable. Supplied batch labels still permit supervised
+site classification; independent phase/KPI validation stays unresolved. The proposed
+[M1–M5 plan](next_steps.md#classification-improvement-assuming-no-sme-annotations-d58s)
+prioritises a bounded jointly fitted/regularised classifier audit and mask-independent
+image descriptors, then a frozen-DINO supervised probe and controlled acquisition
+augmentation. Revealed first-drop labels may enter a separately versioned development
+fit; they cannot then be validation. No experiment, model/input/trust promotion or
+new performance finding is produced by this planning change. Frozen v2 remains primary.
+
+**Final evaluation received, 2026-10-04 (D70S/E44S).** The frozen v2 model assigned six samples from `Hackathon-Polaron-eval`. It assigned two to Batch 3, three to Batch 2 and one to Batch 1. The lowest margins are 0.088 for `soo2ax3r` and 0.068 for `y59rxmxl`. Scores remain uncalibrated. True labels are pending.
+
+No model was fitted on these samples. The run preserves the declared 29 inputs and all earlier predictions. The [evaluation handoff](../analysis/final_evaluation_v2/README.md) contains scores, image evidence and exact feature contributions. No listed quality flag fired, but this does not establish valid phase masks. The mixed folder receives no pooled QC verdict. Save future labels separately before any model change.
 
 ## 2. The data
 

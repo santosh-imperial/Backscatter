@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "packet_id": "c8bcd59d75cc7d21114351391c8446bfd6c18c725b9d138eb6420f3cc9ad27a2",
+  "rois": [
+    {
+      "id": "F01",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "F02",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    },
+    {
+      "id": "F03",
+      "review_status": "unreviewed",
+      "measurable": null,
+      "reviewer": "",
+      "notes": "",
+      "independent_drawing": false,
+      "prior_exposure": "not_answered",
+      "background": "unlabelled",
+      "polygons": []
+    }
+  ]
+}
