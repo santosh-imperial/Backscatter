@@ -293,11 +293,14 @@ def baseline_bundle(res: dict, out: str, width: int) -> dict:
 def cmd_lot(a) -> None:
     from polaron_qc.report import build_result
     _new_out(a.out)
-    res = build_result(a.reference, a.batch, cache_dir=a.cache_dir)
+    from polaron_qc.report import _parse_reviews
+    reviews = _parse_reviews(a.review) if a.review else None
+    res = build_result(a.reference, a.batch, config=dict(image_reviewed=reviews) if reviews else None, cache_dir=a.cache_dir)
     distance = None
     if a.distance_table:
         distance = read_distance(a.distance_table, res["sites_batch"].site.astype(str).tolist(), a.distance_label)
     doc = lot_bundle(res, a.out, a.width, distance)
+    doc["reviews_applied"] = [{"site": s, "kpi": k, "confirmed": v} for (s, k), v in (reviews or {}).items()]
     with open(os.path.join(a.out, "lot.json"), "w", encoding="utf-8") as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=1)
     if a.with_baseline:
@@ -360,6 +363,8 @@ def main(argv=None) -> None:
     lp.add_argument("--distance-label", default="", help="how the distance table was produced (shown in the UI)")
     lp.add_argument("--with-baseline", action="store_true", help="also write baseline.json and reference example images")
     lp.add_argument("--width", type=int, default=DEFAULT_WIDTH)
+    lp.add_argument("--review", action="append", default=[], metavar="SITE:KPI=yes|no",
+                    help="a human image review of a routed or pending crop (repeatable); yes = confirmed, no = refuted")
     sp = sub.add_parser("samples", help="a saved categoriser run (sample set; may mix lots, no lot verdict)")
     sp.add_argument("--run", required=True, help="run root containing scored/ and submission/")
     sp.add_argument("--input", required=True, help="the folder of TIFFs that was scored (for display images only)")

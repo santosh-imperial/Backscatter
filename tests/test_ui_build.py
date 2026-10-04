@@ -123,3 +123,23 @@ def test_view_ids_never_contain_the_deep_link_separator():
     assert _re.sub(r"[^A-Za-z0-9_.-]", "_", "Batch~1 x") == "Batch_1_x"
     src = open(os.path.join(ROOT, "app", "build_ui.py")).read()
     assert "~" not in "".join(_re.findall(r"re\.sub\(r\"(\[[^\]]+\])\"", src))
+
+
+@pytest.mark.skipif(not os.path.exists(os.path.join(BUNDLES, "lot_Batch_1", "baseline.json")), reason="UI bundles not exported locally")
+def test_builder_refuses_a_lot_built_with_other_thresholds(tmp_path):
+    import shutil
+    src = os.path.join(BUNDLES, "lot_Batch_1")
+    dst = tmp_path / "lot"
+    shutil.copytree(src, dst)
+    doc = json.load(open(dst / "lot.json"))
+    doc["summary"]["meta"]["thresholds_hash"] = "000000000000"
+    json.dump(doc, open(dst / "lot.json", "w"))
+    with pytest.raises(SystemExit):
+        build_ui.main(["--lot", str(dst), "--track-record", EVAL, "--out", str(tmp_path / "x.html")])
+
+
+def test_export_review_option_parses_like_the_report_cli():
+    from polaron_qc.report import _parse_reviews
+    assert _parse_reviews(["4ih2ggld:crack_frac=yes", "f1vzngrs:pore_max_d=no"]) == {("4ih2ggld", "crack_frac"): True, ("f1vzngrs", "pore_max_d"): False}
+    src = open(os.path.join(ROOT, "app", "export_lot.py")).read()
+    assert '"--review"' in src and "image_reviewed=reviews" in src

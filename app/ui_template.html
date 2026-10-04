@@ -85,7 +85,9 @@ button, input, select { font: inherit; font-size: var(--t-sm) }
 .lane.sets .ico:first-child { color: var(--ink) }
 .linkbtn { background: none; border: 1px solid var(--line-strong); border-radius: 7px; padding: 4px 10px; color: var(--ink); cursor: pointer }
 .linkbtn:hover { background: var(--sunk) }
-.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px }
+.pair { display: flex; flex-direction: column; gap: 14px }
+.figlab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block !important; min-height: 1.6em }
+.figlab .note { margin-left: 8px }
 h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none }
 .lane > summary::-webkit-details-marker { display: none }
 .lane > summary:hover { background: var(--sunk) }
@@ -104,9 +106,15 @@ h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none }
 details.more > summary { cursor: pointer; font-weight: 500; font-size: var(--t-sm); color: var(--ink) }
 details.more[open] > summary { margin-bottom: 10px }
 /* workbench */
-.bench { display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden }
-.stage { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid var(--line); min-width: 0 }
-.panel { padding: 18px 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; min-width: 0; background: var(--surface); align-items: start }
+.bench { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 0; padding: 0; align-items: start }
+.stage { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid var(--line); min-width: 0 }
+.panel { padding: 18px 20px; display: flex; flex-direction: column; gap: 22px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow-y: auto; overscroll-behavior: contain }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between }
+.lab.gap { margin-left: 12px }
+.review { border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 8px }
+.txt { font: inherit; font-size: var(--t-sm); padding: 5px 9px; border: 1px solid var(--line-strong); border-radius: 7px; background: var(--surface); color: var(--ink); min-width: 0; width: 220px; max-width: 100% }
+.err { color: var(--bad); font-size: var(--t-sm) }
+.cmd { font-family: var(--font-data); font-size: var(--t-xs); background: var(--sunk); border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; word-break: break-all; margin: 0; max-width: none }
 .controls { display: flex; flex-direction: column; gap: 8px }
 .ctlrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
 .ctlrow > .lab { font-size: var(--t-xs); color: var(--muted); min-width: 64px }
@@ -182,7 +190,7 @@ tr.hl td { background: var(--sunk) }
 .wfbar .b { position: absolute; top: 0; height: 10px; border-radius: 3px }
 footer.prov { font-size: var(--t-xs); color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 4px }
 footer.prov p { max-width: 110ch }
-@media (max-width: 1100px) { .panel { grid-template-columns: minmax(0, 1fr) } }
+@media (max-width: 1100px) { .bench { grid-template-columns: minmax(0, 1fr) } .stage { border-right: 0; border-bottom: 1px solid var(--line) } .panel { position: static; max-height: none; overflow: visible } }
 @media (max-width: 900px) {
   .app { grid-template-columns: minmax(0, 1fr) }
   nav.rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; overflow-x: auto; gap: 16px; padding-block: 12px;
@@ -267,7 +275,7 @@ function nav(active) {
   const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
   let h = `<div class="brand">Electrode Lot QC<small>SEM cross-sections against the approved baseline</small></div>`;
   h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:${b.color}"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
-  if (real.length) h += `<div class="navgroup"><h2>Incoming lots</h2>${real.map(l => a(l.id, `<span class="dot" style="background:${l.color}"></span>${esc(bname(l.lot))}<span class="st">${st(l)}</span>`)).join("")}</div>`;
+  if (real.length) h += `<div class="navgroup"><h2>${DATA.inspection ? "Inspected lot" : "Incoming lots"}</h2>${real.map(l => a(l.id, `<span class="dot" style="background:${l.color}"></span>${esc(bname(l.lot))}<span class="st">${st(l)}</span>`)).join("")}</div>`;
   if (DATA.samplesets.length) h += `<div class="navgroup"><h2>Sample sets</h2>${DATA.samplesets.map(s => a(s.id, esc(s.name))).join("")}</div>`;
   h += `<div class="navgroup"><h2>Evidence</h2>${a("track", "Track record")}${a("method", "Method and provenance")}</div>`;
   if (fx.length) h += `<div class="navgroup"><h2>Layout fixtures, not real data</h2>${fx.map(l => a(l.id, `${esc(l.lot)}<span class="st">${st(l)}</span>`)).join("")}</div>`;
@@ -324,7 +332,7 @@ function strip(kpi, ref, lot, opts = {}) {
     h += `<div class="srow"><span class="slab">This lot (n ${use.length})</span><div class="strack" role="radiogroup" aria-label="Lot sites for ${esc(kpi)}">${tickLines}`;
     lot.filter(r => isNum(r[kpi])).forEach((r, i) => { const e = ex.includes(r.site), sel = r.site === opts.selected;
       h += `<button class="pt${e ? " ex" : ""}" role="radio" aria-checked="${sel}" tabindex="${sel ? 0 : -1}" data-act="site" data-key="${esc(opts.key)}" data-val="${esc(r.site)}"
-        style="left:${x(r[kpi])};top:${jit(i)}px;--c:${opts.color}" aria-label="${esc(r.site)}: ${sig(r[kpi], 4)}${e ? ", excluded by quality flag" : ""}" title="${esc(r.site)} ${sig(r[kpi], 4)}"></button>`; });
+        style="left:${x(r[kpi])};top:${jit(i)}px;--c:${opts.color}" aria-label="${esc(r.site)}: ${sig(r[kpi], 4)}${isNum(opts.refMedian) ? `, baseline median ${sig(opts.refMedian, 4)}` : ""}${e ? ", excluded by quality flag" : ""}" title="${esc(r.site)} ${sig(r[kpi], 4)}"></button>`; });
     const ml = median(use.map(r => r[kpi]));
     if (isNum(ml)) h += `<span class="med" style="left:${x(ml)};background:${opts.color}"></span>`;
     h += `</div></div>`;
@@ -396,8 +404,8 @@ function laneModel(l) {
        <p class="note">Not detected is not the same as unchanged. Shifts smaller than the detectable change can be present.</p>`},
     {name: "Localized anomalies", state: LOC[0], icon: LOC[1], role: LOC[2], focus: lf.length ? {kpi: lf[0].kpi, site: lf[0].site, crop: cropIndex(l, lf[0].site, lf[0].kpi)} : null,
      kv: lf.length ? `${lf.length} flag${lf.length > 1 ? "s" : ""} · largest ${f(Math.max(...lf.map(x => x.margin_in_mad)), 2)} MAD` : "no site above the maximum",
-     body: lf.length ? `<ul>${lf.map(x => `<li><span class="mono">${esc(x.site)}</span>: ${esc(x.kpi)} is <span class="num">${f(x.margin_in_mad, 2)}</span> MAD above the ordinary-baseline maximum. Review: ${esc(REVIEW[x.review_status] || x.review_status)}${x.measurement_reliable === false ? "; measurement unreliable" : ""}.</li>`).join("")}</ul>
-       <p class="note">Escalation needs one site 3 MAD or more beyond the maximum, or two sites or both KPIs 2 MAD or more beyond it.${l.local[lf[0].kpi] && isNum(l.local[lf[0].kpi].iid_flag_probability) ? ` A lot of ${l.sites.length} sites drawn from the baseline itself shows at least one such site with probability ${f(l.local[lf[0].kpi].iid_flag_probability, 2)}.` : ""} Exceeding the maximum is an evidence flag, not a defect call.</p>`
+     body: lf.length ? `<ul>${lf.map(x => `<li><span class="mono">${esc(x.site)}</span>: ${esc(x.kpi)} is <span class="num">${f(x.margin_in_mad, 2)}</span> MAD above the ordinary-baseline maximum. ${reviewable(x) ? `Review: ${esc(REVIEW[x.review_status] || x.review_status)}` : `Below the review threshold (${f(DATA.thresholds.severity_margin_mad, 1)} MAD); no review needed`}${x.measurement_reliable === false ? "; measurement unreliable" : ""}.</li>`).join("")}</ul>
+       <p class="note">Escalation needs one site ${f(DATA.thresholds.single_site_escalate_mad, 1)} MAD or more beyond the maximum, or ${DATA.thresholds.agreement_min_sites} sites or both KPIs ${f(DATA.thresholds.severity_margin_mad, 1)} MAD or more beyond it.${l.local[lf[0].kpi] && isNum(l.local[lf[0].kpi].iid_flag_probability) ? ` A lot of ${l.sites.length} sites drawn from the baseline itself shows at least one such site with probability ${f(l.local[lf[0].kpi].iid_flag_probability, 2)}.` : ""} Exceeding the maximum is an evidence flag, not a defect call.</p>`
        : `<p class="note">No site exceeds the ordinary-baseline maximum on crack_frac or pore_max_d.</p>`},
     {name: "Distance from baseline", state: `${exc.length} of ${ds.length} sites beyond the observed range`, icon: "info",
      role: "Context only: not an input to the action.", focus: ds[0] ? {site: ds[0].site} : null,
@@ -425,9 +433,26 @@ function excludedText(l) {
   const sites = Object.fromEntries(l.sites.map(s => [s.site, s]));
   return Object.entries(by).map(([s, ks]) => `${s} (${flagList(sites[s] || {}).join(", ") || "quality flag"}): ${ks.join(", ")} excluded`).join("; ");
 }
+/* Decision text built from structured fields and the frozen thresholds, at the precision the lanes use. */
+function decisionText(l, nearest) {
+  const T = DATA.thresholds, lf = l.local_flags || [];
+  const parts = [`Energy distance on the five primary KPIs: p ${fp(l.energy.p)}.`];
+  parts.push(l.outcome.drift_alert ? `Drift drives this verdict: ${l.drivers.map(esc).join(", ")}.` : "No KPI passes the drift rule.");
+  const below = lf.filter(f => f.margin_in_mad < T.severity_margin_mad);
+  if (!lf.length) parts.push("No site exceeds the ordinary-baseline maximum on crack_frac or pore_max_d.");
+  else if (below.length === lf.length) {
+    const p0 = l.local[lf[0].kpi] && l.local[lf[0].kpi].iid_flag_probability;
+    parts.push(`${lf.length} site${lf.length > 1 ? "s exceed" : " exceeds"} the ordinary-baseline maximum by less than ${f(T.severity_margin_mad, 1)} MAD, below the review threshold.${isNum(p0) ? ` A lot of ${l.sites.length} sites drawn from the baseline itself shows at least one such site with probability ${f(p0, 2)}.` : ""}`);
+  } else parts.push(`${lf.length - below.length} site${lf.length - below.length > 1 ? "s are" : " is"} ${f(T.severity_margin_mad, 1)} MAD or more beyond the ordinary-baseline maximum.`);
+  const move = [];
+  if (!l.outcome.drift_alert) move.push(`It becomes “Investigate: lot-wide drift” if a primary KPI reaches Holm p below ${T.alpha} with a shift of ${f(T.min_effect_mad, 1)} MAD or more.${nearest ? ` Closest now: ${esc(nearest.kpi)}, ${fs(nearest.shift_mad)} MAD, Holm p ${fp(nearest.p_holm)}.` : ""}`);
+  if (!["pending_review", "credible"].includes(l.outcome.localized)) move.push(`It becomes “Investigate: localized anomaly” if one site is ${f(T.single_site_escalate_mad, 1)} MAD or more beyond the ordinary-baseline maximum on crack_frac or pore_max_d, if ${T.agreement_min_sites} sites or both KPIs are ${f(T.severity_margin_mad, 1)} MAD or more beyond it, or if a reviewer confirms a routed site. A single site between ${f(T.severity_margin_mad, 1)} and ${f(T.single_site_escalate_mad, 1)} MAD goes to image review without changing the verdict.`);
+  return {why: parts.join(" "), move};
+}
 function lotView(l) {
   const {lanes, nearest} = laneModel(l);
   const exTxt = excludedText(l);
+  const dt = decisionText(l, nearest);
   let h = l.fixture ? `<p class="fixture-banner" role="note">Layout fixture. These values are altered copies of a known lot to show this verdict state. They are not results.</p>` : "";
   h += `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:${l.color};width:14px;height:14px"></span>${esc(bname(l.lot))}</h1>
     <p class="sub">Incoming lot against approved baseline ${esc(bname(l.reference))}. ${l.sites.length} sites imaged, baseline ${l.meta.n_sites_ref} sites.</p>
@@ -438,8 +463,8 @@ function lotView(l) {
       <p class="why">${esc(sent(l.next_action))}</p>
       <p class="note">Decision stability ${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs} leave-one-site-out re-runs. Stability is not a probability of being right.</p>
       <details class="more"><summary>Details: why, and what would change it</summary><div class="ste">
-        <p>${esc(sent(l.reason))}</p>${l.what_would_move_it ? `<p>${esc(sent(l.what_would_move_it))}</p>` : ""}
-        <p class="note">No equivalence test against agreed tolerances has been run. Frozen verdict string: <span class="mono">${esc(l.verdict)}</span>.</p></div></details>
+        <p>${dt.why}</p>${dt.move.map(m => `<p>${m}</p>`).join("")}
+        <p class="note">No equivalence test against agreed tolerances has been run. Thresholds <span class="mono">${esc(DATA.thresholds.hash)}</span>.</p></div></details>
     </div>
     <div class="lanes">${lanes.map((ln, i) => `<details class="lane${ln.sets ? " sets" : ""}" id="lane-${i}"><summary>${icon(ln.icon)}
         <span class="ln">${ln.name}<span class="sr">. </span></span><span class="ls">${esc(ln.state)}<span class="sr">. </span></span>
@@ -449,20 +474,29 @@ function lotView(l) {
   h += `<section class="card bench" aria-labelledby="bench-h" id="wb-${l.id}"></section>`;
   REG["wb-" + l.id] = () => workbench(l, nearest, lanes);
   h += cellPanel(l);
-  h += footer([`lot exported ${esc(l.exported_utc)}`, `verdict "${esc(l.verdict)}"`, `thresholds ${esc(l.meta.thresholds_hash)}`, `config ${esc(l.meta.config_hash)}`,
-    `feature version ${esc(l.meta.feature_version)}`, `code ${esc(l.meta.git_describe)}`, `distance table ${esc(l.distance.source)} (${esc(String(l.distance.sha256).slice(0, 12))})`]);
+  h += footer([`lot exported ${esc(l.exported_utc)} with code ${esc(l.meta.git_describe)}`, `thresholds ${esc(l.meta.thresholds_hash)}`, `config ${esc(l.meta.config_hash)}`,
+    `feature version ${esc(l.meta.feature_version)}`, `distance table ${esc(l.distance.source)} (${esc(String(l.distance.sha256).slice(0, 12))})`],
+    `<details class="more"><summary>Frozen decision text</summary><p class="mono">${esc(l.verdict)}</p><p>${esc(l.frozen_text.reason)}</p>${l.frozen_text.what_would_move_it ? `<p>${esc(l.frozen_text.what_would_move_it)}</p>` : ""}</details>`);
   return h;
 }
 
 function cropIndex(l, site, kpi) { return l.crops.findIndex(c => c.site === site && (!kpi || c.kpi === kpi)); }
+const reviewable = f => f.margin_in_mad >= DATA.thresholds.severity_margin_mad && f.measurement_reliable !== false;
+/* Opening view: the lane that sets the action decides; with none, the KPI closest to a driver, no crop. */
+function openingFocus(l, lanes, nearest) {
+  const lf = l.local_flags || [];
+  if (["pending_review", "credible"].includes(l.outcome.localized) && lf.length) {
+    const fl = lf.filter(reviewable).sort((a, b) => b.margin_in_mad - a.margin_in_mad)[0] || lf[0];
+    return {kpi: fl.kpi, site: fl.site, crop: cropIndex(l, fl.site, fl.kpi)};
+  }
+  if (l.outcome.drift_alert && l.drivers.length) return {kpi: l.drivers[0]};
+  if (l.outcome.quality_abstention && lanes[3].focus) { const fo = lanes[3].focus; return {kpi: fo.kpi || "bright_frac", site: fo.site, view: "bright"}; }
+  return {kpi: (nearest && nearest.kpi) || PRIM()[0]};
+}
 function lotState(l, nearest, lanes) {
   const prim = l.compare.filter(r => r.is_primary);
   const st = ST[l.id] = ST[l.id] || {};
-  if (!st.kpi || !PRIM().includes(st.kpi)) {
-    const loc = lanes && lanes[1].focus && l.outcome.localized !== "none" ? lanes[1].focus : null;
-    if (loc) { st.kpi = loc.kpi; st.site = loc.site; st.crop = loc.crop; }
-    else st.kpi = (l.drivers && l.drivers[0]) || (nearest && nearest.kpi) || PRIM()[0];
-  }
+  if (!st.kpi || !PRIM().includes(st.kpi)) { const o = openingFocus(l, lanes, nearest); st.kpi = o.kpi; st.site = o.site; st.crop = o.crop != null && o.crop >= 0 ? o.crop : null; st.view = o.view; }
   if (!st.site || !l.sites.some(s => s.site === st.site)) st.site = extremeSite(l, st.kpi);
   if (!st.view || !VIEWS.some(v => v[0] === st.view)) st.view = KVIEW[st.kpi];
   if (!st.cmp || !DATA.baseline.examples.some(e => e.group === st.cmp)) st.cmp = "ordinary";
@@ -473,6 +507,38 @@ function extremeSite(l, kpi) {
   const c = l.sites.filter(s => isNum(s[kpi]) && !ex.includes(s.site)).sort((a, b) => Math.abs(b[kpi] - r.ref_median) - Math.abs(a[kpi] - r.ref_median));
   return (c[0] || l.sites[0]).site;
 }
+
+/* Reviews recorded in this browser only; they change nothing until the lot is re-exported with --review. */
+function loadReviews() { try { return JSON.parse(localStorage.getItem("lotqc-reviews") || "{}"); } catch (e) { return {}; } }
+function saveReviews(r) { try { localStorage.setItem("lotqc-reviews", JSON.stringify(r)); return true; } catch (e) { return false; } }
+function reviewCommand(l, recs) {
+  const m = l.meta, d = l.distance;
+  return `python -m app.export_lot lot --reference "${m.reference_dir}" --batch "${m.batch_dir}" --out ui/bundles/lot_${l.lot}_reviewed --distance-table ${d.source} --distance-label "${String(d.label).replace(/"/g, "'")}" `
+    + recs.map(r => `--review ${r.site}:${r.kpi}=${r.decision === "confirmed" ? "yes" : "no"}`).join(" ");
+}
+function reviewPanel(l, fl) {
+  const key = `${fl.site}:${fl.kpi}`;
+  const applied = (l.reviews_applied || []).find(r => r.site === fl.site && r.kpi === fl.kpi);
+  if (applied) return `<p class="callout plain">Review applied in this lot's export: ${applied.confirmed ? "confirmed" : "refuted"}. The verdict above already includes it.</p>`;
+  if (!reviewable(fl)) return `<p class="note">Below the review threshold (${f(DATA.thresholds.severity_margin_mad, 1)} MAD); no review needed. The box shows where the flag is.</p>`;
+  const all = loadReviews(), recs = Object.entries(all[l.id] || {}).map(([k, v]) => ({site: k.split(":")[0], kpi: k.split(":")[1], ...v}));
+  const rec = (all[l.id] || {})[key];
+  const st = ST[l.id] || {};
+  return `<div class="review" role="group" aria-labelledby="rvh-${esc(l.id)}">
+    <h3 id="rvh-${esc(l.id)}">Image review: <span class="mono">${esc(fl.site)}</span> · ${esc(fl.kpi)}</h3>
+    <p class="note">Confirming makes this flag credible, which changes the verdict to “Investigate: localized anomaly” once the lot is re-exported. Refuting closes the flag.</p>
+    <div class="ctlrow"><label class="lab" for="rv-name-${esc(l.id)}">Reviewer</label><input id="rv-name-${esc(l.id)}" class="txt" data-key="${esc(l.id)}" value="${esc(st.reviewer || (rec && rec.reviewer) || "")}" placeholder="Name and role" autocomplete="name">
+      <button class="linkbtn" data-act="review" data-key="${esc(l.id)}" data-val="${esc(key)}:confirmed">Confirm the defect</button>
+      <button class="linkbtn" data-act="review" data-key="${esc(l.id)}" data-val="${esc(key)}:refuted">Refute</button></div>
+    ${st.reviewError ? `<p class="err" role="alert">${esc(st.reviewError)}</p>` : ""}
+    ${rec ? `<p class="callout">Recorded in this browser by ${esc(rec.reviewer)} at ${esc(rec.ts)}: ${esc(rec.decision)}. Not yet applied: the verdict above is unchanged until the lot is re-exported with this review.</p>
+      <pre class="cmd" id="cmd-${esc(l.id)}">${esc(reviewCommand(l, recs))}</pre>
+      <div class="ctlrow"><button class="linkbtn" data-act="copycmd" data-key="${esc(l.id)}" data-val="x">Copy command</button>
+        <button class="linkbtn" data-act="dlreviews" data-key="${esc(l.id)}" data-val="x">Download reviews (JSON)</button>
+        <button class="linkbtn" data-act="clearreview" data-key="${esc(l.id)}" data-val="${esc(key)}">Clear this review</button></div>` : ""}
+  </div>`;
+}
+
 function workbench(l, nearest, lanes) {
   const {st, prim} = lotState(l, nearest, lanes);
   const site = l.sites.find(s => s.site === st.site);
@@ -495,35 +561,37 @@ function workbench(l, nearest, lanes) {
       <span class="nm">${esc(KLAB[r.kpi])} <span class="mono note">${r.kpi}</span>${drv ? ' <span class="drv">driver</span>' : ""}</span>
       <span class="val num">${fs(r.shift_mad)} MAD · p ${fp(r.p_holm)}</span>${shiftSVG(r, l.mdc[r.kpi] && l.mdc[r.kpi].mdc_mad)}</button>`; }).join("");
   const crop = (st.crop != null && st.crop >= 0 && l.crops[st.crop] && l.crops[st.crop].site === site.site) ? l.crops[st.crop] : null;
-  const valTxt = ex.includes(site.site) ? `${st.kpi} excluded (quality flag)` : `${st.kpi} ${sig(val, 3)}`;
+  const cropFlag = crop && lf.find(x => x.site === crop.site && x.kpi === crop.kpi);
+  const valTxt = ex.includes(site.site) ? `${st.kpi} excluded (quality flag)` : `${st.kpi} ${sig(val, 3)}, baseline median ${sig(sel.ref_median, 3)}`;
   return `<div class="stage">
-      <div class="row"><h2 id="bench-h" tabindex="-1">Evidence on the image</h2><span class="note">${VIEWCAP[st.view]}</span></div>
+      <div class="row"><h2 id="bench-h" tabindex="-1">Evidence on the image</h2></div>
       <div class="controls">
         <div class="ctlrow"><span class="lab">Lot site</span>${radios("Lot site", "site", l.id, siteOpts, st.site, "pills")}</div>
         <div class="ctlrow"><span class="lab">Detector</span>${radios("Detector view", "view", l.id, VIEWS, st.view, "seg")}
-          <span class="lab" style="margin-left:12px">Compare with</span>${radios("Baseline comparison site", "cmp", l.id, examples.map(e => [e.group, GROUPLAB[e.group] || e.group]), cmp.group, "seg")}</div>
+          <span class="lab gap">Compare with</span>${radios("Baseline comparison site", "cmp", l.id, examples.map(e => [e.group, GROUPLAB[e.group] || e.group]), cmp.group, "seg")}</div>
       </div>
       <div class="pair">
-        <div class="controls"><div class="figlab">${esc(bname(l.lot))} <span class="mono">${esc(site.site)}</span><span class="note"><span class="mono">${esc(valTxt)}</span>, baseline median ${sig(sel.ref_median, 3)}${siteNote ? `. ${esc(siteNote)}` : ""}</span></div>
+        <div class="controls"><div class="figlab" title="${esc(valTxt)}">${esc(bname(l.lot))} <span class="mono">${esc(site.site)}</span><span class="note mono">${esc(valTxt)}</span></div>
           ${figure(site.views, st.view, site.site, "", "", boxes)}
-          ${crops.length ? `<p class="note">The yellow box marks the object behind a localized flag. Select it for full resolution.</p>` : ""}</div>
-        <div class="controls"><div class="figlab">${esc(bname(DATA.baseline.reference))} <span class="mono">${esc(cmp.site)}</span><span class="note">${esc(cmp.why)}</span></div>
+          <p class="note">${siteNote ? `${esc(cap(siteNote))}. ` : ""}${crops.length ? "The yellow box marks the object behind a localized flag. Select it for full resolution." : ""}</p></div>
+        <div class="controls"><div class="figlab" title="${esc(cmp.why)}">${esc(bname(DATA.baseline.reference))} <span class="mono">${esc(cmp.site)}</span><span class="note">${esc(cmp.why)}</span></div>
           ${figure(cmp.views, st.view, cmp.site, "", "", "")}</div>
       </div>
+      <p class="note">${VIEWCAP[st.view]}${FRAMECAP}</p>
       ${crop ? `<figure id="crop-${esc(l.id)}" tabindex="-1"><div class="row"><span class="figlab">Full resolution: <span class="mono">${esc(crop.site)}</span> · ${esc(crop.kpi)}</span>
           <button class="linkbtn" data-act="crop" data-key="${esc(l.id)}" data-val="${l.crops.indexOf(crop)}">Close crop</button></div>
-        <img src="${IMG[crop.key]}" alt="Full-resolution crop at ${esc(crop.site)}: ${esc(crop.what)}" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--line)">
-        <figcaption>${esc(crop.kpi)} is ${f(crop.margin_in_mad, 2)} MAD above the ordinary-baseline maximum. ${esc(cap(crop.what))}, area ${sig(crop.area_px)} px², major axis ${sig(crop.major_axis_px)} px. 1200 × 600 px. Review: ${esc(REVIEW[crop.review_status] || crop.review_status)}. A reviewer confirms or refutes this crop before the flag can change the verdict.</figcaption></figure>` : ""}
-      <p class="note">${FRAMECAP.trim()}</p>
+        <img src="${IMG[crop.key]}" alt="Full-resolution crop at ${esc(crop.site)}: ${esc(crop.what)}, area ${sig(crop.area_px)} square px" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--line)">
+        <figcaption>${esc(crop.kpi)} is ${f(crop.margin_in_mad, 2)} MAD above the ordinary-baseline maximum. ${esc(cap(crop.what))}, area ${sig(crop.area_px)} px², major axis ${sig(crop.major_axis_px)} px. 1200 × 600 px.</figcaption>
+        ${cropFlag ? reviewPanel(l, cropFlag) : ""}</figure>` : ""}
     </div>
     <div class="panel">
       <div class="controls"><h2>What drives it</h2>
         <p class="note">Select a KPI to show its overlay and the lot site furthest from the baseline median.</p>
         <div class="kpis"><div aria-hidden="true" style="padding:0 8px">${shiftAxis()}</div>${rows}</div>
-        <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval; an arrow means it runs past the axis. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for testing five KPIs; 1.000 means no evidence of a shift.</p></div>
+        <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for five KPIs; 1.000 means no evidence of a shift.</p></div>
       <div class="controls"><h3>${esc(KLAB[sel.kpi])} by site</h3>
         <p class="note"><span class="mono">${esc(sel.kpi)}</span> in ${KUNIT[sel.kpi]}. Baseline ${sig(sel.ref_median, 4)} ± ${sig(sel.ref_mad, 3)} MAD, lot median ${sig(sel.batch_median, 4)}, usable sites ${sel.n_ref_usable} and ${sel.n_batch_usable}.</p>
-        ${strip(sel.kpi, l.ref_values, l.sites, {excluded: ex, color: l.color, key: l.id, selected: st.site})}
+        ${strip(sel.kpi, l.ref_values, l.sites, {excluded: ex, color: l.color, key: l.id, selected: st.site, refMedian: sel.ref_median})}
         ${stripLegend(l.color, true)}
         ${valuesTable(sel.kpi, l.ref_values, l.sites, ex)}</div>
     </div>`;
@@ -562,8 +630,8 @@ function cellPanel(l) {
   </section>`;
 }
 
-function footer(parts) {
-  return `<footer class="prov"><p>${esc(DATA.provenance)}</p><p class="mono">${parts.join(" · ")}</p>
+function footer(parts, extra) {
+  return `<footer class="prov"><p>${esc(DATA.provenance)}</p><p class="mono">${parts.join(" · ")}</p>${extra || ""}
     <p class="mono">page built ${esc(DATA.built_utc)} · ${esc(DATA.builder)} · ${esc(DATA.git || "")}</p></footer>`;
 }
 
@@ -647,7 +715,7 @@ function trackView() {
   let h = `<header class="head"><h1 tabindex="-1" id="h1">Track record</h1>
     <p class="lead">${ss.length ? `${right} of ${ss.length} first-drop samples were assigned to the right lot. ` : ""}Balanced accuracy on the 31 known sites is ${f(prim.balanced_accuracy, 3)}, where chance is 0.33.</p>
     <p class="note">Development results and three organiser labels. They are not new-session accuracy.</p></header>`;
-  h += `<section class="card"><h2>Lot verdicts on the known lots</h2><div class="tw"><table><thead><tr><th>Lot</th><th>Verdict</th><th class="n">Energy p</th><th class="n">Detectable shift</th><th class="n">Stability</th></tr></thead><tbody>
+  if (!DATA.inspection) h += `<section class="card"><h2>Lot verdicts on the known lots</h2><div class="tw"><table><thead><tr><th>Lot</th><th>Verdict</th><th class="n">Energy p</th><th class="n">Detectable shift</th><th class="n">Stability</th></tr></thead><tbody>
     ${DATA.lots.filter(l => !l.fixture).map(l => { const m = PRIM().map(k => l.mdc[k] && l.mdc[k].mdc_mad).filter(isNum);
       return `<tr><td>${esc(bname(l.lot))}</td><td>${esc(l.verdict_label)}</td><td class="n">${fp(l.energy.p)}</td><td class="n">${f(Math.min(...m), 2)}–${f(Math.max(...m), 2)} MAD</td><td class="n">${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs}</td></tr>`; }).join("")}</tbody></table></div>
     <p class="note">Both known variant lots are consistent within detectable limits on the five defect-relevant KPIs at 7 sites each. The per-sample fingerprint below separates them better than chance, and its appearance features are acquisition-sensitive.</p></section>`;
@@ -727,7 +795,7 @@ function render(focus) {
   document.title = `${title} · Electrode Lot QC`;
   nav(active);
   const cur = document.querySelector("#nav a[aria-current]");
-  if (cur && matchMedia("(max-width: 900px)").matches) cur.scrollIntoView({inline: "center", block: "nearest"});
+  if (cur && matchMedia("(max-width: 900px)").matches) { const nv = document.getElementById("nav"); nv.scrollLeft = Math.max(0, cur.offsetLeft - 16); }
   document.getElementById("main").innerHTML = html;
   fillRegions();
   if (focus) { const h1 = document.getElementById("h1"); if (h1) h1.focus({preventScroll: true}); }
@@ -756,6 +824,17 @@ document.addEventListener("click", e => {
   else if (act === "view") { s.view = val; announce(`${(VIEWS.find(v => v[0] === val) || [0, val])[1]} view.`); }
   else if (act === "cmp") { s.cmp = val; announce(`Comparing with the ${(GROUPLAB[val] || val).toLowerCase()} baseline site.`); }
   else if (act === "crop") { s.crop = s.crop === +val ? null : +val; announce(s.crop == null ? "Crop closed." : "Full-resolution crop shown below the images."); }
+  else if (act === "review") {
+    const [site, kpi, decision] = val.split(":"), name = (s.reviewer || "").trim();
+    if (!name) { s.reviewError = "Enter your name before recording a review."; }
+    else { s.reviewError = null; const all = loadReviews(); (all[key] = all[key] || {})[`${site}:${kpi}`] = {decision, reviewer: name, ts: new Date().toISOString().slice(0, 16).replace("T", " ") + " UTC"};
+      if (!saveReviews(all)) s.reviewError = "This browser blocks local storage, so the review could not be kept. Note it and use the command below."; announce(`Review recorded in this browser: ${decision}. Not yet applied.`); }
+  }
+  else if (act === "copycmd") { const el = document.getElementById("cmd-" + key); const t = el ? el.textContent : "";
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => announce("Command copied."), () => { const r = document.createRange(); r.selectNodeContents(el); const sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); announce("Command selected; copy it with your keyboard."); }); return; }
+  else if (act === "dlreviews") { const blob = new Blob([JSON.stringify({lot: lot.lot, thresholds: DATA.thresholds.hash, reviews: loadReviews()[key] || {}}, null, 1)], {type: "application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `reviews_${lot.lot}.json`; document.body.appendChild(a); a.click(); a.remove(); return; }
+  else if (act === "clearreview") { const all = loadReviews(); if (all[key]) { delete all[key][val]; saveReviews(all); } announce("Review cleared."); }
   else if (act === "lane") {
     const ln = laneModel(lot).lanes[+val], fo = ln.focus || {};
     if (fo.kpi) { s.kpi = fo.kpi; s.view = KVIEW[fo.kpi]; }
@@ -765,6 +844,7 @@ document.addEventListener("click", e => {
   const region = regionFor(key);
   refresh(region); syncHash(key);
   if (act === "lane") { document.getElementById(region).scrollIntoView({block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); document.getElementById("bench-h").focus({preventScroll: true}); return; }
+  if (["kpi", "site", "view", "cmp"].includes(act)) { const im = document.querySelector(`#${CSS.escape(region)} .imgwrap`); if (im) { const r = im.getBoundingClientRect(); if (r.bottom < 60 || r.top > innerHeight - 80) im.scrollIntoView({block: "center"}); } }
   if (act === "crop" && s.crop != null) { const c = document.getElementById("crop-" + key); if (c) { c.scrollIntoView({block: "nearest"}); c.focus({preventScroll: true}); } return; }
   const again = document.querySelector(`#${CSS.escape(region)} button[data-act="${act}"][data-val="${CSS.escape(val)}"]`);
   if (again) again.focus({preventScroll: true});
@@ -775,6 +855,11 @@ document.addEventListener("keydown", e => {
   const group = [...r.closest('[role="radiogroup"]').querySelectorAll('[role="radio"]')];
   const next = group[(group.indexOf(r) + dir + group.length) % group.length];
   e.preventDefault(); next.click();
+});
+document.addEventListener("input", e => {
+  const t = e.target.closest("input.txt[data-key]"); if (!t) return;
+  const st = ST[t.dataset.key] = ST[t.dataset.key] || {}; st.reviewer = t.value;
+  if (st.reviewError && t.value.trim()) { st.reviewError = null; const er = t.closest(".review").querySelector(".err"); if (er) er.remove(); }
 });
 window.addEventListener("hashchange", () => { render(true); window.scrollTo(0, 0); });
 render(false);

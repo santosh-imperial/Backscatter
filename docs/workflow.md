@@ -306,3 +306,12 @@ of a categoriser run; a model-version mismatch fails. `app.build_ui` reads bundl
 `polaron_qc.decision` constants (unknown → error), embeds images, rejects "accept"/"confidence" wording and writes a
 receipt with input hashes. Output directories for bundles must be new; the page is rebuilt only with `--replace`. Layout fixtures (`app.make_layout_fixtures`, `"fixture": true`) enter only through `--fixture-lot`; a fixture passed as `--lot`, or a real lot as `--fixture-lot`, fails.
 
+## Inspection server contract (D57U)
+
+`app.server` accepts only file names `img_<site>_<BSE|ETD|SE|Inlens>.tif` and lot names `[A-Za-z0-9][A-Za-z0-9_-]{0,47}`
+other than `Batch_1/2/3`. Before any subprocess, its input check reuses `score_folder.inspect_input` and the frozen
+snapshot's training manifest and known site IDs. Steps, in order, each logged to `inspections/<run>/<step>.log`:
+`score_folder` → `compose_submission` → `export_lot lot` (one-lot mode, `--distance-table` = this run's
+`v2/scored/site_table.csv`) → `export_lot samples` → `build_ui --inspection` (sample-set mode uses `--baseline
+ui/bundles/lot_Batch_1`). `run.json` holds status, steps, timings and a summary (verdict label, bets).
+

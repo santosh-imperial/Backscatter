@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Inspect a lot · Electrode Lot QC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one working column. New inspection on top (drop, check, run), live progress below it, lot history last. */
+:root {
+  --bg: #f4f5f6; --surface: #ffffff; --sunk: #eceef1; --sel: #e4e8ee; --ink: #15191e; --muted: #535b67; --line: #dce0e5; --line-strong: #b9c0c9;
+  --accent: #2f3e52; --accent-ink: #ffffff; --focus: #3d6fb0;
+  --ok: #26704a; --ok-bg: #e4f1e9; --warn: #855700; --warn-bg: #faefd9; --bad: #a8291f; --bad-bg: #fbe6e3;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --t-xs: 12px; --t-sm: 13.5px; --t-md: 15px; --t-lg: 17px; --t-xl: 22px; --t-2xl: 28px; --r: 10px; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
+  --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
+  --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
+  --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
+  --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark }
+* { box-sizing: border-box }
+html, body { margin: 0 }
+html { scrollbar-color: var(--line-strong) var(--bg) }
+body { background: var(--bg); color: var(--ink); font: var(--t-md)/1.55 var(--font-body); accent-color: var(--accent) }
+::selection { background: var(--focus); color: var(--accent-ink) }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px }
+main { max-width: 980px; margin: 0 auto; padding-block: 28px 80px; padding-inline: 24px; display: flex; flex-direction: column; gap: 22px }
+h1 { font-size: var(--t-2xl); line-height: 1.15; margin: 0; font-weight: 600; text-wrap: balance }
+h2 { font-size: var(--t-lg); margin: 0; font-weight: 600 }
+p { margin: 0; max-width: 70ch }
+.sub { color: var(--muted) }
+.note { font-size: var(--t-sm); color: var(--muted) }
+.mono, .num { font-family: var(--font-data); font-variant-numeric: tabular-nums }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: flex; flex-direction: column; gap: 16px; min-width: 0 }
+.drop { border: 1.5px dashed var(--line-strong); border-radius: var(--r); padding: 28px 16px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; cursor: pointer; background: var(--bg) }
+.drop.over { border-color: var(--focus); background: var(--sel) }
+.drop svg { width: 30px; height: 30px; color: var(--muted) }
+.drop strong { font-size: var(--t-lg); font-weight: 500 }
+.field { display: flex; flex-direction: column; gap: 6px }
+.field label, .legend { font-size: var(--t-sm); font-weight: 500 }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px }
+input[type=text], select { font: inherit; font-size: var(--t-md); padding: 7px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface); color: var(--ink); width: 100% }
+.choice { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer }
+.choice:has(input:checked) { border-color: var(--accent); background: var(--sel) }
+.choice input { margin-top: 4px }
+.choice b { font-weight: 500; display: block }
+.checks { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: var(--t-sm) }
+.checks li { display: flex; gap: 8px; align-items: flex-start }
+.ico { width: 18px; height: 18px; flex: none; margin-top: 1px }
+.ok { color: var(--ok) } .bad { color: var(--bad) } .warn { color: var(--warn) } .muted { color: var(--muted) }
+button { font: inherit; font-size: var(--t-md); cursor: pointer; border-radius: 8px; padding: 8px 16px; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink) }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 500 }
+button:hover { filter: brightness(1.05) }
+.err { color: var(--bad); font-size: var(--t-sm) }
+.bar { height: 8px; border-radius: 4px; background: var(--sunk); overflow: hidden }
+.bar span { display: block; height: 100%; background: var(--accent); width: 0; transition: width .2s }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column }
+.steps li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: start }
+.steps li:last-child { border-bottom: 0 }
+.steps .lab { font-size: var(--t-md) }
+.steps .det { font-size: var(--t-sm); color: var(--muted); white-space: pre-wrap }
+.steps .t { font-family: var(--font-data); font-size: var(--t-sm); color: var(--muted) }
+.result { border-radius: var(--r); padding: 16px 18px; display: flex; flex-direction: column; gap: 8px }
+.result.ok { background: var(--ok-bg) } .result.warn { background: var(--warn-bg) } .result.bad { background: var(--bad-bg) } .result.plain { background: var(--sunk) }
+.result .v { font-size: var(--t-xl); font-weight: 600 }
+.result.ok .v { color: var(--ok) } .result.warn .v { color: var(--warn) } .result.bad .v { color: var(--bad) }
+a.btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 8px 16px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-weight: 500; align-self: flex-start }
+table { border-collapse: collapse; width: 100%; font-size: var(--t-sm) }
+th, td { padding: 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
+th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
+.tw { overflow-x: auto }
+.pill { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: var(--t-xs); background: var(--sunk) }
+.pill.ok { background: var(--ok-bg) } .pill.warn { background: var(--warn-bg) } .pill.bad { background: var(--bad-bg) }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+@media (max-width: 700px) { main { padding-inline: 16px } .grid2 { grid-template-columns: minmax(0, 1fr) } }
+@media (prefers-reduced-motion: reduce) { .bar span { transition: none } }
+</style>
+</head>
+<body>
+<main id="main">
+  <header style="display:flex;flex-direction:column;gap:6px">
+    <h1>Inspect a lot</h1>
+    <p class="sub">Add the SEM cross-sections of an incoming electrode lot. The tool compares them with the approved baseline, Batch 3, using frozen rules and a frozen model, then opens the lot review.</p>
+  </header>
+
+  <section class="card" aria-labelledby="new-h" id="new">
+    <h2 id="new-h">New inspection</h2>
+    <div class="drop" id="drop" tabindex="0" role="button" aria-describedby="drop-help">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v6M9 14l3-3 3 3"/></svg>
+      <strong>Drop a lot folder here, or choose one</strong>
+      <span class="note" id="drop-help">One BSE, ETD (or SE) and Inlens TIFF per site, named img_&lt;site&gt;_&lt;detector&gt;.tif</span>
+      <input type="file" id="picker" webkitdirectory directory multiple hidden>
+    </div>
+    <div class="field" id="inbox-field" hidden>
+      <label for="inbox">Or use a folder already in the inbox</label>
+      <select id="inbox"><option value="">Choose a folder</option></select>
+      <span class="note">For large lots: copy the folder into <span class="mono">inbox/</span> next to the app and pick it here. Nothing is uploaded.</span>
+    </div>
+    <ul class="checks" id="checks" aria-live="polite"></ul>
+    <div class="grid2">
+      <div class="field"><label for="name">Lot name</label><input type="text" id="name" placeholder="Lot-2026-10-04-A" autocomplete="off" spellcheck="false">
+        <span class="note">Letters, digits, - or _. It names the inspection and its folder.</span></div>
+      <fieldset class="field" style="border:0;margin:0;padding:0"><legend class="legend">This folder is</legend>
+        <label class="choice"><input type="radio" name="mode" value="lot" checked><span><b>One lot</b><span class="note">Lot verdict against the baseline, plus which known lot each site resembles.</span></span></label>
+        <label class="choice"><input type="radio" name="mode" value="samples"><span><b>A sample set that may mix lots</b><span class="note">Which known lot each site resembles. No lot verdict.</span></span></label>
+      </fieldset>
+    </div>
+    <div class="row"><button class="primary" id="run">Run inspection</button><span class="err" id="run-err" role="alert"></span></div>
+    <p class="note">The frozen rules (thresholds b4f4da2e357c) and model categoriser-v2-D52 run unchanged. Nothing is refitted on this lot. Each inspection keeps its own folder of results and receipts.</p>
+  </section>
+
+  <section class="card" aria-labelledby="prog-h" id="progress" hidden>
+    <div class="row" style="justify-content:space-between"><h2 id="prog-h">Inspection <span id="prog-name"></span></h2><span class="note mono" id="prog-time"></span></div>
+    <div id="upload" hidden><p class="note" id="up-text">Uploading</p><div class="bar" role="progressbar" aria-label="Upload" aria-valuemin="0" aria-valuemax="100" id="up-bar"><span></span></div></div>
+    <ol class="steps" id="steps"></ol>
+    <div id="result"></div>
+  </section>
+
+  <section class="card" aria-labelledby="hist-h">
+    <h2 id="hist-h">Lot history</h2>
+    <div class="tw"><table><thead><tr><th>Lot</th><th>Type</th><th>Started (UTC)</th><th>Result</th><th></th></tr></thead><tbody id="hist"><tr><td colspan="5" class="note">No inspections yet. Run one above; it will be listed here with its result.</td></tr></tbody></table></div>
+  </section>
+</main>
+<div class="sr" aria-live="polite" id="live"></div>
+<script>
+const FN = /^img_(\w+)_(BSE|ETD|SE|Inlens)\.tif$/;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const ICON = {ok: '<path d="M5 12.5l4.2 4.2L19 7"/>', bad: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
+  warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.6v.1"/>', run: '<circle cx="12" cy="12" r="8" stroke-dasharray="36 14"><animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1.2s" repeatCount="indefinite"/></circle>',
+  queued: '<circle cx="12" cy="12" r="3"/>', skipped: '<path d="M6 12h12"/>'};
+const icon = (k, cls) => `<svg class="ico ${cls || ""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+const say = t => { $("live").textContent = ""; setTimeout(() => { $("live").textContent = t; }, 30); };
+const S = {files: [], folder: "", source: null, run: null, poll: null};
+
+/* ---------- choose files ---------- */
+function setFiles(files, folder) {
+  S.files = files.filter(f => !f.name.startsWith(".")); S.folder = folder || ""; S.source = "upload"; $("inbox").value = "";
+  if (folder && !$("name").value) $("name").value = folder.replace(/[^A-Za-z0-9_-]/g, "_").slice(0, 48);
+  renderChecks();
+}
+function readEntry(entry, out) {
+  return new Promise(res => {
+    if (entry.isFile) entry.file(f => { out.push(f); res(); }, () => res());
+    else if (entry.isDirectory) { const rd = entry.createReader(); const all = [];
+      const next = () => rd.readEntries(es => { if (!es.length) Promise.all(all.map(e => readEntry(e, out))).then(res); else { all.push(...es); next(); } }, () => res()); next(); }
+    else res();
+  });
+}
+const drop = $("drop");
+drop.addEventListener("click", () => $("picker").click());
+drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("picker").click(); } });
+["dragenter", "dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(t => drop.addEventListener(t, () => drop.classList.remove("over")));
+drop.addEventListener("drop", async e => {
+  e.preventDefault();
+  const items = [...e.dataTransfer.items].map(i => i.webkitGetAsEntry && i.webkitGetAsEntry()).filter(Boolean);
+  const out = []; await Promise.all(items.map(en => readEntry(en, out)));
+  const folder = items.length === 1 && items[0].isDirectory ? items[0].name : "";
+  setFiles(out, folder);
+});
+$("picker").addEventListener("change", e => { const fl = [...e.target.files]; const folder = fl[0] && fl[0].webkitRelativePath ? fl[0].webkitRelativePath.split("/")[0] : ""; setFiles(fl, folder); });
+$("inbox").addEventListener("change", e => {
+  const v = e.target.value; if (!v) return;
+  S.files = []; S.source = "inbox"; S.folder = v; $("name").value = v;
+  const opt = e.target.selectedOptions[0];
+  const nSites = +opt.dataset.sites, lotMode = document.querySelector("input[name=mode]:checked").value === "lot";
+  $("checks").innerHTML = `<li>${icon("ok", "ok")}<span>Inbox folder <span class="mono">${esc(v)}</span>: ${esc(opt.dataset.desc)}. The server checks every image when the run starts.</span></li>`
+    + (lotMode && nSites < 5 ? `<li>${icon("warn", "warn")}<span>${nSites} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention.</span></li>` : "");
+});
+
+/* ---------- check in the browser before anything uploads ---------- */
+function analyse() {
+  const sites = {}, bad = [];
+  let bytes = 0;
+  for (const f of S.files) {
+    const m = f.name.match(FN);
+    if (!m) { if (/\.tiff?$/i.test(f.name)) bad.push(f.name); continue; }
+    const det = m[2] === "SE" ? "ETD" : m[2];
+    (sites[m[1]] = sites[m[1]] || {})[det] = ((sites[m[1]] || {})[det] || 0) + 1; bytes += f.size;
+  }
+  const incomplete = Object.entries(sites).filter(([s, d]) => ["BSE", "ETD", "Inlens"].some(k => d[k] !== 1)).map(([s]) => s);
+  return {sites, bad, bytes, incomplete, n: Object.keys(sites).length, images: S.files.filter(f => FN.test(f.name)).length};
+}
+function renderChecks() {
+  const a = analyse(), li = (k, t) => `<li>${icon(k, k)}<span>${t}</span></li>`;
+  let h = "";
+  if (!S.files.length) h = li("bad", "No files found. Choose the folder that holds the TIFFs.");
+  else {
+    h += li(a.images ? "ok" : "bad", `${a.images} detector images for ${a.n} site${a.n === 1 ? "" : "s"}, ${(a.bytes / 1048576).toFixed(0)} MB${S.folder ? ` from <span class="mono">${esc(S.folder)}</span>` : ""}`);
+    h += li(a.incomplete.length ? "bad" : "ok", a.incomplete.length ? `Missing or duplicate detector images for ${a.incomplete.map(esc).join(", ")}. Each site needs one BSE, one ETD or SE and one Inlens image.` : "Every site has one BSE, one ETD and one Inlens image");
+    if (a.bad.length) h += li("bad", `File names the tool cannot read: ${a.bad.slice(0, 3).map(esc).join(", ")}${a.bad.length > 3 ? " and more" : ""}. Use img_&lt;site&gt;_&lt;detector&gt;.tif.`);
+    if (a.n && a.n < 5 && document.querySelector('input[name=mode]:checked').value === "lot") h += li("warn", `${a.n} sites is below the 5 usable sites the frozen rules need for a lot verdict, so expect a quality abstention.`);
+    h += li("queued", "The server also checks image format and that no image or site comes from the training set.");
+  }
+  $("checks").innerHTML = h;
+}
+document.querySelectorAll("input[name=mode]").forEach(r => r.addEventListener("change", () => { if (S.source === "inbox") $("inbox").dispatchEvent(new Event("change")); else if (S.files.length) renderChecks(); }));
+
+/* ---------- run ---------- */
+function put(url, file, onprog) {
+  return new Promise((res, rej) => { const x = new XMLHttpRequest(); x.open("PUT", url); x.upload.onprogress = e => onprog(e.loaded);
+    x.onload = () => x.status < 300 ? res() : rej(new Error(JSON.parse(x.responseText || "{}").detail || `Upload failed (${x.status})`)); x.onerror = () => rej(new Error("The server could not be reached.")); x.send(file); });
+}
+$("run").addEventListener("click", async () => {
+  const err = m => { $("run-err").textContent = m; };
+  err("");
+  const name = $("name").value.trim(), mode = document.querySelector("input[name=mode]:checked").value;
+  if (!S.source) return err("Add a lot folder first.");
+  if (S.source === "upload") { const a = analyse(); if (!a.images) return err("No readable TIFFs in this folder."); if (a.incomplete.length || a.bad.length) return err("Fix the files marked above, then run again."); }
+  if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,47}$/.test(name)) return err("Use letters, digits, - or _ for the lot name.");
+  let rec;
+  try { const r = await fetch("/api/runs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify({name, mode, source: S.source, folder: S.source === "inbox" ? S.folder : undefined})});
+    rec = await r.json(); if (!r.ok) return err(rec.detail || "The inspection could not be created."); } catch (e) { return err("The server could not be reached."); }
+  showRun(rec);
+  if (S.source === "upload") {
+    const files = S.files.filter(f => FN.test(f.name)), total = files.reduce((s, f) => s + f.size, 0); let done = 0;
+    $("upload").hidden = false;
+    try { for (const f of files) { await put(`/api/runs/${rec.id}/files/${encodeURIComponent(f.name)}`, f, l => setUp(done + l, total, f.name)); done += f.size; setUp(done, total, f.name); } }
+    catch (e) { $("up-text").textContent = `Upload stopped: ${e.message}`; $("up-text").className = "err"; return; }
+    $("up-text").textContent = `Uploaded ${files.length} images (${(total / 1048576).toFixed(0)} MB)`;
+  }
+  await fetch(`/api/runs/${rec.id}/start`, {method: "POST"});
+  say("Inspection started."); poll(rec.id);
+});
+function setUp(n, total, name) { const p = total ? Math.round(n / total * 100) : 0; $("up-bar").firstElementChild.style.width = p + "%"; $("up-bar").setAttribute("aria-valuenow", p); $("up-text").textContent = `Uploading ${esc(name)}: ${p} %`; }
+
+/* ---------- progress ---------- */
+function showRun(rec) {
+  $("progress").hidden = false; $("prog-name").textContent = rec.name; history.replaceState(null, "", "#" + rec.id);
+  renderSteps(rec); $("progress").scrollIntoView({block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+}
+function renderSteps(rec) {
+  const st = {done: ["ok", "ok"], failed: ["bad", "bad"], running: ["run", "muted"], queued: ["queued", "muted"], skipped: ["skipped", "muted"]};
+  $("steps").innerHTML = rec.steps.map(s => { const [k, c] = st[s.status] || st.queued;
+    return `<li>${icon(k, c)}<span><span class="lab">${esc(s.label)}</span>${s.detail ? `<br><span class="det">${esc(s.detail)}</span>` : ""}</span><span class="t">${s.status === "running" ? "running" : s.seconds != null ? s.seconds.toFixed(0) + " s" : s.status === "skipped" ? "skipped" : ""}</span></li>`; }).join("");
+  const t0 = rec.started_utc && Date.parse(rec.started_utc), t1 = rec.finished_utc ? Date.parse(rec.finished_utc) : Date.now();
+  $("prog-time").textContent = t0 ? `${Math.round((t1 - t0) / 1000)} s` : "";
+  let h = "";
+  if (rec.status === "done") {
+    const s = rec.summary || {};
+    const bets = Object.entries(s.bets || {}).map(([b, n]) => `${n} resemble ${b.replace("_", " ")}`).join(", ");
+    h = rec.mode === "lot"
+      ? `<div class="result ${s.verdict_state || "plain"}"><span class="note">Recommended action</span><span class="v">${esc(s.verdict_label)}</span><span class="note">Sample resemblance: ${esc(bets)}.</span><a class="btn" href="/runs/${rec.id}/">Open the lot review</a></div>`
+      : `<div class="result plain"><span class="v">Sample resemblance ready</span><span class="note">${esc(bets)}. A sample set gets no lot verdict.</span><a class="btn" href="/runs/${rec.id}/">Open the results</a></div>`;
+  } else if (rec.status === "failed") {
+    const f = rec.steps.find(x => x.status === "failed");
+    h = `<div class="result bad"><span class="v">Inspection stopped at “${esc(f ? f.label : "a step")}”</span><span class="note">Earlier results are kept in the inspection folder. Fix the input and start a new inspection.</span></div>`;
+  }
+  $("result").innerHTML = h;
+}
+function poll(id) {
+  clearInterval(S.poll);
+  const tick = async () => { const r = await fetch(`/api/runs/${id}`); if (!r.ok) return; const rec = await r.json(); renderSteps(rec);
+    if (["done", "failed"].includes(rec.status)) { clearInterval(S.poll); say(rec.status === "done" ? "Inspection finished." : "Inspection stopped."); history_(); } };
+  tick(); S.poll = setInterval(tick, 1500);
+}
+
+/* ---------- history and inbox ---------- */
+async function history_() {
+  const r = await fetch("/api/runs"); if (!r.ok) return; const runs = await r.json();
+  if (!runs.length) return;
+  $("hist").innerHTML = runs.map(x => { const s = x.summary || {};
+    const res = x.status === "done" ? (x.mode === "lot" ? `<span class="pill ${s.verdict_state || ""}">${esc(s.verdict_label)}</span>` : `<span class="pill">${esc(Object.entries(s.bets || {}).map(([b, n]) => `${n} × ${b.replace("_", " ")}`).join(", "))}</span>`)
+      : `<span class="pill ${x.status === "failed" ? "bad" : ""}">${esc(x.status)}</span>`;
+    return `<tr><td class="mono">${esc(x.name)}</td><td>${x.mode === "lot" ? "One lot" : "Sample set"}${x.sites ? `, ${x.sites.length} sites` : ""}</td><td class="mono">${esc((x.created_utc || "").slice(0, 16).replace("T", " "))}</td><td>${res}</td>
+      <td>${x.status === "done" ? `<a href="/runs/${x.id}/">Open</a>` : `<a href="#${x.id}" data-run="${x.id}">Progress</a>`}</td></tr>`; }).join("");
+}
+document.addEventListener("click", e => { const a = e.target.closest("a[data-run]"); if (!a) return; e.preventDefault(); fetch(`/api/runs/${a.dataset.run}`).then(r => r.json()).then(rec => { showRun(rec); poll(rec.id); }); });
+async function inbox() {
+  try { const r = await fetch("/api/inbox"); const list = await r.json(); if (!list.length) return;
+    $("inbox-field").hidden = false;
+    $("inbox").innerHTML = '<option value="">Choose a folder</option>' + list.map(x => `<option value="${esc(x.folder)}" data-desc="${x.images} images, ${x.sites} sites" data-sites="${x.sites}">${esc(x.folder)} (${x.sites} sites)</option>`).join("");
+  } catch (e) { /* inbox is optional */ }
+}
+history_(); inbox();
+if (location.hash.length > 1) fetch(`/api/runs/${location.hash.slice(1)}`).then(r => r.ok ? r.json() : null).then(rec => { if (rec) { showRun(rec); poll(rec.id); } });
+</script>
+</body>
+</html>

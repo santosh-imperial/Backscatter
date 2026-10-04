@@ -87,6 +87,26 @@ issues).**
     open. Otherwise it opens on the driver, or the KPI closest to being one.
   - A quality abstention is shown as "Investigate: too few usable sites (quality abstention)". The frozen verdict
     string stays in Details and the footer.
+- **Third critique pass (score 24/40, after a regression in the opening view).**
+  - **Opening view.** The opening view follows the lane that sets the action:
+    - pending or credible localized: the flagged site with its crop open
+    - drift: the driver KPI
+    - abstention: the first excluded site in the bright-phase view
+    - otherwise: the KPI closest to being a driver, with no crop
+
+    Flag-only evidence shows its yellow box with the crop closed, captioned "Below the review threshold (2.0 MAD);
+    no review needed".
+  - **Image review.** Routed or pending flags get Confirm and Refute buttons with a reviewer name. The review is
+    stored only in that browser and labelled "Not yet applied". The page shows the exact
+    `python -m app.export_lot lot ... --review SITE:KPI=yes|no` command, offers a JSON download, and changes no
+    verdict itself.
+  - **`--review` on the exporter.** `app.export_lot lot --review` passes reviews to `build_result` and records them
+    in `reviews_applied`.
+  - **Decision text.** "Why" and "what would change it" are built from structured fields and the frozen
+    `decision.Thresholds`. The builder embeds the thresholds and refuses a lot whose thresholds hash differs. The
+    raw decision strings are kept under "Frozen decision text" in the footer.
+  - **Workbench layout.** The images are stacked in the left column at full width, with the KPI rail on the right
+    at 1100 px and wider. A change that would leave the image off-screen scrolls it back into view.
 - **Lane 4 wording (approved by Santosh 2026-10-04).** When only the covariate-adjusted view is below 0.05: "Only
   the covariate-adjusted view falls below 0.05. Adjustment on a mixed baseline can create signal, and the frozen
   rules do not use this view to raise drift. Read it as a prompt to check session metadata, not as drift."
@@ -279,4 +299,54 @@ Layout-only check of the verdict states the known lots never reach (keep the out
 python -m app.make_layout_fixtures --from ui/bundles/lot_Batch_1 --out ui/fixtures
 python -m app.build_ui --lot ui/bundles/lot_Batch_1 --fixture-lot ui/fixtures/fixture_drift --fixture-lot ui/fixtures/fixture_localized --fixture-lot ui/fixtures/fixture_reject --fixture-lot ui/fixtures/fixture_abstention --track-record analysis/submission_v2/freeze/evaluation --out /tmp/fixtures.html
 ```
+
+## 10. Inspect a lot: the real-world front door (D57U)
+
+Santosh, 2026-10-04: the demo opens on how the tool is used. A QC engineer receives a new lot, adds it and gets the
+decision. The analysis page built above becomes the **How it was built** tab.
+
+**Server.** `python -m app.server` serves http://127.0.0.1:8770, on localhost only. It has two tabs:
+
+- **Inspect a lot.** Built from `app/inspect.html`. The engineer adds a folder by drag and drop or the folder picker,
+  or picks one from `inbox/` for large lots. They name the lot and declare it either "One lot" (lot verdict plus
+  sample resemblance) or "A sample set that may mix lots" (resemblance only, D53). The browser checks file names and
+  detector sets before anything uploads. Progress, the result and the lot history follow.
+- **How it was built.** The committed `ui/index.html`.
+
+**Pipeline per inspection.** Each inspection runs in `inspections/<UTC time>_<name>/`, which git ignores:
+
+1. Input check: the scorer's own guards, plus rejection of training images by hash and of training site IDs.
+2. Frozen v2 scoring.
+3. Composition of the per-sample bets.
+4. `export_lot lot`, in one-lot mode only.
+5. `export_lot samples`.
+6. `build_ui --inspection`.
+
+Each step runs as a subprocess with its own log. One inspection runs at a time. Nothing is refitted, and runs are
+never overwritten.
+
+**Rehearsal (2026-10-04).** The first-drop folder is the only non-training input available.
+
+- **Sample set, uploaded:** 67 s for 3 sites (scoring 54 s). The bets and scores are identical to the saved
+  `analysis/submission_v2/first_run` predictions.
+- **One lot, from the inbox:** 158 s for 3 sites (scoring 54 s, lot comparison 102 s). The verdict is "Investigate:
+  too few usable sites (quality abstention)", because 3 sites is below `min_usable_sites` 5.
+- **7-site lot:** not yet timed.
+
+The lots from Batches 1–3 cannot be inspected; the input check refuses training images.
+
+**Demo order.**
+
+1. Inspect a lot: drop the unseen folder, or run it beforehand and open it from the lot history.
+2. The lot review.
+3. Switch to How it was built.
+
+The static page still works on its own if the server fails.
+
+**Known limits.**
+
+- Features are extracted twice per inspection, once by the frozen scorer's snapshot and once by the lot exporter's
+  live package. That keeps the frozen scorer isolated, at the cost of time.
+- The preview pane cannot read the Documents folder, so the server is started from a terminal:
+  `/opt/anaconda3/bin/python3 -m app.server`.
 

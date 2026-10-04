@@ -27,3 +27,7 @@ Hackathon-Polaron-*/
 # design-tool audit output and layout-only fixtures (never results, never committed)
 .impeccable/
 ui/fixtures/
+
+# local inspection server: incoming lots and their runs (customer data, never committed)
+inspections/
+inbox/

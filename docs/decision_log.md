@@ -379,6 +379,13 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 
 ---
 
+### D57U · 2026-10-04 · Inspect a lot is the front door; the analysis page becomes "How it was built"
+- **Decision (Santosh, with Claude's proposal):** the demo and the product start with a local inspection page. The engineer uploads a lot folder, or picks it from an inbox folder for large lots, declares one lot or a sample set, and gets the lot review. The existing static page becomes the "How it was built" tab. Inspected lots persist in a lot history. Each inspection runs the lot verdict and the sample resemblance.
+- **How:** `app/server.py` (FastAPI, bound to 127.0.0.1) runs the frozen commands unchanged as subprocesses into new `inspections/<run>/` directories, after an input check. The input check rejects training images by hash and training site IDs, as the frozen scorer does. Nothing refits; outputs and receipts are kept; `inspections/` and `inbox/` are git-ignored as customer data.
+- **Why:** usability is judged, and a real QC user starts from "I have a new lot". A static page cannot run the pipeline. A local server keeps the frozen provenance because it calls the same commands an operator would.
+- **Alternatives rejected:** a hosted service (sends customer images off the machine; out of scope); running the pipeline inside the page (impossible in a static file); a Streamlit app (a second UI stack beside the static page).
+- **Consequences:** Batches 1–3 cannot be demoed as new lots. Rehearsal used the first-drop folder (docs/ui_plan.md §10). The 7-site runtime is not yet measured. Checklist C16, C27, C31, C34S.
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.

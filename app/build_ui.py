@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import dataclasses
 import datetime as _dt
 import hashlib
 import json
@@ -129,6 +130,8 @@ def load_lot(bundle: str, img: Images, inputs: dict, fixture: bool = False) -> d
         # The frozen rules return an investigate string for an abstention; the page names the real reason and keeps
         # the frozen string in the footer and the details.
         label = "Investigate: too few usable sites (quality abstention)"
+    if s["meta"]["thresholds_hash"] != decision.Thresholds().hash():
+        raise SystemExit(f"{p}: thresholds hash {s['meta']['thresholds_hash']} differs from the frozen rules ({decision.Thresholds().hash()}); re-export the lot")
     if d.get("distance") is None:
         raise SystemExit(f"{p} has no lane-3 distance table; export it with --distance-table")
     sites = [{k: v for k, v in site.items() if k != "images"} | {"views": _views(img, bundle, site["images"]),
@@ -147,7 +150,8 @@ def load_lot(bundle: str, img: Images, inputs: dict, fixture: bool = False) -> d
         "ref_values": d["ref_values"], "sites": sites, "crops": crops, "local": d["local"],
         "local_flags": s["local_anomaly"]["flags"], "descriptive_flags": d.get("descriptive_flags", []),
         "acquisition": d["acquisition"], "physics": d["physics"], "battery": d["battery_secondary"],
-        "distance": d["distance"], "meta": s["meta"], "limits": d.get("limits"),
+        "distance": d["distance"], "meta": s["meta"], "limits": d.get("limits"), "reviews_applied": d.get("reviews_applied", []),
+        "frozen_text": {"reason": d["verdict_reason"], "what_would_move_it": s.get("what_would_move_it")},
     }
 
 
@@ -246,7 +250,7 @@ def build(args) -> str:
     lots = [load_lot(b, img, inputs) for b in args.lot] + [load_lot(b, img, inputs, fixture=True) for b in args.fixture_lot]
     if not lots and not args.samples:
         raise SystemExit("nothing to show: pass at least one --lot or --samples bundle")
-    base_dirs = [b for b in args.lot if os.path.exists(os.path.join(b, "baseline.json"))]
+    base_dirs = ([args.baseline] if args.baseline else []) + [b for b in args.lot if os.path.exists(os.path.join(b, "baseline.json"))]
     if not base_dirs:
         raise SystemExit("no lot bundle carries baseline.json; export one lot with --with-baseline")
     baseline = load_baseline(base_dirs[0], img, inputs)
@@ -259,8 +263,9 @@ def build(args) -> str:
         git = None
     data = _clean({
         "built_utc": _dt.datetime.now(_dt.timezone.utc).isoformat(timespec="seconds"), "builder": BUILDER_VERSION, "git": git,
-        "provenance": PROVENANCE, "primary_kpis": PRIMARY_KPIS, "batch_colors": BATCH_COLORS, "unseen_color": UNSEEN_COLOR,
-        "ste": STE, "baseline": baseline, "lots": lots, "samplesets": samplesets, "track": track, "feedback": feedback, "loco": loco,
+        "provenance": PROVENANCE, "inspection": bool(getattr(args, "inspection", False)), "primary_kpis": PRIMARY_KPIS, "batch_colors": BATCH_COLORS, "unseen_color": UNSEEN_COLOR,
+        "ste": STE, "thresholds": {k: v for k, v in dataclasses.asdict(decision.Thresholds()).items() if k != "provenance"} | {"hash": decision.Thresholds().hash()},
+        "baseline": baseline, "lots": lots, "samplesets": samplesets, "track": track, "feedback": feedback, "loco": loco,
     })
     tpl = open(TEMPLATE, encoding="utf-8").read()
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
@@ -288,6 +293,8 @@ def main(argv=None):
     ap.add_argument("--lot", action="append", default=[], help="lot bundle directory (repeatable)")
     ap.add_argument("--samples", action="append", default=[], help="sample-set bundle directory (repeatable)")
     ap.add_argument("--fixture-lot", action="append", default=[], help="layout-only fixture bundle (app.make_layout_fixtures); never for a demo build")
+    ap.add_argument("--inspection", action="store_true", help="page for one inspection run (app.server): no known-lot verdict table")
+    ap.add_argument("--baseline", help="bundle directory holding baseline.json (default: the first --lot that has one)")
     ap.add_argument("--track-record", required=True, help="frozen categoriser evaluation directory")
     ap.add_argument("--feedback", help="organiser feedback directory with truth.csv and output/summary.csv")
     ap.add_argument("--registry", default="experiments/registry.csv")
