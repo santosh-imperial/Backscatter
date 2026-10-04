@@ -182,6 +182,17 @@ flowchart TD
   F4 -.-> E2
   MLCACHE --> E2
 
+  %% ---------------- customer interface (D56U)
+  subgraph UI["Customer interface  (app/, docs/ui_plan.md)"]
+    XL["app.export_lot lot<br/>build_result → lot.json + display JPEGs<br/>(+ baseline.json with --with-baseline)"]
+    XS["app.export_lot samples<br/>saved categoriser run → samples.json + JPEGs<br/>(never scores or refits)"]
+    BU["app.build_ui → ui/index.html + receipt<br/>four lanes · no combined rule · STE cell panel<br/>fails on missing input or forbidden wording"]
+    XL --> BU
+    XS --> BU
+  end
+  S --> XL
+  E2 -.->|"same overlay helpers"| XL
+
   %% ---------------- self-test
   ST["Self-test [2.9]<br/>false-alarm diagnostics · power curves · synthetic shifts ·<br/>heterogeneity check · identical-reference sanity"]
   DEC -.->|"pipeline_fn callback"| R3
@@ -283,3 +294,15 @@ The HTML 'Battery geometry candidates' section prints usable n, raw medians/diff
 
 
 E26G/E27/E28J audit artifacts are an exploratory evidence layer linked from notebook 02 and the metric atlas. Fixed graphs, frozen-encoder retrieval and fixed Gabor filters do not feed primary comparisons, the material classifier or verdicts. Their tables report sites as n; nodes, edges, pixels and sampled windows describe coverage. Expert validity and practical promotion require a separate review decision.
+
+## Customer interface contract (D56U)
+
+`app.export_lot lot` calls `report.build_result` with the frozen thresholds, then writes `lot.json` (the `report.summary`
+snapshot plus compare rows, per-site flags and KPI values, localized flags, acquisition views, physics context and E25
+battery geometry) and display JPEGs in the trimmed frame. Lane 3 reads the `ood_*__morph` / `ood_*__acq` columns of a
+saved categoriser `site_table.csv` (`--distance-table`, SHA256 recorded). `app.export_lot samples` reads
+`submission/predictions.csv`, `driver_contrasts.csv`, `scored/features.csv`, `site_table.csv` and the prediction receipt
+of a categoriser run; a model-version mismatch fails. `app.build_ui` reads bundles only, maps verdict strings through
+`polaron_qc.decision` constants (unknown → error), embeds images, rejects "accept"/"confidence" wording and writes a
+receipt with input hashes. Output directories for bundles must be new; the page is rebuilt only with `--replace`. Layout fixtures (`app.make_layout_fixtures`, `"fixture": true`) enter only through `--fixture-lot`; a fixture passed as `--lot`, or a real lot as `--fixture-lot`, fails.
+

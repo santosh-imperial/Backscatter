@@ -23,3 +23,7 @@ _scratch/
 # organisers' test / evaluation drops (raw TIFFs, never committed)
 Hackathon-Polaron-test/
 Hackathon-Polaron-*/
+
+# design-tool audit output and layout-only fixtures (never results, never committed)
+.impeccable/
+ui/fixtures/

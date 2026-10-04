@@ -1,0 +1,1979 @@
+{
+ "schema": 1,
+ "kind": "lot",
+ "exported_utc": "2026-10-04T09:48:27+00:00",
+ "lot": "Batch_1",
+ "reference": "Batch_3",
+ "summary": {
+  "meta": {
+   "reference": "Batch_3",
+   "batch": "Batch_1",
+   "n_sites_ref": 17,
+   "n_sites_batch": 7,
+   "runtime_s": 67.4,
+   "timestamp": "2026-10-04T10:48:00",
+   "config_hash": "ad1f277afcc8",
+   "thresholds_hash": "b4f4da2e357c",
+   "git_describe": "9fe5cd3-dirty",
+   "feature_version": "1.1.0",
+   "provenance": "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived",
+   "batch_dir": "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_1",
+   "reference_dir": "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_3"
+  },
+  "verdict": "consistent with working reference (within detectable limits)",
+  "reason": "no drift beyond the reference null on primary KPIs and no credible localized anomaly; see MDC for what could not have been detected; 1 site(s) exceed the ordinary-reference max without meeting the severity/reliability conditions (expected on ~40 % of clean batches)",
+  "outcome_columns": {
+   "drift_alert": false,
+   "localized": "flag",
+   "quality_abstention": false
+  },
+  "drivers": [],
+  "what_would_move_it": "would become 'investigate — drift' if bright_d50 (Holm p = 0.36, shift +1.4 MAD) crossed α = 0.05 with |shift| ≥ 1.0 MAD; would become 'investigate — localized' if a site exceeded the ordinary-reference max by ≥ 3.0 MAD on crack_frac or pore_max_d, or ≥ 2 sites / both KPIs by ≥ 2.0 MAD (a single site between the two margins is routed to image review without changing the verdict)",
+  "attenuation": {
+   "stratified": 0.28248197320080426,
+   "adjusted": -1.3880353318034313,
+   "available": true
+  },
+  "escalation": {
+   "escalate": false,
+   "by_single_site": false,
+   "by_site_agreement": false,
+   "by_kpi_agreement": false,
+   "max_pending_margin_mad": null,
+   "n_pending_sites": 0,
+   "n_pending_kpis": 0,
+   "rule": "single site ≥ 3.0 MAD, or ≥ 2 sites / ≥ 2 KPIs pending at ≥ 2.0 MAD, or a confirmed review"
+  },
+  "stability": {
+   "share": 1.0,
+   "n_runs": 7,
+   "full_verdict": "consistent with working reference (within detectable limits)",
+   "refit_per_fold": [
+    "compare (permutation + bootstrap)",
+    "energy distance",
+    "local exceedance",
+    "check A/B",
+    "quality abstention",
+    "material-only classifier",
+    "acquisition views / attenuation"
+   ],
+   "held_fixed": [],
+   "runs": [
+    {
+     "left_out": "4ih2ggld",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "5n1q8atc",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "f1vzngrs",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "ffwubibz",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "fzrt2k6r",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "iv6g2oq0",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "uhdslk0o",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "flag",
+      "quality_abstention": false
+     }
+    }
+   ]
+  },
+  "abstention": {
+   "abstain": false,
+   "reasons": []
+  },
+  "usable_n": {
+   "crack_frac": [
+    17,
+    7
+   ],
+   "pore_max_d": [
+    17,
+    7
+   ],
+   "pore_frac": [
+    17,
+    7
+   ],
+   "bright_frac": [
+    17,
+    5
+   ],
+   "bright_d50": [
+    17,
+    5
+   ]
+  },
+  "fallback": {
+   "crack_frac": [
+    4,
+    0
+   ],
+   "pore_max_d": [
+    4,
+    0
+   ],
+   "pore_frac": [
+    4,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "excluded": {
+   "crack_frac": [
+    0,
+    0
+   ],
+   "pore_max_d": [
+    0,
+    0
+   ],
+   "pore_frac": [
+    0,
+    0
+   ],
+   "bright_frac": [
+    0,
+    2
+   ],
+   "bright_d50": [
+    0,
+    2
+   ]
+  },
+  "flags_batch": [
+   {
+    "site": "4ih2ggld",
+    "acquisition_group": "low_contrast",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": true,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "5n1q8atc",
+    "acquisition_group": "low_contrast",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": true,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "f1vzngrs",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "ffwubibz",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "fzrt2k6r",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "iv6g2oq0",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "uhdslk0o",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   }
+  ],
+  "primary": [
+   {
+    "kpi": "crack_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": 0.12168637415532914,
+    "ci_low": -2.0913638282368114,
+    "ci_high": 2.1782257508211122,
+    "p_holm": 1.0
+   },
+   {
+    "kpi": "pore_max_d",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": 0.04226114661507167,
+    "ci_low": -1.3153108230939152,
+    "ci_high": 1.0054312829269891,
+    "p_holm": 1.0
+   },
+   {
+    "kpi": "pore_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": -0.05490334968002143,
+    "ci_low": -1.8585044002241358,
+    "ci_high": 1.9430611326432394,
+    "p_holm": 1.0
+   },
+   {
+    "kpi": "bright_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 5,
+    "n_ref_fallback": 0,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 2,
+    "shift_mad": 0.7966228469828583,
+    "ci_low": -1.3953938500462821,
+    "ci_high": 2.323714123326186,
+    "p_holm": 1.0
+   },
+   {
+    "kpi": "bright_d50",
+    "n_ref_usable": 17,
+    "n_batch_usable": 5,
+    "n_ref_fallback": 0,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 2,
+    "shift_mad": 1.4473730855943432,
+    "ci_low": -0.11192796514418872,
+    "ci_high": 7.844602901336296,
+    "p_holm": 0.35771246297562087
+   }
+  ],
+  "mdc": {
+   "crack_frac": {
+    "mdc_mad": 1.75,
+    "mdc_abs": 0.024355110386564818,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "pore_max_d": {
+    "mdc_mad": 1.75,
+    "mdc_abs": 183.2012804758582,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "pore_frac": {
+    "mdc_mad": 2.0,
+    "mdc_abs": 0.036620192784123345,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "bright_frac": {
+    "mdc_mad": 1.75,
+    "mdc_abs": 0.01511820174757282,
+    "n_incoming": 5,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "bright_d50": {
+    "mdc_mad": 3.0,
+    "mdc_abs": 40.59894646902271,
+    "n_incoming": 5,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   }
+  },
+  "local_anomaly": {
+   "flags": [
+    {
+     "site": "4ih2ggld",
+     "kpi": "crack_frac",
+     "value": 0.03734992658030101,
+     "ref_max": 0.03611288998357964,
+     "margin_in_mad": 0.2715585405657559,
+     "severity_ok": false,
+     "measurement_reliable": true,
+     "measurement_note": "ok",
+     "review_status": "unreviewed",
+     "promotable": true
+    }
+   ],
+   "n_sites_pending": 0,
+   "n_sites_credible": 0,
+   "n_sites_refuted": 0
+  },
+  "c2st_material": {
+   "auc": 0.5882352941176471,
+   "p": 0.29850746268656714,
+   "n_perm": 200,
+   "cv": "StratifiedGroupKFold(5)",
+   "n_sites_ref": 17,
+   "n_sites_batch": 7,
+   "variant": "material_all_sites_in_pipeline",
+   "null_band": [
+    0.16785714285714287,
+    0.8321428571428572
+   ],
+   "n_dropped_nan": [
+    0,
+    0
+   ]
+  },
+  "notes": [
+   "per-site drift score not computed for ['4ih2ggld', '5n1q8atc'] (bright-phase KPIs unusable: low-contrast sites)"
+  ]
+ },
+ "next_action": "no QC action from the image evidence; the release decision stays with QC under its own tolerances (none are encoded here). Re-run when more sites of this batch are imaged: the minimum detectable change shrinks with n",
+ "verdict_reason": "no drift beyond the reference null on primary KPIs and no credible localized anomaly; see MDC for what could not have been detected; 1 site(s) exceed the ordinary-reference max without meeting the severity/reliability conditions (expected on ~40 % of clean batches)",
+ "energy": {
+  "statistic": 1.6996392475250133,
+  "p": 0.40431913617276544,
+  "n_perm": 5000,
+  "method": "monte_carlo",
+  "n_ref": 17,
+  "n_batch": 5,
+  "n_dropped_batch": 2
+ },
+ "compare": [
+  {
+   "kpi": "crack_frac",
+   "label": "Crack-like void area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.02008876050420168,
+   "batch_median": 0.02178229483282675,
+   "ref_mad": 0.013917205935179896,
+   "shift_mad": 0.12168637415532914,
+   "ci_low": -2.0913638282368114,
+   "ci_high": 2.1782257508211122,
+   "cliffs_delta": -0.058823529411764705,
+   "p_reported": 1.0,
+   "p_holm": 1.0,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_max_d",
+   "label": "Largest void (2-D equivalent diameter)",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 278.2410057451576,
+   "batch_median": 282.6651749875914,
+   "ref_mad": 104.68644598620469,
+   "shift_mad": 0.04226114661507167,
+   "ci_low": -1.3153108230939152,
+   "ci_high": 1.0054312829269891,
+   "cliffs_delta": -0.3445378151260504,
+   "p_reported": 1.0,
+   "p_holm": 1.0,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_frac",
+   "label": "Macro-pore area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.09307405462184874,
+   "batch_median": 0.09206876899696048,
+   "ref_mad": 0.018310096392061673,
+   "shift_mad": -0.05490334968002143,
+   "ci_low": -1.8585044002241358,
+   "ci_high": 1.9430611326432394,
+   "cliffs_delta": -0.15966386554621848,
+   "p_reported": 1.0,
+   "p_holm": 1.0,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_frac",
+   "label": "Bright-phase (additive) area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.05332115117891817,
+   "batch_median": 0.060203153988868274,
+   "ref_mad": 0.008638972427184468,
+   "shift_mad": 0.7966228469828583,
+   "ci_low": -1.3953938500462821,
+   "ci_high": 2.323714123326186,
+   "cliffs_delta": 0.29411764705882354,
+   "p_reported": 1.0,
+   "p_holm": 1.0,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_d50",
+   "label": "Bright-phase area-weighted D50",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 145.72701316721543,
+   "batch_median": 165.31428730813175,
+   "ref_mad": 13.532982156340903,
+   "shift_mad": 1.4473730855943432,
+   "ci_low": -0.11192796514418872,
+   "ci_high": 7.844602901336296,
+   "cliffs_delta": 0.4823529411764706,
+   "p_reported": 0.35771246297562087,
+   "p_holm": 0.35771246297562087,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "crack_count_per_Mpx",
+   "label": "Crack-like void count per Mpx",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": false,
+   "ref_median": 0.5526388505111909,
+   "batch_median": 0.6181318681318682,
+   "ref_mad": 0.21072167011271917,
+   "shift_mad": 0.31080342892899326,
+   "ci_low": -1.1931596751780313,
+   "ci_high": 3.1598671449417903,
+   "cliffs_delta": 0.09243697478991597,
+   "p_reported": 0.5873783602616555,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_d50",
+   "label": "Macro-pore area-weighted D50",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 103.7924842558661,
+   "batch_median": 108.25385337133473,
+   "ref_mad": 27.900626888277873,
+   "shift_mad": 0.15990211020466427,
+   "ci_low": -0.7360858831531238,
+   "ci_high": 2.148358112159983,
+   "cliffs_delta": 0.1092436974789916,
+   "p_reported": 0.7293010193467859,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_d90",
+   "label": "Macro-pore area-weighted D90",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 230.54307960861595,
+   "batch_median": 217.90576482004423,
+   "ref_mad": 56.92734910717976,
+   "shift_mad": -0.22199022063681326,
+   "ci_low": -1.2601385256616406,
+   "ci_high": 1.2205016391752153,
+   "cliffs_delta": -0.14285714285714285,
+   "p_reported": 0.7085095809352102,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_elong",
+   "label": "Macro-pore elongation",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 3.4726318155175337,
+   "batch_median": 3.41838819779335,
+   "ref_mad": 0.3988834865243791,
+   "shift_mad": -0.13598862714731252,
+   "ci_low": -2.3089866673985657,
+   "ci_high": 1.3904105439749965,
+   "cliffs_delta": -0.3445378151260504,
+   "p_reported": 0.15371680188613826,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_count_per_Mpx",
+   "label": "Macro-pore count per Mpx",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 98.12760055478502,
+   "batch_median": 100.64935064935065,
+   "ref_mad": 5.48264472764942,
+   "shift_mad": 0.4599513956919811,
+   "ci_low": -0.19698805591272645,
+   "ci_high": 8.932329457703661,
+   "cliffs_delta": 0.44537815126050423,
+   "p_reported": 0.029872523865658876,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_count_per_Mpx",
+   "label": "Bright-phase particle count per Mpx",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": false,
+   "ref_median": 14.285714285714286,
+   "batch_median": 15.70368407103101,
+   "ref_mad": 3.022816091954024,
+   "shift_mad": 0.4690890025003512,
+   "ci_low": -0.823032411472933,
+   "ci_high": 2.394330884943709,
+   "cliffs_delta": 0.17647058823529413,
+   "p_reported": 0.5459861775651249,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_d10",
+   "label": "Bright-phase area-weighted D10",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 61.535472745745395,
+   "batch_median": 64.15904806127334,
+   "ref_mad": 12.586753928818004,
+   "shift_mad": 0.20843939035950618,
+   "ci_low": -1.5102693962419627,
+   "ci_high": 1.3876983573963673,
+   "cliffs_delta": 0.03529411764705882,
+   "p_reported": 0.9421280473912053,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_d90",
+   "label": "Bright-phase area-weighted D90",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 250.4035834808037,
+   "batch_median": 228.9636761910622,
+   "ref_mad": 20.298656448349725,
+   "shift_mad": -1.056222974377427,
+   "ci_low": -2.322955835317193,
+   "ci_high": 1.774943386110792,
+   "cliffs_delta": -0.5294117647058824,
+   "p_reported": 0.2264373053846738,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_circ",
+   "label": "Bright-phase particle circularity",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.39787232722352045,
+   "batch_median": 0.40639577072778216,
+   "ref_mad": 0.03857711444887414,
+   "shift_mad": 0.220945594973355,
+   "ci_low": -2.142725033223245,
+   "ci_high": 2.3450784635000224,
+   "cliffs_delta": 0.058823529411764705,
+   "p_reported": 0.873471557682084,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_solidity",
+   "label": "Bright-phase particle solidity",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.8656331467422052,
+   "batch_median": 0.8671142693245741,
+   "ref_mad": 0.01653553095568812,
+   "shift_mad": 0.08957212116974635,
+   "ci_low": -1.268473456775202,
+   "ci_high": 2.294081033241154,
+   "cliffs_delta": -0.011764705882352941,
+   "p_reported": 0.9646084909242804,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "bright_max_d",
+   "label": "Largest bright-phase particle",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 269.4795306400284,
+   "batch_median": 274.1822066433163,
+   "ref_mad": 27.735848866698735,
+   "shift_mad": 0.16955226522503297,
+   "ci_low": -2.3703494945499854,
+   "ci_high": 2.6922782363198716,
+   "cliffs_delta": -0.17647058823529413,
+   "p_reported": 0.5939090149616465,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 2
+  },
+  {
+   "kpi": "corr_len_px",
+   "label": "Texture correlation length",
+   "trust": "medium",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 21.0,
+   "batch_median": 18.0,
+   "ref_mad": 4.4478,
+   "shift_mad": -0.6744907594765952,
+   "ci_low": -3.3724537973829762,
+   "ci_high": 0.6744907594765952,
+   "cliffs_delta": -0.29411764705882354,
+   "p_reported": 0.38199789658599725,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "fft_slope",
+   "label": "Radial power-spectrum slope",
+   "trust": "medium",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": -2.2699115190085006,
+   "batch_median": -2.211361360370921,
+   "ref_mad": 0.08424153088479928,
+   "shift_mad": 0.6950272392087399,
+   "ci_low": -0.3005809523498353,
+   "ci_high": 4.850741426476624,
+   "cliffs_delta": 0.44537815126050423,
+   "p_reported": 0.09274379955157987,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "etd_crack_density_particles",
+   "label": "Intra-particle dark-ridge density (ETD, in additive)",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.0015027101509388864,
+   "batch_median": 0.0019450437342163798,
+   "ref_mad": 0.0013755649097661042,
+   "shift_mad": 0.32156503857946345,
+   "ci_low": -1.8061940633962996,
+   "ci_high": 3.6922390274219334,
+   "cliffs_delta": 0.17647058823529413,
+   "p_reported": 0.36499144765735153,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  }
+ ],
+ "excluded_by_flag": {
+  "crack_frac": [],
+  "pore_max_d": [],
+  "pore_frac": [],
+  "bright_frac": [
+   "4ih2ggld",
+   "5n1q8atc"
+  ],
+  "bright_d50": [
+   "4ih2ggld",
+   "5n1q8atc"
+  ]
+ },
+ "ref_values": [
+  {
+   "site": "0grcilhi",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06235961884753902,
+   "pore_max_d": 449.8356823620434,
+   "pore_frac": 0.12847411464585834,
+   "bright_frac": 0.04554044117647059,
+   "bright_d50": 149.57303246421645
+  },
+  {
+   "site": "71vgq3fw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010701733703190015,
+   "pore_max_d": 278.2410057451576,
+   "pore_frac": 0.07663966712898752,
+   "bright_frac": 0.05914805825242719,
+   "bright_d50": 154.72378588992234
+  },
+  {
+   "site": "9luzk4jm",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.03611288998357964,
+   "pore_max_d": 340.6995103244586,
+   "pore_frac": 0.12013704159824849,
+   "bright_frac": 0.05689792008757526,
+   "bright_d50": 143.33080636870028
+  },
+  {
+   "site": "cfe5vt7s",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.005585233516483517,
+   "pore_max_d": 206.5827753236779,
+   "pore_frac": 0.07986277472527473,
+   "bright_frac": 0.06027870879120879,
+   "bright_d50": 177.68658078425008
+  },
+  {
+   "site": "hawkfj64",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02008876050420168,
+   "pore_max_d": 235.52600808620176,
+   "pore_frac": 0.09307405462184874,
+   "bright_frac": 0.040076155462184876,
+   "bright_d50": 121.1576605553759
+  },
+  {
+   "site": "hzumfsms",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06066180897646415,
+   "pore_max_d": 599.372241621278,
+   "pore_frac": 0.14129809797482212,
+   "bright_frac": 0.04613868363437329,
+   "bright_d50": 136.59914175460185
+  },
+  {
+   "site": "kbdh4tri",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.008142857142857143,
+   "pore_max_d": 203.9028300288694,
+   "pore_frac": 0.07314181692094314,
+   "bright_frac": 0.05332115117891817,
+   "bright_d50": 137.6530090653622
+  },
+  {
+   "site": "mgxahqnk",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.017716311524609844,
+   "pore_max_d": 274.89873309842915,
+   "pore_frac": 0.0962781362545018,
+   "bright_frac": 0.0642875900360144,
+   "bright_d50": 208.74404647671145
+  },
+  {
+   "site": "pl8uabbv",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.020155055331991953,
+   "pore_max_d": 355.08821280856176,
+   "pore_frac": 0.10440606136820925,
+   "bright_frac": 0.05288524899396378,
+   "bright_d50": 133.55929777345952
+  },
+  {
+   "site": "ptg8lmto",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.016304856433888692,
+   "pore_max_d": 265.50020887971596,
+   "pore_frac": 0.08216855724920241,
+   "bright_frac": 0.049161201701524285,
+   "bright_d50": 137.9302188696618
+  },
+  {
+   "site": "tuy3zymq",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010124410540915394,
+   "pore_max_d": 207.63096528501686,
+   "pore_frac": 0.0807240638002774,
+   "bright_frac": 0.04358807212205271,
+   "bright_d50": 134.55182305189803
+  },
+  {
+   "site": "ufdvpb81",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.047816844553913516,
+   "pore_max_d": 456.91554461484446,
+   "pore_frac": 0.1197936507936508,
+   "bright_frac": 0.05036234263820471,
+   "bright_d50": 145.72701316721543
+  },
+  {
+   "site": "utfgcjfa",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02403162403937923,
+   "pore_max_d": 418.72902692176126,
+   "pore_frac": 0.09758132030129403,
+   "bright_frac": 0.05539038334146177,
+   "bright_d50": 192.48045166380862
+  },
+  {
+   "site": "vc2whyaq",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.023861356728378004,
+   "pore_max_d": 375.37733972137386,
+   "pore_frac": 0.082796214423874,
+   "bright_frac": 0.05615252832274109,
+   "bright_d50": 154.18383683042208
+  },
+  {
+   "site": "x77cy643",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.021940970966553973,
+   "pore_max_d": 269.1675125531775,
+   "pore_frac": 0.09475703441480238,
+   "bright_frac": 0.060413355849653794,
+   "bright_d50": 136.0480917242688
+  },
+  {
+   "site": "x7u69zsw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.0056651178918169206,
+   "pore_max_d": 231.86750478763133,
+   "pore_frac": 0.06306608876560332,
+   "bright_frac": 0.07567649098474341,
+   "bright_d50": 146.44170735133602
+  },
+  {
+   "site": "xgj4xftb",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.01910758596242467,
+   "pore_max_d": 341.2297706326789,
+   "pore_frac": 0.08601497695852535,
+   "bright_frac": 0.05004120879120879,
+   "bright_d50": 190.84291230524997
+  }
+ ],
+ "sites": [
+  {
+   "site": "4ih2ggld",
+   "group": "low_contrast",
+   "bright_low_contrast": true,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.03734992658030101,
+   "pore_max_d": 333.64742863648746,
+   "pore_frac": 0.10208843740958318,
+   "bright_frac": 0.12341532936165843,
+   "bright_d50": 164.86697001220787,
+   "drift_distance": null,
+   "drift_top_driver": null,
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_4ih2ggld_voids.jpg",
+      "w": 1000,
+      "h": 331
+     },
+     "bright": {
+      "file": "lot_4ih2ggld_bright.jpg",
+      "w": 1000,
+      "h": 331
+     },
+     "etd": {
+      "file": "lot_4ih2ggld_etd.jpg",
+      "w": 1000,
+      "h": 331
+     },
+     "inlens": {
+      "file": "lot_4ih2ggld_inlens.jpg",
+      "w": 1000,
+      "h": 331
+     }
+    },
+    "trim_rows": [
+     0,
+     2316
+    ],
+    "shape": [
+     2316,
+     6996
+    ]
+   }
+  },
+  {
+   "site": "5n1q8atc",
+   "group": "low_contrast",
+   "bright_low_contrast": true,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.00822045398470269,
+   "pore_max_d": 224.4595482156426,
+   "pore_frac": 0.06542906489020478,
+   "bright_frac": 0.170339748334567,
+   "bright_d50": 220.51081201028637,
+   "drift_distance": null,
+   "drift_top_driver": null,
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_5n1q8atc_voids.jpg",
+      "w": 1000,
+      "h": 330
+     },
+     "bright": {
+      "file": "lot_5n1q8atc_bright.jpg",
+      "w": 1000,
+      "h": 330
+     },
+     "etd": {
+      "file": "lot_5n1q8atc_etd.jpg",
+      "w": 1000,
+      "h": 330
+     },
+     "inlens": {
+      "file": "lot_5n1q8atc_inlens.jpg",
+      "w": 1000,
+      "h": 330
+     }
+    },
+    "trim_rows": [
+     0,
+     2316
+    ],
+    "shape": [
+     2316,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "f1vzngrs",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.0013474328278797552,
+   "pore_max_d": 193.95981240527598,
+   "pore_frac": 0.06180127693535515,
+   "bright_frac": 0.06697446129289705,
+   "bright_d50": 165.31428730813175,
+   "drift_distance": 5.4693674682789775,
+   "drift_top_driver": "pore_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_f1vzngrs_voids.jpg",
+      "w": 1000,
+      "h": 306
+     },
+     "bright": {
+      "file": "lot_f1vzngrs_bright.jpg",
+      "w": 1000,
+      "h": 306
+     },
+     "etd": {
+      "file": "lot_f1vzngrs_etd.jpg",
+      "w": 1000,
+      "h": 306
+     },
+     "inlens": {
+      "file": "lot_f1vzngrs_inlens.jpg",
+      "w": 1000,
+      "h": 306
+     }
+    },
+    "trim_rows": [
+     0,
+     2148
+    ],
+    "shape": [
+     2148,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "ffwubibz",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.015496497252747253,
+   "pore_max_d": 200.96873288784028,
+   "pore_frac": 0.0825026098901099,
+   "bright_frac": 0.04458379120879121,
+   "bright_d50": 144.23404910570812,
+   "drift_distance": 2.463007347229489,
+   "drift_top_driver": "bright_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_ffwubibz_voids.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "bright": {
+      "file": "lot_ffwubibz_bright.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "etd": {
+      "file": "lot_ffwubibz_etd.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "inlens": {
+      "file": "lot_ffwubibz_inlens.jpg",
+      "w": 1000,
+      "h": 297
+     }
+    },
+    "trim_rows": [
+     0,
+     2080
+    ],
+    "shape": [
+     2080,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "fzrt2k6r",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.023617943281208587,
+   "pore_max_d": 304.21278130459166,
+   "pore_frac": 0.09602146832759077,
+   "bright_frac": 0.060203153988868274,
+   "bright_d50": 164.97119526970187,
+   "drift_distance": 2.9026800858271082,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_fzrt2k6r_voids.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "bright": {
+      "file": "lot_fzrt2k6r_bright.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "etd": {
+      "file": "lot_fzrt2k6r_etd.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "inlens": {
+      "file": "lot_fzrt2k6r_inlens.jpg",
+      "w": 1000,
+      "h": 308
+     }
+    },
+    "trim_rows": [
+     0,
+     2156
+    ],
+    "shape": [
+     2156,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "iv6g2oq0",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.032589032028929356,
+   "pore_max_d": 290.8417824075923,
+   "pore_frac": 0.10633459253519308,
+   "bright_frac": 0.05404155366137156,
+   "bright_d50": 174.81867403763852,
+   "drift_distance": 4.233377485877695,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_iv6g2oq0_voids.jpg",
+      "w": 1000,
+      "h": 255
+     },
+     "bright": {
+      "file": "lot_iv6g2oq0_bright.jpg",
+      "w": 1000,
+      "h": 255
+     },
+     "etd": {
+      "file": "lot_iv6g2oq0_etd.jpg",
+      "w": 1000,
+      "h": 255
+     },
+     "inlens": {
+      "file": "lot_iv6g2oq0_inlens.jpg",
+      "w": 1000,
+      "h": 255
+     }
+    },
+    "trim_rows": [
+     0,
+     1780
+    ],
+    "shape": [
+     1780,
+     6960
+    ]
+   }
+  },
+  {
+   "site": "uhdslk0o",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02178229483282675,
+   "pore_max_d": 282.6651749875914,
+   "pore_frac": 0.09206876899696048,
+   "bright_frac": 0.06080577507598784,
+   "bright_d50": 199.7772929270702,
+   "drift_distance": 7.082793994804542,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_uhdslk0o_voids.jpg",
+      "w": 1000,
+      "h": 268
+     },
+     "bright": {
+      "file": "lot_uhdslk0o_bright.jpg",
+      "w": 1000,
+      "h": 268
+     },
+     "etd": {
+      "file": "lot_uhdslk0o_etd.jpg",
+      "w": 1000,
+      "h": 268
+     },
+     "inlens": {
+      "file": "lot_uhdslk0o_inlens.jpg",
+      "w": 1000,
+      "h": 268
+     }
+    },
+    "trim_rows": [
+     0,
+     1880
+    ],
+    "shape": [
+     1880,
+     7000
+    ]
+   }
+  }
+ ],
+ "evidence_crops": [
+  {
+   "file": "crop_0_4ih2ggld_crack_frac.jpg",
+   "w": 1200,
+   "h": 600,
+   "site": "4ih2ggld",
+   "kpi": "crack_frac",
+   "what": "longest crack-like void",
+   "area_px": 35344.0,
+   "major_axis_px": 748.2333329611699,
+   "rows_trimmed_frame": [
+    70,
+    670
+   ],
+   "cols": [
+    1161,
+    2361
+   ],
+   "band_top": 0,
+   "flag": {
+    "site": "4ih2ggld",
+    "kpi": "crack_frac",
+    "value": 0.03734992658030101,
+    "ref_max": 0.03611288998357964,
+    "margin_in_mad": 0.2715585405657559,
+    "severity_ok": false,
+    "measurement_reliable": true,
+    "measurement_note": "ok",
+    "image_reviewed": null,
+    "review_status": "unreviewed",
+    "promotable": true
+   }
+  }
+ ],
+ "local": {
+  "crack_frac": {
+   "ref_max": 0.03611288998357964,
+   "ref_mad": 0.004555322009553337,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 1,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "pore_max_d": {
+   "ref_max": 418.72902692176126,
+   "ref_mad": 66.41158731245339,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "pore_frac": {
+   "ref_max": 0.12013704159824849,
+   "ref_mad": 0.013633310872898674,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "bright_frac": {
+   "ref_max": 0.0642875900360144,
+   "ref_mad": 0.006782267101597859,
+   "n_ref": 10,
+   "n_batch": 5,
+   "n_exceed": 1,
+   "n_credible": 0,
+   "iid_flag_probability": 0.3333333333333333,
+   "margin_mad": 2.0
+  },
+  "bright_d50": {
+   "ref_max": 208.74404647671145,
+   "ref_mad": 31.72592379434371,
+   "n_ref": 10,
+   "n_batch": 5,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.3333333333333333,
+   "margin_mad": 2.0
+  }
+ },
+ "descriptive_flags": [
+  {
+   "site": "f1vzngrs",
+   "kpi": "bright_frac",
+   "value": 0.06697446129289705,
+   "ref_max": 0.0642875900360144,
+   "margin_in_mad": 0.396161227010602,
+   "note": "batch-mean KPI: outlying site, not a localized defect (see per-site drift)"
+  }
+ ],
+ "acquisition": {
+  "note": "sensitivity analysis: attenuation is the share by which the energy statistic drops under the stratified / adjusted view; it is not a share of the shift caused by the instrument",
+  "attenuation": {
+   "stratified": 0.28248197320080426,
+   "adjusted": -1.3880353318034313,
+   "available": true
+  },
+  "unadjusted_p": 0.40431913617276544,
+  "stratified": {
+   "n_ref_kept": 10,
+   "n_batch_kept": 5,
+   "reason": null
+  },
+  "stratified_p": 0.8302339532093581,
+  "adjusted_p": 0.07778444311137772,
+  "covariates": [
+   "bright_sep",
+   "bse_p1",
+   "etd_boundary_sharpness"
+  ]
+ },
+ "physics": {
+  "statements": {
+   "crack_frac": {
+    "statement": "Crack-like void area fraction is higher than the reference (robust shift 0.1 MAD) → more delamination-like void area in the section, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 0.0016935343286250681,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   },
+   "pore_max_d": {
+    "statement": "Largest void (2-D equivalent diameter) is higher than the reference (robust shift 0.0 MAD) → a larger largest void; localized-defect path to be checked, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 4.424169242433777,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   },
+   "pore_frac": {
+    "statement": "Macro-pore area fraction is lower than the reference (robust shift 0.1 MAD) → less segmented 2-D void area; packing/wetting implications need independent validation, direction only.",
+    "gated": false,
+    "band_available": true,
+    "band_abs": 0.033054648668749506,
+    "delta_abs": 0.0010052856248882608,
+    "note": "±5-level band half-width (median of 24 sites with a band, analysis_cache/acquisition_sites.csv (acquisition.threshold_bands; relative band × site fraction)) = 0.0165; |Δ median| = 0.0010 → physics reading withheld (shift inside the band)",
+    "is_driver": false
+   },
+   "bright_frac": {
+    "statement": "Bright-phase (additive) area fraction is higher than the reference (robust shift 0.8 MAD) → more observed additive area; recipe, utilization and mechanical implications need validation, direction only.",
+    "gated": true,
+    "band_available": true,
+    "band_abs": 0.006435095605143465,
+    "delta_abs": 0.006882002809950105,
+    "note": "±5-level band half-width (median of 24 sites with a band, analysis_cache/acquisition_sites.csv (acquisition.threshold_bands; relative band × site fraction)) = 0.0032; |Δ median| = 0.0069 → physics reading printed",
+    "is_driver": false
+   },
+   "bright_d50": {
+    "statement": "Bright-phase area-weighted D50 is higher than the reference (robust shift 1.4 MAD) → coarser additive sections; contact, chemistry and electrolyte access also affect later reaction/mechanics, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 19.58727414091632,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   }
+  },
+  "sanity": {
+   "n_sites": 7,
+   "n_sum_to_one": 7,
+   "max_abs_residual": 1.1102230246251565e-16,
+   "n_porosity_below_typical": 7
+  },
+  "void_geometry": [
+   {
+    "batch": "Batch_1",
+    "sites": 7,
+    "crack_like": 9.0,
+    "delamination_index": 0.8281428571428572,
+    "longest_void_over_thickness": 0.3457967688776282
+   },
+   {
+    "batch": "Batch_3",
+    "sites": 17,
+    "crack_like": 7.0,
+    "delamination_index": 0.6694285714285715,
+    "longest_void_over_thickness": 0.5011097803469023
+   }
+  ],
+  "stereology": [
+   {
+    "batch": "Batch_1",
+    "vol_frac_bright": 0.0608057750759878,
+    "vol_frac_pore": 0.0920687689969604,
+    "mass_frac_additive_if_si": 0.0689032030105796
+   },
+   {
+    "batch": "Batch_3",
+    "vol_frac_bright": 0.0533211511789181,
+    "vol_frac_pore": 0.0930740546218487,
+    "mass_frac_additive_if_si": 0.0607683286574692
+   }
+  ],
+  "fraction_connected_note": "No 2-D top-to-bottom macro-pore path on any of the 24 sites of this pair (fraction_connected = 0); the section tortuosity index is undefined and is not reported.",
+  "caveats": [
+   "2-D sections; no 3-D information",
+   "lengths in px; 25 nm/px is a nominal, unverified export tag",
+   "fresh graphite–Si/SiOx material confirmed by Santosh; exact chemistry, recipe and pixelwise phase labels unspecified",
+   "uncycled specimens; no electrochemical outcomes, cycling-damage, SEI or plating inference"
+  ]
+ },
+ "battery_secondary": [
+  {
+   "kpi": "bright_void_distance_d50_px",
+   "units": "px",
+   "n_ref_usable": 13,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 2,
+   "ref_median": 6.708203932499369,
+   "batch_median": 6.555664084966109,
+   "median_difference": -0.15253984753326044,
+   "ci_low": -0.8079783134951297,
+   "ci_high": 1.0710678118654755,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 2.082157136805721,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 5,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 1.6157731058639087,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "bright_void_distance_d50_px"
+  },
+  {
+   "kpi": "bright_ring_void_frac_16px",
+   "units": "fraction",
+   "n_ref_usable": 13,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 2,
+   "ref_median": 0.0444954525456368,
+   "batch_median": 0.0393873085339168,
+   "median_difference": -0.005108144011719995,
+   "ci_low": -0.0171868920213583,
+   "ci_high": 0.011154246574405204,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.034585436548338996,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 5,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.027163739426936298,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "bright_ring_void_frac_16px"
+  },
+  {
+   "kpi": "local_bright_std_512px",
+   "units": "fraction",
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 0,
+   "n_batch_excluded": 2,
+   "ref_median": 0.0592809081036349,
+   "batch_median": 0.058566292157561,
+   "median_difference": -0.0007146159460739016,
+   "ci_low": -0.014835867595828903,
+   "ci_high": 0.006338641251650207,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 0,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.004133359024166006,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 0,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.0037957266886422952,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_std_512px"
+  },
+  {
+   "kpi": "local_bright_pore_spearman_512px",
+   "units": "correlation",
+   "n_ref_usable": 13,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 2,
+   "ref_median": 0.0257833176812089,
+   "batch_median": -0.0525911380517373,
+   "median_difference": -0.0783744557329462,
+   "ci_low": -0.34120649726218544,
+   "ci_high": 0.3406134434523943,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.0328215992762213,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 5,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.03158054561461332,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_pore_spearman_512px"
+  },
+  {
+   "kpi": "local_bright_std_1024px",
+   "units": "fraction",
+   "n_ref_usable": 17,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 0,
+   "n_batch_excluded": 2,
+   "ref_median": 0.0293427075866869,
+   "batch_median": 0.0312220625099101,
+   "median_difference": 0.001879354923223199,
+   "ci_low": -0.010398364261376098,
+   "ci_high": 0.0076057511273620974,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 0,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.001798054660957199,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 0,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.0004965813070035019,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_std_1024px"
+  },
+  {
+   "kpi": "local_bright_pore_spearman_1024px",
+   "units": "correlation",
+   "n_ref_usable": 13,
+   "n_batch_usable": 5,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 2,
+   "ref_median": -0.3566433566433566,
+   "batch_median": 0.1398601398601399,
+   "median_difference": 0.4965034965034965,
+   "ci_low": 0.0,
+   "ci_high": 1.2995004995004995,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.090909090909091,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 5,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.1258741258741259,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_pore_spearman_1024px"
+  },
+  {
+   "kpi": "long_void_internal_area_frac",
+   "units": "fraction",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0182406312877263,
+   "batch_median": 0.0186054863503843,
+   "median_difference": 0.0003648550626579976,
+   "ci_low": -0.0152677020289981,
+   "ci_high": 0.013285128503164201,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.014098528672032202,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.0087382151620819,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "Internal long-void area fraction"
+  },
+  {
+   "kpi": "long_void_y_centroid_norm",
+   "units": "normalised image row (0–1)",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.4876852345724303,
+   "batch_median": 0.4878357380331644,
+   "median_difference": 0.00015050346073408605,
+   "ci_low": -0.06572728204819883,
+   "ci_high": 0.10185675900449045,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.06585299936016498,
+   "n_ref_sensitivity_incomplete": 1,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.03833136856884822,
+   "n_batch_sensitivity_incomplete": 1,
+   "label": "Internal long-void image-row centroid"
+  }
+ ],
+ "distance": {
+  "label": "Frozen v2 morphology distance model fitted on Batch 3 only (analysis/submission_v2/freeze). This lot's sites were not in the fit, but were explored during development.",
+  "source": "analysis/submission_v2/freeze/evaluation/site_table.csv",
+  "sha256": "ae6e57b0809b03944844e26b072e573e0f0e4aa951b0d3e86f043a74b547db2c",
+  "variant": "morphology kNN (primary OOD variant)",
+  "sites": [
+   {
+    "site": "4ih2ggld",
+    "pct": 100.0,
+    "exceeds": true,
+    "top": "bright_count_per_Mpx(+z=+36.68)|bright_frac(+z=+8.11)|bright_solidity(-z=-7.72)",
+    "nearest": "x7u69zsw(grey_pore)|tuy3zymq(grey_pore)|kbdh4tri(grey_pore)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "5n1q8atc",
+    "pct": 100.0,
+    "exceeds": true,
+    "top": "bright_count_per_Mpx(+z=+39.49)|bright_frac(+z=+13.55)|bright_max_d(+z=+9.85)",
+    "nearest": "x7u69zsw(grey_pore)|cfe5vt7s(ordinary)|tuy3zymq(grey_pore)",
+    "acq_pct": 82.3529411764706
+   },
+   {
+    "site": "f1vzngrs",
+    "pct": 94.11764705882354,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(+z=+6.62)|etd_crack_density_particles(+z=+2.30)|fft_slope(+z=+1.69)",
+    "nearest": "pl8uabbv(ordinary)|kbdh4tri(grey_pore)|71vgq3fw(grey_pore)",
+    "acq_pct": 82.3529411764706
+   },
+   {
+    "site": "ffwubibz",
+    "pct": 29.411764705882355,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(-z=-1.44)|bright_count_per_Mpx(-z=-0.84)|corr_len_px(-z=-1.12)",
+    "nearest": "hawkfj64(ordinary)|x77cy643(ordinary)|kbdh4tri(grey_pore)",
+    "acq_pct": 76.47058823529412
+   },
+   {
+    "site": "fzrt2k6r",
+    "pct": 17.647058823529413,
+    "exceeds": false,
+    "top": "bright_d50(+z=+1.42)|bright_max_d(+z=+2.13)|bright_circ(-z=-1.60)",
+    "nearest": "71vgq3fw(grey_pore)|9luzk4jm(ordinary)|pl8uabbv(ordinary)",
+    "acq_pct": 70.58823529411765
+   },
+   {
+    "site": "iv6g2oq0",
+    "pct": 11.764705882352942,
+    "exceeds": false,
+    "top": "bright_d50(+z=+2.15)|bright_max_d(-z=-1.16)|crack_count_per_Mpx(+z=+1.97)",
+    "nearest": "utfgcjfa(ordinary)|x77cy643(ordinary)|9luzk4jm(ordinary)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "uhdslk0o",
+    "pct": 17.647058823529413,
+    "exceeds": false,
+    "top": "crack_count_per_Mpx(+z=+0.98)|bright_count_per_Mpx(+z=+1.13)|bright_d90(+z=+1.51)",
+    "nearest": "utfgcjfa(ordinary)|cfe5vt7s(ordinary)|xgj4xftb(ordinary)",
+    "acq_pct": 52.94117647058824
+   }
+  ]
+ },
+ "limits": {
+  "usable_n": {
+   "crack_frac": [
+    17,
+    7
+   ],
+   "pore_max_d": [
+    17,
+    7
+   ],
+   "pore_frac": [
+    17,
+    7
+   ],
+   "bright_frac": [
+    17,
+    5
+   ],
+   "bright_d50": [
+    17,
+    5
+   ]
+  },
+  "excluded": {
+   "crack_frac": [
+    0,
+    0
+   ],
+   "pore_max_d": [
+    0,
+    0
+   ],
+   "pore_frac": [
+    0,
+    0
+   ],
+   "bright_frac": [
+    0,
+    2
+   ],
+   "bright_d50": [
+    0,
+    2
+   ]
+  },
+  "fallback": {
+   "crack_frac": [
+    4,
+    0
+   ],
+   "pore_max_d": [
+    4,
+    0
+   ],
+   "pore_frac": [
+    4,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "specimen_independence": "unconfirmed — whether the sites of a batch come from distinct specimens has been asked of the organisers; n counts sites",
+  "reference_heterogeneity": {
+   "grey_pore": [
+    "71vgq3fw",
+    "kbdh4tri",
+    "tuy3zymq",
+    "x7u69zsw"
+   ],
+   "low_contrast": [],
+   "cracked": [
+    "0grcilhi",
+    "hzumfsms",
+    "ufdvpb81"
+   ],
+   "ordinary_n": 10,
+   "source": "data-derived flags (acquisition.derive_flags); cracked = known reference list"
+  },
+  "mdc_range_mad": [
+   1.75,
+   3.0
+  ],
+  "scale": "2-D sections, 25 nm/px nominal (TIFF export tag, unverified); fresh graphite–Si/SiOx confirmed by Santosh, exact chemistry and pixelwise labels unspecified",
+  "seven_v_seven": "not applicable",
+  "notes": [
+   "energy distance and drift score drop batch sites whose bright-phase KPIs are unusable (low-contrast)",
+   "patch-level numbers localise evidence only and never enter n"
+  ]
+ }
+}

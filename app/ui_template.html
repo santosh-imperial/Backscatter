@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Electrode Lot QC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: left rail of lots and evidence views; each lot opens on its decision band, then an evidence workbench
+   where the SEM image is the canvas and the KPI panel annotates it. Rail folds to a top strip on phones. */
+:root {
+  --bg: #f4f5f6; --surface: #ffffff; --sunk: #eceef1; --sel: #e4e8ee; --band: #dfe4ea;
+  --ink: #15191e; --muted: #535b67; --line: #dce0e5; --line-strong: #b9c0c9;
+  --accent: #2f3e52; --accent-ink: #ffffff; --focus: #3d6fb0;
+  --ok: #26704a; --ok-bg: #e4f1e9; --warn: #855700; --warn-bg: #faefd9; --bad: #a8291f; --bad-bg: #fbe6e3;
+  --b3: #1baf7a; --grey-pore: #eda100; --low-contrast: #e34948;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --t-xs: 12px; --t-sm: 13.5px; --t-md: 15px; --t-lg: 17px; --t-xl: 22px; --t-2xl: 28px;
+  --r: 10px; --measure: 70ch; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44;
+  --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
+  --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
+  --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #111316; --surface: #191c20; --sunk: #22262b; --sel: #262c33; --band: #343b44;
+  --ink: #e9ebee; --muted: #a8b0bb; --line: #2d3238; --line-strong: #46505b;
+  --accent: #c9d3e0; --accent-ink: #111316; --focus: #7ea6dc;
+  --ok: #73c596; --ok-bg: #17291f; --warn: #e4b25a; --warn-bg: #30250f; --bad: #f08c82; --bad-bg: #371714; color-scheme: dark }
+* { box-sizing: border-box }
+html, body { margin: 0 }
+html { scrollbar-color: var(--line-strong) var(--bg) }
+body { background: var(--bg); color: var(--ink); font: var(--t-md)/1.55 var(--font-body); caret-color: var(--focus); accent-color: var(--accent) }
+::selection { background: var(--focus); color: var(--accent-ink) }
+a { color: inherit; text-underline-offset: 3px }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px }
+.skip { position: absolute; left: 12px; top: -60px; padding: 8px 12px; background: var(--accent); color: var(--accent-ink); border-radius: 8px; z-index: 5 }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + 12px) }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap }
+.app { display: grid; grid-template-columns: 236px minmax(0, 1fr); min-height: 100vh }
+nav.rail { position: sticky; top: env(safe-area-inset-top, 0px); align-self: start; height: 100vh; overflow-y: auto;
+  border-right: 1px solid var(--line); padding-block: 22px; padding-inline: 16px; display: flex; flex-direction: column; gap: 18px }
+.brand { font-weight: 600; font-size: var(--t-md) }
+.brand small { display: block; font-weight: 400; color: var(--muted); font-size: var(--t-xs) }
+.navgroup { display: flex; flex-direction: column; gap: 2px }
+.navgroup h2 { margin: 0 0 4px; font-size: var(--t-xs); font-weight: 500; color: var(--muted) }
+.navgroup a { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 7px; text-decoration: none; font-size: var(--t-sm) }
+.navgroup a:hover { background: var(--sunk) }
+.navgroup a[aria-current="page"] { background: var(--accent); color: var(--accent-ink) }
+.navgroup a .st { margin-left: auto; font-size: var(--t-xs); color: var(--muted) }
+.navgroup a[aria-current="page"] .st, .navgroup a[aria-current="page"] .st span { color: inherit !important }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; display: inline-block }
+main { padding-block: 26px 80px; padding-inline: 32px; min-width: 0; max-width: 1360px; display: flex; flex-direction: column; gap: 22px }
+h1 { font-size: var(--t-2xl); line-height: 1.15; margin: 0; font-weight: 600; text-wrap: balance; display: flex; align-items: center; gap: 12px; flex-wrap: wrap }
+h2 { font-size: var(--t-lg); margin: 0; font-weight: 600; text-wrap: balance }
+h3 { font-size: var(--t-md); margin: 0; font-weight: 600 }
+p, li, figcaption, dd { max-width: var(--measure) }
+p { margin: 0 }
+.sub { color: var(--muted); font-size: var(--t-md) }
+.note { font-size: var(--t-sm); color: var(--muted) }
+.num, .mono { font-family: var(--font-data); font-variant-numeric: tabular-nums }
+button, input, select { font: inherit; font-size: var(--t-sm) }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0 }
+.head { display: flex; flex-direction: column; gap: 6px }
+.fixture-banner { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn); border-radius: var(--r); padding: 10px 14px; font-weight: 500 }
+/* decision band */
+.decision { padding: 0; gap: 0; overflow: hidden }
+.verdictbox { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line) }
+.verdictbox.ok { background: var(--ok-bg) } .verdictbox.warn { background: var(--warn-bg) } .verdictbox.bad { background: var(--bad-bg) }
+.verdict { font-size: var(--t-xl); font-weight: 600; line-height: 1.25; display: flex; gap: 10px; align-items: center }
+.verdictbox.ok .verdict { color: var(--ok) } .verdictbox.warn .verdict { color: var(--warn) } .verdictbox.bad .verdict { color: var(--bad) }
+.verdictbox .why { font-size: var(--t-md) }
+.verdictbox .note { color: inherit; opacity: 1 }
+.verdictbox.ok .note { color: var(--ok) } .verdictbox.warn .note { color: var(--warn) } .verdictbox.bad .note { color: var(--bad) }
+.lanes { display: flex; flex-direction: column }
+.lane { border-bottom: 1px solid var(--line) }
+.lane:last-child { border-bottom: 0 }
+.lane > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 22px minmax(140px, .8fr) minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, 1.1fr) 18px;
+  gap: 12px; align-items: center; padding: 8px 20px }
+.lane .ln, .lane .ls, .lane .role { color: var(--muted); font-weight: 400 }
+.lane.sets .ln, .lane.sets .ls, .lane.sets .role { color: var(--ink); font-weight: 600 }
+.lane.sets .ico:first-child { color: var(--ink) }
+.linkbtn { background: none; border: 1px solid var(--line-strong); border-radius: 7px; padding: 4px 10px; color: var(--ink); cursor: pointer }
+.linkbtn:hover { background: var(--sunk) }
+.pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px }
+h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none }
+.lane > summary::-webkit-details-marker { display: none }
+.lane > summary:hover { background: var(--sunk) }
+.lane .ln { font-size: var(--t-sm) }
+.lane .ls { font-size: var(--t-sm) }
+.lane .role { font-size: var(--t-sm); color: var(--muted) }
+.lane .kv { font-size: var(--t-sm); font-family: var(--font-data); font-variant-numeric: tabular-nums; color: var(--ink) }
+.lane .chev { transition: transform .15s; color: var(--muted) }
+.lane[open] .chev { transform: rotate(90deg) }
+.lane .body { padding: 0 20px 14px 54px; display: flex; flex-direction: column; gap: 8px }
+.lane ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; font-size: var(--t-sm) }
+.ico { width: 18px; height: 18px; color: var(--muted); flex: none }
+.callout { background: var(--warn-bg); color: var(--warn); border-radius: 8px; padding: 8px 12px; font-size: var(--t-sm) }
+.callout.bad { background: var(--bad-bg); color: var(--bad) }
+.callout.plain { background: var(--sunk); color: var(--ink) }
+details.more > summary { cursor: pointer; font-weight: 500; font-size: var(--t-sm); color: var(--ink) }
+details.more[open] > summary { margin-bottom: 10px }
+/* workbench */
+.bench { display: flex; flex-direction: column; gap: 0; padding: 0; overflow: hidden }
+.stage { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; border-bottom: 1px solid var(--line); min-width: 0 }
+.panel { padding: 18px 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; min-width: 0; background: var(--surface); align-items: start }
+.controls { display: flex; flex-direction: column; gap: 8px }
+.ctlrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.ctlrow > .lab { font-size: var(--t-xs); color: var(--muted); min-width: 64px }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; flex-wrap: wrap }
+.seg button { font: inherit; font-size: var(--t-sm); padding: 5px 11px; background: var(--surface); color: var(--ink); border: 0; border-right: 1px solid var(--line); cursor: pointer }
+.seg button:last-child { border-right: 0 }
+.seg button[aria-checked="true"] { background: var(--accent); color: var(--accent-ink) }
+.pills { display: flex; flex-wrap: wrap; gap: 6px }
+.pills button { font: inherit; font-family: var(--font-data); font-size: var(--t-xs); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; display: inline-flex; gap: 6px; align-items: center }
+.pills button[aria-checked="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+.flagdot { width: 7px; height: 7px; border-radius: 50%; background: var(--low-contrast); display: inline-block }
+figure { margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0 }
+.imgwrap { position: relative; line-height: 0 }
+.imgwrap img { width: 100%; height: auto; display: block; border-radius: 6px; border: 1px solid var(--line); background: #000 }
+.imgtag { position: absolute; left: 8px; top: 8px; line-height: 1.3; font-size: var(--t-xs); padding: 3px 8px; border-radius: 6px; background: rgba(10, 12, 14, .78); color: #f2f4f6; font-family: var(--font-data) }
+.cropbox { position: absolute; border: 2px solid #ffd166; border-radius: 3px; box-shadow: 0 0 0 1px rgba(0,0,0,.55); background: none; padding: 0; cursor: zoom-in }
+.cropbox:focus-visible { outline-offset: 1px }
+figcaption { font-size: var(--t-sm); color: var(--muted) }
+.figlab { font-size: var(--t-sm); font-weight: 600; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap }
+.figlab .note { font-weight: 400 }
+.kpis { display: flex; flex-direction: column; gap: 2px }
+.kpirow { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nm val" "plot plot"; gap: 2px 10px; background: none; border: 1px solid transparent;
+  border-radius: 8px; padding: 6px 8px; text-align: left; font: inherit; color: inherit; cursor: pointer }
+.kpirow:hover { background: var(--sunk) }
+.kpirow[aria-pressed="true"] { background: var(--sel); border-color: var(--line-strong) }
+.kpirow .nm { grid-area: nm; font-size: var(--t-sm); font-weight: 500 }
+.kpirow .val { grid-area: val; font-size: var(--t-xs); text-align: right; color: var(--muted) }
+.kpirow svg { grid-area: plot }
+.kpirow .drv { color: var(--warn); font-weight: 600 }
+svg text { fill: var(--muted); font-family: var(--font-data); font-size: 11px }
+.strip { display: flex; flex-direction: column; gap: 4px }
+.srow { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px; align-items: center }
+.slab { font-size: var(--t-xs); color: var(--muted) }
+.strack { position: relative; height: 34px; border-radius: 6px; background: var(--sunk) }
+.strack.axis { height: 18px; background: none }
+.tick { position: absolute; top: 0; bottom: 0; border-left: 1px dashed var(--line-strong) }
+.ticklab { position: absolute; top: 0; transform: translateX(-50%); font-size: 11px; color: var(--muted); font-family: var(--font-data) }
+.med { position: absolute; top: 4px; bottom: 4px; width: 3px; margin-left: -1.5px; border-radius: 2px }
+.pt { position: absolute; width: 12px; height: 12px; margin-left: -6px; margin-top: -6px; border-radius: 50%; padding: 0; border: 0 }
+button.pt { width: 24px; height: 24px; margin-left: -12px; margin-top: -12px; background: none !important; cursor: pointer }
+button.pt::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; background: var(--c) }
+button.pt[aria-checked="true"]::before { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--ink) }
+button.pt.ex::before { background: none; border: 2px solid var(--low-contrast) }
+.pt.ring { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--b3) }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: var(--t-xs); color: var(--muted) }
+.legend span { display: inline-flex; align-items: center; gap: 6px }
+.tw { overflow-x: auto }
+table { border-collapse: collapse; width: 100%; font-size: var(--t-sm) }
+th, td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top }
+th { color: var(--muted); font-weight: 500; font-size: var(--t-xs) }
+td.n, th.n { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; white-space: nowrap }
+tr.hl td { background: var(--sunk) }
+.ste { font-size: var(--t-md); display: flex; flex-direction: column; gap: 10px }
+.ste .dir { font-weight: 500 }
+.kpiste { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 8px 16px; font-size: var(--t-sm); margin: 0 }
+.kpiste dt { font-weight: 500 } .kpiste dd { margin: 0 }
+.samples { display: flex; flex-direction: column; gap: 18px }
+.scores { display: flex; flex-direction: column; gap: 6px }
+.bar { display: grid; grid-template-columns: 64px minmax(0, 1fr) 52px; gap: 8px; align-items: center; font-size: var(--t-sm) }
+.track { height: 10px; background: var(--sunk); border-radius: 5px; overflow: hidden }
+.fill { height: 100%; border-radius: 5px; display: block }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px }
+.fact { background: var(--sunk); border-radius: 8px; padding: 8px 11px; display: flex; flex-direction: column; gap: 2px; min-width: 0 }
+.fact .k { font-size: var(--t-xs); color: var(--muted) }
+.fact .v { font-size: var(--t-md); font-weight: 500 }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px }
+.lead { font-size: var(--t-lg); max-width: var(--measure) }
+.wf { display: flex; flex-direction: column; gap: 10px }
+.wfrow { display: flex; flex-direction: column; gap: 3px }
+.wfhead { display: flex; justify-content: space-between; gap: 10px; font-size: var(--t-sm) }
+.wfbar { position: relative; height: 10px; display: block; background: var(--sunk); border-radius: 3px }
+.wfbar .z { position: absolute; left: 50%; top: 0; bottom: 0; border-left: 1px solid var(--muted) }
+.wfbar .b { position: absolute; top: 0; height: 10px; border-radius: 3px }
+footer.prov { font-size: var(--t-xs); color: var(--muted); border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 4px }
+footer.prov p { max-width: 110ch }
+@media (max-width: 1100px) { .panel { grid-template-columns: minmax(0, 1fr) } }
+@media (max-width: 900px) {
+  .app { grid-template-columns: minmax(0, 1fr) }
+  nav.rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); flex-direction: row; overflow-x: auto; gap: 16px; padding-block: 12px;
+    mask-image: linear-gradient(90deg, #000 85%, transparent); -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent) }
+  .navgroup { flex-direction: row; flex-wrap: nowrap; align-items: center } .navgroup h2 { display: none } .brand small { display: none }
+  .navgroup a { white-space: nowrap }
+  main { padding-inline: 16px; gap: 18px }
+  h1 { font-size: var(--t-xl) }
+  .lane > summary { grid-template-columns: 22px minmax(0, 1fr) 18px; padding-inline: 14px }
+  .lane > summary .ls, .lane > summary .role { grid-column: 2 / 3 }
+  .lane > summary .kv { display: none }
+  .pair { grid-template-columns: minmax(0, 1fr) }
+  .lane .body { padding-left: 48px; padding-right: 14px }
+  .verdictbox, .stage, .panel { padding-inline: 14px }
+  .split, .kpiste { grid-template-columns: minmax(0, 1fr) }
+}
+@media (prefers-reduced-motion: reduce) { .lane .chev { transition: none } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="app">
+  <nav class="rail" id="nav" aria-label="Views"></nav>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div class="sr" aria-live="polite" id="live"></div>
+<script>
+const DATA = /*__DATA__*/null;
+const IMG = /*__IMAGES__*/null;
+const ST = {};
+const REG = {};
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const isNum = x => typeof x === "number" && isFinite(x);
+const f = (x, nd = 2) => isNum(x) ? x.toFixed(nd) : "n/a";
+const fs = (x, nd = 2) => isNum(x) ? (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(nd) : "n/a";
+const fp = p => !isNum(p) ? "n/a" : p < 0.001 ? "< 0.001" : p.toFixed(3);
+const sig = (x, n = 3) => !isNum(x) ? "n/a" : Math.abs(x) >= 100 ? x.toFixed(0) : Number(x.toPrecision(n)).toString();
+const bcol = b => (DATA.batch_colors[b] || DATA.unseen_color);
+const bname = b => String(b || "").replace(/^Batch_(\w+)$/, "Batch $1");
+const METHOD = {monte_carlo: "Monte Carlo", exact: "exact enumeration"};
+const KLAB = {crack_frac: "Crack-like void area fraction", pore_max_d: "Largest void", pore_frac: "Macro-pore area fraction",
+  bright_frac: "Bright-phase area fraction", bright_d50: "Bright-phase D50"};
+const KUNIT = {crack_frac: "fraction", pore_max_d: "px", pore_frac: "fraction", bright_frac: "fraction", bright_d50: "px"};
+const KVIEW = {crack_frac: "voids", pore_max_d: "voids", pore_frac: "voids", bright_frac: "bright", bright_d50: "bright"};
+const VIEWS = [["voids", "Voids"], ["bright", "Bright phase"], ["etd", "ETD"], ["inlens", "Inlens"]];
+const VIEWCAP = {
+  voids: "BSE. Red: crack-like voids, pore components with a major axis over 500 px. These are the pixels counted in crack_frac.",
+  bright: "BSE. Yellow: outlines of bright-phase particles of 50 px area or more, the pixels counted in bright_frac and bright_d50. A fragmented mask shows as speckled fill.",
+  etd: "ETD (secondary electrons), same field. Edge relief only; intensity is never a material KPI.",
+  inlens: "Inlens, same field. Its brightness is dominated by charging; it is never a material KPI."};
+const VIEWALT = {voids: "BSE image with crack-like voids painted red", bright: "BSE image with bright-phase particles outlined in yellow",
+  etd: "ETD secondary-electron image", inlens: "Inlens image"};
+const FRAMECAP = " Bright edge bands removed. Lengths in px; 25 nm/px is a nominal, unverified export tag.";
+const GROUPLAB = {ordinary: "Typical", grey_pore: "Grey-pore", cracked: "Cracked"};
+const PRIM = () => DATA.primary_kpis;
+const REVIEW = {unreviewed: "pending", confirmed: "confirmed", refuted: "refuted"};
+const sent = t => { const x = cap(plain(t)).trim(); return /[.!?]$/.test(x) ? x : x + "."; };
+const cap = s => s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
+const plain = s => String(s || "").replace(/\bBatch_(\w+)/g, "Batch $1").replace(/working reference/g, "approved baseline").replace(/ordinary-reference/g, "ordinary-baseline")
+  .replace(/the reference null/g, "the baseline null").replace(/\bthis batch\b/g, "this lot").replace(/clean batches/g, "lots drawn from the baseline").replace(/see MDC for/g, "see the detectable shift for");
+const ICON = {
+  ok: '<path d="M5 12.5l4.2 4.2L19 7"/>',
+  warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.6v.1"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/>',
+  bad: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
+  chev: '<path d="M9 6l6 6-6 6"/>'};
+const icon = (k, cls = "ico") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+const topFeat = t => String(t || "").split("|").slice(0, 2).map(x => {
+  const m = x.match(/^(.*?)\(([+-]?)z=([-+]?[\d.]+)\)$/); return m ? `${esc(m[1])} z ${fs(+m[3], 1)}` : esc(x); }).join(", ");
+const flagList = s => [s.bright_low_contrast && "low contrast", s.grey_pore && "grey-pore", s.contrast_stretched_bse && "contrast stretched",
+  s.raised_black_level && "raised black level", s.cracked && "cracked (known)"].filter(Boolean);
+const hasFlag = s => s.bright_low_contrast || s.grey_pore || s.contrast_stretched_bse || s.raised_black_level;
+const median = a => { const b = a.filter(isNum).sort((p, q) => p - q); const m = b.length >> 1; return b.length ? (b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2) : NaN; };
+const announce = t => { const el = document.getElementById("live"); el.textContent = ""; setTimeout(() => { el.textContent = t; }, 30); };
+
+/* ------------------------------------------------------------------ navigation */
+function nav(active) {
+  const a = (id, inner) => `<a href="#${id}"${id === active ? ' aria-current="page"' : ""}>${inner}</a>`;
+  const b = DATA.baseline;
+  const st = l => `<span style="color:var(--${l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject"}[l.verdict_state])}</span>`;
+  const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
+  let h = `<div class="brand">Electrode Lot QC<small>SEM cross-sections against the approved baseline</small></div>`;
+  h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:${b.color}"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
+  if (real.length) h += `<div class="navgroup"><h2>Incoming lots</h2>${real.map(l => a(l.id, `<span class="dot" style="background:${l.color}"></span>${esc(bname(l.lot))}<span class="st">${st(l)}</span>`)).join("")}</div>`;
+  if (DATA.samplesets.length) h += `<div class="navgroup"><h2>Sample sets</h2>${DATA.samplesets.map(s => a(s.id, esc(s.name))).join("")}</div>`;
+  h += `<div class="navgroup"><h2>Evidence</h2>${a("track", "Track record")}${a("method", "Method and provenance")}</div>`;
+  if (fx.length) h += `<div class="navgroup"><h2>Layout fixtures, not real data</h2>${fx.map(l => a(l.id, `${esc(l.lot)}<span class="st">${st(l)}</span>`)).join("")}</div>`;
+  document.getElementById("nav").innerHTML = h;
+}
+
+/* ------------------------------------------------------------------ small charts */
+function niceTicks(lo, hi, n = 4) {
+  if (!(hi > lo)) hi = lo + 1;
+  const step0 = (hi - lo) / n, mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= step0) || step0;
+  const t = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-12; v += step) t.push(+v.toPrecision(10));
+  return t;
+}
+function shiftSVG(r, mdc) {
+  const W = 420, H = 26, L = -4, R = 4, x = v => 10 + (Math.max(L, Math.min(R, v)) - L) / (R - L) * (W - 20);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" aria-hidden="true">`;
+  if (isNum(mdc)) s += `<rect x="${x(-mdc)}" y="5" width="${x(mdc) - x(-mdc)}" height="16" rx="3" fill="var(--band)"/>`;
+  s += `<line x1="${x(0)}" x2="${x(0)}" y1="2" y2="24" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 2"/>`;
+  if (isNum(r.ci_low) && isNum(r.ci_high)) {
+    s += `<line x1="${x(r.ci_low)}" x2="${x(r.ci_high)}" y1="13" y2="13" stroke="var(--ink)" stroke-width="1.5"/>`;
+    if (r.ci_high > R) s += `<path d="M${x(R)} 9 L${x(R) + 6} 13 L${x(R)} 17 Z" fill="var(--ink)"/>`;
+    if (r.ci_low < L) s += `<path d="M${x(L)} 9 L${x(L) - 6} 13 L${x(L)} 17 Z" fill="var(--ink)"/>`;
+  }
+  if (isNum(r.shift_mad)) s += `<circle cx="${x(r.shift_mad)}" cy="13" r="5" fill="var(--ink)"/>`;
+  return s + "</svg>";
+}
+function shiftAxis() {
+  const W = 420, x = v => 10 + (v + 4) / 8 * (W - 20);
+  return `<svg viewBox="0 0 ${W} 14" width="100%" height="14" aria-hidden="true">${[-4, -2, 0, 2, 4].map(v =>
+    `<text x="${x(v)}" y="11" text-anchor="middle">${v > 0 ? "+" + v : v}</text>`).join("")}</svg>`;
+}
+/* Strip chart as HTML so lot dots are real, keyboard-reachable controls. */
+function strip(kpi, ref, lot, opts = {}) {
+  const ex = opts.excluded || [];
+  const vals = ref.map(r => r[kpi]).concat((lot || []).map(r => r[kpi])).filter(isNum);
+  if (!vals.length) return '<p class="note">No values.</p>';
+  let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * 0.07 || Math.abs(hi) * 0.1 || 1; lo -= pad; hi += pad;
+  const x = v => ((v - lo) / (hi - lo) * 100).toFixed(2) + "%";
+  const ticks = niceTicks(lo, hi, 4).filter(t => t >= lo && t <= hi);
+  const tickLines = ticks.map(t => `<span class="tick" style="left:${x(t)}"></span>`).join("");
+  const b3 = bcol(DATA.baseline.reference);
+  const rv = ref.filter(r => isNum(r[kpi]));
+  const jit = i => 17 + ((i * 37) % 11 - 5) * 1.6;
+  let h = `<div class="strip">`;
+  h += `<div class="srow"><span class="slab">${esc(bname(DATA.baseline.reference))} (n ${rv.length})</span><div class="strack" aria-hidden="true">${tickLines}`;
+  rv.forEach((r, i) => { const c = r.group === "grey_pore" ? "var(--grey-pore)" : b3;
+    h += `<span class="pt${r.group === "cracked" ? " ring" : ""}" style="left:${x(r[kpi])};top:${jit(i)}px;background:${c}" title="${esc(r.site)} ${sig(r[kpi], 4)} (${esc(r.group)})"></span>`; });
+  const mr = median(rv.map(r => r[kpi]));
+  if (isNum(mr)) h += `<span class="med" style="left:${x(mr)};background:${b3}"></span>`;
+  h += `</div></div>`;
+  if (lot) {
+    const use = lot.filter(r => isNum(r[kpi]) && !ex.includes(r.site));
+    h += `<div class="srow"><span class="slab">This lot (n ${use.length})</span><div class="strack" role="radiogroup" aria-label="Lot sites for ${esc(kpi)}">${tickLines}`;
+    lot.filter(r => isNum(r[kpi])).forEach((r, i) => { const e = ex.includes(r.site), sel = r.site === opts.selected;
+      h += `<button class="pt${e ? " ex" : ""}" role="radio" aria-checked="${sel}" tabindex="${sel ? 0 : -1}" data-act="site" data-key="${esc(opts.key)}" data-val="${esc(r.site)}"
+        style="left:${x(r[kpi])};top:${jit(i)}px;--c:${opts.color}" aria-label="${esc(r.site)}: ${sig(r[kpi], 4)}${e ? ", excluded by quality flag" : ""}" title="${esc(r.site)} ${sig(r[kpi], 4)}"></button>`; });
+    const ml = median(use.map(r => r[kpi]));
+    if (isNum(ml)) h += `<span class="med" style="left:${x(ml)};background:${opts.color}"></span>`;
+    h += `</div></div>`;
+  }
+  h += `<div class="srow" aria-hidden="true"><span></span><div class="strack axis">${ticks.map(t => `<span class="ticklab" style="left:${x(t)}">${sig(t)}</span>`).join("")}</div></div></div>`;
+  return h;
+}
+function stripLegend(color, withLot) {
+  const b3 = bcol(DATA.baseline.reference);
+  const d = (st) => `<span class="pt" style="position:static;margin:0;${st}"></span>`;
+  return `<div class="legend"><span>${d(`background:${b3}`)}baseline site</span><span>${d("background:var(--grey-pore)")}grey-pore group (fallback threshold)</span>
+    <span>${d(`background:${b3};box-shadow:0 0 0 2px var(--surface),0 0 0 3.5px ${b3}`)}cracked baseline site</span>
+    ${withLot ? `<span>${d(`background:${color}`)}lot site (select to view)</span><span>${d("background:none;border:2px solid var(--low-contrast)")}excluded by quality flag</span>` : ""}
+    <span><span style="width:3px;height:12px;background:${color || b3};display:inline-block;border-radius:2px"></span>median</span></div>`;
+}
+function valuesTable(kpi, ref, lot, ex) {
+  const rows = ref.filter(r => isNum(r[kpi])).map(r => `<tr><td>${esc(bname(DATA.baseline.reference))}</td><td class="mono">${esc(r.site)}</td><td>${esc(r.group)}</td><td class="n">${sig(r[kpi], 4)}</td></tr>`)
+    .concat((lot || []).filter(r => isNum(r[kpi])).map(r => `<tr><td>this lot</td><td class="mono">${esc(r.site)}</td><td>${(ex || []).includes(r.site) ? "excluded by quality flag" : flagList(r).join(", ") || "ordinary"}</td><td class="n">${sig(r[kpi], 4)}</td></tr>`));
+  return `<details class="more"><summary>Site values as a table</summary><div class="tw"><table><thead><tr><th>Group</th><th>Site</th><th>Notes</th><th class="n">${esc(kpi)}</th></tr></thead><tbody>${rows.join("")}</tbody></table></div></details>`;
+}
+
+/* ------------------------------------------------------------------ shared image figure */
+function radios(label, act, key, opts, cur, cls) {
+  return `<div class="${cls}" role="radiogroup" aria-label="${esc(label)}">${opts.map(([v, t, extra]) =>
+    `<button role="radio" aria-checked="${v === cur}" tabindex="${v === cur ? 0 : -1}" data-act="${act}" data-key="${esc(key)}" data-val="${esc(v)}">${t}${extra || ""}</button>`).join("")}</div>`;
+}
+function figure(views, view, id, tag, caption, boxes) {
+  const v = views[view];
+  return `<figure><div class="imgwrap"><img src="${IMG[v.key]}" width="${v.w}" height="${v.h}" alt="${esc(id)}: ${VIEWALT[view]}">
+    ${tag ? `<span class="imgtag">${tag}</span>` : ""}${boxes || ""}</div>${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
+}
+
+/* ------------------------------------------------------------------ lot view */
+function laneModel(l) {
+  const prim = l.compare.filter(r => r.is_primary);
+  const mdcs = PRIM().map(k => l.mdc[k] && l.mdc[k].feasible ? l.mdc[k].mdc_mad : null).filter(isNum);
+  const mdcTxt = mdcs.length ? `${f(Math.min(...mdcs), 2)}–${f(Math.max(...mdcs), 2)} MAD` : "not available";
+  const nearest = prim.filter(r => isNum(r.p_holm)).sort((a, b) => a.p_holm - b.p_holm)[0];
+  const drift = l.outcome.drift_alert;
+  const lf = l.local_flags || [];
+  const loc = l.outcome.localized;
+  const LOC = {none: ["No site beyond the baseline range", "ok", "Does not change the action."],
+    flag: ["Evidence flag only", "info", "Does not change the action: below the escalation rule."],
+    review_routed: ["Routed to image review", "info", "Does not change the action until a reviewer confirms the crop."],
+    pending_review: ["Image review pending", "warn", "Sets the action: investigate until the crop is reviewed."],
+    credible: ["Credible localized anomaly", "bad", "Sets the action: localized anomaly."]}[loc];
+  if (!LOC) throw new Error("unknown localized status " + loc);
+  const ds = l.distance.sites.slice().sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
+  const exc = ds.filter(d => d.exceeds);
+  const medPct = median(ds.map(d => d.pct));
+  const siteBy = Object.fromEntries(l.sites.map(s => [s.site, s]));
+  const excFlagged = exc.filter(d => siteBy[d.site] && (siteBy[d.site].bright_low_contrast || siteBy[d.site].grey_pore));
+  const flagged = l.sites.filter(hasFlag);
+  const acq = l.acquisition;
+  const nFlag = k => l.sites.filter(s => s[k]).length;
+  const exK = Object.entries(l.excluded).filter(([k, v]) => v.length);
+  const acqPct = median(l.distance.sites.map(d => d.acq_pct));
+  const adjAlone = !acq.error && isNum(acq.adjusted_p) && acq.adjusted_p < 0.05 && isNum(acq.unadjusted_p) && acq.unadjusted_p >= 0.05;
+  const attOff = acq.error || (acq.attenuation && acq.attenuation.available === false);
+  const exSite = exK.length ? {kpi: exK[0][0], site: exK[0][1][0]} : (flagged[0] ? {site: flagged[0].site} : null);
+  const lanes = [
+    {name: "Defect-relevant drift", state: drift ? "Lot-wide drift detected" : "No drift detected", icon: drift ? "warn" : "ok",
+     role: drift ? "Sets the action: lot-wide drift." : "Does not change the action: no KPI passes the drift rule.",
+     kv: `energy p ${fp(l.energy.p)} · detectable ${mdcTxt}`, focus: {kpi: l.drivers[0] || (nearest && nearest.kpi)},
+     body: `<ul><li>Energy distance on the 5 primary KPIs: p = <span class="num">${fp(l.energy.p)}</span> (${esc(METHOD[l.energy.method] || l.energy.method || "permutation")}, ${l.energy.n_perm} permutations).</li>
+       <li>Drivers: ${l.drivers.length ? l.drivers.map(esc).join(", ") : "none. A KPI drives the verdict at Holm p below 0.05 with a shift of 1 MAD or more."}</li>
+       ${nearest ? `<li>Closest to a driver: <span class="mono">${esc(nearest.kpi)}</span>, shift <span class="num">${fs(nearest.shift_mad)}</span> MAD, Holm p <span class="num">${fp(nearest.p_holm)}</span>.</li>` : ""}
+       <li>Smallest shift this lot size detects with 80 % power: <span class="num">${mdcTxt}</span>, by KPI.</li></ul>
+       <p class="note">Not detected is not the same as unchanged. Shifts smaller than the detectable change can be present.</p>`},
+    {name: "Localized anomalies", state: LOC[0], icon: LOC[1], role: LOC[2], focus: lf.length ? {kpi: lf[0].kpi, site: lf[0].site, crop: cropIndex(l, lf[0].site, lf[0].kpi)} : null,
+     kv: lf.length ? `${lf.length} flag${lf.length > 1 ? "s" : ""} · largest ${f(Math.max(...lf.map(x => x.margin_in_mad)), 2)} MAD` : "no site above the maximum",
+     body: lf.length ? `<ul>${lf.map(x => `<li><span class="mono">${esc(x.site)}</span>: ${esc(x.kpi)} is <span class="num">${f(x.margin_in_mad, 2)}</span> MAD above the ordinary-baseline maximum. Review: ${esc(REVIEW[x.review_status] || x.review_status)}${x.measurement_reliable === false ? "; measurement unreliable" : ""}.</li>`).join("")}</ul>
+       <p class="note">Escalation needs one site 3 MAD or more beyond the maximum, or two sites or both KPIs 2 MAD or more beyond it.${l.local[lf[0].kpi] && isNum(l.local[lf[0].kpi].iid_flag_probability) ? ` A lot of ${l.sites.length} sites drawn from the baseline itself shows at least one such site with probability ${f(l.local[lf[0].kpi].iid_flag_probability, 2)}.` : ""} Exceeding the maximum is an evidence flag, not a defect call.</p>`
+       : `<p class="note">No site exceeds the ordinary-baseline maximum on crack_frac or pore_max_d.</p>`},
+    {name: "Distance from baseline", state: `${exc.length} of ${ds.length} sites beyond the observed range`, icon: "info",
+     role: "Context only: not an input to the action.", focus: ds[0] ? {site: ds[0].site} : null,
+     kv: `median percentile ${f(medPct, 0)}`,
+     body: `<ul>${ds.slice(0, 3).map(d => `<li><span class="mono">${esc(d.site)}</span>: percentile <span class="num">${f(d.pct, 0)}</span>${d.exceeds ? ", beyond range" : ""}. Top features: <span class="mono">${topFeat(d.top)}</span>.</li>`).join("")}</ul>
+       ${excFlagged.length ? `<p class="callout">${excFlagged.length === exc.length ? "Every" : `${excFlagged.length} of the`} site beyond range carries a quality flag (${excFlagged.map(d => esc(d.site)).join(", ")}). Their bright-phase masks are unreliable, so read this distance with care.</p>` : ""}
+       <p class="note">A descriptive rank among the ${l.meta.n_sites_ref} baseline sites, each left out in turn (resolution 1/${l.meta.n_sites_ref + 1}). It is not a membership probability. ${esc(String(l.distance.label || "").replace(/\s*\([^)]*\/[^)]*\)/g, ""))}</p>`},
+    {name: "Image quality and acquisition", state: flagged.length ? `${flagged.length} of ${l.sites.length} sites flagged` : "No quality flags", icon: l.outcome.quality_abstention ? "bad" : "info",
+     role: l.outcome.quality_abstention ? "Sets the action: quality abstention." : attOff ? "Decides which values count. Acquisition views missing, so a drift reject is withheld." : "Decides which values count; does not change the action.",
+     kv: exK.length ? `${exK.length} KPI${exK.length > 1 ? "s" : ""} with excluded sites` : "no value excluded", focus: exSite,
+     body: `<ul><li>Low contrast <span class="num">${nFlag("bright_low_contrast")}</span>, grey-pore <span class="num">${nFlag("grey_pore")}</span>, contrast stretched <span class="num">${nFlag("contrast_stretched_bse")}</span>, raised black level <span class="num">${nFlag("raised_black_level")}</span>.</li>
+       <li>${exK.length ? exK.map(([k, v]) => `${esc(k)} excludes ${v.map(esc).join(", ")}`).join("; ") + "." : "No KPI value is excluded."}</li>
+       ${acq.error ? `<li>Acquisition views not available: ${esc(acq.error)}.</li>` : `<li>Drift test under three views: unadjusted p <span class="num">${fp(acq.unadjusted_p)}</span>, ordinary sites only p <span class="num">${fp(acq.stratified_p)}</span>, covariate-adjusted p <span class="num">${fp(acq.adjusted_p)}</span>.</li>`}
+       ${isNum(acqPct) ? `<li>Session fingerprint percentile among baseline sites: median <span class="num">${f(acqPct, 0)}</span>.</li>` : ""}</ul>
+       ${adjAlone ? `<p class="callout">Only the covariate-adjusted view falls below 0.05. Adjustment on a mixed baseline can create signal, and the frozen rules do not use this view to raise drift. Read it as a prompt to check session metadata, not as drift.</p>` : ""}
+       <p class="note">A sensitivity analysis. A difference between views does not measure an instrument share. Flags come from this lot's own images.</p>`},
+  ];
+  lanes.forEach(ln => { ln.sets = /^Sets the action/.test(ln.role); });
+  return {lanes, nearest};
+}
+
+function excludedText(l) {
+  const by = {};
+  Object.entries(l.excluded).forEach(([k, v]) => v.forEach(s => { (by[s] = by[s] || []).push(k); }));
+  const sites = Object.fromEntries(l.sites.map(s => [s.site, s]));
+  return Object.entries(by).map(([s, ks]) => `${s} (${flagList(sites[s] || {}).join(", ") || "quality flag"}): ${ks.join(", ")} excluded`).join("; ");
+}
+function lotView(l) {
+  const {lanes, nearest} = laneModel(l);
+  const exTxt = excludedText(l);
+  let h = l.fixture ? `<p class="fixture-banner" role="note">Layout fixture. These values are altered copies of a known lot to show this verdict state. They are not results.</p>` : "";
+  h += `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:${l.color};width:14px;height:14px"></span>${esc(bname(l.lot))}</h1>
+    <p class="sub">Incoming lot against approved baseline ${esc(bname(l.reference))}. ${l.sites.length} sites imaged, baseline ${l.meta.n_sites_ref} sites.</p>
+    <p class="note">${exTxt ? `Excluded by quality flags: <span class="mono">${esc(exTxt)}</span>.` : "Every lot site counts for every primary KPI."}</p></header>`;
+  h += `<section class="card decision" aria-labelledby="act-h">
+    <div class="verdictbox ${l.verdict_state}"><h2 class="sr" id="act-h">Recommended action</h2>
+      <div class="verdict">${icon({ok: "ok", warn: "warn", bad: "bad"}[l.verdict_state], "ico")}${esc(l.verdict_label)}</div>
+      <p class="why">${esc(sent(l.next_action))}</p>
+      <p class="note">Decision stability ${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs} leave-one-site-out re-runs. Stability is not a probability of being right.</p>
+      <details class="more"><summary>Details: why, and what would change it</summary><div class="ste">
+        <p>${esc(sent(l.reason))}</p>${l.what_would_move_it ? `<p>${esc(sent(l.what_would_move_it))}</p>` : ""}
+        <p class="note">No equivalence test against agreed tolerances has been run. Frozen verdict string: <span class="mono">${esc(l.verdict)}</span>.</p></div></details>
+    </div>
+    <div class="lanes">${lanes.map((ln, i) => `<details class="lane${ln.sets ? " sets" : ""}" id="lane-${i}"><summary>${icon(ln.icon)}
+        <span class="ln">${ln.name}<span class="sr">. </span></span><span class="ls">${esc(ln.state)}<span class="sr">. </span></span>
+        <span class="role">${esc(ln.role)}<span class="sr"> </span></span><span class="kv">${ln.kv}</span>${icon("chev", "ico chev")}</summary>
+        <div class="body">${ln.body}${ln.focus ? `<p><button class="linkbtn" data-act="lane" data-key="${esc(l.id)}" data-val="${i}">Show this on the image</button></p>` : ""}</div></details>`).join("")}</div>
+  </section>`;
+  h += `<section class="card bench" aria-labelledby="bench-h" id="wb-${l.id}"></section>`;
+  REG["wb-" + l.id] = () => workbench(l, nearest, lanes);
+  h += cellPanel(l);
+  h += footer([`lot exported ${esc(l.exported_utc)}`, `verdict "${esc(l.verdict)}"`, `thresholds ${esc(l.meta.thresholds_hash)}`, `config ${esc(l.meta.config_hash)}`,
+    `feature version ${esc(l.meta.feature_version)}`, `code ${esc(l.meta.git_describe)}`, `distance table ${esc(l.distance.source)} (${esc(String(l.distance.sha256).slice(0, 12))})`]);
+  return h;
+}
+
+function cropIndex(l, site, kpi) { return l.crops.findIndex(c => c.site === site && (!kpi || c.kpi === kpi)); }
+function lotState(l, nearest, lanes) {
+  const prim = l.compare.filter(r => r.is_primary);
+  const st = ST[l.id] = ST[l.id] || {};
+  if (!st.kpi || !PRIM().includes(st.kpi)) {
+    const loc = lanes && lanes[1].focus && l.outcome.localized !== "none" ? lanes[1].focus : null;
+    if (loc) { st.kpi = loc.kpi; st.site = loc.site; st.crop = loc.crop; }
+    else st.kpi = (l.drivers && l.drivers[0]) || (nearest && nearest.kpi) || PRIM()[0];
+  }
+  if (!st.site || !l.sites.some(s => s.site === st.site)) st.site = extremeSite(l, st.kpi);
+  if (!st.view || !VIEWS.some(v => v[0] === st.view)) st.view = KVIEW[st.kpi];
+  if (!st.cmp || !DATA.baseline.examples.some(e => e.group === st.cmp)) st.cmp = "ordinary";
+  return {st, prim};
+}
+function extremeSite(l, kpi) {
+  const r = l.compare.find(c => c.kpi === kpi), ex = l.excluded[kpi] || [];
+  const c = l.sites.filter(s => isNum(s[kpi]) && !ex.includes(s.site)).sort((a, b) => Math.abs(b[kpi] - r.ref_median) - Math.abs(a[kpi] - r.ref_median));
+  return (c[0] || l.sites[0]).site;
+}
+function workbench(l, nearest, lanes) {
+  const {st, prim} = lotState(l, nearest, lanes);
+  const site = l.sites.find(s => s.site === st.site);
+  const sel = prim.find(r => r.kpi === st.kpi);
+  const lf = l.local_flags || [];
+  const ex = l.excluded[st.kpi] || [];
+  const examples = DATA.baseline.examples;
+  const cmp = examples.find(e => e.group === st.cmp) || examples[0];
+  const val = site[st.kpi];
+  const crops = l.crops.map((c, i) => ({...c, i})).filter(c => c.site === site.site);
+  const H = site.images.trim_rows[1] - site.images.trim_rows[0], W = site.images.shape[1];
+  const boxes = crops.map(c => `<button class="cropbox" data-act="crop" data-key="${esc(l.id)}" data-val="${c.i}" aria-label="Open the full-resolution crop for ${esc(c.kpi)} at ${esc(c.site)}"
+      style="left:${(c.cols[0] / W * 100).toFixed(2)}%;top:${(c.rows_trimmed_frame[0] / H * 100).toFixed(2)}%;width:${((c.cols[1] - c.cols[0]) / W * 100).toFixed(2)}%;height:${((c.rows_trimmed_frame[1] - c.rows_trimmed_frame[0]) / H * 100).toFixed(2)}%"></button>`).join("");
+  const siteOpts = l.sites.map(s => [s.site, esc(s.site), (hasFlag(s) || lf.some(x => x.site === s.site)) ? '<span class="flagdot" aria-hidden="true"></span><span class="sr">, flagged</span>' : ""]);
+  const siteNote = [...flagList(site), lf.some(x => x.site === site.site) ? "localized evidence flag" : ""].filter(Boolean).join(", ");
+  const rows = prim.map(r => {
+    const drv = l.drivers.includes(r.kpi);
+    return `<button class="kpirow" data-act="kpi" data-key="${esc(l.id)}" data-val="${r.kpi}" aria-pressed="${r.kpi === st.kpi}"
+      aria-label="${esc(KLAB[r.kpi])}, ${r.kpi}: shift ${fs(r.shift_mad)} MAD, interval ${sig(r.ci_low, 2)} to ${sig(r.ci_high, 2)}, Holm p ${fp(r.p_holm)}${drv ? ", drives the verdict" : ""}">
+      <span class="nm">${esc(KLAB[r.kpi])} <span class="mono note">${r.kpi}</span>${drv ? ' <span class="drv">driver</span>' : ""}</span>
+      <span class="val num">${fs(r.shift_mad)} MAD · p ${fp(r.p_holm)}</span>${shiftSVG(r, l.mdc[r.kpi] && l.mdc[r.kpi].mdc_mad)}</button>`; }).join("");
+  const crop = (st.crop != null && st.crop >= 0 && l.crops[st.crop] && l.crops[st.crop].site === site.site) ? l.crops[st.crop] : null;
+  const valTxt = ex.includes(site.site) ? `${st.kpi} excluded (quality flag)` : `${st.kpi} ${sig(val, 3)}`;
+  return `<div class="stage">
+      <div class="row"><h2 id="bench-h" tabindex="-1">Evidence on the image</h2><span class="note">${VIEWCAP[st.view]}</span></div>
+      <div class="controls">
+        <div class="ctlrow"><span class="lab">Lot site</span>${radios("Lot site", "site", l.id, siteOpts, st.site, "pills")}</div>
+        <div class="ctlrow"><span class="lab">Detector</span>${radios("Detector view", "view", l.id, VIEWS, st.view, "seg")}
+          <span class="lab" style="margin-left:12px">Compare with</span>${radios("Baseline comparison site", "cmp", l.id, examples.map(e => [e.group, GROUPLAB[e.group] || e.group]), cmp.group, "seg")}</div>
+      </div>
+      <div class="pair">
+        <div class="controls"><div class="figlab">${esc(bname(l.lot))} <span class="mono">${esc(site.site)}</span><span class="note"><span class="mono">${esc(valTxt)}</span>, baseline median ${sig(sel.ref_median, 3)}${siteNote ? `. ${esc(siteNote)}` : ""}</span></div>
+          ${figure(site.views, st.view, site.site, "", "", boxes)}
+          ${crops.length ? `<p class="note">The yellow box marks the object behind a localized flag. Select it for full resolution.</p>` : ""}</div>
+        <div class="controls"><div class="figlab">${esc(bname(DATA.baseline.reference))} <span class="mono">${esc(cmp.site)}</span><span class="note">${esc(cmp.why)}</span></div>
+          ${figure(cmp.views, st.view, cmp.site, "", "", "")}</div>
+      </div>
+      ${crop ? `<figure id="crop-${esc(l.id)}" tabindex="-1"><div class="row"><span class="figlab">Full resolution: <span class="mono">${esc(crop.site)}</span> · ${esc(crop.kpi)}</span>
+          <button class="linkbtn" data-act="crop" data-key="${esc(l.id)}" data-val="${l.crops.indexOf(crop)}">Close crop</button></div>
+        <img src="${IMG[crop.key]}" alt="Full-resolution crop at ${esc(crop.site)}: ${esc(crop.what)}" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--line)">
+        <figcaption>${esc(crop.kpi)} is ${f(crop.margin_in_mad, 2)} MAD above the ordinary-baseline maximum. ${esc(cap(crop.what))}, area ${sig(crop.area_px)} px², major axis ${sig(crop.major_axis_px)} px. 1200 × 600 px. Review: ${esc(REVIEW[crop.review_status] || crop.review_status)}. A reviewer confirms or refutes this crop before the flag can change the verdict.</figcaption></figure>` : ""}
+      <p class="note">${FRAMECAP.trim()}</p>
+    </div>
+    <div class="panel">
+      <div class="controls"><h2>What drives it</h2>
+        <p class="note">Select a KPI to show its overlay and the lot site furthest from the baseline median.</p>
+        <div class="kpis"><div aria-hidden="true" style="padding:0 8px">${shiftAxis()}</div>${rows}</div>
+        <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval; an arrow means it runs past the axis. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for testing five KPIs; 1.000 means no evidence of a shift.</p></div>
+      <div class="controls"><h3>${esc(KLAB[sel.kpi])} by site</h3>
+        <p class="note"><span class="mono">${esc(sel.kpi)}</span> in ${KUNIT[sel.kpi]}. Baseline ${sig(sel.ref_median, 4)} ± ${sig(sel.ref_mad, 3)} MAD, lot median ${sig(sel.batch_median, 4)}, usable sites ${sel.n_ref_usable} and ${sel.n_batch_usable}.</p>
+        ${strip(sel.kpi, l.ref_values, l.sites, {excluded: ex, color: l.color, key: l.id, selected: st.site})}
+        ${stripLegend(l.color, true)}
+        ${valuesTable(sel.kpi, l.ref_values, l.sites, ex)}</div>
+    </div>`;
+}
+
+function cellPanel(l) {
+  const S = DATA.ste;
+  const prim = Object.fromEntries(l.compare.filter(r => r.is_primary).map(r => [r.kpi, r]));
+  let body = `<p>${esc(S.intro)}</p>`;
+  if (l.drivers.length) {
+    body += l.drivers.map(k => { const r = prim[k]; const dir = r.shift_mad > 0 ? "higher" : "lower";
+      return `<div><p class="dir">${esc(KLAB[k])} is ${dir} than the baseline (robust shift ${f(Math.abs(r.shift_mad), 1)} MAD).</p><p>${esc(S.kpi[k])}</p></div>`; }).join("");
+  } else body += `<p class="callout plain">${esc(S.no_driver)}</p>`;
+  const ph = l.physics, san = ph.sanity;
+  const byB = (arr, b) => (arr || []).find(r => r.batch === b) || {};
+  const sg = byB(ph.stereology, l.lot), sr = byB(ph.stereology, l.reference), vg = byB(ph.void_geometry, l.lot), vr = byB(ph.void_geometry, l.reference);
+  const band = k => ph.statements[k] && ph.statements[k].band_available ? ph.statements[k].band_abs : null;
+  const t2 = `<div class="tw"><table><thead><tr><th>Value</th><th class="n">Baseline median</th><th class="n">Lot median</th></tr></thead><tbody>
+    <tr><td>Volume fraction of the bright phase (Delesse method)</td><td class="n">${f(sr.vol_frac_bright, 3)}</td><td class="n">${f(sg.vol_frac_bright, 3)}</td></tr>
+    <tr><td>Volume fraction of the voids (Delesse method)</td><td class="n">${f(sr.vol_frac_pore, 3)}</td><td class="n">${f(sg.vol_frac_pore, 3)}</td></tr>
+    <tr><td>Additive mass fraction, if the additive is Si (nominal value)</td><td class="n">${f(sr.mass_frac_additive_if_si, 3)}</td><td class="n">${f(sg.mass_frac_additive_if_si, 3)}</td></tr>
+    <tr><td>Delamination index</td><td class="n">${f(vr.delamination_index, 2)}</td><td class="n">${f(vg.delamination_index, 2)}</td></tr>
+    <tr><td>Length of the longest void, as a fraction of the coating thickness</td><td class="n">${f(vr.longest_void_over_thickness, 2)}</td><td class="n">${f(vg.longest_void_over_thickness, 2)}</td></tr></tbody></table></div>
+    <ul class="note" style="margin:0;padding-left:18px">
+      <li>Sum of the phase fractions. This sum must be 1. It is 1 on ${san.n_sum_to_one} of ${san.n_sites} lot sites (largest residual ${f(san.max_abs_residual, 2)}).</li>
+      <li>Change of each value when the threshold moves by 5 grey levels: pore_frac ±${sig(band("pore_frac"), 2)}, bright_frac ±${sig(band("bright_frac"), 2)}.</li>
+      <li>${/^No 2-D top-to-bottom/.test(ph.fraction_connected_note || "") ? "No site has a connected void path from the top to the bottom. Thus, the system does not give a tortuosity value." : esc(ph.fraction_connected_note || "")}</li></ul>`;
+  const bt = (l.battery || []).map(r => `<tr><td>${r.label && r.label !== r.kpi ? esc(r.label) + "<br>" : ""}<span class="mono note">${esc(r.kpi)}</span></td><td>${esc(r.units)}</td>
+    <td class="n">${sig(r.ref_median, 3)}</td><td class="n">${sig(r.batch_median, 3)}</td><td class="n">${fs(r.median_difference, 4)}</td>
+    <td class="n">${r.interval_available ? `${sig(r.ci_low, 3)} to ${sig(r.ci_high, 3)}` : "n/a"}</td><td class="n">${r.n_ref_usable} / ${r.n_batch_usable}</td></tr>`).join("");
+  return `<section class="card" aria-labelledby="cell-h"><h2 id="cell-h">What this could mean for the cell</h2><div class="ste">${body}</div>
+    <details class="more"><summary>About the five measurements</summary><dl class="kpiste">${PRIM().map(k => `<dt>${esc(KLAB[k])}<br><span class="mono note">${k}</span></dt><dd>${esc(S.kpi[k])}</dd>`).join("")}</dl></details>
+    <details class="more"><summary>${esc(S.tier2_title)}</summary><p class="note">${esc(S.tier2_sub)}</p>${t2}</details>
+    <details class="more"><summary>${esc(S.tier3_title)}</summary><p class="note">${esc(S.tier3_sub)}</p>
+      <div class="tw"><table><thead><tr><th>Measurement</th><th>Units</th><th class="n">Baseline median</th><th class="n">Lot median</th><th class="n">Difference</th><th class="n">About 95 % site-bootstrap interval</th><th class="n">Usable n</th></tr></thead><tbody>${bt}</tbody></table></div></details>
+  </section>`;
+}
+
+function footer(parts) {
+  return `<footer class="prov"><p>${esc(DATA.provenance)}</p><p class="mono">${parts.join(" · ")}</p>
+    <p class="mono">page built ${esc(DATA.built_utc)} · ${esc(DATA.builder)} · ${esc(DATA.git || "")}</p></footer>`;
+}
+
+/* ------------------------------------------------------------------ sample set view */
+function samplesView(s) {
+  let h = `<header class="head"><h1 tabindex="-1" id="h1">${esc(s.name)}</h1>
+    <p class="sub">Each sample gets the known supplier lot it most resembles. A sample set gets no lot verdict, because its samples can come from different lots.</p>
+    <p class="note">Model <span class="mono">${esc(s.model_version)}</span>, morphology plus acquisition-sensitive appearance. Scores are uncalibrated. The deletion count shows how often the same bet survives when one training site is removed. It measures sensitivity to the training set, not the chance that the bet is right.</p></header>`;
+  h += `<div class="samples">${s.samples.map(x => sampleCard(s, x)).join("")}</div>`;
+  return h + footer([`model ${esc(s.model_version)}`, `model sha256 ${esc(String(s.model_sha256).slice(0, 16))}`, `source snapshot ${esc(String(s.source_snapshot_sha256).slice(0, 16))}`, `scored ${esc(s.scored_utc)}`]);
+}
+function sampleCard(set, x) {
+  const order = ["Batch_1", "Batch_2", "Batch_3"];
+  const bars = `<div class="tw"><table><thead><tr><th>Known lot</th><th class="n">Model score</th><th>Rank</th></tr></thead><tbody>${order.slice().sort((a, b) => x.scores[b] - x.scores[a]).map((b, i) =>
+    `<tr><td><span class="dot" style="background:${bcol(b)}"></span> ${bname(b)}</td><td class="n">${f(x.scores[b], 3)}</td><td>${i === 0 ? "bet" : i === 1 ? "runner-up" : "third"}</td></tr>`).join("")}</tbody></table></div>`;
+  const unreliable = x.flags.bright_low_contrast || x.drivers.some(d => /unreliable/.test(d.quality || ""));
+  const d = x.drivers.slice().sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+  const wrong = x.truth && x.truth.true_batch !== x.bet;
+  let truth = "";
+  if (x.truth) truth = wrong
+    ? `<p class="callout bad">The bet was wrong. Organiser label, received after the bet: ${esc(bname(x.truth.true_batch))}. The saved bet is unchanged.${!hasFlag(x.flags) ? ` No quality flag explains this miss. The largest contributions came from ${d.slice(0, 2).map(r => esc(r.feature)).join(" and ")}.` : ""}</p>`
+    : `<p class="callout plain">The bet was right. Organiser label, received after the bet: ${esc(bname(x.truth.true_batch))}.</p>`;
+  const top = d.slice(0, 8), rest = d.slice(8).reduce((a, r) => a + r.contribution, 0);
+  const tot = d.reduce((a, r) => a + r.contribution, 0) + (x.intercept || 0);
+  const mx = Math.max(...top.map(r => Math.abs(r.contribution)), Math.abs(rest), Math.abs(x.intercept || 0), 0.01);
+  const wrow = (name, sub, v) => `<div class="wfrow"><div class="wfhead"><span class="mono">${esc(name)}</span><span class="num">${fs(v, 2)}</span></div>
+    ${sub ? `<span class="note">${sub}</span>` : ""}<span class="wfbar"><span class="z"></span><span class="b" style="${v >= 0 ? `left:50%;width:${(v / mx * 50).toFixed(1)}%;background:${bcol(x.bet)}` : `right:50%;width:${(-v / mx * 50).toFixed(1)}%;background:${bcol(x.runner_up)}`}"></span></span></div>`;
+  const water = top.map(r => wrow(r.feature, `${esc(r.family)}${r.quality ? ", " + esc(r.quality) : ""}. Value ${sig(r.value, 3)}; lot medians B1 ${sig(r.median_Batch_1, 3)}, B2 ${sig(r.median_Batch_2, 3)}, B3 ${sig(r.median_Batch_3, 3)}.`, r.contribution)).join("")
+    + (d.length > 8 ? wrow(`${d.length - 8} other features`, "", rest) : "") + wrow("Intercept difference", "", x.intercept || 0);
+  const key = set.id + "-" + x.sample_id;
+  ST[key] = ST[key] || {view: "voids"};
+  REG["sv-" + key] = () => `${radios("Detector view", "view", key, VIEWS, ST[key].view, "seg")}
+    <div class="pair"><div class="controls"><div class="figlab">Sample <span class="mono">${esc(x.sample_id)}</span></div>${figure(x.views, ST[key].view, x.sample_id, "", "", "")}</div>
+      <div class="controls"><div class="figlab">${esc(bname(DATA.baseline.reference))} <span class="mono">${esc(DATA.baseline.examples[0].site)}</span><span class="note">typical baseline site</span></div>${figure(DATA.baseline.examples[0].views, ST[key].view, DATA.baseline.examples[0].site, "", "", "")}</div></div>
+    <p class="note">${VIEWCAP[ST[key].view]}${FRAMECAP}</p>`;
+  const heading = x.truth ? `<span class="mono">${esc(x.sample_id)}</span>: bet ${esc(bname(x.bet))}, organiser label ${esc(bname(x.truth.true_batch))}`
+    : `<span class="mono">${esc(x.sample_id)}</span> most resembles <span style="color:${bcol(x.bet)}">${esc(bname(x.bet))}</span>`;
+  return `<section class="card" aria-label="Sample ${esc(x.sample_id)}"><h2>${heading}</h2>
+    <p class="note">Quality flags: ${flagList(x.flags).join(", ") || "none"}.</p>
+    ${truth}
+    ${unreliable ? `<p class="callout">This sample has a low-contrast flag or unreliable masks behind its features. The first drop miss had this pattern: a low-contrast Batch 2 site was called Batch 1. Treat this bet with care.</p>` : ""}
+    <div class="split"><div class="scores"><h3>Model score per known lot, uncalibrated</h3>${bars}</div>
+      <div class="facts">
+        <div class="fact"><span class="k">Margin over runner-up</span><span class="v num">${f(x.margin, 3)} (${esc(bname(x.runner_up))})</span></div>
+        <div class="fact"><span class="k">Same bet in deletion fits</span><span class="v">${x.deletion_same} of ${x.deletion_n}, stability not correctness</span></div>
+        <div class="fact"><span class="k">Comparator bets</span><span class="v">Morphology only: ${esc(bname(x.morph_bet))}. Acquisition only: ${esc(bname(x.acq_bet))}.</span></div>
+        <div class="fact"><span class="k">Distance from baseline</span><span class="v">Percentile ${f(x.baseline_pct, 0)}${x.exceeds_baseline ? ", beyond range" : ""}</span></div>
+      </div></div>
+    <details class="more"><summary>Why this bet: feature contributions to ${esc(bname(x.bet))} minus ${esc(bname(x.runner_up))}</summary>
+      <p class="note">Each bar is one feature's contribution to the difference in linear score (logit) between the bet and the runner-up. The bars and the intercept sum exactly to ${fs(tot, 3)}. Signs explain this model, not material causes.</p>
+      <div class="legend"><span><span class="dot" style="background:${bcol(x.bet)}"></span>towards ${esc(bname(x.bet))}</span><span><span class="dot" style="background:${bcol(x.runner_up)}"></span>towards ${esc(bname(x.runner_up))}</span></div>
+      <div class="wf">${water}</div></details>
+    <div id="sv-${esc(key)}" class="controls">${REG["sv-" + key]()}</div>
+  </section>`;
+}
+
+/* ------------------------------------------------------------------ baseline view */
+function baselineView() {
+  const b = DATA.baseline;
+  let h = `<header class="head"><h1 tabindex="-1" id="h1"><span class="dot" style="background:${b.color};width:14px;height:14px"></span>${esc(bname(b.reference))}</h1>
+    <p class="sub">The supplier's approved baseline: ${b.n_sites} sites, ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}.
+    It is heterogeneous, so every comparison uses robust statistics and keeps these groups visible.</p></header>`;
+  h += `<section class="card"><h2>Five primary KPIs across the baseline sites</h2>${PRIM().map(k => `<div class="controls"><h3>${esc(KLAB[k])} <span class="mono note">${k}, ${KUNIT[k]}, trust ${esc(b.trust[k])}</span></h3>
+      ${strip(k, b.values, null)}</div>`).join("")}${stripLegend(null, false)}${valuesTable(PRIM()[0], b.values, null, [])}</section>`;
+  ST.baseline = ST.baseline || {site: b.examples[0].site, view: "voids"};
+  REG["bv"] = () => { const e = b.examples.find(x => x.site === ST.baseline.site) || b.examples[0];
+    return `<div class="controls"><div class="ctlrow"><span class="lab">Site</span>${radios("Baseline site", "site", "baseline", b.examples.map(x => [x.site, `${esc(x.site)} · ${GROUPLAB[x.group] || esc(x.group)}`]), e.site, "pills")}</div>
+      <div class="ctlrow"><span class="lab">Detector</span>${radios("Detector view", "view", "baseline", VIEWS, ST.baseline.view, "seg")}</div></div>
+      ${figure(e.views, ST.baseline.view, e.site, "", `<span class="mono">${esc(e.site)}</span>: ${esc(e.why)}. ${VIEWCAP[ST.baseline.view]}${FRAMECAP}`, "")}`; };
+  h += `<section class="card"><h2>What the baseline looks like</h2><p class="note">The most typical ordinary site, one grey-pore site and one cracked site. The cracked sites are the only clear material anomaly in the known data.</p><div id="bv">${REG.bv()}</div></section>`;
+  return h + footer([`${b.n_sites} baseline sites`]);
+}
+
+/* ------------------------------------------------------------------ track record */
+function trackView() {
+  const t = DATA.track;
+  const fam = r => ({material: "Morphology and appearance, declared primary", morph: "Morphology only", acq: "Acquisition only, comparator", combined: "Combined v1, comparator"}[r.family] || r.family);
+  const prim = t.summary.find(r => r.primary);
+  const ss = DATA.samplesets.flatMap(s => s.samples.filter(x => x.truth));
+  const right = ss.filter(x => x.truth.true_batch === x.bet).length;
+  let h = `<header class="head"><h1 tabindex="-1" id="h1">Track record</h1>
+    <p class="lead">${ss.length ? `${right} of ${ss.length} first-drop samples were assigned to the right lot. ` : ""}Balanced accuracy on the 31 known sites is ${f(prim.balanced_accuracy, 3)}, where chance is 0.33.</p>
+    <p class="note">Development results and three organiser labels. They are not new-session accuracy.</p></header>`;
+  h += `<section class="card"><h2>Lot verdicts on the known lots</h2><div class="tw"><table><thead><tr><th>Lot</th><th>Verdict</th><th class="n">Energy p</th><th class="n">Detectable shift</th><th class="n">Stability</th></tr></thead><tbody>
+    ${DATA.lots.filter(l => !l.fixture).map(l => { const m = PRIM().map(k => l.mdc[k] && l.mdc[k].mdc_mad).filter(isNum);
+      return `<tr><td>${esc(bname(l.lot))}</td><td>${esc(l.verdict_label)}</td><td class="n">${fp(l.energy.p)}</td><td class="n">${f(Math.min(...m), 2)}–${f(Math.max(...m), 2)} MAD</td><td class="n">${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs}</td></tr>`; }).join("")}</tbody></table></div>
+    <p class="note">Both known variant lots are consistent within detectable limits on the five defect-relevant KPIs at 7 sites each. The per-sample fingerprint below separates them better than chance, and its appearance features are acquisition-sensitive.</p></section>`;
+  const rel = t.reliability.map(r => `<tr><td class="mono">${esc(r.bin)}</td><td class="n">${Math.round(r.observed_top_accuracy * r.n)} of ${r.n}</td><td class="n">${f(r.mean_top_prob, 2)}</td></tr>`).join("");
+  h += `<section class="card"><h2>Sample resemblance on the known sites, one site left out at a time</h2><div class="tw"><table><thead><tr><th>Feature family</th><th class="n">Features</th><th class="n">Balanced accuracy</th><th class="n">Recall B1 / B2 / B3</th><th class="n">Permutation p</th></tr></thead><tbody>
+    ${t.summary.map(r => `<tr class="${r.primary ? "hl" : ""}"><td>${fam(r)}</td><td class="n">${r.n_features}</td><td class="n">${f(r.balanced_accuracy, 3)}</td><td class="n">${f(r.recall_Batch_1, 2)} / ${f(r.recall_Batch_2, 2)} / ${f(r.recall_Batch_3, 2)}</td><td class="n">${fp(r.perm_p)} (${r.n_perm})</td></tr>`).join("")}</tbody></table></div>
+    <p class="note">Chance balanced accuracy is 0.33. Batch 2 recall is weak in every family. Combined v1 scores higher because it adds session statistics such as detector levels; decision D52 keeps them out of the declared primary because they describe the microscope session, not the lot.</p>
+    <div class="split"><div class="controls"><h3>Confusion counts, declared primary</h3><div class="tw"><table><thead><tr><th>True lot \\ bet</th>${t.confusion.cols.map(c => `<th class="n">${esc(bname(c))}</th>`).join("")}</tr></thead><tbody>
+      ${t.confusion.rows.map((r, i) => `<tr><td>${esc(bname(r))}</td>${t.confusion.values[i].map((v, j) => `<td class="n" style="${i === j ? "font-weight:600" : ""}">${v}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>
+    <div class="controls"><h3>Reliability bins, declared primary</h3><div class="tw"><table><thead><tr><th>Top score bin</th><th class="n">Correct</th><th class="n">Mean top score</th></tr></thead><tbody>${rel}</tbody></table></div>
+      <p class="note">Bins of 6 to 18 sites and overlapping fits do not establish calibration.</p></div></div></section>`;
+  if (DATA.feedback) {
+    h += `<section class="card"><h2>First organiser drop</h2>
+      <div class="tw"><table><thead><tr><th>Sample</th><th>Saved bet</th><th>Organiser label</th><th>Result</th><th>Quality flags</th></tr></thead><tbody>
+      ${ss.map(x => `<tr><td class="mono">${esc(x.sample_id)}</td><td>${esc(bname(x.bet))}</td><td>${esc(bname(x.truth.true_batch))}</td><td>${x.truth.true_batch === x.bet ? "right" : "wrong"}</td><td>${flagList(x.flags).join(", ") || "none"}</td></tr>`).join("")}</tbody></table></div>
+      <details class="more"><summary>Every saved model record on these three samples</summary><div class="tw"><table><thead><tr><th>Model record</th><th>Family</th><th>Role</th><th class="n">Right</th></tr></thead><tbody>
+      ${DATA.feedback.rows.map(r => `<tr><td class="mono">${esc(r.model_record)}</td><td>${esc(r.family)}</td><td>${esc(r.role)}</td><td class="n">${r.n_correct} of ${r.n_sites}</td></tr>`).join("")}</tbody></table></div></details>
+      <p class="note">Labels: ${esc(DATA.feedback.source)}. Three samples, one per lot, are correlated diagnostics, not a generalisation estimate. The bets stay as saved.</p>
+      <ul class="note" style="margin:0;padding-left:18px">${ss.filter(x => x.truth.true_batch !== x.bet).map(x => { const d = x.drivers.slice().sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+        return `<li><span class="mono">${esc(x.sample_id)}</span>: ${flagList(x.flags).length ? `${esc(flagList(x.flags).join(", "))}, a combination of quality and lot that the 31 known sites never showed.` : "no quality flag explains this miss."} Largest contributions: ${d.slice(0, 2).map(r => esc(r.feature)).join(" and ")}.</li>`; }).join("")}</ul></section>`;
+  }
+  if (DATA.loco && DATA.loco.length) {
+    h += `<section class="card"><h2>Does the model memorise imaging sessions?</h2><div class="tw"><table><thead><tr><th>Check</th><th class="n">Value</th><th>Note</th></tr></thead><tbody>
+      ${DATA.loco.map(r => `<tr><td>${esc(r.statistic)}</td><td class="n">${esc(bname(String(r.value).replace(";", ", ")))}</td><td class="note">${esc(plain(r.note))}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">Holding out whole acquisition clusters keeps balanced accuracy near the value for one site left out at a time (E35). This is a weak test on 31 sites. Real session metadata would replace it.</p></section>`;
+  }
+  return h + footer(["frozen evaluation analysis/submission_v2/freeze/evaluation", "registry E35"]);
+}
+
+/* ------------------------------------------------------------------ method */
+function methodView() {
+  const l = DATA.lots.find(x => !x.fixture) || DATA.lots[0];
+  return `<header class="head"><h1 tabindex="-1" id="h1">Method and provenance</h1></header>
+  <section class="card"><h2>How a lot is judged</h2><div class="ste">
+    <p><b>Recommended action.</b> The frozen decision rules alone set it. The four lanes are separate conclusions shown beside it. Each lane says whether it changes the action; no rule combines them.</p>
+    <p><b>Defect-relevant drift.</b> Five primary KPIs measured on BSE masks per site. Site-level permutation tests (Hodges–Lehmann shift, Holm correction) and an energy-distance test on all five. A KPI drives the verdict at Holm p below 0.05 with a shift of 1 MAD or more. Every reference-dependent fit is repeated in each leave-one-site-out re-run.</p>
+    <p><b>Localized anomalies.</b> Each lot site against the maximum of the ordinary baseline sites on crack_frac and pore_max_d. One site 2–3 MAD beyond is routed to image review. 3 MAD, two sites, both KPIs or a confirmed review change the verdict.</p>
+    <p><b>Distance from baseline.</b> k-nearest-neighbour distance on morphology features, ranked among the baseline sites left out one at a time. Descriptive; not a membership probability.</p>
+    <p><b>Image quality and acquisition.</b> Flags derived from each lot's own images decide which KPI values count before any statistic runs. The drift test is repeated on ordinary sites only and with acquisition covariates, as a sensitivity analysis.</p>
+    <p><b>Sample resemblance.</b> A logistic model on morphology plus acquisition-sensitive ETD and Inlens appearance, fitted on the 31 known sites only and frozen. It assigns every sample to the known lot it most resembles.</p></div></section>
+  <section class="card"><h2>Terms</h2><dl class="kpiste">
+    <dt>MAD</dt><dd>Median absolute deviation of the baseline sites, scaled to match a standard deviation. Shifts are given in MAD so different KPIs share one scale.</dd>
+    <dt>Holm p</dt><dd>A permutation p-value corrected for testing five KPIs at once.</dd>
+    <dt>Detectable shift (MDC)</dt><dd>The smallest shift this number of sites detects in 80 % of simulated lots at α = 0.05.</dd>
+    <dt>Decision stability</dt><dd>The share of leave-one-site-out re-runs that return the same verdict. It is not a probability of being right.</dd>
+    <dt>Percentile rank</dt><dd>Where a site's distance falls among the baseline sites, each left out in turn. Descriptive only.</dd></dl></section>
+  <section class="card"><h2>Primary KPIs</h2><div class="tw"><table><thead><tr><th>KPI</th><th>Measures</th><th>Units</th><th>Trust</th></tr></thead><tbody>
+    ${PRIM().map(k => `<tr><td class="mono">${k}</td><td>${esc(KLAB[k])}</td><td>${KUNIT[k]}</td><td>${esc(DATA.baseline.trust[k])}</td></tr>`).join("")}</tbody></table></div></section>
+  <section class="card"><h2>Limits</h2><ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px">
+    <li>2-D sections; no 3-D quantity is inferred.</li><li>All lengths are pixels. 25 nm/px is a nominal export tag, not verified.</li>
+    <li>Fresh, uncycled graphite–Si/SiOx electrode. No electrochemical, cycling-damage, SEI or plating inference.</li>
+    <li>The baseline is one heterogeneous lot of 17 sites, including grey-pore and cracked groups.</li>
+    <li>Whether the sites of a lot come from distinct specimens is unconfirmed.</li>
+    <li>Raw intensity of any detector is never a material KPI.</li></ul></section>
+  ${footer(l ? [`thresholds ${esc(l.meta.thresholds_hash)}`, `config ${esc(l.meta.config_hash)}`, `feature version ${esc(l.meta.feature_version)}`] : [])}`;
+}
+
+/* ------------------------------------------------------------------ routing, regions, events */
+function fillRegions() { for (const id of Object.keys(REG)) { const el = document.getElementById(id); if (el && !el.dataset.filled) { el.innerHTML = REG[id](); el.dataset.filled = "1"; } } }
+function parseHash() {
+  const [id, kpi, site, view, cmp] = (location.hash || "").slice(1).split("~");
+  return {id, kpi, site, view, cmp};
+}
+function render(focus) {
+  const h = parseHash();
+  const lot = DATA.lots.find(l => l.id === h.id), set = DATA.samplesets.find(s => s.id === h.id);
+  for (const k of Object.keys(REG)) delete REG[k];
+  let active = h.id, html, title;
+  if (lot && h.kpi && PRIM().includes(h.kpi)) ST[lot.id] = {kpi: h.kpi, site: h.site, view: h.view || KVIEW[h.kpi], cmp: h.cmp};
+  if (lot) { html = lotView(lot); title = bname(lot.lot); }
+  else if (set) { html = samplesView(set); title = set.name; }
+  else if (h.id === "baseline") { html = baselineView(); title = "Approved baseline"; }
+  else if (h.id === "track") { html = trackView(); title = "Track record"; }
+  else if (h.id === "method") { html = methodView(); title = "Method and provenance"; }
+  else { const first = DATA.lots.find(l => !l.fixture) || DATA.lots[0];
+    if (first) { active = first.id; html = lotView(first); title = bname(first.lot); } else { active = DATA.samplesets[0].id; html = samplesView(DATA.samplesets[0]); title = DATA.samplesets[0].name; } }
+  document.title = `${title} · Electrode Lot QC`;
+  nav(active);
+  const cur = document.querySelector("#nav a[aria-current]");
+  if (cur && matchMedia("(max-width: 900px)").matches) cur.scrollIntoView({inline: "center", block: "nearest"});
+  document.getElementById("main").innerHTML = html;
+  fillRegions();
+  if (focus) { const h1 = document.getElementById("h1"); if (h1) h1.focus({preventScroll: true}); }
+}
+function refresh(regionId) {
+  const el = document.getElementById(regionId); if (!el || !REG[regionId]) return;
+  el.innerHTML = REG[regionId]();
+}
+function regionFor(key) {
+  if (DATA.lots.some(l => l.id === key)) return "wb-" + key;
+  if (key === "baseline") return "bv";
+  return "sv-" + key;
+}
+function syncHash(key) {
+  const l = DATA.lots.find(x => x.id === key); if (!l) return;
+  const s = ST[key]; history.replaceState(null, "", `#${key}~${s.kpi}~${s.site}~${s.view}~${s.cmp}`);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const {act, key, val} = b.dataset;
+  const s = ST[key] = ST[key] || {};
+  const lot = DATA.lots.find(l => l.id === key);
+  if (act === "kpi") { s.kpi = val; s.view = KVIEW[val]; s.site = extremeSite(lot, val); s.crop = null;
+    announce(`${KLAB[val]} selected. Showing ${s.site}, ${s.view === "bright" ? "bright phase" : "voids"} view.`); }
+  else if (act === "site") { s.site = val; s.crop = null; announce(`Showing site ${val}.`); }
+  else if (act === "view") { s.view = val; announce(`${(VIEWS.find(v => v[0] === val) || [0, val])[1]} view.`); }
+  else if (act === "cmp") { s.cmp = val; announce(`Comparing with the ${(GROUPLAB[val] || val).toLowerCase()} baseline site.`); }
+  else if (act === "crop") { s.crop = s.crop === +val ? null : +val; announce(s.crop == null ? "Crop closed." : "Full-resolution crop shown below the images."); }
+  else if (act === "lane") {
+    const ln = laneModel(lot).lanes[+val], fo = ln.focus || {};
+    if (fo.kpi) { s.kpi = fo.kpi; s.view = KVIEW[fo.kpi]; }
+    s.site = fo.site || extremeSite(lot, s.kpi); s.crop = fo.crop != null && fo.crop >= 0 ? fo.crop : null;
+    announce(`${ln.name}: showing ${s.site}${s.crop != null ? " with its full-resolution crop" : ""}.`);
+  }
+  const region = regionFor(key);
+  refresh(region); syncHash(key);
+  if (act === "lane") { document.getElementById(region).scrollIntoView({block: "start", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"}); document.getElementById("bench-h").focus({preventScroll: true}); return; }
+  if (act === "crop" && s.crop != null) { const c = document.getElementById("crop-" + key); if (c) { c.scrollIntoView({block: "nearest"}); c.focus({preventScroll: true}); } return; }
+  const again = document.querySelector(`#${CSS.escape(region)} button[data-act="${act}"][data-val="${CSS.escape(val)}"]`);
+  if (again) again.focus({preventScroll: true});
+});
+document.addEventListener("keydown", e => {
+  const r = e.target.closest('[role="radio"]'); if (!r) return;
+  const dir = {ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1}[e.key]; if (!dir) return;
+  const group = [...r.closest('[role="radiogroup"]').querySelectorAll('[role="radio"]')];
+  const next = group[(group.indexOf(r) + dir + group.length) % group.length];
+  e.preventDefault(); next.click();
+});
+window.addEventListener("hashchange", () => { render(true); window.scrollTo(0, 0); });
+render(false);
+</script>
+</body>
+</html>

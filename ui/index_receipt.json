@@ -1,0 +1,22 @@
+{
+ "built_utc": "2026-10-04T10:30:28+00:00",
+ "builder": "ui-1.0.0",
+ "git": "9fe5cd3-dirty",
+ "template_sha256": "f15c68c2039acbcc980d70de89795e9cc03f2e28c6e3d820b89d71cb0625691a",
+ "builder_sha256": "4bb3ab4068c0acfb9357015b9eb6f0f800d931a9bc93150b3f07c6f8b4d485a9",
+ "inputs_sha256": {
+  "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/truth.csv": "76f1feb50a7c042314f627fc281235b042c471e6c4a0ebcd7d06cc7998a73b9b",
+  "/Users/santoshkumarsaravanan/Documents/Polaron/analysis/feedback_drop_01/output/summary.csv": "01cd17354027d278b738c425ea83be5db6a9bd1636af7e130a651e1ff8b44651",
+  "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
+  "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
+  "ui/bundles/lot_Batch_1/baseline.json": "82435a650e7b653457851630cb2b3f273e3680ee4522def3ecf37851ed8c94c3",
+  "ui/bundles/samples_drop01/samples.json": "766b05763e3e7cf0787aaed4164624a177d7a2b7e1ee2674bdaa78477de70f40",
+  "analysis/submission_v2/freeze/evaluation/categoriser_summary.csv": "0df8e24989e4543a2c24310cc4dd29a0607e351a33f9fa08093823224e2fb81f",
+  "analysis/submission_v2/freeze/evaluation/confusion_material.csv": "f66857a7d5474f663201bce5377bdc9be56c3e740c78f3bc42a6244541b2b2f5",
+  "analysis/submission_v2/freeze/evaluation/reliability_material.csv": "fa4448c44d5cd0f0c1560afce8aec9ac42c79bf7bdfebe4db6ac4b7158db6ee8",
+  "experiments/registry.csv": "82a8856874a69b72042d028a8d31fbac38eea1e1b0428a5ce3c2be80e35a1f4a"
+ },
+ "output": "ui/index.html",
+ "output_sha256": "1fc0f537645b1259c50aec3bdd30957a08e12b9399cf098e565fee8f57cd8142",
+ "size_mb": 7.96
+}

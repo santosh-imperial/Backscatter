@@ -1,0 +1,378 @@
+{
+ "schema": 1,
+ "kind": "baseline",
+ "reference": "Batch_3",
+ "n_sites": 17,
+ "groups": {
+  "ordinary": 10,
+  "grey_pore": 4,
+  "cracked": 3
+ },
+ "values": [
+  {
+   "site": "0grcilhi",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06235961884753902,
+   "pore_max_d": 449.8356823620434,
+   "pore_frac": 0.12847411464585834,
+   "bright_frac": 0.04554044117647059,
+   "bright_d50": 149.57303246421645
+  },
+  {
+   "site": "71vgq3fw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010701733703190015,
+   "pore_max_d": 278.2410057451576,
+   "pore_frac": 0.07663966712898752,
+   "bright_frac": 0.05914805825242719,
+   "bright_d50": 154.72378588992234
+  },
+  {
+   "site": "9luzk4jm",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.03611288998357964,
+   "pore_max_d": 340.6995103244586,
+   "pore_frac": 0.12013704159824849,
+   "bright_frac": 0.05689792008757526,
+   "bright_d50": 143.33080636870028
+  },
+  {
+   "site": "cfe5vt7s",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.005585233516483517,
+   "pore_max_d": 206.5827753236779,
+   "pore_frac": 0.07986277472527473,
+   "bright_frac": 0.06027870879120879,
+   "bright_d50": 177.68658078425008
+  },
+  {
+   "site": "hawkfj64",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02008876050420168,
+   "pore_max_d": 235.52600808620176,
+   "pore_frac": 0.09307405462184874,
+   "bright_frac": 0.040076155462184876,
+   "bright_d50": 121.1576605553759
+  },
+  {
+   "site": "hzumfsms",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06066180897646415,
+   "pore_max_d": 599.372241621278,
+   "pore_frac": 0.14129809797482212,
+   "bright_frac": 0.04613868363437329,
+   "bright_d50": 136.59914175460185
+  },
+  {
+   "site": "kbdh4tri",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.008142857142857143,
+   "pore_max_d": 203.9028300288694,
+   "pore_frac": 0.07314181692094314,
+   "bright_frac": 0.05332115117891817,
+   "bright_d50": 137.6530090653622
+  },
+  {
+   "site": "mgxahqnk",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.017716311524609844,
+   "pore_max_d": 274.89873309842915,
+   "pore_frac": 0.0962781362545018,
+   "bright_frac": 0.0642875900360144,
+   "bright_d50": 208.74404647671145
+  },
+  {
+   "site": "pl8uabbv",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.020155055331991953,
+   "pore_max_d": 355.08821280856176,
+   "pore_frac": 0.10440606136820925,
+   "bright_frac": 0.05288524899396378,
+   "bright_d50": 133.55929777345952
+  },
+  {
+   "site": "ptg8lmto",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.016304856433888692,
+   "pore_max_d": 265.50020887971596,
+   "pore_frac": 0.08216855724920241,
+   "bright_frac": 0.049161201701524285,
+   "bright_d50": 137.9302188696618
+  },
+  {
+   "site": "tuy3zymq",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010124410540915394,
+   "pore_max_d": 207.63096528501686,
+   "pore_frac": 0.0807240638002774,
+   "bright_frac": 0.04358807212205271,
+   "bright_d50": 134.55182305189803
+  },
+  {
+   "site": "ufdvpb81",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.047816844553913516,
+   "pore_max_d": 456.91554461484446,
+   "pore_frac": 0.1197936507936508,
+   "bright_frac": 0.05036234263820471,
+   "bright_d50": 145.72701316721543
+  },
+  {
+   "site": "utfgcjfa",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02403162403937923,
+   "pore_max_d": 418.72902692176126,
+   "pore_frac": 0.09758132030129403,
+   "bright_frac": 0.05539038334146177,
+   "bright_d50": 192.48045166380862
+  },
+  {
+   "site": "vc2whyaq",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.023861356728378004,
+   "pore_max_d": 375.37733972137386,
+   "pore_frac": 0.082796214423874,
+   "bright_frac": 0.05615252832274109,
+   "bright_d50": 154.18383683042208
+  },
+  {
+   "site": "x77cy643",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.021940970966553973,
+   "pore_max_d": 269.1675125531775,
+   "pore_frac": 0.09475703441480238,
+   "bright_frac": 0.060413355849653794,
+   "bright_d50": 136.0480917242688
+  },
+  {
+   "site": "x7u69zsw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.0056651178918169206,
+   "pore_max_d": 231.86750478763133,
+   "pore_frac": 0.06306608876560332,
+   "bright_frac": 0.07567649098474341,
+   "bright_d50": 146.44170735133602
+  },
+  {
+   "site": "xgj4xftb",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.01910758596242467,
+   "pore_max_d": 341.2297706326789,
+   "pore_frac": 0.08601497695852535,
+   "bright_frac": 0.05004120879120879,
+   "bright_d50": 190.84291230524997
+  }
+ ],
+ "trust": {
+  "crack_frac": "high",
+  "pore_max_d": "high",
+  "pore_frac": "high",
+  "bright_frac": "high",
+  "bright_d50": "high"
+ },
+ "labels": {
+  "crack_frac": "Crack-like void area fraction",
+  "pore_max_d": "Largest void (2-D equivalent diameter)",
+  "pore_frac": "Macro-pore area fraction",
+  "bright_frac": "Bright-phase (additive) area fraction",
+  "bright_d50": "Bright-phase area-weighted D50"
+ },
+ "examples": [
+  {
+   "site": "ptg8lmto",
+   "group": "ordinary",
+   "why": "most typical ordinary site (leave-one-site-out distance)",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "ref_ptg8lmto_voids.jpg",
+      "w": 1000,
+      "h": 230
+     },
+     "bright": {
+      "file": "ref_ptg8lmto_bright.jpg",
+      "w": 1000,
+      "h": 230
+     },
+     "etd": {
+      "file": "ref_ptg8lmto_etd.jpg",
+      "w": 1000,
+      "h": 230
+     },
+     "inlens": {
+      "file": "ref_ptg8lmto_inlens.jpg",
+      "w": 1000,
+      "h": 230
+     }
+    },
+    "trim_rows": [
+     0,
+     1612
+    ],
+    "shape": [
+     1612,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "71vgq3fw",
+   "group": "grey_pore",
+   "why": "grey-pore group: pore KPIs on a fallback threshold",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "ref_71vgq3fw_voids.jpg",
+      "w": 1000,
+      "h": 294
+     },
+     "bright": {
+      "file": "ref_71vgq3fw_bright.jpg",
+      "w": 1000,
+      "h": 294
+     },
+     "etd": {
+      "file": "ref_71vgq3fw_etd.jpg",
+      "w": 1000,
+      "h": 294
+     },
+     "inlens": {
+      "file": "ref_71vgq3fw_inlens.jpg",
+      "w": 1000,
+      "h": 294
+     }
+    },
+    "trim_rows": [
+     0,
+     2060
+    ],
+    "shape": [
+     2060,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "hzumfsms",
+   "group": "cracked",
+   "why": "cracked site: large delamination-like voids",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "ref_hzumfsms_voids.jpg",
+      "w": 1000,
+      "h": 298
+     },
+     "bright": {
+      "file": "ref_hzumfsms_bright.jpg",
+      "w": 1000,
+      "h": 298
+     },
+     "etd": {
+      "file": "ref_hzumfsms_etd.jpg",
+      "w": 1000,
+      "h": 298
+     },
+     "inlens": {
+      "file": "ref_hzumfsms_inlens.jpg",
+      "w": 1000,
+      "h": 298
+     }
+    },
+    "trim_rows": [
+     0,
+     2088
+    ],
+    "shape": [
+     2088,
+     7000
+    ]
+   }
+  }
+ ]
+}

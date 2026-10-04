@@ -44,6 +44,8 @@ polaron_qc/              the QC package: features (FEATURE_VERSION 1.1.0), stats
                          report (build_result / render_report / CLI), secondary + battery_metrics + void_metrics (exploratory battery geometry).
                          KPI lists and trust levels live in polaron_qc/__init__.py (PRIMARY_KPIS, MATERIAL_KPIS, KPI_TRUST, BATTERY_SECONDARY_KPIS)
 tests/                   pytest suite (173 tests): `/opt/anaconda3/bin/python3 -m pytest tests -q`
+app/                     customer QC interface (D56U): export_lot.py (lot / sample-set bundles), build_ui.py + ui_template.html
+                         (one self-contained ui/index.html; reads saved bundles only). ui/bundles/ holds exported bundles
 reports/                 qc_Batch_1.html, qc_Batch_2.html — the per-batch judge-facing reports written by notebook 02 / the CLI
 analysis_cache/          per-site / per-image / per-particle feature CSVs produced by notebook 01 (committed; small); analysis_cache/features/
                          is notebook 02's content-hashed parquet cache (ignored by version control); analysis_cache/ml/ holds the exploratory embeddings (committed)
@@ -53,6 +55,7 @@ analysis/                parallel label-free audit (scripts, findings.md, report
                          qc_review/ (E21 probes), rehearsal_h/ (E28 drop rehearsal), g_reconcile/ (documentation-vs-code audit)
 docs/problem_and_findings.md       state of knowledge — keep it current
 docs/qc_plan.md                    agreed plan for the QC notebook (components, methods, decision logic, checkpoints)
+docs/ui_plan.md                    agreed customer QC interface (D56U): four lanes, no combined rule, data contract, build tasks
 docs/workflow.md                   Mermaid diagram of the whole pipeline + data contracts between modules; update when an interface changes
 docs/experiment_log.md             Part A: ledger of experiments with numbers; Part B: progress scoreboard vs the target.
 experiments/registry.csv           one row per reported metric (experiment, metric, reference, batch, kpi, value) — append, never edit

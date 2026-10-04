@@ -1,0 +1,1925 @@
+{
+ "schema": 1,
+ "kind": "lot",
+ "exported_utc": "2026-10-04T09:48:33+00:00",
+ "lot": "Batch_2",
+ "reference": "Batch_3",
+ "summary": {
+  "meta": {
+   "reference": "Batch_3",
+   "batch": "Batch_2",
+   "n_sites_ref": 17,
+   "n_sites_batch": 7,
+   "runtime_s": 77.1,
+   "timestamp": "2026-10-04T10:48:10",
+   "config_hash": "ad1f277afcc8",
+   "thresholds_hash": "b4f4da2e357c",
+   "git_describe": "9fe5cd3-dirty",
+   "feature_version": "1.1.0",
+   "provenance": "developed using exploratory analysis of Batches 1–3; frozen before the unseen batch arrived",
+   "batch_dir": "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_2",
+   "reference_dir": "/Users/santoshkumarsaravanan/Documents/Polaron/Dataset/Batch_3"
+  },
+  "verdict": "consistent with working reference (within detectable limits)",
+  "reason": "no drift beyond the reference null on primary KPIs and no credible localized anomaly; see MDC for what could not have been detected",
+  "outcome_columns": {
+   "drift_alert": false,
+   "localized": "none",
+   "quality_abstention": false
+  },
+  "drivers": [],
+  "what_would_move_it": "would become 'investigate — drift' if pore_max_d (Holm p = 0.55, shift -0.2 MAD) crossed α = 0.05 with |shift| ≥ 1.0 MAD; would become 'investigate — localized' if a site exceeded the ordinary-reference max by ≥ 3.0 MAD on crack_frac or pore_max_d, or ≥ 2 sites / both KPIs by ≥ 2.0 MAD (a single site between the two margins is routed to image review without changing the verdict)",
+  "attenuation": {
+   "stratified": -0.7288195901417489,
+   "adjusted": -3.0104120206059903,
+   "available": true
+  },
+  "escalation": {
+   "escalate": false,
+   "by_single_site": false,
+   "by_site_agreement": false,
+   "by_kpi_agreement": false,
+   "max_pending_margin_mad": null,
+   "n_pending_sites": 0,
+   "n_pending_kpis": 0,
+   "rule": "single site ≥ 3.0 MAD, or ≥ 2 sites / ≥ 2 KPIs pending at ≥ 2.0 MAD, or a confirmed review"
+  },
+  "stability": {
+   "share": 1.0,
+   "n_runs": 7,
+   "full_verdict": "consistent with working reference (within detectable limits)",
+   "refit_per_fold": [
+    "compare (permutation + bootstrap)",
+    "energy distance",
+    "local exceedance",
+    "check A/B",
+    "quality abstention",
+    "material-only classifier",
+    "acquisition views / attenuation"
+   ],
+   "held_fixed": [],
+   "runs": [
+    {
+     "left_out": "3806gxp0",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "avn74qx1",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "b3esycq1",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "epqdaau9",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "i9jiqjwl",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "r17byphk",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    },
+    {
+     "left_out": "rxax5ozo",
+     "verdict": "consistent with working reference (within detectable limits)",
+     "outcome_columns": {
+      "drift_alert": false,
+      "localized": "none",
+      "quality_abstention": false
+     }
+    }
+   ]
+  },
+  "abstention": {
+   "abstain": false,
+   "reasons": []
+  },
+  "usable_n": {
+   "crack_frac": [
+    17,
+    7
+   ],
+   "pore_max_d": [
+    17,
+    7
+   ],
+   "pore_frac": [
+    17,
+    7
+   ],
+   "bright_frac": [
+    17,
+    7
+   ],
+   "bright_d50": [
+    17,
+    7
+   ]
+  },
+  "fallback": {
+   "crack_frac": [
+    4,
+    0
+   ],
+   "pore_max_d": [
+    4,
+    0
+   ],
+   "pore_frac": [
+    4,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "excluded": {
+   "crack_frac": [
+    0,
+    0
+   ],
+   "pore_max_d": [
+    0,
+    0
+   ],
+   "pore_frac": [
+    0,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "flags_batch": [
+   {
+    "site": "3806gxp0",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "avn74qx1",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "b3esycq1",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "epqdaau9",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "i9jiqjwl",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "r17byphk",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   },
+   {
+    "site": "rxax5ozo",
+    "acquisition_group": "ordinary",
+    "grey_pore": false,
+    "grey_pore_source": "",
+    "bright_low_contrast": false,
+    "bright_low_contrast_source": "data",
+    "raised_black_level": false,
+    "bse_p1": 0,
+    "cracked_known": false
+   }
+  ],
+  "primary": [
+   {
+    "kpi": "crack_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": -0.3993880232362688,
+    "ci_low": -2.775942903406457,
+    "ci_high": 0.5127245862764284,
+    "p_holm": 0.6512377782400666
+   },
+   {
+    "kpi": "pore_max_d",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": -0.2355057722808481,
+    "ci_low": -1.1568393968658164,
+    "ci_high": 0.40640947148517925,
+    "p_holm": 0.5542409218038509
+   },
+   {
+    "kpi": "pore_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 4,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": -0.9632250358488488,
+    "ci_low": -1.6853521586350548,
+    "ci_high": 0.0994007510446647,
+    "p_holm": 0.5692508610128747
+   },
+   {
+    "kpi": "bright_frac",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 0,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": 0.21542463498782682,
+    "ci_low": -2.1509720311449017,
+    "ci_high": 1.3308391516223463,
+    "p_holm": 0.9667441000392946
+   },
+   {
+    "kpi": "bright_d50",
+    "n_ref_usable": 17,
+    "n_batch_usable": 7,
+    "n_ref_fallback": 0,
+    "n_batch_fallback": 0,
+    "n_ref_excluded": 0,
+    "n_batch_excluded": 0,
+    "shift_mad": 1.3373211533856926,
+    "ci_low": -0.5071465997615004,
+    "ci_high": 5.692253417727072,
+    "p_holm": 0.6512377782400666
+   }
+  ],
+  "mdc": {
+   "crack_frac": {
+    "mdc_mad": 1.75,
+    "mdc_abs": 0.024355110386564818,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "pore_max_d": {
+    "mdc_mad": 1.75,
+    "mdc_abs": 183.2012804758582,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "pore_frac": {
+    "mdc_mad": 2.0,
+    "mdc_abs": 0.036620192784123345,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "bright_frac": {
+    "mdc_mad": 1.5,
+    "mdc_abs": 0.012958458640776702,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   },
+   "bright_d50": {
+    "mdc_mad": 2.5,
+    "mdc_abs": 33.83245539085226,
+    "n_incoming": 7,
+    "n_sim_used": 400,
+    "feasible": true,
+    "reason": null
+   }
+  },
+  "local_anomaly": {
+   "flags": [],
+   "n_sites_pending": 0,
+   "n_sites_credible": 0,
+   "n_sites_refuted": 0
+  },
+  "c2st_material": {
+   "auc": 0.588235294117647,
+   "p": 0.2935323383084577,
+   "n_perm": 200,
+   "cv": "StratifiedGroupKFold(5)",
+   "n_sites_ref": 17,
+   "n_sites_batch": 7,
+   "variant": "material_all_sites_in_pipeline",
+   "null_band": [
+    0.15945378151260503,
+    0.8069327731092437
+   ],
+   "n_dropped_nan": [
+    0,
+    0
+   ]
+  },
+  "notes": []
+ },
+ "next_action": "no QC action from the image evidence; the release decision stays with QC under its own tolerances (none are encoded here). Re-run when more sites of this batch are imaged: the minimum detectable change shrinks with n",
+ "verdict_reason": "no drift beyond the reference null on primary KPIs and no credible localized anomaly; see MDC for what could not have been detected",
+ "energy": {
+  "statistic": 1.5353743461035672,
+  "p": 0.34253149370125974,
+  "n_perm": 5000,
+  "method": "monte_carlo",
+  "n_ref": 17,
+  "n_batch": 7,
+  "n_dropped_batch": 0
+ },
+ "compare": [
+  {
+   "kpi": "crack_frac",
+   "label": "Crack-like void area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.02008876050420168,
+   "batch_median": 0.014530395136778115,
+   "ref_mad": 0.013917205935179896,
+   "shift_mad": -0.3993880232362688,
+   "ci_low": -2.775942903406457,
+   "ci_high": 0.5127245862764284,
+   "cliffs_delta": -0.44537815126050423,
+   "p_reported": 0.6512377782400666,
+   "p_holm": 0.6512377782400666,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_max_d",
+   "label": "Largest void (2-D equivalent diameter)",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 278.2410057451576,
+   "batch_median": 253.5867434358392,
+   "ref_mad": 104.68644598620469,
+   "shift_mad": -0.2355057722808481,
+   "ci_low": -1.1568393968658164,
+   "ci_high": 0.40640947148517925,
+   "cliffs_delta": -0.42857142857142855,
+   "p_reported": 0.5542409218038509,
+   "p_holm": 0.5542409218038509,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_frac",
+   "label": "Macro-pore area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.09307405462184874,
+   "batch_median": 0.07543731136820926,
+   "ref_mad": 0.018310096392061673,
+   "shift_mad": -0.9632250358488488,
+   "ci_low": -1.6853521586350548,
+   "ci_high": 0.0994007510446647,
+   "cliffs_delta": -0.5462184873949579,
+   "p_reported": 0.5692508610128747,
+   "p_holm": 0.5692508610128747,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_frac",
+   "label": "Bright-phase (additive) area fraction",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 0.05332115117891817,
+   "batch_median": 0.055182198660714284,
+   "ref_mad": 0.008638972427184468,
+   "shift_mad": 0.21542463498782682,
+   "ci_low": -2.1509720311449017,
+   "ci_high": 1.3308391516223463,
+   "cliffs_delta": -0.025210084033613446,
+   "p_reported": 0.9667441000392946,
+   "p_holm": 0.9667441000392946,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_d50",
+   "label": "Bright-phase area-weighted D50",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": true,
+   "ref_median": 145.72701316721543,
+   "batch_median": 163.82495647328125,
+   "ref_mad": 13.532982156340903,
+   "shift_mad": 1.3373211533856926,
+   "ci_low": -0.5071465997615004,
+   "ci_high": 5.692253417727072,
+   "cliffs_delta": 0.19327731092436976,
+   "p_reported": 0.6512377782400666,
+   "p_holm": 0.6512377782400666,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "crack_count_per_Mpx",
+   "label": "Crack-like void count per Mpx",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": false,
+   "ref_median": 0.5526388505111909,
+   "batch_median": 0.48355899419729204,
+   "ref_mad": 0.21072167011271917,
+   "shift_mad": -0.32782511773443457,
+   "ci_low": -2.1588259623456802,
+   "ci_high": 1.2647483849137313,
+   "cliffs_delta": -0.24369747899159663,
+   "p_reported": 0.3469766313015741,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_d50",
+   "label": "Macro-pore area-weighted D50",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 103.7924842558661,
+   "batch_median": 96.73178078717827,
+   "ref_mad": 27.900626888277873,
+   "shift_mad": -0.25306612274200574,
+   "ci_low": -1.8871773524005595,
+   "ci_high": 0.738251285969452,
+   "cliffs_delta": -0.19327731092436976,
+   "p_reported": 0.49036127869079815,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_d90",
+   "label": "Macro-pore area-weighted D90",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 230.54307960861595,
+   "batch_median": 208.31053003657564,
+   "ref_mad": 56.92734910717976,
+   "shift_mad": -0.3905425058557015,
+   "ci_low": -1.3818818137697306,
+   "ci_high": 0.5879844202450971,
+   "cliffs_delta": -0.29411764705882354,
+   "p_reported": 0.3290716085338511,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_elong",
+   "label": "Macro-pore elongation",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 3.4726318155175337,
+   "batch_median": 3.433805375701753,
+   "ref_mad": 0.3988834865243791,
+   "shift_mad": -0.09733779694439149,
+   "ci_low": -2.1099291632256234,
+   "ci_high": 1.0713157444492807,
+   "cliffs_delta": -0.21008403361344538,
+   "p_reported": 0.3117242216212468,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "pore_count_per_Mpx",
+   "label": "Macro-pore count per Mpx",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 98.12760055478502,
+   "batch_median": 85.93534125449018,
+   "ref_mad": 5.48264472764942,
+   "shift_mad": -2.223791601671414,
+   "ci_low": -8.469585534092682,
+   "ci_high": 0.1125687348324936,
+   "cliffs_delta": -0.5126050420168067,
+   "p_reported": 0.013068326283429257,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 4,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_count_per_Mpx",
+   "label": "Bright-phase particle count per Mpx",
+   "trust": "high",
+   "weight": 3,
+   "is_primary": false,
+   "ref_median": 14.285714285714286,
+   "batch_median": 13.997722858482353,
+   "ref_mad": 3.022816091954024,
+   "shift_mad": -0.0952725599147411,
+   "ci_low": -0.8651135894253187,
+   "ci_high": 2.994009560586628,
+   "cliffs_delta": 0.10084033613445378,
+   "p_reported": 0.8129608441393339,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_d10",
+   "label": "Bright-phase area-weighted D10",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 61.535472745745395,
+   "batch_median": 63.99014280237452,
+   "ref_mad": 12.586753928818004,
+   "shift_mad": 0.19502010371467074,
+   "ci_low": -1.4901880697662717,
+   "ci_high": 1.586164596660889,
+   "cliffs_delta": -0.025210084033613446,
+   "p_reported": 0.9884947876938723,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_d90",
+   "label": "Bright-phase area-weighted D90",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 250.4035834808037,
+   "batch_median": 254.45137863514861,
+   "ref_mad": 20.298656448349725,
+   "shift_mad": 0.199411974119795,
+   "ci_low": -0.7457416497883563,
+   "ci_high": 2.2287062874270296,
+   "cliffs_delta": 0.04201680672268908,
+   "p_reported": 0.8684239419365277,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_circ",
+   "label": "Bright-phase particle circularity",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.39787232722352045,
+   "batch_median": 0.38028912414575067,
+   "ref_mad": 0.03857711444887414,
+   "shift_mad": -0.4557936312492378,
+   "ci_low": -2.5312128745023372,
+   "ci_high": 1.2810597009117133,
+   "cliffs_delta": -0.2773109243697479,
+   "p_reported": 0.4203331946466958,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_solidity",
+   "label": "Bright-phase particle solidity",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.8656331467422052,
+   "batch_median": 0.8598442624981912,
+   "ref_mad": 0.01653553095568812,
+   "shift_mad": -0.3500875937716759,
+   "ci_low": -2.0341141445941884,
+   "ci_high": 1.726369307126853,
+   "cliffs_delta": -0.17647058823529413,
+   "p_reported": 0.40141402584194347,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "bright_max_d",
+   "label": "Largest bright-phase particle",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 269.4795306400284,
+   "batch_median": 272.98614857498603,
+   "ref_mad": 27.735848866698735,
+   "shift_mad": 0.1264290828743269,
+   "ci_low": -0.6433534064417803,
+   "ci_high": 1.3805516038105532,
+   "cliffs_delta": 0.1092436974789916,
+   "p_reported": 0.7817159004229942,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "corr_len_px",
+   "label": "Texture correlation length",
+   "trust": "medium",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 21.0,
+   "batch_median": 19.0,
+   "ref_mad": 4.4478,
+   "shift_mad": -0.44966050631773014,
+   "ci_low": -2.697963037906381,
+   "ci_high": 0.3372453797382976,
+   "cliffs_delta": -0.3445378151260504,
+   "p_reported": 0.4379463976145898,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "fft_slope",
+   "label": "Radial power-spectrum slope",
+   "trust": "medium",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": -2.2699115190085006,
+   "batch_median": -2.2423322335373697,
+   "ref_mad": 0.08424153088479928,
+   "shift_mad": 0.32738347916357063,
+   "ci_low": -0.6714216510464308,
+   "ci_high": 2.5977868788288556,
+   "cliffs_delta": 0.24369747899159663,
+   "p_reported": 0.404361116889721,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  },
+  {
+   "kpi": "etd_crack_density_particles",
+   "label": "Intra-particle dark-ridge density (ETD, in additive)",
+   "trust": "high",
+   "weight": 2,
+   "is_primary": false,
+   "ref_median": 0.0015027101509388864,
+   "batch_median": 0.0005209385398836925,
+   "ref_mad": 0.0013755649097661042,
+   "shift_mad": -0.7137224889097604,
+   "ci_low": -2.4542366040874346,
+   "ci_high": 0.027134327117066228,
+   "cliffs_delta": -0.3949579831932773,
+   "p_reported": 0.09534995261539884,
+   "p_holm": null,
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_fallback": 0,
+   "n_batch_excluded": 0
+  }
+ ],
+ "excluded_by_flag": {
+  "crack_frac": [],
+  "pore_max_d": [],
+  "pore_frac": [],
+  "bright_frac": [],
+  "bright_d50": []
+ },
+ "ref_values": [
+  {
+   "site": "0grcilhi",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06235961884753902,
+   "pore_max_d": 449.8356823620434,
+   "pore_frac": 0.12847411464585834,
+   "bright_frac": 0.04554044117647059,
+   "bright_d50": 149.57303246421645
+  },
+  {
+   "site": "71vgq3fw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010701733703190015,
+   "pore_max_d": 278.2410057451576,
+   "pore_frac": 0.07663966712898752,
+   "bright_frac": 0.05914805825242719,
+   "bright_d50": 154.72378588992234
+  },
+  {
+   "site": "9luzk4jm",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.03611288998357964,
+   "pore_max_d": 340.6995103244586,
+   "pore_frac": 0.12013704159824849,
+   "bright_frac": 0.05689792008757526,
+   "bright_d50": 143.33080636870028
+  },
+  {
+   "site": "cfe5vt7s",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.005585233516483517,
+   "pore_max_d": 206.5827753236779,
+   "pore_frac": 0.07986277472527473,
+   "bright_frac": 0.06027870879120879,
+   "bright_d50": 177.68658078425008
+  },
+  {
+   "site": "hawkfj64",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02008876050420168,
+   "pore_max_d": 235.52600808620176,
+   "pore_frac": 0.09307405462184874,
+   "bright_frac": 0.040076155462184876,
+   "bright_d50": 121.1576605553759
+  },
+  {
+   "site": "hzumfsms",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.06066180897646415,
+   "pore_max_d": 599.372241621278,
+   "pore_frac": 0.14129809797482212,
+   "bright_frac": 0.04613868363437329,
+   "bright_d50": 136.59914175460185
+  },
+  {
+   "site": "kbdh4tri",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.008142857142857143,
+   "pore_max_d": 203.9028300288694,
+   "pore_frac": 0.07314181692094314,
+   "bright_frac": 0.05332115117891817,
+   "bright_d50": 137.6530090653622
+  },
+  {
+   "site": "mgxahqnk",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.017716311524609844,
+   "pore_max_d": 274.89873309842915,
+   "pore_frac": 0.0962781362545018,
+   "bright_frac": 0.0642875900360144,
+   "bright_d50": 208.74404647671145
+  },
+  {
+   "site": "pl8uabbv",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.020155055331991953,
+   "pore_max_d": 355.08821280856176,
+   "pore_frac": 0.10440606136820925,
+   "bright_frac": 0.05288524899396378,
+   "bright_d50": 133.55929777345952
+  },
+  {
+   "site": "ptg8lmto",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.016304856433888692,
+   "pore_max_d": 265.50020887971596,
+   "pore_frac": 0.08216855724920241,
+   "bright_frac": 0.049161201701524285,
+   "bright_d50": 137.9302188696618
+  },
+  {
+   "site": "tuy3zymq",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.010124410540915394,
+   "pore_max_d": 207.63096528501686,
+   "pore_frac": 0.0807240638002774,
+   "bright_frac": 0.04358807212205271,
+   "bright_d50": 134.55182305189803
+  },
+  {
+   "site": "ufdvpb81",
+   "group": "cracked",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": true,
+   "crack_frac": 0.047816844553913516,
+   "pore_max_d": 456.91554461484446,
+   "pore_frac": 0.1197936507936508,
+   "bright_frac": 0.05036234263820471,
+   "bright_d50": 145.72701316721543
+  },
+  {
+   "site": "utfgcjfa",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.02403162403937923,
+   "pore_max_d": 418.72902692176126,
+   "pore_frac": 0.09758132030129403,
+   "bright_frac": 0.05539038334146177,
+   "bright_d50": 192.48045166380862
+  },
+  {
+   "site": "vc2whyaq",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.023861356728378004,
+   "pore_max_d": 375.37733972137386,
+   "pore_frac": 0.082796214423874,
+   "bright_frac": 0.05615252832274109,
+   "bright_d50": 154.18383683042208
+  },
+  {
+   "site": "x77cy643",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.021940970966553973,
+   "pore_max_d": 269.1675125531775,
+   "pore_frac": 0.09475703441480238,
+   "bright_frac": 0.060413355849653794,
+   "bright_d50": 136.0480917242688
+  },
+  {
+   "site": "x7u69zsw",
+   "group": "grey_pore",
+   "bright_low_contrast": false,
+   "grey_pore": true,
+   "contrast_stretched_bse": false,
+   "raised_black_level": true,
+   "cracked": false,
+   "crack_frac": 0.0056651178918169206,
+   "pore_max_d": 231.86750478763133,
+   "pore_frac": 0.06306608876560332,
+   "bright_frac": 0.07567649098474341,
+   "bright_d50": 146.44170735133602
+  },
+  {
+   "site": "xgj4xftb",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.01910758596242467,
+   "pore_max_d": 341.2297706326789,
+   "pore_frac": 0.08601497695852535,
+   "bright_frac": 0.05004120879120879,
+   "bright_d50": 190.84291230524997
+  }
+ ],
+ "sites": [
+  {
+   "site": "3806gxp0",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.004456333705357143,
+   "pore_max_d": 203.52782450665998,
+   "pore_frac": 0.07288385881696428,
+   "bright_frac": 0.055182198660714284,
+   "bright_d50": 172.93308077617627,
+   "drift_distance": 4.607013095898383,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_3806gxp0_voids.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "bright": {
+      "file": "lot_3806gxp0_bright.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "etd": {
+      "file": "lot_3806gxp0_etd.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "inlens": {
+      "file": "lot_3806gxp0_inlens.jpg",
+      "w": 1000,
+      "h": 292
+     }
+    },
+    "trim_rows": [
+     0,
+     2048
+    ],
+    "shape": [
+     2048,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "avn74qx1",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.01800746372767857,
+   "pore_max_d": 263.25838049153225,
+   "pore_frac": 0.07489341517857143,
+   "bright_frac": 0.04146037946428571,
+   "bright_d50": 130.15549217263688,
+   "drift_distance": 3.565533360381659,
+   "drift_top_driver": "bright_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_avn74qx1_voids.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "bright": {
+      "file": "lot_avn74qx1_bright.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "etd": {
+      "file": "lot_avn74qx1_etd.jpg",
+      "w": 1000,
+      "h": 292
+     },
+     "inlens": {
+      "file": "lot_avn74qx1_inlens.jpg",
+      "w": 1000,
+      "h": 292
+     }
+    },
+    "trim_rows": [
+     0,
+     2048
+    ],
+    "shape": [
+     2048,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "b3esycq1",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.016051020408163266,
+   "pore_max_d": 282.6111169110161,
+   "pore_frac": 0.09416313278558176,
+   "bright_frac": 0.07866975881261595,
+   "bright_d50": 172.32828885996327,
+   "drift_distance": 6.139113215998243,
+   "drift_top_driver": "bright_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_b3esycq1_voids.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "bright": {
+      "file": "lot_b3esycq1_bright.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "etd": {
+      "file": "lot_b3esycq1_etd.jpg",
+      "w": 1000,
+      "h": 308
+     },
+     "inlens": {
+      "file": "lot_b3esycq1_inlens.jpg",
+      "w": 1000,
+      "h": 308
+     }
+    },
+    "trim_rows": [
+     0,
+     2156
+    ],
+    "shape": [
+     2156,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "epqdaau9",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.009882660237090618,
+   "pore_max_d": 240.94264263969495,
+   "pore_frac": 0.0713448529904226,
+   "bright_frac": 0.058984997655883734,
+   "bright_d50": 164.80517579339093,
+   "drift_distance": 3.670274584697143,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_epqdaau9_voids.jpg",
+      "w": 1000,
+      "h": 304
+     },
+     "bright": {
+      "file": "lot_epqdaau9_bright.jpg",
+      "w": 1000,
+      "h": 304
+     },
+     "etd": {
+      "file": "lot_epqdaau9_etd.jpg",
+      "w": 1000,
+      "h": 304
+     },
+     "inlens": {
+      "file": "lot_epqdaau9_inlens.jpg",
+      "w": 1000,
+      "h": 304
+     }
+    },
+    "trim_rows": [
+     0,
+     2133
+    ],
+    "shape": [
+     2148,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "i9jiqjwl",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.0027394994969818912,
+   "pore_max_d": 235.52871104085443,
+   "pore_frac": 0.07543731136820926,
+   "bright_frac": 0.05630533199195171,
+   "bright_d50": 140.21444936330795,
+   "drift_distance": 2.966586138983382,
+   "drift_top_driver": "crack_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_i9jiqjwl_voids.jpg",
+      "w": 1000,
+      "h": 324
+     },
+     "bright": {
+      "file": "lot_i9jiqjwl_bright.jpg",
+      "w": 1000,
+      "h": 324
+     },
+     "etd": {
+      "file": "lot_i9jiqjwl_etd.jpg",
+      "w": 1000,
+      "h": 324
+     },
+     "inlens": {
+      "file": "lot_i9jiqjwl_inlens.jpg",
+      "w": 1000,
+      "h": 324
+     }
+    },
+    "trim_rows": [
+     0,
+     2272
+    ],
+    "shape": [
+     2272,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "r17byphk",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": false,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.025830494505494506,
+   "pore_max_d": 253.5867434358392,
+   "pore_frac": 0.08076916208791209,
+   "bright_frac": 0.04192637362637363,
+   "bright_d50": 152.97758931370402,
+   "drift_distance": 2.8482079037297576,
+   "drift_top_driver": "bright_frac",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_r17byphk_voids.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "bright": {
+      "file": "lot_r17byphk_bright.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "etd": {
+      "file": "lot_r17byphk_etd.jpg",
+      "w": 1000,
+      "h": 297
+     },
+     "inlens": {
+      "file": "lot_r17byphk_inlens.jpg",
+      "w": 1000,
+      "h": 297
+     }
+    },
+    "trim_rows": [
+     0,
+     2080
+    ],
+    "shape": [
+     2080,
+     7000
+    ]
+   }
+  },
+  {
+   "site": "rxax5ozo",
+   "group": "ordinary",
+   "bright_low_contrast": false,
+   "grey_pore": false,
+   "contrast_stretched_bse": true,
+   "raised_black_level": false,
+   "cracked": false,
+   "crack_frac": 0.014530395136778115,
+   "pore_max_d": 260.17644089318486,
+   "pore_frac": 0.08432861287648521,
+   "bright_frac": 0.0510631389886709,
+   "bright_d50": 163.82495647328125,
+   "drift_distance": 2.6119889231202458,
+   "drift_top_driver": "bright_d50",
+   "images": {
+    "views": {
+     "voids": {
+      "file": "lot_rxax5ozo_voids.jpg",
+      "w": 1000,
+      "h": 295
+     },
+     "bright": {
+      "file": "lot_rxax5ozo_bright.jpg",
+      "w": 1000,
+      "h": 295
+     },
+     "etd": {
+      "file": "lot_rxax5ozo_etd.jpg",
+      "w": 1000,
+      "h": 295
+     },
+     "inlens": {
+      "file": "lot_rxax5ozo_inlens.jpg",
+      "w": 1000,
+      "h": 295
+     }
+    },
+    "trim_rows": [
+     0,
+     2068
+    ],
+    "shape": [
+     2068,
+     7000
+    ]
+   }
+  }
+ ],
+ "evidence_crops": [],
+ "local": {
+  "crack_frac": {
+   "ref_max": 0.03611288998357964,
+   "ref_mad": 0.004555322009553337,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "pore_max_d": {
+   "ref_max": 418.72902692176126,
+   "ref_mad": 66.41158731245339,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "pore_frac": {
+   "ref_max": 0.12013704159824849,
+   "ref_mad": 0.013633310872898674,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "bright_frac": {
+   "ref_max": 0.0642875900360144,
+   "ref_mad": 0.006782267101597859,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 1,
+   "n_credible": 1,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  },
+  "bright_d50": {
+   "ref_max": 208.74404647671145,
+   "ref_mad": 31.72592379434371,
+   "n_ref": 10,
+   "n_batch": 7,
+   "n_exceed": 0,
+   "n_credible": 0,
+   "iid_flag_probability": 0.4117647058823529,
+   "margin_mad": 2.0
+  }
+ },
+ "descriptive_flags": [
+  {
+   "site": "b3esycq1",
+   "kpi": "bright_frac",
+   "value": 0.07866975881261595,
+   "ref_max": 0.0642875900360144,
+   "margin_in_mad": 2.1205547586312545,
+   "note": "batch-mean KPI: outlying site, not a localized defect (see per-site drift)"
+  }
+ ],
+ "acquisition": {
+  "note": "sensitivity analysis: attenuation is the share by which the energy statistic drops under the stratified / adjusted view; it is not a share of the shift caused by the instrument",
+  "attenuation": {
+   "stratified": -0.7288195901417489,
+   "adjusted": -3.0104120206059903,
+   "available": true
+  },
+  "unadjusted_p": 0.34253149370125974,
+  "stratified": {
+   "n_ref_kept": 10,
+   "n_batch_kept": 7,
+   "reason": null
+  },
+  "stratified_p": 0.15576884623075385,
+  "adjusted_p": 0.015196960607878424,
+  "covariates": [
+   "bright_sep",
+   "bse_p1",
+   "etd_boundary_sharpness"
+  ]
+ },
+ "physics": {
+  "statements": {
+   "crack_frac": {
+    "statement": "Crack-like void area fraction is lower than the reference (robust shift 0.4 MAD) → less delamination-like void area in the section, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 0.005558365367423566,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   },
+   "pore_max_d": {
+    "statement": "Largest void (2-D equivalent diameter) is lower than the reference (robust shift 0.2 MAD) → a smaller largest void, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 24.654262309318426,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   },
+   "pore_frac": {
+    "statement": "Macro-pore area fraction is lower than the reference (robust shift 1.0 MAD) → less segmented 2-D void area; packing/wetting implications need independent validation, direction only.",
+    "gated": true,
+    "band_available": true,
+    "band_abs": 0.0326399090480348,
+    "delta_abs": 0.01763674325363948,
+    "note": "±5-level band half-width (median of 24 sites with a band, analysis_cache/acquisition_sites.csv (acquisition.threshold_bands; relative band × site fraction)) = 0.0163; |Δ median| = 0.0176 → physics reading printed",
+    "is_driver": false
+   },
+   "bright_frac": {
+    "statement": "Bright-phase (additive) area fraction is higher than the reference (robust shift 0.2 MAD) → more observed additive area; recipe, utilization and mechanical implications need validation, direction only.",
+    "gated": false,
+    "band_available": true,
+    "band_abs": 0.006369398621517568,
+    "delta_abs": 0.0018610474817961145,
+    "note": "±5-level band half-width (median of 24 sites with a band, analysis_cache/acquisition_sites.csv (acquisition.threshold_bands; relative band × site fraction)) = 0.0032; |Δ median| = 0.0019 → physics reading withheld (shift inside the band)",
+    "is_driver": false
+   },
+   "bright_d50": {
+    "statement": "Bright-phase area-weighted D50 is higher than the reference (robust shift 1.3 MAD) → coarser additive sections; contact, chemistry and electrolyte access also affect later reaction/mechanics, direction only.",
+    "gated": true,
+    "band_available": false,
+    "band_abs": null,
+    "delta_abs": 18.097943306065815,
+    "note": "±5-level threshold band not available for this KPI/these sites; statement printed ungated",
+    "is_driver": false
+   }
+  },
+  "sanity": {
+   "n_sites": 7,
+   "n_sum_to_one": 7,
+   "max_abs_residual": 1.1102230246251565e-16,
+   "n_porosity_below_typical": 7
+  },
+  "void_geometry": [
+   {
+    "batch": "Batch_2",
+    "sites": 7,
+    "crack_like": 7.0,
+    "delamination_index": 0.6141428571428571,
+    "longest_void_over_thickness": 0.3354523673548553
+   },
+   {
+    "batch": "Batch_3",
+    "sites": 17,
+    "crack_like": 7.0,
+    "delamination_index": 0.6694285714285715,
+    "longest_void_over_thickness": 0.5011097803469023
+   }
+  ],
+  "stereology": [
+   {
+    "batch": "Batch_2",
+    "vol_frac_bright": 0.0551821986607142,
+    "vol_frac_pore": 0.0754373113682092,
+    "mass_frac_additive_if_si": 0.0612508943447147
+   },
+   {
+    "batch": "Batch_3",
+    "vol_frac_bright": 0.0533211511789181,
+    "vol_frac_pore": 0.0930740546218487,
+    "mass_frac_additive_if_si": 0.0607683286574692
+   }
+  ],
+  "fraction_connected_note": "No 2-D top-to-bottom macro-pore path on any of the 24 sites of this pair (fraction_connected = 0); the section tortuosity index is undefined and is not reported.",
+  "caveats": [
+   "2-D sections; no 3-D information",
+   "lengths in px; 25 nm/px is a nominal, unverified export tag",
+   "fresh graphite–Si/SiOx material confirmed by Santosh; exact chemistry, recipe and pixelwise phase labels unspecified",
+   "uncycled specimens; no electrochemical outcomes, cycling-damage, SEI or plating inference"
+  ]
+ },
+ "battery_secondary": [
+  {
+   "kpi": "bright_void_distance_d50_px",
+   "units": "px",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 6.708203932499369,
+   "batch_median": 9.899494936611664,
+   "median_difference": 3.191291004112294,
+   "ci_low": -0.0710678118654755,
+   "ci_high": 4.816653826391969,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 2.082157136805721,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 2.27573042957716,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "bright_void_distance_d50_px"
+  },
+  {
+   "kpi": "bright_ring_void_frac_16px",
+   "units": "fraction",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0444954525456368,
+   "batch_median": 0.0217328109540015,
+   "median_difference": -0.022762641591635296,
+   "ci_low": -0.03629180092865757,
+   "ci_high": 0.003943135415678603,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.034585436548338996,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.016350524585013203,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "bright_ring_void_frac_16px"
+  },
+  {
+   "kpi": "local_bright_std_512px",
+   "units": "fraction",
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 0,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0592809081036349,
+   "batch_median": 0.0626066828460931,
+   "median_difference": 0.0033257747424581957,
+   "ci_low": -0.010950990097120097,
+   "ci_high": 0.012010525331984295,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 0,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.004133359024166006,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 0,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.004736116021542697,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_std_512px"
+  },
+  {
+   "kpi": "local_bright_pore_spearman_512px",
+   "units": "correlation",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0257833176812089,
+   "batch_median": -0.0441399329890731,
+   "median_difference": -0.069923250670282,
+   "ci_low": -0.2748467385872858,
+   "ci_high": 0.19267488935050098,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.0328215992762213,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.0377203551220391,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_pore_spearman_512px"
+  },
+  {
+   "kpi": "local_bright_std_1024px",
+   "units": "fraction",
+   "n_ref_usable": 17,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 0,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0293427075866869,
+   "batch_median": 0.0311202029620855,
+   "median_difference": 0.0017774953753986016,
+   "ci_low": -0.0072293811028077,
+   "ci_high": 0.013418678441582,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 0,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.001798054660957199,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 0,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.0024183884704463005,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_std_1024px"
+  },
+  {
+   "kpi": "local_bright_pore_spearman_1024px",
+   "units": "correlation",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": -0.3566433566433566,
+   "batch_median": -0.2377622377622378,
+   "median_difference": 0.11888111888111882,
+   "ci_low": -0.4214285714285713,
+   "ci_high": 0.6083916083916083,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.090909090909091,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.048951048951049014,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "local_bright_pore_spearman_1024px"
+  },
+  {
+   "kpi": "long_void_internal_area_frac",
+   "units": "fraction",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.0182406312877263,
+   "batch_median": 0.0110730174081237,
+   "median_difference": -0.007167613879602601,
+   "ci_low": -0.015764812534209104,
+   "ci_high": -0.0003430742644452006,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.014098528672032202,
+   "n_ref_sensitivity_incomplete": 0,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.011088698535507,
+   "n_batch_sensitivity_incomplete": 0,
+   "label": "Internal long-void area fraction"
+  },
+  {
+   "kpi": "long_void_y_centroid_norm",
+   "units": "normalised image row (0–1)",
+   "n_ref_usable": 13,
+   "n_batch_usable": 7,
+   "n_ref_excluded": 4,
+   "n_batch_excluded": 0,
+   "ref_median": 0.4876852345724303,
+   "batch_median": 0.4819786299726505,
+   "median_difference": -0.005706604599779785,
+   "ci_low": -0.0856103766685406,
+   "ci_high": 0.11475317476256336,
+   "interval_available": true,
+   "is_primary": false,
+   "qc_role": "secondary_only_excluded_from_verdict",
+   "n_ref_pore_threshold_unresolved": 13,
+   "n_ref_pore_threshold_unknown": 0,
+   "ref_median_sensitivity_range": 0.06585299936016498,
+   "n_ref_sensitivity_incomplete": 1,
+   "n_batch_pore_threshold_unresolved": 7,
+   "n_batch_pore_threshold_unknown": 0,
+   "batch_median_sensitivity_range": 0.07456744783656977,
+   "n_batch_sensitivity_incomplete": 1,
+   "label": "Internal long-void image-row centroid"
+  }
+ ],
+ "distance": {
+  "label": "Frozen v2 morphology distance model fitted on Batch 3 only (analysis/submission_v2/freeze). This lot's sites were not in the fit, but were explored during development.",
+  "source": "analysis/submission_v2/freeze/evaluation/site_table.csv",
+  "sha256": "ae6e57b0809b03944844e26b072e573e0f0e4aa951b0d3e86f043a74b547db2c",
+  "variant": "morphology kNN (primary OOD variant)",
+  "sites": [
+   {
+    "site": "3806gxp0",
+    "pct": 29.411764705882355,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(-z=-3.13)|corr_len_px(-z=-0.90)|pore_d90(-z=-1.14)",
+    "nearest": "cfe5vt7s(ordinary)|71vgq3fw(grey_pore)|vc2whyaq(ordinary)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "avn74qx1",
+    "pct": 76.47058823529412,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(-z=-4.96)|bright_circ(+z=+1.55)|bright_d90(+z=+1.38)",
+    "nearest": "vc2whyaq(ordinary)|ptg8lmto(ordinary)|x77cy643(ordinary)",
+    "acq_pct": 70.58823529411765
+   },
+   {
+    "site": "b3esycq1",
+    "pct": 52.94117647058824,
+    "exceeds": false,
+    "top": "bright_frac(+z=+2.93)|bright_count_per_Mpx(+z=+2.66)|bright_d50(+z=+1.97)",
+    "nearest": "71vgq3fw(grey_pore)|cfe5vt7s(ordinary)|kbdh4tri(grey_pore)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "epqdaau9",
+    "pct": 17.647058823529413,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(+z=+2.50)|bright_d50(+z=+1.41)|crack_count_per_Mpx(-z=-1.35)",
+    "nearest": "71vgq3fw(grey_pore)|cfe5vt7s(ordinary)|x77cy643(ordinary)",
+    "acq_pct": 64.70588235294119
+   },
+   {
+    "site": "i9jiqjwl",
+    "pct": 41.1764705882353,
+    "exceeds": false,
+    "top": "bright_max_d(+z=+2.03)|fft_slope(+z=+1.67)|bright_d50(-z=-0.41)",
+    "nearest": "71vgq3fw(grey_pore)|tuy3zymq(grey_pore)|cfe5vt7s(ordinary)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "r17byphk",
+    "pct": 52.94117647058824,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(-z=-2.98)|fft_slope(-z=-0.14)|crack_count_per_Mpx(+z=+1.61)",
+    "nearest": "vc2whyaq(ordinary)|tuy3zymq(grey_pore)|ptg8lmto(ordinary)",
+    "acq_pct": 52.94117647058824
+   },
+   {
+    "site": "rxax5ozo",
+    "pct": 0.0,
+    "exceeds": false,
+    "top": "pore_count_per_Mpx(-z=-2.22)|bright_circ(-z=-1.14)|corr_len_px(-z=+0.00)",
+    "nearest": "71vgq3fw(grey_pore)|cfe5vt7s(ordinary)|vc2whyaq(ordinary)",
+    "acq_pct": 41.1764705882353
+   }
+  ]
+ },
+ "limits": {
+  "usable_n": {
+   "crack_frac": [
+    17,
+    7
+   ],
+   "pore_max_d": [
+    17,
+    7
+   ],
+   "pore_frac": [
+    17,
+    7
+   ],
+   "bright_frac": [
+    17,
+    7
+   ],
+   "bright_d50": [
+    17,
+    7
+   ]
+  },
+  "excluded": {
+   "crack_frac": [
+    0,
+    0
+   ],
+   "pore_max_d": [
+    0,
+    0
+   ],
+   "pore_frac": [
+    0,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "fallback": {
+   "crack_frac": [
+    4,
+    0
+   ],
+   "pore_max_d": [
+    4,
+    0
+   ],
+   "pore_frac": [
+    4,
+    0
+   ],
+   "bright_frac": [
+    0,
+    0
+   ],
+   "bright_d50": [
+    0,
+    0
+   ]
+  },
+  "specimen_independence": "unconfirmed — whether the sites of a batch come from distinct specimens has been asked of the organisers; n counts sites",
+  "reference_heterogeneity": {
+   "grey_pore": [
+    "71vgq3fw",
+    "kbdh4tri",
+    "tuy3zymq",
+    "x7u69zsw"
+   ],
+   "low_contrast": [],
+   "cracked": [
+    "0grcilhi",
+    "hzumfsms",
+    "ufdvpb81"
+   ],
+   "ordinary_n": 10,
+   "source": "data-derived flags (acquisition.derive_flags); cracked = known reference list"
+  },
+  "mdc_range_mad": [
+   1.5,
+   2.5
+  ],
+  "scale": "2-D sections, 25 nm/px nominal (TIFF export tag, unverified); fresh graphite–Si/SiOx confirmed by Santosh, exact chemistry and pixelwise labels unspecified",
+  "seven_v_seven": "not applicable",
+  "notes": [
+   "energy distance and drift score drop batch sites whose bright-phase KPIs are unusable (low-contrast)",
+   "patch-level numbers localise evidence only and never enter n"
+  ]
+ }
+}
