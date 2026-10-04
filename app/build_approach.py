@@ -264,7 +264,7 @@ def build(args):
     body = f"""
 <header class="hero"><div class="toprow"><h1>Our approach</h1><button class="themebtn" id="theme" aria-pressed="false">Dark mode</button></div>
 <p class="lead">Backscatter examines an incoming electrode lot against the supplier's approved baseline. A lot is a batch; the organisers use the word batch.
-It gives three answers, and it keeps them apart: the QC action from frozen rules, the distance from the baseline, and the known batch that each sample resembles.
+It gives three answers and keeps them apart. They are the QC action from frozen rules, the distance from the baseline, and the known batch that each sample resembles.
 It measures physical quantities on SEM cross-sections, tests them site by site, and shows the evidence on the image. Nothing is refitted on a new lot.</p>
 <nav class="toc" aria-label="Sections"><a href="#s1">The question and the data</a><a href="#s2">What the data taught us</a><a href="#s3">Features</a><a href="#s4">Decision model</a><a href="#s5">Acquisition and review</a><a href="#s6">Physics and the cell</a><a href="#s7">Resemblance model</a><a href="#s8">What is different</a><a href="#s9">Outcomes</a><a href="#s10">Into the product</a><a href="#s11">Why this design</a></nav></header>
 
@@ -306,7 +306,7 @@ Fewer than {T.min_usable_sites} usable sites means a quality abstention. Every r
 
 <section id="s5"><h2><span class="sn">5</span>Acquisition sensitivity and the review loop</h2>
 <p>The microscope can change between sessions. The system does not let an imaging change become a reject. It derives quality flags from the lot's own images before any statistic runs. The flags are low bright-phase contrast, a raised black level with grey pores, and contrast stretching. {ev('D31')}</p>
-<p>It then repeats the multivariate test in three views: unadjusted, stratified to ordinary acquisition groups, and adjusted for three acquisition covariates with the regression refitted inside every permutation. The attenuation is the share by which the statistic drops. A drop larger than {T.strong_attenuation:g} holds the verdict at investigate. If no view is available, the system withholds a reject. A negative attenuation means that the adjustment did not explain the shift away. {ev('D26', 'D30')}</p>
+<p>It then repeats the multivariate test in three views. The views are unadjusted, stratified to ordinary acquisition groups, and adjusted for three acquisition covariates. The regression is refitted inside every permutation. The attenuation is the share by which the statistic drops. A drop larger than {T.strong_attenuation:g} holds the verdict at investigate. If no view is available, the system withholds a reject. A negative attenuation means that the adjustment did not explain the shift away. {ev('D26', 'D30')}</p>
 <div class="tw"><table><thead><tr><th>Lot</th><th>Stratified attenuation</th><th>Adjusted attenuation</th><th>Views available</th></tr></thead><tbody>{att_rows}</tbody></table></div>
 <p>A person closes the loop. The localized path routes a flagged site to image review with a painted crop. The review has three states: not reviewed, confirmed, and refuted. A refuted review closes the flag. Each verdict ends with one next QC action in plain words. The action is never a release decision, because no tolerances exist. {ev('D32', 'D33', 'D45')}</p></section>
 
@@ -350,7 +350,7 @@ The nested test chooses C inside each fold. A second test holds out whole acquis
 <div class="tw"><table class="why"><thead><tr><th>We chose</th><th>Instead of</th><th>Because</th></tr></thead><tbody>{why_rows}</tbody></table></div>
 <h3>How we keep ourselves honest</h3>
 <p>Every consequential decision has a numbered entry with its rationale and the alternatives: D01 to D59U. Every number comes from a logged experiment and a registry row: E01 to E36S. A review checklist, C01 to C35, grew from each mistake a reviewer caught. Eighteen interpretive assumptions, A1 to A18, sit in an assumption register with an annotated image and a review state each. Two cold rehearsals of the drop procedure found three failures before the organisers' drop. Each exploratory pilot was pre-registered before its first run. {ev('D21', 'E23', 'E28', 'D34')}</p>
-<p class="note">Limits we state: 2-D sections only; pixel lengths; uncycled electrodes, so no claims about cycling damage or performance; one heterogeneous baseline lot; expert review of masks still pending.</p></section>
+<p class="note">Limits we state: 2-D sections only; pixel lengths; one heterogeneous baseline lot; expert review of masks still pending. The electrodes are new, so we make no claims about cycle damage or performance.</p></section>
 """
     return body
 
