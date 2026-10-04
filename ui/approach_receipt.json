@@ -1,6 +1,6 @@
 {
- "built_utc": "2026-10-04T12:51:30+00:00",
- "git": "99b8d4d-dirty",
+ "built_utc": "2026-10-04T13:00:50+00:00",
+ "git": "eb6a0d2",
  "builder_sha256": "7d67b8aa7a6acda8ca59b0556f91f6d9a95f914ceb6d7eca2222bccd0a374577",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
@@ -34,6 +34,6 @@
   "ui/bundles/samples_drop01/img/smp_fn0mhxef_voids.jpg": "929f4ff0b3fac1b98ecc7aaae67f147d47c99493c993a96cd8ef24f035dd58ca",
   "ui/bundles/samples_drop01/img/smp_xrv9xvzb_voids.jpg": "7df1bdb01becd20a1266c574fb960b74f8e4f9317341ff7c9f091ee1bfa10905"
  },
- "output_sha256": "52a159cc2ff5ff16a72385ae6c78892804943f2ffdb072786ed85a016b96a8dd",
+ "output_sha256": "69d6bdb72b038380abb625921c836c7d27a3fd1d266fdb1a898ab88a6cca2caf",
  "size_mb": 1.36
 }
