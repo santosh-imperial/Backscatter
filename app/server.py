@@ -68,7 +68,7 @@ def now() -> str:
 # run records
 # ---------------------------------------------------------------------------------------------------------------
 STEPS = [("check", "Check the input"), ("score", "Measure sites and score sample resemblance (model v2)"),
-         ("compose", "Assemble the per-sample bets"), ("lot", "Compare the lot with the approved baseline (frozen rules)"),
+         ("compose", "Assemble per-site resemblance"), ("lot", "Compare the lot with the approved baseline (frozen rules)"),
          ("samples", "Prepare the sample images"), ("build", "Build the report")]
 LOCK = threading.Lock()          # one pipeline at a time; the steps are CPU-heavy
 STATE_LOCK = threading.Lock()
@@ -211,10 +211,14 @@ def summarise(d: Path, mode: str) -> dict:
         lot = json.loads((d / "bundle_lot" / "lot.json").read_text())
         label, state = VERDICT_LABELS[lot["summary"]["verdict"]]
         if lot["summary"]["outcome_columns"].get("quality_abstention"):
-            label = "Investigate: too few usable sites (quality abstention)"
+            label, state = "Investigate: too few usable sites (quality abstention)", "abst"
+            out["abstention"] = True
         out.update(verdict_label=label, verdict_state=state, lot_id="lot-" + re.sub(r"[^A-Za-z0-9_.-]", "_", lot["lot"]))
     pred = pd.read_csv(d / "v2" / "submission" / "predictions.csv")
     out["bets"] = pred.predicted_batch.value_counts().to_dict()
+    # samples whose bet rests on the first-drop miss pattern (low contrast, unreliable bright masks)
+    miss = pred[pred.acquisition_flags.astype(str).str.contains("bright_low_contrast")].sample_id.astype(str).tolist()
+    out["miss_pattern"] = miss
     return out
 
 
@@ -224,20 +228,20 @@ def summarise(d: Path, mode: str) -> dict:
 app = FastAPI(title="Backscatter", docs_url=None, redoc_url=None, openapi_url=None)
 TABS_CSS = """<style>.apptabs{display:flex;gap:6px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line,#dce0e5);background:var(--bg,#f4f5f6);font:14px/1.4 "IBM Plex Sans",system-ui,sans-serif}
 .apptabs a{padding:6px 12px;border-radius:8px;text-decoration:none;color:var(--ink,#15191e)}.apptabs a[aria-current=page]{background:var(--accent,#2f3e52);color:var(--accent-ink,#fff)}
-.apptabs a:hover:not([aria-current]){background:var(--sunk,#eceef1)}.apptabs .who{margin-left:auto;color:var(--muted,#535b67);font-size:12.5px}
+.apptabs a:hover:not([aria-current]){background:var(--sunk,#eceef1)}.apptabs.sticky{position:sticky;top:0;z-index:4}.apptabs .who a{padding:0;color:inherit}.apptabs .who{margin-left:auto;color:var(--muted,#535b67);font-size:12.5px}
 .apptabs .mark{font-weight:600;letter-spacing:.01em;margin-right:14px}
 @media (max-width:600px){.apptabs .who{display:none}}</style>"""
 
 
-def tabs(active: str, extra: str = "") -> str:
+def tabs(active: str, extra: str = "", sticky: bool = False) -> str:
     a = lambda href, label, key: f'<a href="{href}"{" aria-current=page" if key == active else ""}>{label}</a>'
-    return (TABS_CSS + '<div class="apptabs" role="navigation" aria-label="Sections"><span class="mark">Backscatter</span>' + a("/inspect", "Inspect a lot", "inspect")
+    return (TABS_CSS + f'<div class="apptabs{" sticky" if sticky else ""}" role="navigation" aria-label="Sections"><span class="mark">Backscatter</span>' + a("/inspect", "Inspect a lot", "inspect")
             + a("/built", "How it was built", "built") + f'<span class="who">{extra}</span></div>')
 
 
-def with_tabs(html: str, active: str, extra: str = "") -> str:
+def with_tabs(html: str, active: str, extra: str = "", sticky: bool = False) -> str:
     i = html.find("<body>")
-    return html if i < 0 else html[: i + 6] + tabs(active, extra) + html[i + 6:]
+    return html if i < 0 else html[: i + 6] + tabs(active, extra, sticky) + html[i + 6:]
 
 
 @app.get("/")
@@ -247,7 +251,7 @@ def root():
 
 @app.get("/inspect", response_class=HTMLResponse)
 def inspect_page():
-    return with_tabs((HERE / "inspect.html").read_text(encoding="utf-8"), "inspect", "Local server · frozen rules b4f4da2e357c")
+    return with_tabs((HERE / "inspect.html").read_text(encoding="utf-8"), "inspect", "Local server · frozen rules b4f4da2e357c", sticky=True)
 
 
 @app.get("/built", response_class=HTMLResponse)
@@ -269,7 +273,8 @@ def run_page(rid: str):
         html = html.replace("</body>", f'<script>if(!location.hash)location.replace("#{rec["summary"]["lot_id"]}")</script></body>', 1)
     else:
         html = html.replace("</body>", f'<script>if(!location.hash)location.replace("#samples-bundle_samples")</script></body>', 1)
-    return with_tabs(html, "inspect", f"Inspection {rec['name']} · {rec['started_utc'][:16].replace('T', ' ')} UTC")
+    crumb = f'<a href="/inspect">Inspect a lot</a> › <a href="/inspect#{rec["id"]}">{rec["name"]}</a> · {rec["started_utc"][:16].replace("T", " ")} UTC'
+    return with_tabs(html, "", crumb)
 
 
 @app.get("/api/known-sites")
@@ -410,6 +415,12 @@ def rebuild_pages() -> list[str]:
             continue
         cmd = step_commands(d, load(d))["build"] + ["--replace"]
         _sub(d, "build", cmd)
+        r = load(d)
+        labels = dict(STEPS)
+        for st in r["steps"]:
+            st["label"] = labels.get(st["key"], st["label"])
+        r["summary"] = summarise(d, r["mode"])
+        save(d, r)
         done.append(d.name)
     return done
 

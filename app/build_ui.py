@@ -130,6 +130,7 @@ def load_lot(bundle: str, img: Images, inputs: dict, fixture: bool = False) -> d
         # The frozen rules return an investigate string for an abstention; the page names the real reason and keeps
         # the frozen string in the footer and the details.
         label = "Investigate: too few usable sites (quality abstention)"
+        state = "abst"  # neutral treatment: the images are not enough to judge, not an amber verdict (D58U)
     if s["meta"]["thresholds_hash"] != decision.Thresholds().hash():
         raise SystemExit(f"{p}: thresholds hash {s['meta']['thresholds_hash']} differs from the frozen rules ({decision.Thresholds().hash()}); re-export the lot")
     if d.get("distance") and os.path.isabs(str(d["distance"].get("source", ""))):

@@ -405,6 +405,7 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
   - Light mode is the default on both pages, whatever the system setting. A Dark mode toggle remembers the choice in the browser.
   - Low-contrast flags on site chips are neutral hollow markers. The red low-contrast ring stays in strip charts, under the Plots rule.
   - The "bet was wrong" callout is neutral. Verdict red is not reused for track-record outcomes.
+- **Addendum 2 (same day):** a quality abstention is shown in neutral graphite with an image-quality icon and the lead "The images are not enough to judge the lot". The frozen verdict label is unchanged. Amber stays for investigate verdicts, because an abstention calls for re-imaging, not supplier escalation.
 
 ## Part B — Pre-presentation review checklist
 

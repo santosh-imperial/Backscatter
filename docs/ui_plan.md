@@ -375,3 +375,21 @@ The static page still works on its own if the server fails.
   - The Method page explains the name.
 - **Theme.** Light by default, with a Dark mode toggle (D58U addendum).
 
+**Fifth critique pass (25/40).**
+
+- **Abstention.** A quality abstention keeps its frozen label but gets its own image-quality icon, a neutral
+  graphite treatment, and the lead "The images are not enough to judge the lot". Amber stays for real investigate
+  verdicts. Navigation shows "abstained".
+- **Resemblance on the result card.** It reads "Per-site resemblance (secondary; does not change the action)" and
+  links to the sample page when a sample matches the known miss pattern (low-contrast bright masks).
+- **Inspect.**
+  - Reopening or starting a run collapses the form behind "New inspection", puts the run card first and focuses it.
+  - The tab bar is sticky.
+  - Checklist step 3 links to `/inspect?name=<lot>`.
+- **Run pages.** A breadcrumb, "Inspect a lot › <run>", replaces the highlighted tab.
+- **How it was built.** It opens on a one-screen overview: baseline → frozen rules → track record, plus the
+  reconciliation of "both known lots consistent" with "the fingerprint separates them". All numbers come from the
+  embedded data.
+- **Small fixes.** The theme button keeps a fixed label with a correct pressed state. History pills have 4 px
+  padding. On an abstention the KPI panel is titled "Where the lot sits". Captions wrap on phones.
+

@@ -70,7 +70,14 @@ button, input, select { font: inherit; font-size: var(--t-sm) }
 /* decision band */
 .decision { padding: 0; gap: 0; overflow: hidden }
 .verdictbox { padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid var(--line) }
-.verdictbox.ok { background: var(--ok-bg) } .verdictbox.warn { background: var(--warn-bg) } .verdictbox.bad { background: var(--bad-bg) }
+.verdictbox.ok { background: var(--ok-bg) } .verdictbox.warn { background: var(--warn-bg) } .verdictbox.bad { background: var(--bad-bg) } .verdictbox.abst { background: var(--sunk) }
+.verdictbox.abst .verdict { color: var(--ink) } .verdictbox.abst .note { color: var(--muted) }
+.overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
+.overview .step { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface) }
+.overview .big { font-size: var(--t-xl); font-weight: 600; font-family: var(--font-data); font-variant-numeric: tabular-nums }
+.evlinks { display: flex; flex-wrap: wrap; gap: 8px }
+.evlinks a { padding: 6px 12px; border: 1px solid var(--line-strong); border-radius: 8px; text-decoration: none; font-size: var(--t-sm) }
+.evlinks a:hover { background: var(--sunk) }
 [hidden] { display: none !important }
 .verdict { font-size: var(--t-xl); font-weight: 600; line-height: 1.3; display: flex; gap: 10px; align-items: center }
 .verdictbox.ok .verdict { color: var(--ok) } .verdictbox.warn .verdict { color: var(--warn) } .verdictbox.bad .verdict { color: var(--bad) }
@@ -90,6 +97,7 @@ button, input, select { font: inherit; font-size: var(--t-sm) }
 .pair { display: flex; flex-direction: column; gap: 14px }
 .figlab { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block !important; min-height: 1.6em }
 .figlab .note { margin-left: 8px }
+@media (max-width: 900px) { .figlab { white-space: normal } .overview { grid-template-columns: minmax(0, 1fr) } }
 h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none }
 .lane > summary::-webkit-details-marker { display: none }
 .lane > summary:hover { background: var(--sunk) }
@@ -262,7 +270,9 @@ const ICON = {
   warn: '<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.6v.1"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/>',
   bad: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/>',
-  chev: '<path d="M9 6l6 6-6 6"/>'};
+  chev: '<path d="M9 6l6 6-6 6"/>',
+  imgq: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><path d="M4 3.5l16 17"/>'};
+const VICON = {ok: "ok", warn: "warn", bad: "bad", abst: "imgq"};
 const icon = (k, cls = "ico") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const topFeat = t => String(t || "").split("|").slice(0, 2).map(x => {
   const m = x.match(/^(.*?)\(([+-]?)z=([-+]?[\d.]+)\)$/); return m ? `${esc(m[1])} z ${fs(+m[3], 1)}` : esc(x); }).join(", ");
@@ -276,7 +286,7 @@ const announce = t => { const el = document.getElementById("live"); el.textConte
 function nav(active) {
   const a = (id, inner) => `<a href="#${id}"${id === active ? ' aria-current="page"' : ""}>${inner}</a>`;
   const b = DATA.baseline;
-  const st = l => `<span style="color:var(--${l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject"}[l.verdict_state])}</span>`;
+  const st = l => `<span style="color:var(--${l.verdict_state === "abst" ? "muted" : l.verdict_state})">${({ok: "consistent", warn: "investigate", bad: "reject", abst: "abstained"}[l.verdict_state])}</span>`;
   const real = DATA.lots.filter(l => !l.fixture), fx = DATA.lots.filter(l => l.fixture);
   let h = `<div class="brand">Backscatter<small>Incoming electrode lot QC from SEM cross-sections</small></div>`;
   h += `<div class="navgroup"><h2>Approved baseline</h2>${a("baseline", `<span class="dot" style="background:var(--base)"></span>${esc(bname(b.reference))}<span class="st">${b.n_sites} sites</span>`)}</div>`;
@@ -284,10 +294,10 @@ function nav(active) {
   if (DATA.samplesets.length) h += DATA.inspection && real.length
     ? `<div class="navgroup"><h2>This lot</h2>${DATA.samplesets.map(s => a(s.id, "Per-site resemblance")).join("")}</div>`
     : `<div class="navgroup"><h2>Sample sets</h2>${DATA.samplesets.map(s => a(s.id, esc(s.name))).join("")}</div>`;
-  h += `<div class="navgroup"><h2>Evidence</h2>${a("track", "Track record")}${a("method", "Method and provenance")}</div>`;
+  h += `<div class="navgroup"><h2>Evidence</h2>${DATA.inspection ? "" : a("overview", "Overview")}${a("track", "Track record")}${a("method", "Method and provenance")}</div>`;
   if (fx.length) h += `<div class="navgroup"><h2>Layout fixtures, not real data</h2>${fx.map(l => a(l.id, `${esc(l.lot)}<span class="st">${st(l)}</span>`)).join("")}</div>`;
   const dark = document.documentElement.dataset.theme === "dark";
-  h += `<button class="themebtn" data-theme-toggle aria-pressed="${dark}">${dark ? "Light mode" : "Dark mode"}</button>`;
+  h += `<button class="themebtn" data-theme-toggle aria-pressed="${dark}">Dark mode</button>`;
   document.getElementById("nav").innerHTML = h;
 }
 
@@ -468,7 +478,7 @@ function lotView(l) {
     <p class="note">${exTxt ? `Excluded by quality flags: <span class="mono">${esc(exTxt)}</span>.` : "Every lot site counts for every primary KPI."}</p></header>`;
   h += `<section class="card decision" aria-labelledby="act-h">
     <div class="verdictbox ${l.verdict_state}"><h2 class="sr" id="act-h">Recommended action</h2>
-      <div class="verdict">${icon({ok: "ok", warn: "warn", bad: "bad"}[l.verdict_state], "ico")}${esc(l.verdict_label)}</div>
+      <div class="verdict">${icon(VICON[l.verdict_state], "ico")}${esc(l.verdict_label)}</div>
       ${l.outcome.quality_abstention ? abstentionChecklist(l) : `<p class="why">${esc(sent(l.next_action))}</p>`}
       <p class="note">Decision stability ${Math.round(l.stability.share * l.stability.n_runs)} of ${l.stability.n_runs} leave-one-site-out re-runs. Stability is not a probability of being right.</p>
       <details class="more"><summary>Details: why, and what would change it</summary><div class="ste">
@@ -497,8 +507,10 @@ function abstentionChecklist(l) {
   const items = [];
   if (need) items.push(`Image at least ${need} more site${need > 1 ? "s" : ""} that pass the quality checks. Now ${usable} usable; the rules need ${T.min_usable_sites} for every primary KPI.`);
   if (low.length) items.push(`Re-acquire ${low.join(", ")} with better contrast. ${low.length > 1 ? "Their" : "Its"} bright-phase values do not count.`);
-  items.push("Start a new inspection with all sites of the lot.");
-  return `<p class="why">Too few usable sites for a decision. To get one:</p><ol class="checklist">${items.map(t => `<li>${esc(t)}</li>`).join("")}</ol>`;
+  const last = DATA.inspection
+    ? `<a class="linkbtn" href="/inspect?name=${encodeURIComponent(l.lot)}">Start a new inspection</a> with all sites of the lot.`
+    : "Start a new inspection with all sites of the lot.";
+  return `<p class="why"><b>The images are not enough to judge the lot.</b> To get a decision:</p><ol class="checklist">${items.map(t => `<li>${esc(t)}</li>`).join("")}<li>${last}</li></ol>`;
 }
 function cropIndex(l, site, kpi) { return l.crops.findIndex(c => c.site === site && (!kpi || c.kpi === kpi)); }
 const reviewable = f => f.margin_in_mad >= DATA.thresholds.severity_margin_mad && f.measurement_reliable !== false;
@@ -605,7 +617,7 @@ function workbench(l, nearest, lanes) {
         ${cropFlag ? reviewPanel(l, cropFlag) : ""}</figure>` : ""}
     </div>
     <div class="panel">
-      <div class="controls"><h2>What drives it</h2>
+      <div class="controls"><h2>${l.outcome.quality_abstention ? "Where the lot sits" : "What drives it"}</h2>
         <p class="note">Select a KPI to show its overlay and the lot site furthest from the baseline median.</p>
         <div class="kpis"><div aria-hidden="true" style="padding:0 8px">${shiftAxis()}</div>${rows}</div>
         <p class="note">Dot: robust shift of the lot median in baseline MAD. Line: about 95 % bootstrap interval. Shaded band: the smallest shift this lot size detects with 80 % power. Holm p is corrected for five KPIs; 1.000 means no evidence of a shift.</p></div>
@@ -766,6 +778,26 @@ function trackView() {
 }
 
 /* ------------------------------------------------------------------ method */
+function overviewView() {
+  const b = DATA.baseline, t = DATA.track, prim = t.summary.find(r => r.primary), morph = t.summary.find(r => r.family === "morph");
+  const lots = DATA.lots.filter(l => !l.fixture);
+  const mdc = lots.flatMap(l => PRIM().map(k => l.mdc[k] && l.mdc[k].feasible ? l.mdc[k].mdc_mad : null)).filter(isNum);
+  const ss = DATA.samplesets.flatMap(x => x.samples.filter(y => y.truth)), right = ss.filter(y => y.truth.true_batch === y.bet).length;
+  const consistent = lots.filter(l => l.verdict_state === "ok");
+  return `<header class="head"><h1 tabindex="-1" id="h1">How Backscatter was built</h1>
+    <p class="sub">Backscatter compares an incoming electrode lot with the supplier's approved baseline, using rules and a model frozen before any unseen lot arrived. This tab is the development record behind it.</p></header>
+  <section class="card"><h2>From baseline to decision</h2><div class="overview">
+    <div class="step"><span class="note">1 · Approved baseline</span><span class="big">${b.n_sites} sites</span><p class="note">${esc(bname(b.reference))}: ${Object.entries(b.groups).map(([k, v]) => `${v} ${esc(String(k).replace("_", "-"))}`).join(", ")}. Heterogeneous, so every comparison uses robust statistics.</p><a href="#baseline">See the baseline</a></div>
+    <div class="step"><span class="note">2 · Frozen rules</span><span class="big">${PRIM().length} KPIs</span><p class="note">Measured on BSE masks per site. Four lanes sit beside one recommended action; no rule combines them. Thresholds <span class="mono">${esc(DATA.thresholds.hash)}</span>.</p><a href="#method">How a lot is judged</a></div>
+    <div class="step"><span class="note">3 · Track record</span><span class="big">${ss.length ? `${right} of ${ss.length}` : f(prim.balanced_accuracy, 3)}</span><p class="note">${ss.length ? `First-drop samples assigned to the right lot. ` : ""}Per-site balanced accuracy on the 31 known sites: ${f(prim.balanced_accuracy, 3)}, where chance is 0.33.</p><a href="#track">See the track record</a></div>
+  </div></section>
+  <section class="card"><h2>What the known lots show</h2><div class="ste">
+    <p>${consistent.length === lots.length && lots.length ? `${lots.map(l => esc(bname(l.lot))).join(" and ")} are both consistent within detectable limits` : "The known lots are judged"} on the five defect-relevant KPIs at ${lots.length ? lots[0].sites.length : "n/a"} sites each. At that size the smallest shift the rules detect with 80 % power is ${mdc.length ? `${f(Math.min(...mdc), 2)}–${f(Math.max(...mdc), 2)} MAD` : "not available"}, so not detected does not mean unchanged.</p>
+    <p>The per-site fingerprint still separates the lots better than chance (balanced accuracy ${f(prim.balanced_accuracy, 3)}, permutation p ${fp(prim.perm_p)}). Morphology alone does not (${f(morph ? morph.balanced_accuracy : NaN, 3)}); the separation needs appearance features that are sensitive to how the images were acquired.</p></div>
+    <div class="evlinks">${lots.map(l => `<a href="#${l.id}">Lot review: ${esc(bname(l.lot))}</a>`).join("")}${DATA.samplesets.map(x => `<a href="#${x.id}">${esc(x.name)}</a>`).join("")}<a href="#baseline">Approved baseline</a><a href="#track">Track record</a><a href="#method">Method and provenance</a></div></section>
+  ${footer([`thresholds ${esc(DATA.thresholds.hash)}`])}`;
+}
+
 function methodView() {
   const l = DATA.lots.find(x => !x.fixture) || DATA.lots[0];
   return `<header class="head"><h1 tabindex="-1" id="h1">Method and provenance</h1></header>
@@ -811,6 +843,7 @@ function render(focus) {
   else if (h.id === "baseline") { html = baselineView(); title = "Approved baseline"; }
   else if (h.id === "track") { html = trackView(); title = "Track record"; }
   else if (h.id === "method") { html = methodView(); title = "Method and provenance"; }
+  else if (!DATA.inspection && (h.id === "overview" || !h.id)) { active = "overview"; html = overviewView(); title = "How it was built"; }
   else { const first = DATA.lots.find(l => !l.fixture) || DATA.lots[0];
     if (first) { active = first.id; html = lotView(first); title = bname(first.lot); } else { active = DATA.samplesets[0].id; html = samplesView(DATA.samplesets[0]); title = DATA.samplesets[0].name; } }
   document.title = `${title} · Backscatter`;
@@ -874,7 +907,7 @@ document.addEventListener("click", e => {
   const t = e.target.closest("[data-theme-toggle]"); if (!t) return;
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = next; try { localStorage.setItem("backscatter-theme", next); } catch (err) {}
-  t.textContent = next === "dark" ? "Light mode" : "Dark mode"; t.setAttribute("aria-pressed", String(next === "dark"));
+  t.setAttribute("aria-pressed", String(next === "dark"));
 });
 document.addEventListener("keydown", e => {
   const r = e.target.closest('[role="radio"]'); if (!r) return;

@@ -95,3 +95,24 @@ def test_failed_subprocess_step_shows_plain_text_not_a_traceback(srv, tmp_path, 
     failed = [s for s in out["steps"] if s["status"] == "failed"][0]
     assert out["status"] == "failed" and failed["key"] == "score" and failed["log"] is True
     assert "Traceback" not in failed["detail"] and "log" in failed["detail"]
+
+
+def test_run_page_breadcrumb_replaces_the_active_tab(srv):
+    server, _, _ = srv
+    crumb = server.tabs("", '<a href="/inspect">Inspect a lot</a> › x')
+    assert " aria-current=page>" not in crumb and "›" in crumb
+    assert "apptabs sticky" in server.tabs("inspect", "", sticky=True)
+
+
+def test_summary_marks_abstention_and_miss_pattern(srv, tmp_path):
+    server, _, _ = srv
+    d = tmp_path / "run"
+    (d / "bundle_lot").mkdir(parents=True); (d / "v2" / "submission").mkdir(parents=True)
+    from polaron_qc import decision
+    (d / "bundle_lot" / "lot.json").write_text(json.dumps({"lot": "Lot-A", "summary": {"verdict": decision.INVESTIGATE_DRIFT,
+                                                                                         "outcome_columns": {"quality_abstention": True}}}))
+    (d / "v2" / "submission" / "predictions.csv").write_text(
+        "sample_id,predicted_batch,acquisition_flags\na1,Batch_1,bright_low_contrast\na2,Batch_3,none of listed flags\n")
+    s = server.summarise(d, "lot")
+    assert s["abstention"] is True and s["verdict_state"] == "abst" and s["miss_pattern"] == ["a1"]
+    assert s["bets"] == {"Batch_1": 1, "Batch_3": 1}
