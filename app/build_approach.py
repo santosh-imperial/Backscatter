@@ -25,7 +25,7 @@ import pandas as pd
 from PIL import Image
 
 from polaron_qc import PRIMARY_KPIS, KPI_TRUST
-from polaron_qc.decision import Thresholds
+from polaron_qc.decision import Thresholds, LOCAL_KPIS_PROMOTE
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(ROOT, "ui", "bundles")
@@ -222,6 +222,7 @@ def build(args):
         "kvoids": img("ui/bundles/lot_Batch_1/img/lot_f1vzngrs_voids.jpg", (0.25, 0, 0.75, 1), 700),
         "sig": img("analysis/signatures/fig_signature_crops.png", (0, 0.1, 1, 1), 1100),
         "geom": img("analysis/morphology/output/geometry_examples.png", None, 1000),
+        "sigstrip": img("analysis/signatures/fig_signature_strips.png", None, 1100),
     }
     kpi_rows = {
         "crack_frac": ("Area of long, crack-like voids (major axis over 500 px)", "delamination-like voids; the one clear material anomaly in the known data"),
@@ -230,7 +231,7 @@ def build(args):
         "bright_frac": ("Area fraction of the bright, higher-Z additive phase (possibly Si or SiOx)", "a formulation or dispersion question for the supplier"),
         "bright_d50": ("Area-weighted median section diameter of bright-phase particles (px)", "particle-size supply or agglomeration"),
     }
-    kpi_table = "".join(f'<tr><td class="mono">{k}</td><td>{e(a)}</td><td>{e(b)}</td><td>{e(KPI_TRUST.get(k, ""))}</td></tr>' for k, (a, b) in kpi_rows.items())
+    kpi_table = "".join(f'<tr><td class="mono">{k}</td><td>{e(a)}</td><td>{e(b)}</td><td>{e(KPI_TRUST.get(k, ""))}{" when the site is not low-contrast" if k.startswith("bright_") else ""}</td></tr>' for k, (a, b) in kpi_rows.items())
     loco_rows = "".join(f'<tr><td>{e(r.statistic)}</td><td class="n">{e(r.value)}</td></tr>' for r in loco.itertuples())
     drop_rows = "".join(
         f'<tr><td class="mono">{e(x["sample_id"])}</td><td>{e(x["prediction"]["predicted_batch"].replace("_", " "))}</td>'
@@ -247,13 +248,25 @@ def build(args):
         ("Freeze the rules before any test data and model v2 before the final evaluation; refuse training images", "Re-tune on each new lot", "Hashes and receipts prove what ran; the scorer rejects training copies. Model v2 was revised after the first-drop images, before their labels (D53, D54S, D57U)."),
     ]
     why_rows = "".join(f"<tr><td>{e(a)}</td><td>{e(b)}</td><td>{e(c)}</td></tr>" for a, b, c in why)
+    att_rows = "".join(
+        f'<tr><td>{b.replace("_", " ")}</td><td class="n">{lots[b]["acquisition"]["attenuation"]["stratified"]:+.2f}</td>'
+        f'<td class="n">{lots[b]["acquisition"]["attenuation"]["adjusted"]:+.2f}</td><td>{"yes" if lots[b]["acquisition"]["attenuation"]["available"] else "no"}</td></tr>' for b in lots)
+    ph1 = lots["Batch_1"]["physics"]; vg = {r["batch"]: r for b in lots for r in lots[b]["physics"]["void_geometry"]}
+    san = {b: lots[b]["physics"]["sanity"] for b in lots}
+    phys_rows = "".join([
+        f'<tr><td>Phase fractions sum to 1 on every site</td><td>{", ".join(f"{b.replace(chr(95), chr(32))}: {san[b]["n_sum_to_one"]} of {san[b]["n_sites"]} sites" for b in san)}</td><td>sanity check, passed</td></tr>',
+        f'<tr><td>Connected void path from the top to the bottom of the section</td><td>none on any known site</td><td>no tortuosity value is shown</td></tr>',
+        f'<tr><td>Delamination index (crack-like void area per section)</td><td>{", ".join(f"{b.replace(chr(95), chr(32))}: {vg[b]["delamination_index"]:.2f}" for b in ("Batch_1", "Batch_2", "Batch_3") if b in vg)}</td><td>context value; the verdict does not use it</td></tr>',
+        f'<tr><td>Longest void as a fraction of the section height</td><td>{", ".join(f"{b.replace(chr(95), chr(32))}: {vg[b]["longest_void_over_thickness"]:.2f}" for b in ("Batch_1", "Batch_2", "Batch_3") if b in vg)}</td><td>context value; the row count is not a confirmed thickness</td></tr>',
+        f'<tr><td>Volume fraction from the area fraction (Delesse method)</td><td>shown in the drawer</td><td>context value; it assumes a random section</td></tr>',
+    ])
 
     body = f"""
 <header class="hero"><div class="toprow"><h1>Our approach</h1><button class="themebtn" id="theme" aria-pressed="false">Dark mode</button></div>
-<p class="lead">Backscatter answers one question for an incoming electrode lot: has it changed against the supplier's approved baseline, and in what way?
-It measures physical quantities on SEM cross-sections, tests them site by site against frozen rules, and shows the evidence on the image.
-A separate frozen model says which known lot each site most resembles. Nothing is refitted on a new lot.</p>
-<nav class="toc" aria-label="Sections"><a href="#s1">The question and the data</a><a href="#s2">What the data taught us</a><a href="#s3">Features</a><a href="#s4">Decision model</a><a href="#s5">Resemblance model</a><a href="#s6">Outcomes</a><a href="#s7">Into the product</a><a href="#s8">Why this design</a></nav></header>
+<p class="lead">Backscatter examines an incoming electrode lot against the supplier's approved baseline. A lot is a batch; the organisers use the word batch.
+It gives three answers, and it keeps them apart: the QC action from frozen rules, the distance from the baseline, and the known batch that each sample resembles.
+It measures physical quantities on SEM cross-sections, tests them site by site, and shows the evidence on the image. Nothing is refitted on a new lot.</p>
+<nav class="toc" aria-label="Sections"><a href="#s1">The question and the data</a><a href="#s2">What the data taught us</a><a href="#s3">Features</a><a href="#s4">Decision model</a><a href="#s5">Acquisition and review</a><a href="#s6">Physics and the cell</a><a href="#s7">Resemblance model</a><a href="#s8">What is different</a><a href="#s9">Outcomes</a><a href="#s10">Into the product</a><a href="#s11">Why this design</a></nav></header>
 
 <section id="s1"><h2><span class="sn">1</span>The question and the data</h2>
 <p>Three supplier lots of one product. {e(base['reference'].replace('_', ' '))} is the approved baseline with {base['n_sites']} sites ({', '.join(f"{v} {k.replace('_', '-')}" for k, v in groups.items())}).
@@ -267,10 +280,11 @@ Batches 1 and 2 have {lots['Batch_1']['summary']['meta']['n_sites_batch']} and {
 <div class="pair"><div><h3>Brightness is not material</h3><p>About half the images were contrast-stretched after acquisition: the histogram shows empty, comb-like bins. Raw intensity of any detector is never a material KPI. {ev('D04')}</p></div>{fig(I['hist'], 'BSE crops and a comb-shaped histogram', 'Gaps in the exported histogram show remapping after acquisition.')}</div>
 <div class="pair"><div><h3>Low-contrast sites break simple thresholds</h3><p>On two Batch 1 sites the bright phase sat only 25–35 grey levels above graphite. Plain multi-Otsu then inflated the bright fraction 3×. We anchor thresholds on the histogram, flag low contrast, and drop bright-phase KPIs on those sites. {ev('D05', 'D07')}</p></div>
 <div class="duo">{fig(I['lc'], 'Low-contrast site with speckled bright mask', '<b>4ih2ggld, low contrast</b>: the bright mask (yellow) fragments into rims and particle interiors.')}{fig(I['ok'], 'Ordinary site with clean bright mask', '<b>f1vzngrs, ordinary</b>: clean particles. Yellow bright phase, teal voids; unreviewed algorithm masks.')}</div></div>
-<div class="pair"><div><h3>The strongest-looking feature was the microscope</h3><p>Inlens particle texture orders the lots B1 > B2 > B3 and separates them strongly (Kruskal p {krus.loc['inlens_particle_texture', 'p']:.3f}), but it rises with Inlens brightness (Spearman ρ +0.77 over 31 sites), and about 75 % of its variance follows acquisition statistics. It never drives a verdict. {ev('D11', 'D51', 'E20')}</p></div>
+<div class="pair"><div><h3>The strongest-looking feature was the microscope</h3><p>Inlens particle texture orders the lots B1 > B2 > B3 and separates them strongly (Kruskal p {krus.loc['inlens_particle_texture', 'p']:.3f}). But it rises with Inlens brightness (Spearman ρ +0.77 over 31 sites). About 75 % of its variance follows acquisition statistics. It never drives a verdict.
+A later test (E32) showed that the contrast is not only a gain or offset effect. It stays linked to brightness, and a gamma change moves it by a third of the batch gap. The Batch 1 over Batch 2 part of the order comes from the amplitude. {ev('D11', 'D51', 'E20', 'E32')}</p></div>
 <div class="duo">{fig(I['order'], 'Inlens texture by lot', 'Lots order B1 > B2 > B3 …')}{fig(I['conf'], 'Inlens texture against Inlens brightness', '… but texture tracks image brightness.')}</div></div>
 <div class="pair"><div><h3>The baseline is not one population</h3><p>Four grey-pore sites need a fallback pore threshold and three cracked sites carry the only clear material anomaly in the known data. They stay in the baseline, visible, with robust statistics. Frame height tracked sessions, so it was dropped from every model. {ev('D08', 'D14', 'D52')}</p></div>
-<div class="stack">{fig(I['grey'], 'Grey-pore baseline site', '<b>71vgq3fw, grey-pore group</b>: crack-like voids painted red.')}{fig(I['crack'], 'Cracked baseline site', '<b>hzumfsms, cracked</b>: long delamination-like voids.')}</div></div></section>
+<div class="stack">{fig(I['grey'], 'Grey-pore baseline site', '<b>71vgq3fw, grey-pore group</b>: the pores are grey, so the pore threshold falls back. Voids are painted for reference; this site is not a cracked site.')}{fig(I['crack'], 'Cracked baseline site', '<b>hzumfsms, cracked</b>: long delamination-like voids.')}</div></div></section>
 
 <section id="s3"><h2><span class="sn">3</span>Features: measure what an expert can check</h2>
 <p>The verdict uses five primary KPIs. Each is an observed 2-D measurement on the BSE masks, has a trust level, and can be painted on the image. Everything else is context. {ev('D09', 'D21', 'D22')}</p>
@@ -278,33 +292,50 @@ Batches 1 and 2 have {lots['Batch_1']['summary']['meta']['n_sites_batch']} and {
 <div class="stack">{fig(I['kcrop'], 'Full-resolution crop of a crack-like void', '<b>crack_frac</b>: the pixels counted are the red void, here at full resolution (Batch 1, 4ih2ggld).')}
 <div class="duo">{fig(I['kvoids'], 'Voids painted on a BSE strip', '<b>pore_frac, pore_max_d</b>: voids and the largest void on the BSE strip.')}{fig(I['kbright'], 'Bright particles outlined', '<b>bright_frac, bright_d50</b>: the outlined particles are what is counted.')}</div></div>
 <details class="more"><summary>Measured, tested, not promoted</summary>
-<p>Our metric register lists {n_reg} measured descriptors: the {n_reg_primary} primary KPIs above, plus shape variability, orientation, neighbour spacing, graph arrangement, Gabor texture and frozen image embeddings. None of the other {n_reg - n_reg_primary} became a verdict input. Each stays descriptive until it separates lots without tracking acquisition and an expert reviews it. {ev('E18', 'E26G', 'E27', 'E28J', 'E30K')}</p>
+<p>Our metric register lists {n_reg} measured descriptors. They include the {n_reg_primary} primary KPIs above, shape variability, orientation, neighbour spacing, graph arrangement, Gabor texture and frozen image embeddings. None of the other {n_reg - n_reg_primary} became a verdict input. Each stays descriptive until it separates lots without tracking acquisition and an expert reviews it. {ev('E18', 'E26G', 'E27', 'E28J', 'E30K')}</p>
 {fig(I['geom'], 'Geometry descriptor examples', 'Nearest-neighbour spacing and void alignment, two of the descriptors kept as context.')}</details></section>
 
 <section id="s4"><h2><span class="sn">4</span>The decision model</h2>
-<p>A site, not a patch, is the unit of evidence. For each primary KPI we compare the lot's sites with the baseline's sites by permutation test on the Hodges–Lehmann shift, corrected for five KPIs (Holm), plus an energy-distance test on all five.
-A KPI drives the verdict at Holm p below {T.alpha} with a shift of at least {T.min_effect_mad:g} MAD. A separate localized path checks single sites against the ordinary-baseline maximum: {T.severity_margin_mad:g} MAD routes to image review, {T.single_site_escalate_mad:g} MAD or agreement changes the verdict.
+<p>A site, not a patch, is the unit of evidence. For each primary KPI we compare the lot's sites with the baseline's sites. The test is a permutation test on the Hodges–Lehmann shift, corrected for five KPIs (Holm). An energy-distance test covers all five KPIs together.
+A KPI drives the verdict at Holm p below {T.alpha} with a shift of at least {T.min_effect_mad:g} MAD. A separate localized path checks single sites against the ordinary-baseline maximum. It promotes only the two void KPIs ({', '.join(LOCAL_KPIS_PROMOTE)}). A site at {T.severity_margin_mad:g} MAD goes to image review. A site at {T.single_site_escalate_mad:g} MAD, or agreement of two sites or two KPIs, changes the verdict. The other extreme-value KPIs are flagged and never promote.
 Fewer than {T.min_usable_sites} usable sites means a quality abstention. Every reference-dependent fit is repeated in each leave-one-site-out re-run to give decision stability. The thresholds are frozen and hashed: <span class="mono">{T.hash()}</span>. {ev('D17', 'D21', 'D22', 'D23', 'D29', 'D33')}</p>
 <div class="figbox">{FLOW}</div>
 <h3>Not detected is not unchanged</h3>
-<p>Both known variant lots are consistent within detectable limits. The chart shows why that is honest rather than reassuring: each dot is the observed shift, each band the smallest shift the rules detect with the lot's usable sites ({nrange} per KPI, after quality flags). {ev('D16', 'D23')}</p>
+<p>Both known variant lots are consistent within detectable limits. The chart shows why that is honest and not reassuring. Each dot is the observed shift. Each band is the smallest shift the rules detect with the lot's usable sites ({nrange} per KPI, after quality flags). {ev('D16', 'D23')}</p>
 <div class="figbox">{shift_chart(lots)}</div></section>
 
-<section id="s5"><h2><span class="sn">5</span>The resemblance model</h2>
-<p>The judged task also asks which known lot each held-back site comes from. A frozen L1 logistic regression (C {snap['chosen_C']['material']}) on {len(snap['primary_features'])} features ({fam['morph'].n_features} morphology, {len(snap['primary_features']) - fam['morph'].n_features} appearance) was fitted on the {int(sum(snap['training_site_counts'].values()))} known sites only. Session statistics and frame height are excluded; appearance features stay labelled acquisition-sensitive. Scores are uncalibrated. {ev('D50', 'D52', 'D54S')}</p>
+<section id="s5"><h2><span class="sn">5</span>Acquisition sensitivity and the review loop</h2>
+<p>The microscope can change between sessions. The system does not let an imaging change become a reject. It derives quality flags from the lot's own images before any statistic runs. The flags are low bright-phase contrast, a raised black level with grey pores, and contrast stretching. {ev('D31')}</p>
+<p>It then repeats the multivariate test in three views: unadjusted, stratified to ordinary acquisition groups, and adjusted for three acquisition covariates with the regression refitted inside every permutation. The attenuation is the share by which the statistic drops. A drop larger than {T.strong_attenuation:g} holds the verdict at investigate. If no view is available, the system withholds a reject. A negative attenuation means that the adjustment did not explain the shift away. {ev('D26', 'D30')}</p>
+<div class="tw"><table><thead><tr><th>Lot</th><th>Stratified attenuation</th><th>Adjusted attenuation</th><th>Views available</th></tr></thead><tbody>{att_rows}</tbody></table></div>
+<p>A person closes the loop. The localized path routes a flagged site to image review with a painted crop. The review has three states: not reviewed, confirmed, and refuted. A refuted review closes the flag. Each verdict ends with one next QC action in plain words. The action is never a release decision, because no tolerances exist. {ev('D32', 'D33', 'D45')}</p></section>
+
+<section id="s6"><h2><span class="sn">6</span>Physics and the cell</h2>
+<p>The physics layer gives the direction of a change, not a performance value. For each KPI that drives the verdict, it writes one sentence. The sentence says higher or lower than the baseline, and what that direction can mean in the cell. It writes nothing for a KPI that does not drive the verdict. The sentence is withheld when the shift is smaller than the ±5 grey-level threshold band of that KPI. {ev('D19', 'D22', 'D46')}</p>
+<p>The specimens are new electrodes. Santosh confirmed a fresh graphite anode with a Si or SiOx additive. The text therefore speaks about structure as manufactured and about possible susceptibility, never about cycle damage, SEI or lithium plating. It writes "possibly Si or SiOx", because the system does not identify the chemistry. Contact between an additive particle and a void is not electrical contact. All display text for the cell is in Simplified Technical English and was approved by Santosh. {ev('D51', 'D56U')}</p>
+<div class="tw"><table><thead><tr><th>Check or context value</th><th>Result on the known lots</th><th>Status</th></tr></thead><tbody>{phys_rows}</tbody></table></div>
+<p>Eight experimental battery geometry KPIs exist: void distance from the additive, local bright dispersion, additive and pore association, and long-void burden. They sit in a drawer with site-bootstrap intervals and threshold sensitivity. The verdict does not use them. An expert must examine them before use. {ev('E25', 'D47K')}</p></section>
+
+<section id="s7"><h2><span class="sn">7</span>The resemblance model</h2>
+<p>The judged task also asks which known lot each held-back site comes from. A frozen L1 logistic regression uses {len(snap['primary_features'])} features ({fam['morph'].n_features} morphology, {len(snap['primary_features']) - fam['morph'].n_features} appearance). Its C of {snap['chosen_C']['material']} was chosen by inner cross-validation on the known sites. It was fitted on the {int(sum(snap['training_site_counts'].values()))} known sites only. Session statistics and frame height are excluded; appearance features stay labelled acquisition-sensitive. Scores are uncalibrated. {ev('D50', 'D52', 'D54S')}</p>
 <div class="pair"><div><h3>Nested leave-one-site-out test</h3><p>{correct} of {int(conf.values.sum())} sites correct, balanced accuracy {prim.balanced_accuracy:.3f} against chance 0.33, permutation p {prim.perm_p:.3f} over {int(prim.n_perm)} label shuffles. Morphology alone does not separate the lots ({fam['morph'].balanced_accuracy:.3f}); Batch 2 recall stays weak ({prim.recall_Batch_2:.2f}).
-Holding out whole acquisition clusters keeps balanced accuracy at {loco_vals[0]:.3f}–{loco_vals[-1]:.3f} (fixed C 0.5): within the known data the model is not simply memorising sessions, though 31 sites make this a weak test. {ev('E34', 'E35')}</p>
+The nested test chooses C inside each fold. A second test holds out whole acquisition clusters, with C fixed at 0.5. It keeps the balanced accuracy at {loco_vals[0]:.3f}–{loco_vals[-1]:.3f}. Within the known data the model does not simply memorise sessions. With 31 sites this is a weak test. {ev('E34', 'E35')}</p>
 <p>Full method note: <a href="{METHOD_NOTE}">Categoriser v2 method</a>.</p></div>
 <div class="figbox">{family_chart(summ)}</div></div>
 <div class="pair"><div class="tw">{confusion(conf)}</div>{fig(I['sig'], 'ETD and Inlens crops per lot', 'What "appearance" means: ETD ridges and Inlens particle texture per lot. An expert must judge whether this is material or imaging.')}</div></section>
 
-<section id="s6"><h2><span class="sn">6</span>Outcomes, stated plainly</h2>
-<p>Known lots: both consistent within detectable limits with {nrange} usable sites per KPI, while the fingerprint separates them better than chance. First organiser drop: {right} of {len(ss) if truth else 'n/a'} samples assigned to the right lot. The low-contrast Batch 2 sample was called Batch 1, a quality and lot combination the known sites never showed. Its strongest drivers were measured inside an unreliable bright mask: the decision model drops such measurements on flagged sites, but the resemblance model only marks them. The bets stay as saved, and the acquisition-only comparator that scored 2 of 3 was not adopted after the fact. {ev('E33', 'E35', 'E36S', 'D54S')}</p>
+<section id="s8"><h2><span class="sn">8</span>What is different, and in what way</h2>
+<p>The organisers ask what is different about each later batch. We tested 119 descriptors against the baseline, site by site. Twenty-four separate Batch 1 or Batch 2 from the baseline at p below 0.05; about six would do so by chance. Thirteen of the 24 are ETD or Inlens texture descriptors, seven are BSE morphology. The five primary KPIs move by at most 1.4 MAD. {ev('E32')}</p>
+<p>Batch 1 shows more texture inside the additive particles, smoother graphite faces in ETD, and more additive in the lower part of the strip. Batch 2 shows fewer resolved pores per area and additive particles that lie farther from voids. Texture descriptors are acquisition-sensitive. The first organiser drop showed that these cues are not exclusive to one batch. The full table is in <span class="mono">docs/batch_signatures.md</span>.</p>
+{fig(I['sigstrip'], 'Strip plots of eight descriptors per batch', 'Site values per batch for eight descriptors; the bar is the median. Shifts are in baseline MADs with a site-level permutation p.')}</section>
+
+<section id="s9"><h2><span class="sn">9</span>Outcomes, stated plainly</h2>
+<p>Known lots: both consistent within detectable limits with {nrange} usable sites per KPI, while the fingerprint separates them better than chance. First organiser drop: {right} of {len(ss) if truth else 'n/a'} samples assigned to the right lot. The low-contrast Batch 2 sample was called Batch 1, a quality and lot combination the known sites never showed. Its strongest drivers were measured inside an unreliable bright mask. The decision model drops such measurements on flagged sites. The resemblance model only marks them. The bets stay as saved, and the acquisition-only comparator that scored 2 of 3 was not adopted after the fact. The next audit defines a quality policy for every mask-dependent input on the known data, inside the folds. {ev('E33', 'E35', 'E36S', 'D54S')}</p>
 <p>Model v2 was revised after the first-drop images were examined and before their labels arrived, then frozen before the final evaluation. The first drop is development evidence for v2, not an untouched test. {ev('D52', 'D54S')}</p>
 <div class="tw"><table><thead><tr><th>Sample</th><th>Saved bet</th><th>Organiser label</th><th>Result</th><th>Quality flags</th></tr></thead><tbody>{drop_rows}</tbody></table></div>
 <p>A 3-site rehearsal through the product abstains, as the rules require below {T.min_usable_sites} usable sites, and lists what to re-image. {ev('D57U')}</p></section>
 
-<section id="s7"><h2><span class="sn">7</span>How it plugs into Backscatter</h2>
+<section id="s10"><h2><span class="sn">10</span>How it plugs into Backscatter</h2>
 <p>The product runs the same frozen commands an operator would run by hand, each into a new folder with a receipt. Nothing refits on the incoming lot, and training images or site IDs are refused before any work. {ev('D56U', 'D57U')}</p>
 <div class="figbox">{RUNTIME}</div>
 <div class="tw"><table><thead><tr><th>On screen</th><th>Comes from</th></tr></thead><tbody>
@@ -315,8 +346,10 @@ Holding out whole acquisition clusters keeps balanced accuracy at {loco_vals[0]:
 <tr><td>Per-site resemblance</td><td>Frozen v2 model <span class="mono">{e(samples['model_version'])}</span>, sha256 <span class="mono">{e(samples['model_sha256'][:12])}</span>, with exact feature contributions</td></tr>
 <tr><td>What this could mean for the cell</td><td>Approved Simplified Technical English text, shown only for KPIs that drive the verdict</td></tr></tbody></table></div></section>
 
-<section id="s8"><h2><span class="sn">8</span>Why this is the right implementation</h2>
+<section id="s11"><h2><span class="sn">11</span>Why this is the right implementation</h2>
 <div class="tw"><table class="why"><thead><tr><th>We chose</th><th>Instead of</th><th>Because</th></tr></thead><tbody>{why_rows}</tbody></table></div>
+<h3>How we keep ourselves honest</h3>
+<p>Every consequential decision has a numbered entry with its rationale and the alternatives: D01 to D59U. Every number comes from a logged experiment and a registry row: E01 to E36S. A review checklist, C01 to C35, grew from each mistake a reviewer caught. Eighteen interpretive assumptions, A1 to A18, sit in an assumption register with an annotated image and a review state each. Two cold rehearsals of the drop procedure found three failures before the organisers' drop. Each exploratory pilot was pre-registered before its first run. {ev('D21', 'E23', 'E28', 'D34')}</p>
 <p class="note">Limits we state: 2-D sections only; pixel lengths; uncycled electrodes, so no claims about cycling damage or performance; one heterogeneous baseline lot; expert review of masks still pending.</p></section>
 """
     return body

@@ -417,6 +417,14 @@ Conventions: one entry per decision, newest at the bottom of Part A. `Caught by`
 - **Why:** judges score interpretability and honesty. The rationale (traps found, alternatives rejected, limits) is part of the product's credibility, and every number must trace to an artefact.
 - **Alternatives rejected:** hand-written slides with typed numbers (drift risk); linking only to notebooks (too deep for a demo).
 
+### D60U · 2026-10-04 · "Our approach" page covers the whole method and follows ASD-STE100
+- **Decision (Santosh's review of the demo page):** the page gains three sections and one paragraph so that every part of the approach is on it: acquisition sensitivity and the human review loop (three views, attenuation gate, three review states, next QC action); physics and the cell (direction-only statements, threshold-band gate, battery-application rules, sanity checks, context values, the eight experimental geometry KPIs); what is different about each later batch (the signature table and strip plots); and how the team keeps itself honest (decision log, experiment registry, checklist, assumption register, rehearsals, pre-registration). Six corrections: the regularisation value is stated as chosen by inner cross-validation; the grey-pore caption no longer calls that site cracked; the tiered localized rule is scoped to crack_frac and pore_max_d; bright-phase trust is qualified by the low-contrast flag; the Inlens paragraph carries the E32 result; the page is built from a clean commit. The lead states the three separate answers and maps "lot" to the organisers' "batch".
+- **Style:** all page sentences follow the ASD-STE100 rules already used for the cell text (ui_plan §4.4): 25 words or fewer, active voice, present tense, one topic per sentence, no -ing forms except technical names.
+- **Why:** the demo is judged on interpretability and honesty; a page that omits the physics layer, the acquisition gate and the governance under-sells both, and two captions were wrong. Numbers on the new sections come from the lot bundles (attenuation shares, sanity counts, void geometry) or cite their experiment.
+- **Caught by:** C04 (code–prose agreement), C13, C21, C27; Santosh's review.
+
+---
+
 ## Part B — Pre-presentation review checklist
 
 Run this before presenting a plan, a result, a figure or a verdict. Each item names the failure it exists to prevent and the decision where it was learned. Add an item whenever a reviewer catches something not covered here.

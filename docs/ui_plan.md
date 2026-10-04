@@ -400,18 +400,30 @@ right implementation, and how it plugs into the product. It does not describe ho
 `python -m app.build_approach --feedback <feedback folder> --out ui/approach.html --replace` builds it. The server
 serves it at `/approach`. The tabs are: Inspect a lot · Our approach · How it was built.
 
-The page has eight sections:
+The page has eleven sections (D60U added 5, 6 and 8 and the governance paragraph in 11):
 
 1. The question and the data
 2. What the data taught us before any model: contrast stretching, low-contrast segmentation, the Inlens confound
-   and baseline heterogeneity
-3. Features: the five primary KPIs on the image, and what was measured but not promoted
-4. The decision model, with a workflow diagram and observed shift against detectable shift
-5. The resemblance model: feature families, the nested test, the confusion matrix, appearance crops, and a link to
-   the Categoriser v2 method note
-6. Outcomes, including the first drop at 1 of 3
-7. How it plugs into the product: the runtime diagram and an on-screen → source table
-8. Why this design: a table of each choice → the rejected alternative → the evidence
+   (with the E32 normalisation result) and baseline heterogeneity
+3. Features: the five primary KPIs on the image (bright-phase trust qualified by the low-contrast flag), and what
+   was measured but not promoted
+4. The decision model, with a workflow diagram and observed shift against detectable shift; the tiered localized
+   rule is scoped to the two void KPIs
+5. Acquisition sensitivity and the review loop: data-derived quality flags, the three views and the attenuation
+   gate (no view → no reject), the three review states and the next QC action
+6. Physics and the cell: direction-only statements gated by the threshold band, the battery-application rules
+   (fresh graphite–Si/SiOx, "possibly Si or SiOx", no cycling claims), sanity checks and context values, the eight
+   experimental battery geometry KPIs
+7. The resemblance model: feature families, the nested test (C chosen by inner cross-validation), the confusion
+   matrix, appearance crops, and a link to the Categoriser v2 method note
+8. What is different, and in what way: the batch signatures against the baseline (`docs/batch_signatures.md`)
+9. Outcomes, including the first drop at 1 of 3 and the next audit
+10. How it plugs into the product: the runtime diagram and an on-screen → source table
+11. Why this design: a table of each choice → the rejected alternative → the evidence, and how the team keeps
+    itself honest (decision log, experiment registry, checklist, assumption register, rehearsals, pre-registration)
+
+All sentences on the page follow the ASD-STE100 writing rules listed in §4.4 (25 words or fewer, active voice,
+present tense, one topic per sentence); a check script flags longer sentences at build review time.
 
 How it's built:
 
