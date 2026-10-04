@@ -1,7 +1,7 @@
 {
- "built_utc": "2026-10-04T12:27:00+00:00",
- "git": "736a5d6",
- "builder_sha256": "08aefb252bc608b94fc1780b29997ef26d06841fa691f0d355e5bfec2570c95a",
+ "built_utc": "2026-10-04T12:27:54+00:00",
+ "git": "f35471a",
+ "builder_sha256": "e801c043a98b5ea499ced9e05a68dda90ea083043292ebf8798e3246b9550e1a",
  "inputs_sha256": {
   "ui/bundles/lot_Batch_1/lot.json": "502d128213400a06383e71ebff200ca3cc2a11f88dc85e98947ce2858c71eeb9",
   "ui/bundles/lot_Batch_2/lot.json": "a633ac09a97207fa04fa5e4b64a8688d41db866d112f1388ea546591e1de2505",
@@ -31,6 +31,6 @@
   "analysis/morphology/output/geometry_examples.png": "274759a92905e3eb14d05c43f817a21cff46809797403a5c7db44f9a3daf73ef",
   "analysis/signatures/fig_signature_strips.png": "c36baf85df8fcf5330298bdfbecd48b45643e18b9e1df714a99ce2649eadbd5a"
  },
- "output_sha256": "83128393a6426a77dc8f26c0afea0ae9eb8a5350d13909837be3c4f8f827bbc8",
+ "output_sha256": "1154caf6b7b503a347b50df99487c5a962c52090e8df9be2672348e8ce6a171a",
  "size_mb": 1.26
 }
